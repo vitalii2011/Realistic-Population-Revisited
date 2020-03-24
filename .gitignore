@@ -7,3 +7,16 @@ Help/*
 !TempLibraryStore/*.dll
 WG_BalancePopMod/bin/*
 WG_BalancePopMod/obj/*
+/.vs/slnx.sqlite
+/.vs/Realistic Population Revisited/v16/Server/sqlite3/db.lock
+/.vs/Realistic Population Revisited/v16/Server/sqlite3/storage.ide
+/.vs/Realistic Population Revisited/v16/Server/sqlite3/storage.ide-shm
+/.vs/Realistic Population Revisited/v16/Server/sqlite3/storage.ide-wal
+/obj/Debug/Realistic Population Revisited.csprojAssemblyReference.cache
+/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/.vs/VSWorkspaceState.json
+*.cache
+/obj/Debug/Realistic Population Revisited.csproj.CopyComplete
+/obj/Debug/Realistic Population Revisited.csproj.FileListAbsolute.txt
+/obj/Debug/RealPopRevisited.pdb
+/bin/Debug/RealPopRevisited.pdb

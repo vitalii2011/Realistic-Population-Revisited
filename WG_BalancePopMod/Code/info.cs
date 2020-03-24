@@ -12,13 +12,11 @@ namespace WG_BalancedPopMod
     {
         public string Name
         {
-            get { return "WG Realistic Population v8.4.0"; }
+            get { return "Realistic Population Revisited"; }
         }
         public string Description
         {
-            get { return "Building population are tied to volume and utility needs are changed to be more realistic."; }
+            get { return "More realistic building populations (based on building size) and utility needs."; }
         }
     }
 }
-
-
