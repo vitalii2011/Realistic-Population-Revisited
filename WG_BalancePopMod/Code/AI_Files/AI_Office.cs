@@ -141,8 +141,7 @@ namespace WG_BalancedPopMod
             }
             catch (System.Exception)
             {
-                string error = item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.";
-                Debugging.writeDebugToFile(error);
+                UnityEngine.Debug.Log("Realistic Population Revisited: " + item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.");
                 return array[0];
             }
         }

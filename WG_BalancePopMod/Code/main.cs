@@ -8,6 +8,10 @@ using System.Diagnostics;
 using Boformer.Redirection;
 using ColossalFramework.Math;
 using ColossalFramework;
+using UnityEngine;
+using ColossalFramework.UI;
+using ColossalFramework.Plugins;
+using System.Linq;
 
 namespace WG_BalancedPopMod
 {
@@ -23,14 +27,27 @@ namespace WG_BalancedPopMod
         private readonly Dictionary<MethodInfo, Redirector> redirectsOnLoaded = new Dictionary<MethodInfo, Redirector>();
         private readonly Dictionary<MethodInfo, Redirector> redirectsOnCreated = new Dictionary<MethodInfo, Redirector>();
 
-
         private static volatile bool isModEnabled = false;
         private static volatile bool isLevelLoaded = false;
         private static Stopwatch sw;
 
+        // Used to flag if a conflicting mod is running.
+        private static bool conflictingMod = false;
+
+        public static bool IsModEnabled(UInt64 id)
+        {
+            return PluginManager.instance.GetPluginsInfo().Any(mod => (mod.publishedFileID.AsUInt64 == id && mod.isEnabled));
+        }
+
         public override void OnCreated(ILoading loading)
         {
-            if (!isModEnabled)
+            // Check for original WG Realistic Population and Consumption Mod; if it's enabled, flag and don't activate this mod.
+            if (IsModEnabled(426163185ul))
+            {
+                conflictingMod = true;
+                UnityEngine.Debug.Log("Realistic Population Revisited: Realistic Population and Consumption Mod detected, skipping activation.");
+            }
+            else if (!isModEnabled)
             {
                 isModEnabled = true;
                 sw = Stopwatch.StartNew();
@@ -67,7 +84,7 @@ namespace WG_BalancedPopMod
                 }
 
                 sw.Stop();
-                UnityEngine.Debug.Log("WG_RealisticCity: Successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
+                UnityEngine.Debug.Log("Realistic Population Revisited: Successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
             }
         }
 
@@ -117,7 +134,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    Debugging.panelMessage(e.Message);
+                    UnityEngine.Debug.Log("Realistic Population Revisited - release exception:\r\n" + e.Message);
                 }
 
                 RevertRedirect(true);
@@ -137,7 +154,13 @@ namespace WG_BalancedPopMod
 
         public override void OnLevelLoaded(LoadMode mode)
         {
-            if (mode == LoadMode.LoadGame || mode == LoadMode.NewGame)
+            // Check to see if an conflicting mod has been detected - if so, alert the user and abort operation.
+            if (conflictingMod)
+            {
+                ExceptionPanel panel = UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel");
+                panel.SetMessage("Realistic Population Revisited", "Original Realistic Population and Consumption Mod mod detected - Realistic Population Revisited is shutting down to protect your game.  Only ONE of these mods can be enabled at the same time; please unsubscribe from the old Realistic Population and Consumption Mod, which is now deprecated!", false);
+            }
+            else if (mode == LoadMode.LoadGame || mode == LoadMode.NewGame)
             {
                 if (!isLevelLoaded)
                 {
@@ -145,7 +168,7 @@ namespace WG_BalancedPopMod
                     // Now we can remove people
                     DataStore.allowRemovalOfCitizens = true;
                     Debugging.releaseBuffer();
-                    Debugging.panelMessage("Successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
+                    UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
                 }
             }
         }
@@ -171,7 +194,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    UnityEngine.Debug.Log($"An error occured while applying {type.Name} redirects!");
+                    UnityEngine.Debug.Log($"Realistic Population Revisited: an error occured while applying {type.Name} redirects!");
                     UnityEngine.Debug.Log(e.StackTrace);
                 }
             }
@@ -188,7 +211,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    UnityEngine.Debug.Log($"An error occured while reverting {kvp.Key.Name} redirect!");
+                    UnityEngine.Debug.Log($"Realistic Population Revisited: an error occured while reverting {kvp.Key.Name} redirect!");
                     UnityEngine.Debug.Log(e.StackTrace);
                 }
             }
@@ -230,13 +253,11 @@ namespace WG_BalancedPopMod
                         File.Copy(DataStore.currentFileLocation, DataStore.currentFileLocation + ".ver5", true);
                         string error = "Detected an old version of the XML (v5). " + DataStore.currentFileLocation + ".ver5 has been created for future reference and will be upgraded to the new version.";
                         Debugging.bufferWarning(error);
-                        UnityEngine.Debug.Log(error);
                     }
                     else if (version <= 3) // Uh oh... version 4 was a while back..
                     {
                         string error = "Detected an unsupported version of the XML (v4 or less). Backing up for a new configuration as :" + DataStore.currentFileLocation + ".ver4";
                         Debugging.bufferWarning(error);
-                        UnityEngine.Debug.Log(error);
                         File.Copy(DataStore.currentFileLocation, DataStore.currentFileLocation + ".ver4", true);
                         return;
                     }
@@ -247,12 +268,11 @@ namespace WG_BalancedPopMod
                     // Game will now use defaults
                     Debugging.bufferWarning("The following exception(s) were detected while loading the XML file. Some (or all) values may not be loaded.");
                     Debugging.bufferWarning(e.Message);
-                    UnityEngine.Debug.LogException(e);
                 }
             }
             else
             {
-                UnityEngine.Debug.Log("Configuration file not found. Will output new file to : " + DataStore.currentFileLocation);
+                UnityEngine.Debug.Log("Realistic Population Revisited: configuration file not found. Will output new file to : " + DataStore.currentFileLocation);
             }
         }
     }

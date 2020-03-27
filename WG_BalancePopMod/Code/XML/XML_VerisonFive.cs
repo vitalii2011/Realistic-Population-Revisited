@@ -66,8 +66,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning(e.Message);
-                    UnityEngine.Debug.LogException(e);
+                    UnityEngine.Debug.Log("Realistic Population Revisited - XML readNodes exception:\r\n" + e.ToString());
                 }
             }
         } // end readXML
@@ -376,7 +375,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readPollutionNode: " + name + " " + e.Message);
+                    Debugging.bufferWarning("readPollutionNode exception:\r\n" + e.ToString());
                 }
             } // end foreach
         }
@@ -404,7 +403,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readConsumptionNode: " + e.Message);
+                    Debugging.bufferWarning("readConsumptionNode exception:\r\n" + e.ToString());
                 }
             }
         }
@@ -456,7 +455,7 @@ namespace WG_BalancedPopMod
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readPopulationNode, part a: " + e.Message);
+                        Debugging.bufferWarning("readPopulationNode exception:\r\n" + e.ToString());
                     }
 
                     try
@@ -495,7 +494,7 @@ namespace WG_BalancedPopMod
                         }
                         catch (Exception e)
                         {
-                            Debugging.bufferWarning("readPopulationNode, part b: " + e.Message);
+                            Debugging.bufferWarning("readPopulationNode, part b exception:\r\n" + e.ToString());
                         }
                     }
                 } // end if
@@ -570,7 +569,7 @@ namespace WG_BalancedPopMod
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readBonusHouseNode: " + e.Message + ". Setting to 1");
+                        Debugging.bufferWarning("readBonusHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
                     }
                 }
             }
@@ -615,7 +614,7 @@ namespace WG_BalancedPopMod
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readBonusWorkers: " + e.Message + ". Setting to 5");
+                        Debugging.bufferWarning("readBonusWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
                     }
                 }
             }
@@ -642,7 +641,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readVisitNode: " + e.Message);
+                    Debugging.bufferWarning("readVisitNode exception:\r\n" + e.ToString());
                 }
             }
         }
@@ -669,7 +668,7 @@ namespace WG_BalancedPopMod
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readProductionNode: " + e.Message);
+                    Debugging.bufferWarning("readProductionNode exception:\r\n" + e.ToString());
                 }
             }
         }
@@ -734,7 +733,7 @@ namespace WG_BalancedPopMod
                     break;
 
                 default:
-                    Debugging.panelMessage(callingFunction + ". unknown element name: " + name);
+                    UnityEngine.Debug.Log("Realistic Population Revisited: callingFunction " + callingFunction + ". unknown element name: " + name);
                     break;
             }
             return array;

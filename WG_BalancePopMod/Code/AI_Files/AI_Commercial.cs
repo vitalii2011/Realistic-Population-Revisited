@@ -91,18 +91,36 @@ namespace WG_BalancedPopMod
             }
         }
 
+
         [RedirectMethod(true)]
         public override int CalculateVisitplaceCount(ItemClass.Level level, Randomizer r, int width, int length)
         {
-            int returnVal = 0;
             PrefabEmployStruct visitors;
-            if (DataStore.prefabWorkerVisit.TryGetValue(this.m_info.gameObject.GetHashCode(), out visitors))
+
+
+            // All commercial places will need visitors. CalcWorkplaces is normally called first, redirected above to include a calculation of worker visits (CalculateprefabWorkerVisit).
+            // However, there is a problem with some converted assets that don't come through the "front door" (i.e. Ploppable RICO - see below).
+
+            // Try to retrieve previously calculated value.
+            if (!DataStore.prefabWorkerVisit.TryGetValue(this.m_info.gameObject.GetHashCode(), out visitors))
             {
-                returnVal = visitors.visitors;
-                // All commercial places will need visitors. CalcWorkplaces is called first. But just return 0 otherwise.
+                // If we didn't get a value, most likely it was because the prefab wasn't properly initialised.
+                // This can happen with Ploppable RICO when the underlying asset class isn't 'Default' (for example, where Ploppable RICO assets are originally Parks, Plazas or Monuments).
+                // When that happens, the above line returns zero, which sets the building to 'Not Operating Properly'.
+                // So, if the call returns false, we force a recalculation of workplace visits to make sure.
+
+                // If it's still zero after this, then we'll just return a "legitimate" zero.
+                visitors.visitors = 0;
+
+                int[] array = GetArray(this.m_info, (int)level);
+                AI_Utils.CalculateprefabWorkerVisit(width, length, ref this.m_info, 4, ref array, out visitors);
+                DataStore.prefabWorkerVisit.Add(this.m_info.gameObject.GetHashCode(), visitors);
+                Debug.Log("CalculateprefabWorkerVisit redux: " + this.m_info.name);
             }
-            return returnVal;
+
+            return visitors.visitors;
         }
+
 
         /// <summary>
         /// 
@@ -158,8 +176,7 @@ namespace WG_BalancedPopMod
             }
             catch (System.Exception)
             {
-                string error = item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.";
-                Debugging.writeDebugToFile(error);
+                UnityEngine.Debug.Log("Realistic Population Revisited: " + item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.");
                 return array[0];
             }
         }
