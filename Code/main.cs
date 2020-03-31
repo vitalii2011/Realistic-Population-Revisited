@@ -133,16 +133,6 @@ namespace RealisticPopulationRevisited
             {
                 isModEnabled = false;
 
-                try
-                {
-                    WG_XMLBaseVersion xml = new XML_VersionSix();
-                    xml.writeXML(DataStore.currentFileLocation);
-                }
-                catch (Exception e)
-                {
-                    UnityEngine.Debug.Log("Realistic Population Revisited - release exception:\r\n" + e.Message);
-                }
-
                 // Unapply Harmony patches.
                 _harmony.UnpatchAll(HarmonyID);
                 UnityEngine.Debug.Log("Realistic Population Revisited: patches unapplied.");
@@ -178,6 +168,16 @@ namespace RealisticPopulationRevisited
                     Debugging.releaseBuffer();
                     UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
                 }
+            }
+
+            try
+            {
+                WG_XMLBaseVersion xml = new XML_VersionSix();
+                xml.writeXML(DataStore.currentFileLocation);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.Log("Realistic Population Revisited - release exception:\r\n" + e.Message);
             }
         }
 
