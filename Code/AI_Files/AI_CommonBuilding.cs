@@ -1,21 +1,18 @@
-﻿using ColossalFramework;
+﻿using System;
+using ColossalFramework;
 using UnityEngine;
-using Boformer.Redirection;
+using Harmony;
+
 
 namespace RealisticPopulationRevisited
 {
-    [TargetType(typeof(CommonBuildingAI))]
-    class AI_CommonBuilding : CommonBuildingAI
+    [HarmonyPatch(typeof(CommonBuildingAI))]
+    [HarmonyPatch("HandleCrime")]
+    [HarmonyPatch(new Type[] { typeof(ushort), typeof(Building), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal })]
+    class RealisticCrime
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="buildingID"></param>
-        /// <param name="data"></param>
-        /// <param name="crimeAccumulation"></param>
-        /// <param name="citizenCount"></param>
-        [RedirectMethod(true)]
-        protected void HandleCrime(ushort buildingID, ref Building data, int crimeAccumulation, int citizenCount)
+        static bool Prefix(ref CommonBuildingAI __instance, ushort buildingID, ref Building data, int crimeAccumulation, int citizenCount)
         {
             int number = 10;
             if (crimeAccumulation != 0)
@@ -75,7 +72,7 @@ namespace RealisticPopulationRevisited
                 int num2 = 0;
                 int num3 = 0;
                 int num4 = 0;
-                this.CalculateGuestVehicles(buildingID, ref data, TransferManager.TransferReason.Crime, ref num, ref num2, ref num3, ref num4);
+                CalculateGuestVehicles(ref __instance, buildingID, ref data, TransferManager.TransferReason.Crime, ref num, ref num2, ref num3, ref num4);
                 if (num == 0)
                 {
                     TransferManager.TransferOffer offer = default(TransferManager.TransferOffer);
@@ -96,6 +93,41 @@ namespace RealisticPopulationRevisited
                 problem = Notification.AddProblems(problem, Notification.Problem.Crime);
             }
             data.m_problems = problem;
+
+            // Don't execute base method after this.
+            return false;
+        }
+
+
+        // Copied from vanilla.  Clunky, but temporary.  Want to avoid reflection and its performance overhead, and Harmony 1.2 doesn't have reverse redirection.
+        // TODO - Revist this and remove.
+        static void CalculateGuestVehicles(ref CommonBuildingAI __instance, ushort buildingID, ref Building data, TransferManager.TransferReason material, ref int count, ref int cargo, ref int capacity, ref int outside)
+        {
+            VehicleManager instance = Singleton<VehicleManager>.instance;
+            ushort num = data.m_guestVehicles;
+            int num2 = 0;
+            do
+            {
+                if (num == 0)
+                {
+                    return;
+                }
+                if ((TransferManager.TransferReason)instance.m_vehicles.m_buffer[num].m_transferType == material)
+                {
+                    VehicleInfo info = instance.m_vehicles.m_buffer[num].Info;
+                    info.m_vehicleAI.GetSize(num, ref instance.m_vehicles.m_buffer[num], out int size, out int max);
+                    cargo += Mathf.Min(size, max);
+                    capacity += max;
+                    count++;
+                    if ((instance.m_vehicles.m_buffer[num].m_flags & (Vehicle.Flags.Importing | Vehicle.Flags.Exporting)) != 0)
+                    {
+                        outside++;
+                    }
+                }
+                num = instance.m_vehicles.m_buffer[num].m_nextGuestVehicle;
+            }
+            while (++num2 <= 16384);
+            CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
         }
 
     }
