@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Xml;
 using ICities;
 using System.Diagnostics;
-using Boformer.Redirection;
 using ColossalFramework.Math;
 using ColossalFramework;
 using UnityEngine;
@@ -28,9 +27,6 @@ namespace RealisticPopulationRevisited
         private const int INDEX = 0;
         private const int OFFICE = 0;
         public const String XML_FILE = "WG_RealisticCity.xml";
-
-        private readonly Dictionary<MethodInfo, Redirector> redirectsOnLoaded = new Dictionary<MethodInfo, Redirector>();
-        private readonly Dictionary<MethodInfo, Redirector> redirectsOnCreated = new Dictionary<MethodInfo, Redirector>();
 
         private static volatile bool isModEnabled = false;
         private static volatile bool isLevelLoaded = false;
@@ -57,9 +53,10 @@ namespace RealisticPopulationRevisited
                 isModEnabled = true;
                 sw = Stopwatch.StartNew();
 
-                // Redirections.
-                Redirect(true);
+                // Harmony patches.
+                UnityEngine.Debug.Log("Realistic Population Revisited: applying Harmony patches.");
                 _harmony.PatchAll(GetType().Assembly);
+                UnityEngine.Debug.Log("Realistic Population Revisited: patching complete.");
 
                 DataStore.ClearCache();
 
@@ -146,8 +143,9 @@ namespace RealisticPopulationRevisited
                     UnityEngine.Debug.Log("Realistic Population Revisited - release exception:\r\n" + e.Message);
                 }
 
-                RevertRedirect(true);
+                // Unapply Harmony patches.
                 _harmony.UnpatchAll(HarmonyID);
+                UnityEngine.Debug.Log("Realistic Population Revisited: patches unapplied.");
             }
         }
 
@@ -183,50 +181,6 @@ namespace RealisticPopulationRevisited
             }
         }
 
-
-        private void Redirect(bool onCreated)
-        {
-            var redirects = onCreated ? redirectsOnCreated : redirectsOnLoaded;
-            redirects.Clear();
-
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
-            {
-                try
-                {
-                    var r = RedirectionUtil.RedirectType(type, onCreated);
-                    if (r != null)
-                    {
-                        foreach (var pair in r)
-                        {
-                            redirects.Add(pair.Key, pair.Value);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    UnityEngine.Debug.Log($"Realistic Population Revisited: an error occured while applying {type.Name} redirects!");
-                    UnityEngine.Debug.Log(e.StackTrace);
-                }
-            }
-        }
-
-        private void RevertRedirect(bool onCreated)
-        {
-            var redirects = onCreated ? redirectsOnCreated : redirectsOnLoaded;
-            foreach (var kvp in redirects)
-            {
-                try
-                {
-                    kvp.Value.Revert();
-                }
-                catch (Exception e)
-                {
-                    UnityEngine.Debug.Log($"Realistic Population Revisited: an error occured while reverting {kvp.Key.Name} redirect!");
-                    UnityEngine.Debug.Log(e.StackTrace);
-                }
-            }
-            redirects.Clear();
-        }
 
         /// <summary>
         ///
