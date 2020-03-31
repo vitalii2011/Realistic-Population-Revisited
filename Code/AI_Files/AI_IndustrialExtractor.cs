@@ -3,7 +3,7 @@ using UnityEngine;
 using Boformer.Redirection;
 using ColossalFramework;
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     [TargetType(typeof(IndustrialExtractorAI))]
     class IndustrialExtractorAIMod : IndustrialExtractorAI

@@ -4,7 +4,7 @@ using ColossalFramework.Plugins;
 using System.Text;
 using System.Collections.Generic;
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     class Debugging
     {

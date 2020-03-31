@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     public class DataStore
     {

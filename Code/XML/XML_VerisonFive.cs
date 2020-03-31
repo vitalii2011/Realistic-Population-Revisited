@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml;
 
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     public class XML_VersionFive : WG_XMLBaseVersion
     {

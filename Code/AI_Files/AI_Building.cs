@@ -4,7 +4,7 @@ using ColossalFramework;
 using UnityEngine;
 using Boformer.Redirection;
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     [TargetType(typeof(BuildingAI))]
     public class AI_Building : BuildingAI

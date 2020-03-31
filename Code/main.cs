@@ -13,7 +13,7 @@ using ColossalFramework.UI;
 using ColossalFramework.Plugins;
 using System.Linq;
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     public class LoadingExtension : LoadingExtensionBase
     {

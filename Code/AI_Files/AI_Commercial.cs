@@ -2,7 +2,7 @@
 using UnityEngine;
 using Boformer.Redirection;
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     [TargetType(typeof(CommercialBuildingAI))]
     public class CommercialBuildingAIMod : CommercialBuildingAI
