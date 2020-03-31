@@ -1,33 +1,27 @@
-﻿using ColossalFramework.Math;
+﻿using System;
+using ColossalFramework.Math;
 using UnityEngine;
-using Boformer.Redirection;
+using Harmony;
+
 
 namespace RealisticPopulationRevisited
 {
-    [TargetType(typeof(CommercialBuildingAI))]
-    public class CommercialBuildingAIMod : CommercialBuildingAI
+    [HarmonyPatch(typeof(CommercialBuildingAI))]
+    [HarmonyPatch("CalculateWorkplaceCount")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticCommercialWorkplaceCount
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="width"></param>
-        /// <param name="length"></param>
-        /// <param name="level0"></param>
-        /// <param name="level1"></param>
-        /// <param name="level2"></param>
-        /// <param name="level3"></param>
-        [RedirectMethod(true)]
-        public override void CalculateWorkplaceCount(ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        static bool Prefix(ref CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
             ulong seed = r.seed;
-            BuildingInfo item = this.m_info;
+            BuildingInfo item = __instance.m_info;
 
             PrefabEmployStruct output;
             // If not seen prefab, calculate
             if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out output))
             {
-                int[] array = GetArray(this.m_info, (int) level);
+                int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
                 AI_Utils.CalculateprefabWorkerVisit(width, length, ref item, 4, ref array, out output);
                 DataStore.prefabWorkerVisit.Add(item.gameObject.GetHashCode(), output);
             }
@@ -36,18 +30,24 @@ namespace RealisticPopulationRevisited
             level1 = output.level1;
             level2 = output.level2;
             level3 = output.level3;
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        [RedirectMethod(true)]
-        public override void GetConsumptionRates(ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+    [HarmonyPatch(typeof(CommercialBuildingAI))]
+    [HarmonyPatch("GetConsumptionRates")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticCommercialConsumption
+    {
+        static bool Prefix(ref CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
-            ItemClass item = this.m_info.m_class;
+            ItemClass item = __instance.m_info.m_class;
 
-            int[] array = GetArray(this.m_info, (int) level);
+            int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             electricityConsumption = array[DataStore.POWER];
             waterConsumption = array[DataStore.WATER];
@@ -64,36 +64,46 @@ namespace RealisticPopulationRevisited
             garbageAccumulation = Mathf.Max(100, productionRate * garbageAccumulation) / 100;
             incomeAccumulation = productionRate * incomeAccumulation;
             mailAccumulation = Mathf.Max(100, productionRate * mailAccumulation) / 100;
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="productionRate"></param>
-        /// <param name="cityPlanningPolicies"></param>
-        /// <param name="groundPollution"></param>
-        /// <param name="noisePollution"></param>
-        [RedirectMethod(true)]
-        public override void GetPollutionRates(ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+    [HarmonyPatch(typeof(CommercialBuildingAI))]
+    [HarmonyPatch("GetPollutionRates")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(int), typeof(DistrictPolicies.CityPlanning), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticCommercialPollution
+    {
+        static bool Prefix(ref CommercialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
-            ItemClass item = this.m_info.m_class;
-            int[] array = GetArray(this.m_info, (int) level);
+            ItemClass item = __instance.m_info.m_class;
+            int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
             noisePollution = (productionRate * array[DataStore.NOISE_POLLUTION]) / 100;
             if (item.m_subService == ItemClass.SubService.CommercialLeisure)
             {
-              if ((cityPlanningPolicies & DistrictPolicies.CityPlanning.NoLoudNoises) != DistrictPolicies.CityPlanning.None)
-              {
-                  noisePollution /= 2;
-              }
+                if ((cityPlanningPolicies & DistrictPolicies.CityPlanning.NoLoudNoises) != DistrictPolicies.CityPlanning.None)
+                {
+                    noisePollution /= 2;
+                }
             }
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        [RedirectMethod(true)]
-        public override int CalculateVisitplaceCount(ItemClass.Level level, Randomizer r, int width, int length)
+    [HarmonyPatch(typeof(CommercialBuildingAI))]
+    [HarmonyPatch("CalculateVisitplaceCount")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
+    class RealisticCommercialVisits
+    {
+        static bool Prefix(ref int __result, ref CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             PrefabEmployStruct visitors;
 
@@ -102,7 +112,7 @@ namespace RealisticPopulationRevisited
             // However, there is a problem with some converted assets that don't come through the "front door" (i.e. Ploppable RICO - see below).
 
             // Try to retrieve previously calculated value.
-            if (!DataStore.prefabWorkerVisit.TryGetValue(this.m_info.gameObject.GetHashCode(), out visitors))
+            if (!DataStore.prefabWorkerVisit.TryGetValue(__instance.m_info.gameObject.GetHashCode(), out visitors))
             {
                 // If we didn't get a value, most likely it was because the prefab wasn't properly initialised.
                 // This can happen with Ploppable RICO when the underlying asset class isn't 'Default' (for example, where Ploppable RICO assets are originally Parks, Plazas or Monuments).
@@ -112,38 +122,45 @@ namespace RealisticPopulationRevisited
                 // If it's still zero after this, then we'll just return a "legitimate" zero.
                 visitors.visitors = 0;
 
-                int[] array = GetArray(this.m_info, (int)level);
-                AI_Utils.CalculateprefabWorkerVisit(width, length, ref this.m_info, 4, ref array, out visitors);
-                DataStore.prefabWorkerVisit.Add(this.m_info.gameObject.GetHashCode(), visitors);
-                Debug.Log("CalculateprefabWorkerVisit redux: " + this.m_info.name);
+                int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
+                AI_Utils.CalculateprefabWorkerVisit(width, length, ref __instance.m_info, 4, ref array, out visitors);
+                DataStore.prefabWorkerVisit.Add(__instance.m_info.gameObject.GetHashCode(), visitors);
+
+                // Log this to help identify specific issues.  Should only occur once per prefab.
+                Debug.Log("CalculateprefabWorkerVisit redux: " + __instance.m_info.name);
             }
 
-            return visitors.visitors;
+            // Original method return value.
+            __result = visitors.visitors;
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="width"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        [RedirectMethod(true)]
-        public override int CalculateProductionCapacity(ItemClass.Level level, Randomizer r, int width, int length)
+    [HarmonyPatch(typeof(CommercialBuildingAI))]
+    [HarmonyPatch("CalculateProductionCapacity")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
+    class RealisticCommercialProduction
+    {
+        static bool Prefix(ref int __result, ref IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
-            ItemClass @class = this.m_info.m_class;
-            int[] array = GetArray(this.m_info, (int) level);
-            return Mathf.Max(100, width * length * array[DataStore.PRODUCTION]) / 100;
-        }
+            ItemClass @class = __instance.m_info.m_class;
+            int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        private int[] GetArray(BuildingInfo item, int level)
+            // Original method return value.
+            __result = Mathf.Max(100, width * length * array[DataStore.PRODUCTION]) / 100;
+
+            // Don't execute base method after this.
+            return false;
+        }
+    }
+
+
+    public class CommercialBuildingAIMod
+    {
+        public static int[] GetArray(BuildingInfo item, int level)
         {
             int[][] array = DataStore.commercialLow;
 

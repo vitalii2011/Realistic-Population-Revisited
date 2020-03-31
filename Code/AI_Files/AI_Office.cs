@@ -1,28 +1,21 @@
-﻿using ColossalFramework.Math;
+﻿using System;
+using ColossalFramework.Math;
 using UnityEngine;
-using Boformer.Redirection;
+using Harmony;
 
 namespace RealisticPopulationRevisited
 {
-    [TargetType(typeof(OfficeBuildingAI))]
-    class OfficeBuildingAIMod : OfficeBuildingAI
+    [HarmonyPatch(typeof(OfficeBuildingAI))]
+    [HarmonyPatch("CalculateWorkplaceCount")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticOfficeWorkplaceCount
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="width"></param>
-        /// <param name="length"></param>
-        /// <param name="level0"></param>
-        /// <param name="level1"></param>
-        /// <param name="level2"></param>
-        /// <param name="level3"></param>
-        [RedirectMethod(true)]
-        public override void CalculateWorkplaceCount(ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        static bool Prefix(ref OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
             ulong seed = r.seed;
-            BuildingInfo item = this.m_info;
-            int[] array = getArray(this.m_info, (int) level);
+            BuildingInfo item = __instance.m_info;
+            int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             PrefabEmployStruct output;
             // If not seen prefab, calculate
@@ -36,17 +29,23 @@ namespace RealisticPopulationRevisited
             level1 = output.level1;
             level2 = output.level2;
             level3 = output.level3;
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        [RedirectMethod(true)]
-        public override void GetConsumptionRates(ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+    [HarmonyPatch(typeof(OfficeBuildingAI))]
+    [HarmonyPatch("GetConsumptionRates")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticOfficeConsumption
+    {
+        static bool Prefix(ref OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
-            ItemClass item = this.m_info.m_class;
-            int[] array = getArray(this.m_info, (int) level);
+            ItemClass item = __instance.m_info.m_class;
+            int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             electricityConsumption = array[DataStore.POWER];
             waterConsumption = array[DataStore.WATER];
@@ -63,64 +62,70 @@ namespace RealisticPopulationRevisited
             garbageAccumulation = Mathf.Max(100, productionRate * garbageAccumulation) / 100;
             incomeAccumulation = productionRate * incomeAccumulation;
             mailAccumulation = Mathf.Max(100, productionRate * mailAccumulation) / 100;
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="productionRate"></param>
-        /// <param name="cityPlanningPolicies"></param>
-        /// <param name="groundPollution"></param>;
-        /// <param name="noisePollution"></param>
-        [RedirectMethod(true)]
-        public override void GetPollutionRates(ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+    [HarmonyPatch(typeof(OfficeBuildingAI))]
+    [HarmonyPatch("GetPollutionRates")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(int), typeof(DistrictPolicies.CityPlanning), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticOfficePollution
+    {
+        static bool Prefix(ref OfficeBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
-            ItemClass @class = this.m_info.m_class;
-            int[] array = getArray(this.m_info, (int) level);
+            ItemClass @class = __instance.m_info.m_class;
+            int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int) level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
             noisePollution = array[DataStore.NOISE_POLLUTION];
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="width"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        [RedirectMethod(true)]
-        public override int CalculateProductionCapacity(ItemClass.Level level, Randomizer r, int width, int length)
+    [HarmonyPatch(typeof(OfficeBuildingAI))]
+    [HarmonyPatch("CalculateProductionCapacity")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
+    class RealisticOfficeProduction
+    {
+
+        static bool Prefix(ref int __result, ref OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             ulong seed = r.seed;
-            BuildingInfo item = this.m_info;
+            BuildingInfo item = __instance.m_info;
             PrefabEmployStruct worker;
 
             if (DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out worker))
             {
                 // Employment is available
                 int workers = worker.level0 + worker.level1 + worker.level2 + worker.level3;
-                int[] array = getArray(this.m_info, (int) level);
+                int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
-                return Mathf.Max(1, workers / array[DataStore.PRODUCTION]);
+                // Original method return value.
+                __result = Mathf.Max(1, workers / array[DataStore.PRODUCTION]);
             }
             else
             {
-                // Return minimum to be safe
-                return 1;
+                // Original method return value.
+                // Return minimum to be safe.
+                __result = 1;
             }
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        private int[] getArray(BuildingInfo item, int level)
+    class OfficeBuildingAIMod : OfficeBuildingAI
+    {
+        public static int[] GetArray(BuildingInfo item, int level)
         {
             int[][] array = DataStore.office;
 

@@ -1,45 +1,48 @@
-﻿using ColossalFramework.Math;
+﻿using System;
+using ColossalFramework.Math;
 using UnityEngine;
-using Boformer.Redirection;
+using Harmony;
+
 
 namespace RealisticPopulationRevisited
 {
-    [TargetType(typeof(ResidentialBuildingAI))]
-    class ResidentialBuildingAIMod : ResidentialBuildingAI
+    [HarmonyPatch(typeof(ResidentialBuildingAI))]
+    [HarmonyPatch("CalculateHomeCount")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
+    class RealisticHomeCount
     {
-        /// <param name="r"></param>
-        /// <param name="width"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        [RedirectMethod(true)]
-        public override int CalculateHomeCount(ItemClass.Level level, Randomizer r, int width, int length)
+        static bool Prefix(ref int __result, ref ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
-            BuildingInfo item = this.m_info;
+            BuildingInfo item = __instance.m_info;
             int returnValue = 0;
 
             if (!DataStore.prefabHouseHolds.TryGetValue(item.gameObject.GetHashCode(), out returnValue))
             {
-                int[] array = GetArray(this.m_info, (int) level);
-                returnValue = AI_Utils.CalculatePrefabHousehold(width, length, ref item, ref array, (int) level);
+                int[] array = ResidentialBuildingAIMod.GetArray(__instance.m_info, (int)level);
+                returnValue = AI_Utils.CalculatePrefabHousehold(width, length, ref item, ref array, (int)level);
                 DataStore.prefabHouseHolds.Add(item.gameObject.GetHashCode(), returnValue);
             }
-            return returnValue;
+
+            // Original method return value.
+            __result = returnValue;
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <param name="r"></param>
-        /// <param name="productionRate"></param>
-        /// <param name="electricityConsumption"></param>
-        /// <param name="waterConsumption"></param>
-        /// <param name="sewageAccumulation"></param>
-        /// <param name="garbageAccumulation"></param>
-        /// <param name="incomeAccumulation"></param>
-        [RedirectMethod(true)]
-        public override void GetConsumptionRates(ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+    [HarmonyPatch(typeof(ResidentialBuildingAI))]
+    [HarmonyPatch("GetConsumptionRates")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
+       new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticResidentialConsumption
+    {
+        static bool Prefix(ref ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
-            ItemClass item = this.m_info.m_class;
-            
-            int[] array = GetArray(this.m_info, (int) level);
+            ItemClass item = __instance.m_info.m_class;
+
+            int[] array = ResidentialBuildingAIMod.GetArray(__instance.m_info, (int)level);
             electricityConsumption = array[DataStore.POWER];
             waterConsumption = array[DataStore.WATER];
             sewageAccumulation = array[DataStore.SEWAGE];
@@ -55,31 +58,36 @@ namespace RealisticPopulationRevisited
             garbageAccumulation = Mathf.Max(100, productionRate * garbageAccumulation) / 100;
             incomeAccumulation = productionRate * incomeAccumulation;
             mailAccumulation = Mathf.Max(100, productionRate * mailAccumulation) / 100;
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <param name="productionRate"></param>
-        /// <param name="cityPlanningPolicies"></param>
-        /// <param name="groundPollution"></param>
-        /// <param name="noisePollution"></param>
-        [RedirectMethod(true)]
-        public override void GetPollutionRates(ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+    [HarmonyPatch(typeof(ResidentialBuildingAI))]
+    [HarmonyPatch("GetPollutionRates")]
+    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(int), typeof(DistrictPolicies.CityPlanning), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
+    class RealisticResidentialPollution
+    {
+        static bool Prefix(ref ResidentialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
-            ItemClass @class = this.m_info.m_class;
-            int[] array = GetArray(this.m_info, (int) level);
+            ItemClass @class = __instance.m_info.m_class;
+            int[] array = ResidentialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
             noisePollution = array[DataStore.NOISE_POLLUTION];
+
+            // Don't execute base method after this.
+            return false;
         }
+    }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        private int[] GetArray(BuildingInfo item, int level)
+    class ResidentialBuildingAIMod
+    {
+        public static int[] GetArray(BuildingInfo item, int level)
         {
             int[][] array = DataStore.residentialLow;
 

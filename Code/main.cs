@@ -12,11 +12,16 @@ using UnityEngine;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
 using System.Linq;
+using Harmony;
+
 
 namespace RealisticPopulationRevisited
 {
     public class LoadingExtension : LoadingExtensionBase
     {
+        const string HarmonyID = "cities.algernon.realisticpopulation";
+        private HarmonyInstance _harmony = HarmonyInstance.Create(HarmonyID);
+
         private const int RES = 0;
         private const int COM = 0;
         private const int IND = 0;
@@ -51,7 +56,11 @@ namespace RealisticPopulationRevisited
             {
                 isModEnabled = true;
                 sw = Stopwatch.StartNew();
+
+                // Redirections.
                 Redirect(true);
+                _harmony.PatchAll(GetType().Assembly);
+
                 DataStore.ClearCache();
 
                 ReadFromXML();
@@ -138,6 +147,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 RevertRedirect(true);
+                _harmony.UnpatchAll(HarmonyID);
             }
         }
 
