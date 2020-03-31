@@ -2,28 +2,23 @@
 using ColossalFramework.Math;
 using ColossalFramework;
 using UnityEngine;
-using Boformer.Redirection;
+using Harmony;
 
-namespace WG_BalancedPopMod
+
+namespace RealisticPopulationRevisited
 {
-    [TargetType(typeof(BuildingAI))]
-    public class AI_Building : BuildingAI
+    [HarmonyPatch(typeof(BuildingAI))]
+    [HarmonyPatch("EnsureCitizenUnits")]
+    [HarmonyPatch(new Type[] { typeof(ushort), typeof(Building), typeof(int), typeof(int), typeof(int), typeof(int) },
+        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal })]
+    public class RealisticCitizenUnits
     {
         private static CitizenManager citizenManager = Singleton<CitizenManager>.instance;
         private static CitizenUnit[] citizenUnitArray = Singleton<CitizenManager>.instance.m_units.m_buffer;
         private static Citizen[] citizenArray = Singleton<CitizenManager>.instance.m_citizens.m_buffer;
 
-        /// <summary>
-        /// BuildingAI replacement
-        /// </summary>
-        /// <param name="buildingID"></param>
-        /// <param name="data"></param>
-        /// <param name="homeCount"></param>
-        /// <param name="workCount"></param>
-        /// <param name="visitCount"></param>
-        /// <param name="studentCount"></param>
-        [RedirectMethod(true)]
-        protected void EnsureCitizenUnits(ushort buildingID, ref Building data, int homeCount, int workCount, int visitCount, int studentCount)
+        
+        static bool Prefix(ref BuildingAI __instance, ushort buildingID, ref Building data, int homeCount, int workCount, int visitCount, int studentCount)
         {
             int totalWorkCount = (workCount + 4) / 5;
             int totalVisitCount = (visitCount + 4) / 5;
@@ -31,9 +26,10 @@ namespace WG_BalancedPopMod
 
             int[] workersRequired = new int[] { 0, 0, 0, 0 };
 
+
             if ((data.m_flags & (Building.Flags.Abandoned | Building.Flags.BurnedDown)) == Building.Flags.None)
             {
-                Citizen.Wealth wealthLevel = Citizen.GetWealthLevel(this.m_info.m_class.m_level);
+                Citizen.Wealth wealthLevel = Citizen.GetWealthLevel(__instance.m_info.m_class.m_level);
                 uint num = 0u;
                 uint num2 = data.m_citizenUnits;
                 int num3 = 0;
@@ -146,6 +142,9 @@ namespace WG_BalancedPopMod
                     } // end if PrivateBuildingAI
                 } // end strictCapacity
             } // end if good building
+
+            // Don't execute base method after this.
+            return false;
         } // end EnsureCitizenUnits
 
         /// <summary>
@@ -155,7 +154,7 @@ namespace WG_BalancedPopMod
         /// <param name="buildingID"></param>
         /// <param name="data"></param>
         /// <param name="citizenNumber"></param>
-        private void RemoveWorkerBuilding(ushort buildingID, ref Building data, int workerUnits)
+        private static void RemoveWorkerBuilding(ushort buildingID, ref Building data, int workerUnits)
         {
             int loopCounter = 0;
             uint previousUnit = data.m_citizenUnits;
@@ -330,7 +329,7 @@ namespace WG_BalancedPopMod
         /// <param name="buildingID"></param>
         /// <param name="data"></param>
         /// <param name="citizenNumber"></param>
-        private void RemoveVisitorsBuilding(ushort buildingID, ref Building data, int visitorsUnit)
+        private static void RemoveVisitorsBuilding(ushort buildingID, ref Building data, int visitorsUnit)
         {
             int loopCounter = 0;
             uint previousUnit = data.m_citizenUnits;
@@ -425,7 +424,7 @@ namespace WG_BalancedPopMod
         /// <param name="buildingID"></param>
         /// <param name="data"></param>
         /// <param name="citizenNumber"></param>
-        private void RemoveHouseHold(ushort buildingID, ref Building data, int maxHomes)
+        private static void RemoveHouseHold(ushort buildingID, ref Building data, int maxHomes)
         {
             CitizenManager instance = Singleton<CitizenManager>.instance;
             CitizenUnit[] citizenUnitArray = instance.m_units.m_buffer;

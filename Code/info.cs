@@ -6,7 +6,7 @@ using ICities;
 using UnityEngine;
 
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     public class PopBalanceMod : IUserMod
     {

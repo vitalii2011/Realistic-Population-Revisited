@@ -20,3 +20,4 @@ WG_BalancePopMod/obj/*
 /obj/Debug/Realistic Population Revisited.csproj.FileListAbsolute.txt
 /obj/Debug/RealPopRevisited.pdb
 /bin/Debug/RealPopRevisited.pdb
+/packages/Lib.Harmony.1.2.0.1

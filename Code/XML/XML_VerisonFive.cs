@@ -4,17 +4,13 @@ using System.IO;
 using System.Xml;
 
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
-    public class XML_VersionSix : WG_XMLBaseVersion
+    public class XML_VersionFive : WG_XMLBaseVersion
     {
         private const string popNodeName = "population";
-        private const string overrideHouseName = "overrideHouseHold";
-        private const string overrideWorkName = "overrideWorker";
         private const string bonusHouseName = "bonusHouseHold";
         private const string bonusWorkName = "bonusWorker";
-        private const string printHouseName = "printHouseHold";
-        private const string printWorkName = "printWorker";
         private const string meshName = "meshName";
         private const string consumeNodeName = "consumption";
         private const string visitNodeName = "visitor";
@@ -41,53 +37,36 @@ namespace WG_BalancedPopMod
                 {
                     if (node.Name.Equals(popNodeName))
                     {
-                        ReadPopulationNode(node);
+                        readPopulationNode(node);
                     }
                     else if (node.Name.Equals(consumeNodeName))
                     {
-                        ReadConsumptionNode(node);
+                        readConsumptionNode(node);
                     }
                     else if (node.Name.Equals(visitNodeName))
                     {
-                        ReadVisitNode(node);
+                        readVisitNode(node);
                     }
                     else if (node.Name.Equals(pollutionNodeName))
                     {
-                        ReadPollutionNode(node);
+                        readPollutionNode(node);
                     }
                     else if (node.Name.Equals(productionNodeName))
                     {
-                        ReadProductionNode(node);
-                    }
-                    else if (node.Name.Equals(overrideHouseName))
-                    {
-                        ReadOverrideHouseNode(node);
-                    }
-                    else if (node.Name.Equals(overrideWorkName))
-                    {
-                        ReadOverrideWorkers(node);
+                        readProductionNode(node);
                     }
                     else if (node.Name.Equals(bonusHouseName))
                     {
-                        ReadBonusHouseNode(node);
+                        readBonusHouseNode(node);
                     }
                     else if (node.Name.Equals(bonusWorkName))
                     {
-                        ReadBonusWorkers(node);
-                    }
-                    else if (node.Name.Equals(printHouseName))
-                    {
-                        ReadPrintHouseNode(node);
-                    }
-                    else if (node.Name.Equals(printWorkName))
-                    {
-                        ReadPrintWorkers(node);
+                        readBonusWorkers(node);
                     }
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning(e.Message);
-                    UnityEngine.Debug.LogException(e);
+                    UnityEngine.Debug.Log("Realistic Population Revisited - XML readNodes exception:\r\n" + e.ToString());
                 }
             }
         } // end readXML
@@ -97,228 +76,14 @@ namespace WG_BalancedPopMod
         /// <returns></returns>
         public override bool writeXML(string fullPathFileName)
         {
-            XmlDocument xmlDoc = new XmlDocument();
-
-            XmlNode rootNode = xmlDoc.CreateElement("WG_CityMod");
-            XmlAttribute attribute = xmlDoc.CreateAttribute("version");
-            attribute.Value = "6";
-            rootNode.Attributes.Append(attribute);
-
-            /*
-            attribute = xmlDoc.CreateAttribute("experimental");
-            attribute.Value = DataStore.enableExperimental ? "true" : "false";
-            rootNode.Attributes.Append(attribute);
-            */
-
-            xmlDoc.AppendChild(rootNode);
-
-            XmlNode popNode = xmlDoc.CreateElement(popNodeName);
-            attribute = xmlDoc.CreateAttribute("strictCapacity");
-            attribute.Value = DataStore.strictCapacity ? "true" : "false";
-            popNode.Attributes.Append(attribute);
-
-            XmlNode consumeNode = xmlDoc.CreateElement(consumeNodeName);
-            XmlNode visitNode = xmlDoc.CreateElement(visitNodeName);
-            XmlNode pollutionNode = xmlDoc.CreateElement(pollutionNodeName);
-            XmlNode productionNode = xmlDoc.CreateElement(productionNodeName);
-
-            try
-            {
-                MakeNodes(xmlDoc, "ResidentialLow", DataStore.residentialLow, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "ResidentialHigh", DataStore.residentialHigh, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "ResEcoLow", DataStore.resEcoLow, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "ResEcoHigh", DataStore.resEcoHigh, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-
-                MakeNodes(xmlDoc, "CommercialLow", DataStore.commercialLow, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "CommercialHigh", DataStore.commercialHigh, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "CommercialEco", DataStore.commercialEco, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "CommercialTourist", DataStore.commercialTourist, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "CommercialLeisure", DataStore.commercialLeisure, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-
-                MakeNodes(xmlDoc, "Office", DataStore.office, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "OfficeHighTech", DataStore.officeHighTech, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-
-                MakeNodes(xmlDoc, "Industry", DataStore.industry, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "IndustryFarm", DataStore.industry_farm, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "IndustryForest", DataStore.industry_forest, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "IndustryOre", DataStore.industry_ore, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-                MakeNodes(xmlDoc, "IndustryOil", DataStore.industry_oil, popNode, consumeNode, visitNode, pollutionNode, productionNode);
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.Log("Realistic Population Revisited - XML MakeNodes exception:\r\n" + e.ToString());
-            }
-
-            // First segment
-            CreatePopulationNodeComment(xmlDoc, rootNode);
-            rootNode.AppendChild(popNode);
-            CreateConsumptionNodeComment(xmlDoc, rootNode);
-            rootNode.AppendChild(consumeNode);
-            CreateVisitNodeComment(xmlDoc, rootNode);
-            rootNode.AppendChild(visitNode);
-            CreateProductionNodeComment(xmlDoc, rootNode);
-            rootNode.AppendChild(productionNode);
-            CreatePollutionNodeComment(xmlDoc, rootNode);
-            rootNode.AppendChild(pollutionNode);
-
-            // Add mesh names to XML for house holds
-            XmlComment comment = xmlDoc.CreateComment(" ******* House hold data ******* ");
-            rootNode.AppendChild(comment);
-            XmlNode overrideHouseholdNode = xmlDoc.CreateElement(overrideHouseName);
-            attribute = xmlDoc.CreateAttribute("printResNames");
-            attribute.Value = DataStore.printResidentialNames ? "true" : "false";
-            overrideHouseholdNode.Attributes.Append(attribute);
-            attribute = xmlDoc.CreateAttribute("mergeResNames");
-            attribute.Value = DataStore.mergeResidentialNames ? "true" : "false";
-            overrideHouseholdNode.Attributes.Append(attribute);
-
-            SortedList<string, int> list = new SortedList<string, int>(DataStore.householdCache);
-            foreach (string name in list.Keys)
-            {
-                XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                meshNameNode.InnerXml = name;
-                attribute = xmlDoc.CreateAttribute("value");
-                int value = 1;
-                DataStore.householdCache.TryGetValue(name, out value);
-                attribute.Value = Convert.ToString(value);
-                meshNameNode.Attributes.Append(attribute);
-                overrideHouseholdNode.AppendChild(meshNameNode);
-            }
-            rootNode.AppendChild(overrideHouseholdNode); // Append the overrideHousehold to root
-
-            // Add mesh names to XML
-            comment = xmlDoc.CreateComment(" ******* Printed out house hold data. To activate the value, move the line into the override segment ******* ");
-            rootNode.AppendChild(comment);
-            XmlNode printHouseholdNode = xmlDoc.CreateElement(printHouseName);
-            list = new SortedList<string, int>(DataStore.housePrintOutCache);
-            foreach (string data in list.Keys)
-            {
-                XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                meshNameNode.InnerXml = data;
-                attribute = xmlDoc.CreateAttribute("value");
-                int value = 1;
-                DataStore.housePrintOutCache.TryGetValue(data, out value);
-                attribute.Value = Convert.ToString(value);
-                meshNameNode.Attributes.Append(attribute);
-                printHouseholdNode.AppendChild(meshNameNode);
-            }
-            rootNode.AppendChild(printHouseholdNode); // Append the printHousehold to root
-
-            // Add mesh names to XML
-            list = new SortedList<string, int>(DataStore.bonusHouseholdCache);
-            if (list.Keys.Count != 0)
-            {
-                XmlNode bonusHouseholdNode = xmlDoc.CreateElement(bonusHouseName);
-                foreach (string data in list.Keys)
-                {
-                    XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                    meshNameNode.InnerXml = data;
-                    attribute = xmlDoc.CreateAttribute("value");
-                    DataStore.bonusHouseholdCache.TryGetValue(data, out int value);
-                    attribute.Value = Convert.ToString(value);
-                    meshNameNode.Attributes.Append(attribute);
-                    bonusHouseholdNode.AppendChild(meshNameNode);
-                }
-                rootNode.AppendChild(bonusHouseholdNode); // Append the bonusHousehold to root
-            }
-
-            // Add mesh names to XML for workers
-            comment = xmlDoc.CreateComment(" ******* Worker data ******* ");
-            rootNode.AppendChild(comment);
-            XmlNode overrideWorkNode = xmlDoc.CreateElement(overrideWorkName);
-            attribute = xmlDoc.CreateAttribute("printWorkNames");
-            attribute.Value = DataStore.printEmploymentNames ? "true" : "false";
-            overrideWorkNode.Attributes.Append(attribute);
-            attribute = xmlDoc.CreateAttribute("mergeWorkNames");
-            attribute.Value = DataStore.mergeEmploymentNames ? "true" : "false";
-            overrideWorkNode.Attributes.Append(attribute);
-
-            SortedList<string, int> wList = new SortedList<string, int>(DataStore.workerCache);
-            foreach (string name in wList.Keys)
-            {
-                XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                meshNameNode.InnerXml = name;
-                int value = 1;
-                DataStore.workerCache.TryGetValue(name, out value);
-                attribute = xmlDoc.CreateAttribute("value");
-                attribute.Value = Convert.ToString(value);
-                meshNameNode.Attributes.Append(attribute);
-                overrideWorkNode.AppendChild(meshNameNode);
-            }
-            rootNode.AppendChild(overrideWorkNode); // Append the overrideWorkers to root
-
-            // Add mesh names to dictionary
-            comment = xmlDoc.CreateComment(" ******* Printed out worker data. To activate the value, move the line into the override segment ******* ");
-            rootNode.AppendChild(comment);
-            XmlNode printWorkNode = xmlDoc.CreateElement(printWorkName);
-            wList = new SortedList<string, int>(DataStore.workerPrintOutCache);
-            foreach (string data in wList.Keys)
-            {
-                if (!DataStore.workerCache.ContainsKey(data))
-                {
-                    XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                    meshNameNode.InnerXml = data;
-                    DataStore.workerPrintOutCache.TryGetValue(data, out int value);
-                    attribute = xmlDoc.CreateAttribute("value");
-                    attribute.Value = Convert.ToString(value);
-                    meshNameNode.Attributes.Append(attribute);
-                    printWorkNode.AppendChild(meshNameNode);
-                }
-            }
-            rootNode.AppendChild(printWorkNode); // Append the printWorkers to root
-
-            // Add mesh names to dictionary
-            wList = new SortedList<string, int>(DataStore.bonusWorkerCache);
-            if (wList.Keys.Count != 0)
-            {
-                XmlNode bonusWorkNode = xmlDoc.CreateElement(bonusWorkName);
-                foreach (string data in wList.Keys)
-                {
-                    XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                    meshNameNode.InnerXml = data;
-                    DataStore.bonusWorkerCache.TryGetValue(data, out int value);
-                    attribute = xmlDoc.CreateAttribute("value");
-                    attribute.Value = Convert.ToString(value);
-                    meshNameNode.Attributes.Append(attribute);
-                    bonusWorkNode.AppendChild(meshNameNode);
-                }
-                rootNode.AppendChild(bonusWorkNode); // Append the bonusWorkers to root
-            }
-
-            try
-            {
-                if (File.Exists(fullPathFileName))
-                {
-                    if (File.Exists(fullPathFileName + ".bak"))
-                    {
-                        File.Delete(fullPathFileName + ".bak");
-                    }
-
-                    File.Move(fullPathFileName, fullPathFileName + ".bak");
-                }
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.Log("Realistic Population Revisited - PathFileName exception:\r\n" + e.ToString());
-            }
-
-            try
-            {
-                xmlDoc.Save(fullPathFileName);
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.Log("Realistic Population Revisited - XML save exception:\r\n" + e.ToString());
-                return false;  // Only time when we say there's an error
-            }
-
-            return true;
+            // Should not be called now
+            return false;
         } // end writeXML
 
 
         /// <param name="xmlDoc"></param>
         /// <param name="rootNode"></param>
-        private void CreatePopulationNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
+        private void createPopulationNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
         {
             XmlComment comment = xmlDoc.CreateComment("space_pp = Square metres per person");
             rootNode.AppendChild(comment);
@@ -335,7 +100,7 @@ namespace WG_BalancedPopMod
 
         /// <param name="xmlDoc"></param>
         /// <param name="rootNode"></param>
-        private void CreateConsumptionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
+        private void createConsumptionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
         {
             XmlComment comment = xmlDoc.CreateComment("Consumption values are per household, or per production unit");
             rootNode.AppendChild(comment);
@@ -343,7 +108,7 @@ namespace WG_BalancedPopMod
 
         /// <param name="xmlDoc"></param>
         /// <param name="rootNode"></param>
-        private void CreateVisitNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
+        private void createVisitNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
         {
             XmlComment comment = xmlDoc.CreateComment("Visitor Values are multiplies of 100th of a person per cell.");
             rootNode.AppendChild(comment);
@@ -351,7 +116,7 @@ namespace WG_BalancedPopMod
 
         /// <param name="xmlDoc"></param>
         /// <param name="rootNode"></param>
-        private void CreatePollutionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
+        private void createPollutionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
         {
             XmlComment comment = xmlDoc.CreateComment("Ground pollution is not used by residential, commercial and offices.");
             rootNode.AppendChild(comment);
@@ -362,7 +127,7 @@ namespace WG_BalancedPopMod
 
         /// <param name="xmlDoc"></param>
         /// <param name="rootNode"></param>
-        private void CreateProductionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
+        private void createProductionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
         {
             XmlComment comment = xmlDoc.CreateComment("Production for offices is number of employees per production unit.");
             rootNode.AppendChild(comment);
@@ -377,11 +142,11 @@ namespace WG_BalancedPopMod
         /// <param name="rootPopNode"></param>
         /// <param name="consumNode"></param>
         /// <param name="pollutionNode"></param>
-        private void MakeNodes(XmlDocument xmlDoc, String buildingType, int[][] array, XmlNode rootPopNode, XmlNode consumNode, XmlNode visitNode, XmlNode pollutionNode, XmlNode productionNode)
+        private void makeNodes(XmlDocument xmlDoc, String buildingType, int[][] array, XmlNode rootPopNode, XmlNode consumNode, XmlNode visitNode, XmlNode pollutionNode, XmlNode productionNode)
         {
             for (int i = 0; i < array.GetLength(0); i++)
             {
-                MakeNodes(xmlDoc, buildingType, array[i], i, rootPopNode, consumNode, visitNode, pollutionNode, productionNode);
+                makeNodes(xmlDoc, buildingType, array[i], i, rootPopNode, consumNode, visitNode, pollutionNode, productionNode);
             }
         }
 
@@ -393,13 +158,13 @@ namespace WG_BalancedPopMod
         /// <param name="rootPopNode"></param>
         /// <param name="consumNode"></param>
         /// <param name="pollutionNode"></param>
-        private void MakeNodes(XmlDocument xmlDoc, String buildingType, int[] array, int level, XmlNode rootPopNode, XmlNode consumNode, XmlNode visitNode, XmlNode pollutionNode, XmlNode productionNode)
+        private void makeNodes(XmlDocument xmlDoc, String buildingType, int[] array, int level, XmlNode rootPopNode, XmlNode consumNode, XmlNode visitNode, XmlNode pollutionNode, XmlNode productionNode)
         {
-            MakePopNode(rootPopNode, xmlDoc, buildingType, level, array);
-            MakeConsumeNode(consumNode, xmlDoc, buildingType, level, array[DataStore.POWER], array[DataStore.WATER], array[DataStore.SEWAGE], array[DataStore.GARBAGE], array[DataStore.INCOME]);
-            MakeVisitNode(visitNode, xmlDoc, buildingType, level, array);
-            MakePollutionNode(pollutionNode, xmlDoc, buildingType, level, array[DataStore.GROUND_POLLUTION], array[DataStore.NOISE_POLLUTION]);
-            MakeProductionNode(productionNode, xmlDoc, buildingType, level, array[DataStore.PRODUCTION]);
+            makePopNode(rootPopNode, xmlDoc, buildingType, level, array);
+            makeConsumeNode(consumNode, xmlDoc, buildingType, level, array[DataStore.POWER], array[DataStore.WATER], array[DataStore.SEWAGE], array[DataStore.GARBAGE], array[DataStore.INCOME]);
+            makeVisitNode(visitNode, xmlDoc, buildingType, level, array);
+            makePollutionNode(pollutionNode, xmlDoc, buildingType, level, array[DataStore.GROUND_POLLUTION], array[DataStore.NOISE_POLLUTION]);
+            makeProductionNode(productionNode, xmlDoc, buildingType, level, array[DataStore.PRODUCTION]);
         }
 
 
@@ -408,12 +173,12 @@ namespace WG_BalancedPopMod
         /// <param name="buildingType"></param>
         /// <param name="level"></param>
         /// <param name="array"></param>
-        private void MakePopNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int[] array)
+        private void makePopNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int[] array)
         {
             XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
 
             XmlAttribute attribute = xmlDoc.CreateAttribute("space_pp");
-            attribute.Value = Convert.ToString(TransformPopulationModifier(buildingType, level, array[DataStore.PEOPLE], true));
+            attribute.Value = Convert.ToString(transformPopulationModifier(buildingType, level, array[DataStore.PEOPLE], true));
             node.Attributes.Append(attribute);
 
             attribute = xmlDoc.CreateAttribute("level_height");
@@ -447,7 +212,7 @@ namespace WG_BalancedPopMod
         /// <param name="buildingType"></param>
         /// <param name="level"></param>
         /// <param name="array"></param>
-        private void MakeVisitNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int[] array)
+        private void makeVisitNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int[] array)
         {
             if (array[DataStore.VISIT] >= 0)
             {
@@ -471,7 +236,7 @@ namespace WG_BalancedPopMod
         /// <param name="sewage"></param>
         /// <param name="garbage"></param>
         /// <param name="wealth"></param>
-        private void MakeConsumeNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int power, int water, int sewage, int garbage, int wealth)
+        private void makeConsumeNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int power, int water, int sewage, int garbage, int wealth)
         {
             XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
 
@@ -506,7 +271,7 @@ namespace WG_BalancedPopMod
         /// <param name="level"></param>
         /// <param name="ground"></param>
         /// <param name="noise"></param>
-        private void MakePollutionNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int ground, int noise)
+        private void makePollutionNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int ground, int noise)
         {
             XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
 
@@ -527,7 +292,7 @@ namespace WG_BalancedPopMod
         /// <param name="buildingType"></param>
         /// <param name="level"></param>
         /// <param name="production"></param>
-        private void MakeProductionNode(XmlNode root, XmlDocument xmlDoc, string buildingType, int level, int production)
+        private void makeProductionNode(XmlNode root, XmlDocument xmlDoc, string buildingType, int level, int production)
         {
             if (production >= 0)
             {
@@ -543,7 +308,7 @@ namespace WG_BalancedPopMod
 
 
         /// <param name="pollutionNode"></param>
-        private void ReadPollutionNode(XmlNode pollutionNode)
+        private void readPollutionNode(XmlNode pollutionNode)
         {
             string name = "";
             foreach (XmlNode node in pollutionNode.ChildNodes)
@@ -560,51 +325,51 @@ namespace WG_BalancedPopMod
                     switch (name)
                     {
                         case "ResidentialLow":
-                            SetPollutionRates(DataStore.residentialLow[level], ground, noise);
+                            setPollutionRates(DataStore.residentialLow[level], ground, noise);
                             break;
 
                         case "ResidentialHigh":
-                            SetPollutionRates(DataStore.residentialHigh[level], ground, noise);
+                            setPollutionRates(DataStore.residentialHigh[level], ground, noise);
                             break;
 
                         case "CommercialLow":
-                            SetPollutionRates(DataStore.commercialLow[level], ground, noise);
+                            setPollutionRates(DataStore.commercialLow[level], ground, noise);
                             break;
 
                         case "CommercialHigh":
-                            SetPollutionRates(DataStore.commercialHigh[level], ground, noise);
+                            setPollutionRates(DataStore.commercialHigh[level], ground, noise);
                             break;
 
                         case "CommercialTourist":
-                            SetPollutionRates(DataStore.commercialTourist[level], ground, noise);
+                            setPollutionRates(DataStore.commercialTourist[level], ground, noise);
                             break;
 
                         case "CommercialLeisure":
-                            SetPollutionRates(DataStore.commercialLeisure[level], ground, noise);
+                            setPollutionRates(DataStore.commercialLeisure[level], ground, noise);
                             break;
 
                         case "Office":
-                            SetPollutionRates(DataStore.office[level], ground, noise);
+                            setPollutionRates(DataStore.office[level], ground, noise);
                             break;
 
                         case "Industry":
-                            SetPollutionRates(DataStore.industry[level], ground, noise);
+                            setPollutionRates(DataStore.industry[level], ground, noise);
                             break;
 
                         case "IndustryOre":
-                            SetPollutionRates(DataStore.industry_ore[level], ground, noise);
+                            setPollutionRates(DataStore.industry_ore[level], ground, noise);
                             break;
 
                         case "IndustryOil":
-                            SetPollutionRates(DataStore.industry_oil[level], ground, noise);
+                            setPollutionRates(DataStore.industry_oil[level], ground, noise);
                             break;
 
                         case "IndustryForest":
-                            SetPollutionRates(DataStore.industry_forest[level], ground, noise);
+                            setPollutionRates(DataStore.industry_forest[level], ground, noise);
                             break;
 
                         case "IndustryFarm":
-                            SetPollutionRates(DataStore.industry_farm[level], ground, noise);
+                            setPollutionRates(DataStore.industry_farm[level], ground, noise);
                             break;
                     }
                 }
@@ -617,7 +382,7 @@ namespace WG_BalancedPopMod
 
 
         /// <param name="consumeNode"></param>
-        private void ReadConsumptionNode(XmlNode consumeNode)
+        private void readConsumptionNode(XmlNode consumeNode)
         {
             foreach (XmlNode node in consumeNode.ChildNodes)
             {
@@ -632,9 +397,9 @@ namespace WG_BalancedPopMod
                     int sewage = Convert.ToInt32(node.Attributes["sewage"].InnerText);
                     int garbage = Convert.ToInt32(node.Attributes["garbage"].InnerText);
                     int wealth = Convert.ToInt32(node.Attributes["wealth"].InnerText);
-                    int[] array = GetArray(name, level, "readConsumptionNode");
+                    int[] array = getArray(name, level, "readConsumptionNode");
 
-                    SetConsumptionRates(array, power, water, sewage, garbage, wealth);
+                    setConsumptionRates(array, power, water, sewage, garbage, wealth);
                 }
                 catch (Exception e)
                 {
@@ -645,7 +410,7 @@ namespace WG_BalancedPopMod
 
 
         /// <param name="popNode"></param>
-        private void ReadPopulationNode(XmlNode popNode)
+        private void readPopulationNode(XmlNode popNode)
         {
             try
             {
@@ -658,6 +423,16 @@ namespace WG_BalancedPopMod
 
             foreach (XmlNode node in popNode.ChildNodes)
             {
+                // TODO - These two to be removed in Jan 2017
+                if (node.Name.Equals(bonusHouseName))
+                {
+                    readBonusHouseNode(node);
+                }
+                else if (node.Name.Equals(bonusWorkName))
+                {
+                    readBonusWorkers(node);
+                }
+                else
                 {
                     string[] attr = node.Name.Split(new char[] { '_' });
                     string name = attr[0];
@@ -666,7 +441,7 @@ namespace WG_BalancedPopMod
 
                     try
                     {
-                        array = GetArray(name, level, "readPopulationNode");
+                        array = getArray(name, level, "readPopulationNode");
                         int temp = Convert.ToInt32(node.Attributes["level_height"].InnerText);
                         array[DataStore.LEVEL_HEIGHT] = temp > 0 ? temp : 10;
 
@@ -675,7 +450,7 @@ namespace WG_BalancedPopMod
                         {
                             temp = 100;  // Bad person trying to give negative or div0 error. 
                         }
-                        array[DataStore.PEOPLE] = TransformPopulationModifier(name, level, temp, false);
+                        array[DataStore.PEOPLE] = transformPopulationModifier(name, level, temp, false);
 
                     }
                     catch (Exception e)
@@ -699,7 +474,7 @@ namespace WG_BalancedPopMod
 
                     }
 
-                    if (!name.StartsWith("Res"))
+                    if (!name.Contains("Residential"))
                     {
                         try
                         {
@@ -732,7 +507,7 @@ namespace WG_BalancedPopMod
         /// <param name="value"></param>
         /// <param name="toXML">Transformation into XML value</param>
         /// <returns></returns>
-        private int TransformPopulationModifier(string name, int level, int value, bool toXML)
+        private int transformPopulationModifier(string name, int level, int value, bool toXML)
         {
             int dividor = 1;
 
@@ -740,8 +515,6 @@ namespace WG_BalancedPopMod
             {
                 case "ResidentialLow":
                 case "ResidentialHigh":
-                case "ResEcoLow":
-                case "ResEcoHigh":
                     dividor = 5;   // 5 people
                     break;
             }
@@ -758,7 +531,7 @@ namespace WG_BalancedPopMod
 
 
         /// <param name="node"></param>
-        private void ReadOverrideHouseNode(XmlNode parent)
+        private void readBonusHouseNode(XmlNode parent)
         {
             try
             {
@@ -780,26 +553,30 @@ namespace WG_BalancedPopMod
 
             foreach (XmlNode node in parent.ChildNodes)
             {
-                string name = node.InnerText;
-                int overrideValue = 1;
-                if (node.Name.Equals(meshName) && (name.Length > 0))
+                if (node.Name.Equals(meshName))
                 {
                     try
                     {
-                        overrideValue = Convert.ToInt32(node.Attributes["value"].InnerText);
+                        string name = node.InnerText;
+                        int bonus = 1;
+                        bonus = Convert.ToInt32(node.Attributes["bonus"].InnerText);
+
+                        if (name.Length > 0)
+                        {
+                            // Needs a value to be valid
+                            DataStore.bonusHouseholdCache.Add(name, bonus);
+                        }
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readOverrideHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
-                        overrideValue = 1;
+                        Debugging.bufferWarning("readBonusHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
                     }
-                    DataStore.householdCache.Add(name, overrideValue);
                 }
             }
         }
 
         /// <param name="node"></param>
-        private void ReadOverrideWorkers(XmlNode parent)
+        private void readBonusWorkers(XmlNode parent)
         {
             try
             {
@@ -821,69 +598,18 @@ namespace WG_BalancedPopMod
 
             foreach (XmlNode node in parent.ChildNodes)
             {
-                string name = node.InnerText;
-                int overrideValue = 5;
-                if (node.Name.Equals(meshName) && (name.Length > 0))
-                {
-                    try
-                    {
-                        overrideValue = Convert.ToInt32(node.Attributes["value"].InnerText);
-                    }
-                    catch (Exception e)
-                    {
-                        Debugging.bufferWarning("readOverrideWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
-                        overrideValue = 5;
-                    }
-                    DataStore.workerCache.Add(name, overrideValue);
-                }
-            }
-        }
-
-        /// <param name="node"></param>
-        private void ReadBonusHouseNode(XmlNode parent)
-        {
-            foreach (XmlNode node in parent.ChildNodes)
-            {
                 if (node.Name.Equals(meshName))
                 {
                     try
                     {
                         string name = node.InnerText;
-                        int BonusValue = 1;
-                        BonusValue = Convert.ToInt32(node.Attributes["value"].InnerText);
+                        int bonus = 5;
+                        bonus = Convert.ToInt32(node.Attributes["bonus"].InnerText);
 
                         if (name.Length > 0)
                         {
                             // Needs a value to be valid
-                            DataStore.bonusHouseholdCache.Add(name, BonusValue);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debugging.bufferWarning("readBonusHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
-                    }
-                }
-            }
-        }
-
-        /// <param name="node"></param>
-        private void ReadBonusWorkers(XmlNode parent)
-        {
-            foreach (XmlNode node in parent.ChildNodes)
-            {
-                if (node.Name.Equals(meshName))
-                {
-                    try
-                    {
-                        string name = node.InnerText;
-                        int BonusValue = 5;
-                        BonusValue = Convert.ToInt32(node.Attributes["value"].InnerText);
-
-                        if (name.Length > 0)
-                        {
-                            // Needs a value to be valid
-                            int endResult = BonusValue;
-                            DataStore.bonusWorkerCache.Add(name, endResult);
+                            DataStore.bonusWorkerCache.Add(name, bonus);
                         }
                     }
                     catch (Exception e)
@@ -894,63 +620,8 @@ namespace WG_BalancedPopMod
             }
         }
 
-        /// <param name="node"></param>
-        private void ReadPrintHouseNode(XmlNode parent)
-        {
-            foreach (XmlNode node in parent.ChildNodes)
-            {
-                if (node.Name.Equals(meshName))
-                {
-                    try
-                    {
-                        string name = node.InnerText;
-                        int PrintValue = 1;
-                        PrintValue = Convert.ToInt32(node.Attributes["value"].InnerText);
-
-                        if (name.Length > 0)
-                        {
-                            // Needs a value to be valid
-                            DataStore.housePrintOutCache.Add(name, PrintValue);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debugging.bufferWarning("readPrintHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
-                    }
-                }
-            }
-        }
-
-        /// <param name="node"></param>
-        private void ReadPrintWorkers(XmlNode parent)
-        {
-            foreach (XmlNode node in parent.ChildNodes)
-            {
-                if (node.Name.Equals(meshName))
-                {
-                    try
-                    {
-                        string name = node.InnerText;
-                        int PrintValue = 5;
-                        PrintValue = Convert.ToInt32(node.Attributes["value"].InnerText);
-
-                        if (name.Length > 0)
-                        {
-                            // Needs a value to be valid
-                            int endResult = PrintValue;
-                            DataStore.workerPrintOutCache.Add(name, endResult);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debugging.bufferWarning("readPrintWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
-                    }
-                }
-            }
-        }
-
         /// <param name="produceNode"></param>
-        private void ReadVisitNode(XmlNode produceNode)
+        private void readVisitNode(XmlNode produceNode)
         {
             foreach (XmlNode node in produceNode.ChildNodes)
             {
@@ -960,7 +631,7 @@ namespace WG_BalancedPopMod
                     string[] attr = node.Name.Split(new char[] { '_' });
                     string name = attr[0];
                     int level = Convert.ToInt32(attr[1]) - 1;
-                    int[] array = GetArray(name, level, "readVisitNode");
+                    int[] array = getArray(name, level, "readVisitNode");
 
                     array[DataStore.VISIT] = Convert.ToInt32(node.Attributes["visit"].InnerText);
                     if (array[DataStore.VISIT] <= 0)
@@ -977,7 +648,7 @@ namespace WG_BalancedPopMod
 
 
         /// <param name="produceNode"></param>
-        private void ReadProductionNode(XmlNode produceNode)
+        private void readProductionNode(XmlNode produceNode)
         {
             foreach (XmlNode node in produceNode.ChildNodes)
             {
@@ -987,7 +658,7 @@ namespace WG_BalancedPopMod
                     string[] attr = node.Name.Split(new char[] { '_' });
                     string name = attr[0];
                     int level = Convert.ToInt32(attr[1]) - 1;
-                    int[] array = GetArray(name, level, "readProductionNode");
+                    int[] array = getArray(name, level, "readProductionNode");
 
                     array[DataStore.PRODUCTION] = Convert.ToInt32(node.Attributes["production"].InnerText);
                     if (array[DataStore.PRODUCTION] <= 0)
@@ -1007,7 +678,7 @@ namespace WG_BalancedPopMod
         /// <param name="level"></param>
         /// <param name="callingFunction">For debug purposes</param>
         /// <returns></returns>
-        private static int[] GetArray(string name, int level, string callingFunction)
+        private static int[] getArray(string name, int level, string callingFunction)
         {
             int[] array = new int[14];
 
@@ -1021,24 +692,12 @@ namespace WG_BalancedPopMod
                     array = DataStore.residentialHigh[level];
                     break;
 
-                case "ResEcoLow":
-                    array = DataStore.resEcoLow[level];
-                    break;
-
-                case "ResEcoHigh":
-                    array = DataStore.resEcoHigh[level];
-                    break;
-
                 case "CommercialLow":
                     array = DataStore.commercialLow[level];
                     break;
 
                 case "CommercialHigh":
                     array = DataStore.commercialHigh[level];
-                    break;
-
-                case "CommercialEco":
-                    array = DataStore.commercialEco[level];
                     break;
 
                 case "CommercialTourist":
@@ -1051,10 +710,6 @@ namespace WG_BalancedPopMod
 
                 case "Office":
                     array = DataStore.office[level];
-                    break;
-
-                case "OfficeHighTech":
-                    array = DataStore.officeHighTech[level];
                     break;
 
                 case "Industry":
@@ -1091,7 +746,7 @@ namespace WG_BalancedPopMod
         /// <param name="sewage"></param>
         /// <param name="garbage"></param>
         /// <param name="wealth"></param>
-        private void SetConsumptionRates(int[] p, int power, int water, int sewage, int garbage, int wealth)
+        private void setConsumptionRates(int[] p, int power, int water, int sewage, int garbage, int wealth)
         {
             p[DataStore.POWER] = power;
             p[DataStore.WATER] = water;
@@ -1104,7 +759,7 @@ namespace WG_BalancedPopMod
         /// <param name="p"></param>
         /// <param name="ground"></param>
         /// <param name="noise"></param>
-        private void SetPollutionRates(int[] p, int ground, int noise)
+        private void setPollutionRates(int[] p, int ground, int noise)
         {
             p[DataStore.GROUND_POLLUTION] = ground;
             p[DataStore.NOISE_POLLUTION] = noise;

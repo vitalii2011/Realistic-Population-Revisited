@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 
-namespace WG_BalancedPopMod
+namespace RealisticPopulationRevisited
 {
     public class AI_Utils
     {
