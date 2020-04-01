@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Xml;
 using ICities;
 using System.Diagnostics;
@@ -18,7 +17,7 @@ namespace RealisticPopulationRevisited
 {
     public class LoadingExtension : LoadingExtensionBase
     {
-        const string HarmonyID = "cities.algernon.realisticpopulation";
+        const string HarmonyID = "com.github.algernon-A.csl.realisticpopulationrevisited";
         private HarmonyInstance _harmony = HarmonyInstance.Create(HarmonyID);
 
         private const int RES = 0;
@@ -54,7 +53,7 @@ namespace RealisticPopulationRevisited
                 sw = Stopwatch.StartNew();
 
                 // Harmony patches.
-                UnityEngine.Debug.Log("Realistic Population Revisited: applying Harmony patches.");
+                UnityEngine.Debug.Log("Realistic Population Revisited: version 1.1 loading.");
                 _harmony.PatchAll(GetType().Assembly);
                 UnityEngine.Debug.Log("Realistic Population Revisited: patching complete.");
 

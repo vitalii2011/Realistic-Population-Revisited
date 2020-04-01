@@ -12,7 +12,7 @@ namespace RealisticPopulationRevisited
     {
         public string Name
         {
-            get { return "Realistic Population Revisited"; }
+            get { return "Realistic Population Revisited 1.1"; }
         }
         public string Description
         {
