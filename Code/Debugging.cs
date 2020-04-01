@@ -3,6 +3,8 @@ using System.IO;
 using ColossalFramework.Plugins;
 using System.Text;
 using System.Collections.Generic;
+using UnityEngine;
+
 
 namespace RealisticPopulationRevisited
 {
@@ -23,7 +25,7 @@ namespace RealisticPopulationRevisited
         {
             if (sb.Length > 0)
             {
-                DebugOutputPanel.AddMessage(PluginManager.MessageType.Warning, sb.ToString());
+                Debug.Log(sb.ToString());
                 sb.Remove(0, sb.Length);
             }
         }

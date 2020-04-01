@@ -89,7 +89,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 sw.Stop();
-                UnityEngine.Debug.Log("Realistic Population Revisited: Successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
+                UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
             }
         }
 
@@ -151,7 +151,7 @@ namespace RealisticPopulationRevisited
 
         public override void OnLevelLoaded(LoadMode mode)
         {
-            // Check to see if an conflicting mod has been detected - if so, alert the user and abort operation.
+            // Check to see if a conflicting mod has been detected - if so, alert the user and abort operation.
             if (conflictingMod)
             {
                 ExceptionPanel panel = UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel");
@@ -165,7 +165,7 @@ namespace RealisticPopulationRevisited
                     // Now we can remove people
                     DataStore.allowRemovalOfCitizens = true;
                     Debugging.releaseBuffer();
-                    UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
+                    UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded in " + sw.ElapsedMilliseconds + " ms.");Debug.g
                 }
             }
 
@@ -176,7 +176,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log("Realistic Population Revisited - release exception:\r\n" + e.Message);
+                UnityEngine.Debug.Log("Realistic Population Revisited: XML writing exception:\r\n" + e.Message);
             }
         }
 
