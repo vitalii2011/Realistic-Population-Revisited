@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using ICities;
-using System.Diagnostics;
 using ColossalFramework.Math;
-using ColossalFramework;
 using UnityEngine;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
@@ -29,7 +27,6 @@ namespace RealisticPopulationRevisited
 
         private static volatile bool isModEnabled = false;
         private static volatile bool isLevelLoaded = false;
-        private static Stopwatch sw;
 
         // Used to flag if a conflicting mod is running.
         private static bool conflictingMod = false;
@@ -50,10 +47,9 @@ namespace RealisticPopulationRevisited
             else if (!isModEnabled)
             {
                 isModEnabled = true;
-                sw = Stopwatch.StartNew();
 
                 // Harmony patches.
-                UnityEngine.Debug.Log("Realistic Population Revisited: version 1.1 loading.");
+                UnityEngine.Debug.Log("Realistic Population Revisited: version v" + PopBalanceMod.version + " loading.");
                 _harmony.PatchAll(GetType().Assembly);
                 UnityEngine.Debug.Log("Realistic Population Revisited: patching complete.");
 
@@ -88,8 +84,7 @@ namespace RealisticPopulationRevisited
                     }
                 }
 
-                sw.Stop();
-                UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded in " + sw.ElapsedMilliseconds + " ms.");
+                UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded.");
             }
         }
 
@@ -165,7 +160,7 @@ namespace RealisticPopulationRevisited
                     // Now we can remove people
                     DataStore.allowRemovalOfCitizens = true;
                     Debugging.releaseBuffer();
-                    UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded in " + sw.ElapsedMilliseconds + " ms.");Debug.g
+                    UnityEngine.Debug.Log("Realistic Population Revisited successfully applied.");
                 }
             }
 
