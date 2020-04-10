@@ -193,7 +193,11 @@ namespace RealisticPopulationRevisited
             }
             catch (System.Exception)
             {
-                UnityEngine.Debug.Log("Realistic Population Revisited: " + item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.");
+                // Prevent unnecessary log spamming due to tourist buildings returning level 1 instead of level 0
+                if (item.m_class.m_subService != ItemClass.SubService.CommercialTourist)
+                {
+                    UnityEngine.Debug.Log("Realistic Population Revisited: " + item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.");
+                }
                 return array[0];
             }
         }
