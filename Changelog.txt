@@ -1,6 +1,8 @@
 Version 1.1.1 -
 
+- Remove unnecessary logging of tourist building levels
 - Remove stopwatch on load
+- Overhaul IUserMod class file
 
 
 Version 1.1 -
