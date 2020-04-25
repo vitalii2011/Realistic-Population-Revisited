@@ -108,6 +108,7 @@
     <Content Include="XML_Files\WG_OfficeAndLowResidentialChange.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\GUI\UIEditPanel.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
     <Compile Include="Code\GUI\UIBuildingDetails.cs" />
     <Compile Include="Code\GUI\UIBuildingFilter.cs" />

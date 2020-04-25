@@ -27,14 +27,18 @@ namespace RealisticPopulationRevisited
     /// </summary>
     public class UIModCalcs : UIPanel
     {
+        // Margin at left of standard selection
+        private const int leftPadding = 10;
+
         // Panel components. 
-        private UIPanel labelPanel;
-        private UILabel label;
+        private UIPanel titlePanel;
+        private UILabel title;
         private UIPanel detailsPanel;
         private UILabel[] detailLabels;
 
         // Special-purpose labels used to display either jobs or households as appropriate.
         private UILabel homesJobsCalcLabel;
+        private UILabel homesJobsCustomLabel;
         private UILabel homesJobsActualLabel;
 
 
@@ -58,14 +62,16 @@ namespace RealisticPopulationRevisited
             clipChildren = true;
 
             // Panel title.
-            labelPanel = this.AddUIComponent<UIPanel>();
-            labelPanel.height = 20;
+            titlePanel = this.AddUIComponent<UIPanel>();
+            titlePanel.height = 20;
 
-            label = labelPanel.AddUIComponent<UILabel>();
-            label.relativePosition = new Vector3(5, 0);
-            label.width = 270;
-            label.textAlignment = UIHorizontalAlignment.Center;
-            label.text = "No building selected";
+            title = titlePanel.AddUIComponent<UILabel>();
+            title.relativePosition = new Vector3(0, 0);
+            title.textAlignment = UIHorizontalAlignment.Center;
+            title.text = "Mod calculations";
+            title.textScale = 1.2f;
+            title.autoSize = false;
+            title.width = this.width;
 
             // Panel to display calculations; hidden when no building is selected.
             detailsPanel = this.AddUIComponent<UIPanel>();
@@ -78,19 +84,24 @@ namespace RealisticPopulationRevisited
             for (int i = 0; i < (int)Details.numDetails; i++)
             {
                 detailLabels[i] = detailsPanel.AddUIComponent<UILabel>();
-                detailLabels[i].relativePosition = new Vector3(30, (i * 30) + 30);
+                detailLabels[i].relativePosition = new Vector3(leftPadding, (i * 30) + 30);
                 detailLabels[i].width = 270;
                 detailLabels[i].textAlignment = UIHorizontalAlignment.Left;
             }
 
             // Homes/jobs labels.
             homesJobsCalcLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsCalcLabel.relativePosition = new Vector3(30, ((int)Details.numDetails + 2) * 30);
+            homesJobsCalcLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 2) * 30);
             homesJobsCalcLabel.width = 270;
             homesJobsCalcLabel.textAlignment = UIHorizontalAlignment.Left;
 
+            homesJobsCustomLabel = detailsPanel.AddUIComponent<UILabel>();
+            homesJobsCustomLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 3) * 30);
+            homesJobsCustomLabel.width = 270;
+            homesJobsCustomLabel.textAlignment = UIHorizontalAlignment.Left;
+
             homesJobsActualLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsActualLabel.relativePosition = new Vector3(30, ((int)Details.numDetails + 3) * 30);
+            homesJobsActualLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 4) * 30);
             homesJobsActualLabel.width = 270;
             homesJobsActualLabel.textAlignment = UIHorizontalAlignment.Left;
         }
@@ -102,23 +113,24 @@ namespace RealisticPopulationRevisited
         /// <param name="building"></param>
         public void SelectionChanged(BuildingInfo building)
         {
-            if (building == null)
+            if ((building == null) || (building.name == null))
             {
-                // If no building selected, then hide the details panel and update title accordingly.
+                // If no valid building selected, then hide the calculations panel.
                 detailsPanel.height = 0;
                 detailsPanel.isVisible = false;
-                label.text = "No building selected";
             }
             else
             {
                 // A building is selected - determine calculatons.
-                int floorCount;
+
                 // Building model size, not plot size.
                 Vector3 buildingSize = building.m_size;
+                int floorCount;
                 // Array used for calculations depending on building service/subservice (via DataStore).
                 int[] array;
                 // Default minimum number of homes or jobs is one; different service types will override this.
                 int minHomesJobs = 1;
+                int customHomeJobs;
 
                 // Check for valid building AI.
                 if (!(building.GetAI() is PrivateBuildingAI buildingAI))
@@ -131,14 +143,18 @@ namespace RealisticPopulationRevisited
                 if (buildingAI is ResidentialBuildingAI)
                 {
                     // Get appropriate calculation array.
-                    array = ResidentialBuildingAIMod.GetArray(building, (int)building.m_class.m_level);
+                    array = ResidentialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
 
                     // Set calculated homes label.
                     homesJobsCalcLabel.text = "Calculated homes: ";
 
+                    // Set customised homes label and get value (if any).
+                    homesJobsCustomLabel.text = "Customised homes: ";
+                    customHomeJobs = ExternalCalls.GetResidential(building.name);
+
                     // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
                     // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
-                    homesJobsActualLabel.text = "Applied homes: " + buildingAI.CalculateHomeCount(building.m_class.m_level, new Randomizer(0), building.GetWidth(), building.GetLength()); ;
+                    homesJobsActualLabel.text = "Applied homes: " + buildingAI.CalculateHomeCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength());
                 }
                 else
                 {
@@ -147,22 +163,22 @@ namespace RealisticPopulationRevisited
                     minHomesJobs = 4;
 
                     // Find the correct array for the relevant building AI.
-                    switch (building.m_class.m_service)
+                    switch (building.GetService())
                     {
                         case ItemClass.Service.Commercial:
-                            array = CommercialBuildingAIMod.GetArray(building, (int)building.m_class.m_level);
+                            array = CommercialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
                             break;
                         case ItemClass.Service.Office:
-                            array = OfficeBuildingAIMod.GetArray(building, (int)building.m_class.m_level);
+                            array = OfficeBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
                             break;
                         case ItemClass.Service.Industrial:
                             if (buildingAI is IndustrialExtractorAI)
                             {
-                                array = IndustrialExtractorAIMod.GetArray(building, (int)building.m_class.m_level);
+                                array = IndustrialExtractorAIMod.GetArray(building, (int)building.GetClassLevel());
                             }
                             else
                             {
-                                array = IndustrialBuildingAIMod.GetArray(building, (int)building.m_class.m_level);
+                                array = IndustrialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
                             }
                             break;
                         default:
@@ -173,10 +189,14 @@ namespace RealisticPopulationRevisited
                     // Set calculated jobs label.
                     homesJobsCalcLabel.text = "Calculated jobs (min. 4): ";
 
+                    // Set customised jobs label and get value (if any).
+                    homesJobsCustomLabel.text = "Customised jobs: ";
+                    customHomeJobs = ExternalCalls.GetWorker(building.name);
+
                     // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
                     // It differs from calculated jobs if there's an override value for that building with this mod, or if another mod is overriding.
                     int[] jobs = new int[4];
-                    buildingAI.CalculateWorkplaceCount(building.m_class.m_level, new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
+                    buildingAI.CalculateWorkplaceCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
                     homesJobsActualLabel.text = "Applied jobs: " + (jobs[0] + jobs[1] + jobs[2] + jobs[3]);
                 }
 
@@ -240,17 +260,22 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Set minimum residences for high density.
-                if ((building.m_class.m_subService == ItemClass.SubService.ResidentialHigh) || (building.m_class.m_subService == ItemClass.SubService.ResidentialHighEco))
+                if ((building.GetSubService() == ItemClass.SubService.ResidentialHigh) || (building.GetSubService() == ItemClass.SubService.ResidentialHighEco))
                 {
                     // Minimum of 2, or 90% number of floors, whichever is greater. This helps the 1x1 high density.
                     minHomesJobs = Mathf.Max(2, Mathf.CeilToInt(0.9f * floorCount));
                 }
 
+                // Set customised homes/jobs label (leave blank if no custom setting retrieved).
+                if (customHomeJobs > 0)
+                {
+                    homesJobsCustomLabel.text += customHomeJobs.ToString();
+                }
+
                 // Perform actual household or workplace calculation.
                 homesJobsCalcLabel.text += Mathf.Max(minHomesJobs, (calculatedArea * (floorCount + Mathf.Max(0, array[DataStore.DENSIFICATION]))) / array[DataStore.PEOPLE]);
 
-                // We've got a valid building and results, so set panel title and ensure visiblity.
-                label.text = "Mod calculations";
+                // We've got a valid building and results, so show panel.
                 detailsPanel.height = 270;
                 detailsPanel.isVisible = true;
             }

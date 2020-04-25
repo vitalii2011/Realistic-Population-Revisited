@@ -40,7 +40,7 @@ namespace RealisticPopulationRevisited
             }
         }
 
-        public static int GeWorker(string name)
+        public static int GetWorker(string name)
         {
             int returnValue;
             if (DataStore.workerCache.TryGetValue(name, out returnValue))

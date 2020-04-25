@@ -22,6 +22,7 @@ namespace RealisticPopulationRevisited
         private const float rightWidth = 280;
         private const float filterHeight = 40;
         private const float panelHeight = 550;
+        private const float bottomMargin = 10;
         private const float spacing = 5;
 
         public const float titleHeight = 40;
@@ -31,6 +32,7 @@ namespace RealisticPopulationRevisited
         private UIBuildingFilter filterBar;
         private UIFastList buildingSelection;
         private UIPreviewPanel previewPanel;
+        private UIEditPanel editPanel;
         private UIModCalcs modCalcs;
 
         // General vars.
@@ -84,7 +86,7 @@ namespace RealisticPopulationRevisited
                 canFocus = true;
                 isInteractive = true;
                 width = leftWidth + middleWidth + rightWidth + (spacing * 4);
-                height = panelHeight + titleHeight + filterHeight + (spacing * 2);
+                height = panelHeight + titleHeight + filterHeight + (spacing * 2) + bottomMargin;
                 relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
                 backgroundSprite = "UnlockingPanel2";
 
@@ -116,7 +118,7 @@ namespace RealisticPopulationRevisited
                 leftPanel.height = panelHeight;
                 leftPanel.relativePosition = new Vector3(spacing, titleHeight + filterHeight + spacing);
 
-                // Middle panel - building preview and save panels.
+                // Middle panel - building preview and edit panels.
                 UIPanel middlePanel = AddUIComponent<UIPanel>();
                 middlePanel.width = middleWidth;
                 middlePanel.height = panelHeight;
@@ -126,6 +128,11 @@ namespace RealisticPopulationRevisited
                 previewPanel.width = middlePanel.width;
                 previewPanel.height = (panelHeight - spacing) / 2;
                 previewPanel.relativePosition = Vector3.zero;
+
+                editPanel = middlePanel.AddUIComponent<UIEditPanel>();
+                editPanel.width = middlePanel.width;
+                editPanel.height = (panelHeight - spacing) / 2;
+                editPanel.relativePosition = new Vector3(0, previewPanel.height + spacing);
 
                 // Right panel - mod calculations.
                 UIPanel rightPanel = AddUIComponent<UIPanel>();
@@ -176,7 +183,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Called when the building selection changes to update building preview and mod calculations panel.
+        /// Called when the building selection changes to update other panels.
         /// </summary>
         /// <param name="building"></param>
         public void UpdateSelectedBuilding(BuildingInfo building)
@@ -188,8 +195,9 @@ namespace RealisticPopulationRevisited
                 previewPanel.Show(currentSelection);
             }
 
-            // Update mod calculations panel.
+            // Update mod calculations and edit panels.
             modCalcs.SelectionChanged(building);
+            editPanel.SelectionChanged(building);
         }
 
 
@@ -205,44 +213,47 @@ namespace RealisticPopulationRevisited
             // Iterate through all loaded building prefabs and add them to the list if they meet the filter conditions.
             for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
             {
-                // Skip any null prefabs.
-                if (PrefabCollection<BuildingInfo>.GetLoaded(i) == null)
+                BuildingInfo item = PrefabCollection<BuildingInfo>.GetLoaded(i);
+
+                // Skip any null or invalid prefabs.
+                if ((item == null) || (item.name == null))
                 {
                     continue;
                 }
 
-                BuildingInfo item = PrefabCollection<BuildingInfo>.GetLoaded(i);
-
                 // Apply zone type filters.
+                ItemClass.Service service = item.GetService();
+                ItemClass.SubService subService = item.GetSubService();
+
                 // Laid out this way for clear visibility.
-                if (item.m_class.m_subService == ItemClass.SubService.ResidentialLow && filterBar.categoryToggles[(int)BuildingCategories.ResidentialLow].isChecked)
+                if (subService == ItemClass.SubService.ResidentialLow && filterBar.categoryToggles[(int)BuildingCategories.ResidentialLow].isChecked)
                 {
                 }
-                else if (item.m_class.m_subService == ItemClass.SubService.ResidentialHigh && filterBar.categoryToggles[(int)BuildingCategories.ResidentialHigh].isChecked)
+                else if (subService == ItemClass.SubService.ResidentialHigh && filterBar.categoryToggles[(int)BuildingCategories.ResidentialHigh].isChecked)
                 {
                 }
-                else if (item.m_class.m_subService == ItemClass.SubService.CommercialLow && filterBar.categoryToggles[(int)BuildingCategories.CommercialLow].isChecked)
+                else if (subService == ItemClass.SubService.CommercialLow && filterBar.categoryToggles[(int)BuildingCategories.CommercialLow].isChecked)
                 {
                 }
-                else if (item.m_class.m_subService == ItemClass.SubService.CommercialHigh && filterBar.categoryToggles[(int)BuildingCategories.CommercialHigh].isChecked)
+                else if (subService == ItemClass.SubService.CommercialHigh && filterBar.categoryToggles[(int)BuildingCategories.CommercialHigh].isChecked)
                 {
                 }
-                else if (item.m_class.m_service == ItemClass.Service.Office && filterBar.categoryToggles[(int)BuildingCategories.Office].isChecked)
+                else if (service == ItemClass.Service.Office && filterBar.categoryToggles[(int)BuildingCategories.Office].isChecked)
                 {
                 }
-                else if (item.m_class.m_service == ItemClass.Service.Industrial && filterBar.categoryToggles[(int)BuildingCategories.Industrial].isChecked)
+                else if (service == ItemClass.Service.Industrial && filterBar.categoryToggles[(int)BuildingCategories.Industrial].isChecked)
                 {
                 }
-                else if (item.m_class.m_subService == ItemClass.SubService.CommercialTourist && filterBar.categoryToggles[(int)BuildingCategories.Tourism].isChecked)
+                else if (subService == ItemClass.SubService.CommercialTourist && filterBar.categoryToggles[(int)BuildingCategories.Tourism].isChecked)
                 {
                 }
-                else if (item.m_class.m_subService == ItemClass.SubService.CommercialLeisure && filterBar.categoryToggles[(int)BuildingCategories.Leisure].isChecked)
+                else if (subService == ItemClass.SubService.CommercialLeisure && filterBar.categoryToggles[(int)BuildingCategories.Leisure].isChecked)
                 {
                 }
-                else if (item.m_class.m_subService == ItemClass.SubService.CommercialEco && filterBar.categoryToggles[(int)BuildingCategories.Organic].isChecked)
+                else if (subService == ItemClass.SubService.CommercialEco && filterBar.categoryToggles[(int)BuildingCategories.Organic].isChecked)
                 {
                 }
-                else if ((item.m_class.m_subService == ItemClass.SubService.ResidentialLowEco || item.m_class.m_subService == ItemClass.SubService.ResidentialHighEco)  && filterBar.categoryToggles[(int)BuildingCategories.Selfsufficient].isChecked)
+                else if ((subService == ItemClass.SubService.ResidentialLowEco || subService == ItemClass.SubService.ResidentialHighEco) && filterBar.categoryToggles[(int)BuildingCategories.Selfsufficient].isChecked)
                 {
                 }
                 else

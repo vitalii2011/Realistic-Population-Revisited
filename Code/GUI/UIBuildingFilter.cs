@@ -135,10 +135,7 @@ namespace RealisticPopulationRevisited
             nameLabel.relativePosition = new Vector3(width - 250, 0);
             nameLabel.text = "Name: ";
 
-            nameFilter = UIUtils.CreateTextField(this);
-            nameFilter.width = 200;
-            nameFilter.height = 30;
-            nameFilter.padding = new RectOffset(6, 6, 6, 6);
+            nameFilter = UIUtils.CreateTextField(this, 200f, 30f);
             nameFilter.relativePosition = new Vector3(width - nameFilter.width, 0);
 
             // Name filter event handling - update on any change.
