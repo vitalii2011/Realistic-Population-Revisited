@@ -173,6 +173,9 @@ namespace RealisticPopulationRevisited
             {
                 UnityEngine.Debug.Log("Realistic Population Revisited: XML writing exception:\r\n" + e.Message);
             }
+
+            // Create building editor panel.
+            UIBuildingDetails.Create();
         }
 
 
