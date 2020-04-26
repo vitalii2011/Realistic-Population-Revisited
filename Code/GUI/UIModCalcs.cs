@@ -150,7 +150,7 @@ namespace RealisticPopulationRevisited
 
                     // Set customised homes label and get value (if any).
                     homesJobsCustomLabel.text = "Customised homes: ";
-                    customHomeJobs = ExternalCalls.GetResidential(building.name);
+                    customHomeJobs = ExternalCalls.GetResidential(building);
 
                     // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
                     // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
@@ -191,7 +191,7 @@ namespace RealisticPopulationRevisited
 
                     // Set customised jobs label and get value (if any).
                     homesJobsCustomLabel.text = "Customised jobs: ";
-                    customHomeJobs = ExternalCalls.GetWorker(building.name);
+                    customHomeJobs = ExternalCalls.GetWorker(building);
 
                     // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
                     // It differs from calculated jobs if there's an override value for that building with this mod, or if another mod is overriding.

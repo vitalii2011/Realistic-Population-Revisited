@@ -202,6 +202,20 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Refreshes the building selection list.
+        /// Used to update custom settings checkboxes.
+        /// </summary>
+        public void Refresh()
+        {
+            // Refresh the building list.
+            buildingSelection.Refresh();
+
+            // Update mod calculations and edit panels.
+            UpdateSelectedBuilding(currentSelection);
+        }
+
+
+        /// <summary>
         /// Generates the list of buildings depending on current filter settings.
         /// </summary>
         /// <returns></returns>

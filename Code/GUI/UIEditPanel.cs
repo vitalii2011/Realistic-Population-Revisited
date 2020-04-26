@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using ColossalFramework.UI;
+using System.Collections.Generic;
 
 
 namespace RealisticPopulationRevisited
@@ -62,11 +63,20 @@ namespace RealisticPopulationRevisited
             homeJobsCount.relativePosition = new Vector3(marginPadding + homeJobLabel.width + marginPadding, 40);
 
             // Save button.
-            saveButton = UIUtils.CreateButton(this);
+            saveButton = UIUtils.CreateButton(this, 200);
             saveButton.relativePosition = new Vector3(marginPadding, 70);
-            saveButton.text = "Save";
+            saveButton.text = "Add custom setting";
+            saveButton.tooltip = "Adds (or updates) a custom setting for the selected building";
             saveButton.Disable();
 
+            // Delete button.
+            deleteButton = UIUtils.CreateButton(this, 200);
+            deleteButton.relativePosition = new Vector3(marginPadding, 110);
+            deleteButton.text = "Delete custom setting";
+            deleteButton.tooltip = "Removes the custom setting from the selected building";
+            deleteButton.Disable();
+
+            // Save button event handler.
             saveButton.eventClick += (c, p) =>
             {
                 // Hide message.
@@ -81,18 +91,21 @@ namespace RealisticPopulationRevisited
                 // Read textfield if possible.
                 if (int.TryParse(homeJobsCount.text, out int homesJobs))
                 {
-                    // Homes or jobs?  Add custom entry as appropriate.
+
+                    // Homes or jobs?
                     if (currentSelection.GetService() == ItemClass.Service.Residential)
                     {
-                        ExternalCalls.AddResidential(currentSelection.name, homesJobs);
+                        // Residential building.
+                        ExternalCalls.SetResidential(currentSelection, homesJobs);
                     }
                     else
                     {
-                        ExternalCalls.AddWorker(currentSelection.name, homesJobs);
+                        // Employment building.
+                        ExternalCalls.SetWorker(currentSelection, homesJobs);
                     }
 
-                    // Save to file.
-                    ExternalCalls.Save();
+                    // Refresh the display so that all panels reflect the updated settings.
+                    UIBuildingDetails.instance.Refresh();
                 }
                 else
                 {
@@ -102,13 +115,8 @@ namespace RealisticPopulationRevisited
                     messageLabel.isVisible = true;
                 }
             };
-            
-            // Delete button.
-            deleteButton = UIUtils.CreateButton(this);
-            deleteButton.relativePosition = new Vector3(marginPadding, 110);
-            deleteButton.text = "Delete";
-            deleteButton.Disable();
 
+            // Delete button event handler.
             deleteButton.eventClick += (c, p) =>
             {
                 // Hide message.
@@ -123,18 +131,17 @@ namespace RealisticPopulationRevisited
                 // Homes or jobs?  Remove custom entry as appropriate.
                 if (currentSelection.GetService() == ItemClass.Service.Residential)
                 {
-                    ExternalCalls.RemoveResidential(currentSelection.name);
+                    // Residential building.
+                    ExternalCalls.RemoveResidential(currentSelection);
                 }
                 else
                 {
-                    ExternalCalls.RemoveWorker(currentSelection.name);
+                    // Employment building.
+                    ExternalCalls.RemoveWorker(currentSelection);
                 }
 
-                // Save to file.
-                ExternalCalls.Save();
-
-                // Disable this button and clear input textfield.
-                deleteButton.Disable();
+                // Refresh the display so that all panels reflect the updated settings.
+                UIBuildingDetails.instance.Refresh();
                 homeJobsCount.text = string.Empty;
             };
 
@@ -153,12 +160,6 @@ namespace RealisticPopulationRevisited
         /// <param name="building"></param>
         public void SelectionChanged(BuildingInfo building)
         {
-            // Do nothing if the selection hasn't changed.
-            if (currentSelection == building)
-            {
-                return;
-            }
-
             // Hide message.
             messageLabel.isVisible = false;
 
@@ -179,26 +180,28 @@ namespace RealisticPopulationRevisited
             if (building.GetService() == ItemClass.Service.Residential)
             {
                 // See if a custom number of households applies to this building.
-                homesJobs = ExternalCalls.GetResidential(building.name);
+                homesJobs = ExternalCalls.GetResidential(building);
                 homeJobLabel.text = "Homes:";
             }
             else
             {
                 // Workplace building; see if a custom number of jobs applies to this building.
-                homesJobs = ExternalCalls.GetWorker(building.name);
+                homesJobs = ExternalCalls.GetWorker(building);
                 homeJobLabel.text = "Jobs:";
             }
 
-            // If no custom settings have been found (return value was zero), then blank the text field and disable the delete button.
+            // If no custom settings have been found (return value was zero), then blank the text field, rename the save button, and disable the delete button.
             if (homesJobs == 0)
             {
                 homeJobsCount.text = string.Empty;
+                saveButton.text = "Add custom setting";
                 deleteButton.Disable();
             }
             else
             {
-                // Valid custom settings found; display the result and enable the delete button.
+                // Valid custom settings found; display the result, rename the save button, and enable the delete button.
                 homeJobsCount.text = homesJobs.ToString();
+                saveButton.text = "Update custom setting";
                 deleteButton.Enable();
             }
 

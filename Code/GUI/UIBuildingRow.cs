@@ -16,6 +16,7 @@ namespace RealisticPopulationRevisited
         private UIPanel panelBackground;
         private UILabel buildingName;
         private BuildingInfo selectedBuilding;
+        private UISprite hasCustom;
 
 
         // Background for each list item.
@@ -82,11 +83,29 @@ namespace RealisticPopulationRevisited
 
                 buildingName = AddUIComponent<UILabel>();
                 buildingName.width = 200;
+
+                // Checkbox to indicate which items have custom settings.
+                hasCustom = AddUIComponent<UISprite>();
+                hasCustom.size = new Vector2(20, 20);
+                hasCustom.relativePosition = new Vector3(340, 10);
+                hasCustom.tooltip = "Has custom settings";
             }
 
             // Set selected building.
             selectedBuilding = data as BuildingInfo;
             buildingName.text = UIBuildingDetails.GetDisplayName(selectedBuilding.name);
+
+            // Update custom settings checkbox to correct state.
+            if (ExternalCalls.GetResidential(selectedBuilding) > 0 || ExternalCalls.GetWorker(selectedBuilding) > 0)
+            {
+                // Custom value found.
+                hasCustom.spriteName = "AchievementCheckedTrue";
+            }
+            else
+            {
+                // No custom value.
+                hasCustom.spriteName = "AchievementCheckedFalse";
+            }
 
             // Set initial background as deselected state.
             Deselect(isRowOdd);

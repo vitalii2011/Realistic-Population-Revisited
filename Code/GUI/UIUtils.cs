@@ -35,11 +35,11 @@ namespace RealisticPopulationRevisited
             return textField;
         }
 
-        public static UIButton CreateButton(UIComponent parent)
+        public static UIButton CreateButton(UIComponent parent, float width)
         {
             UIButton button = parent.AddUIComponent<UIButton>();
 
-            button.size = new Vector2(90f, 30f);
+            button.size = new Vector2(width, 30f);
             button.textScale = 0.9f;
             button.normalBgSprite = "ButtonMenu";
             button.hoveredBgSprite = "ButtonMenuHovered";
