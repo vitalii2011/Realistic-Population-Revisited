@@ -31,6 +31,7 @@ namespace RealisticPopulationRevisited
     {
         // Panel components.
         public UICheckBox[] categoryToggles;
+        public UIButton allCategories;
         public UITextField nameFilter;
 
 
@@ -108,25 +109,44 @@ namespace RealisticPopulationRevisited
                 categoryToggles[i].relativePosition = new Vector3(40 * i, 0);
                 categoryToggles[i].isChecked = true;
                 categoryToggles[i].readOnly = true;
-                categoryToggles[i].checkedBoxObject.isInteractive = false; // Don't eat my double click event please
 
                 // Single click event handler - toggle state of this button.
                 categoryToggles[i].eventClick += (c, p) =>
                 {
-                    ((UICheckBox)c).isChecked = !((UICheckBox)c).isChecked;
-                    eventFilteringChanged(this, 0);
-                };
+                    // If either shift or control is NOT held down, deselect all other toggles.
+                    if (!(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
+                    {
+                        for (int j = 0; j < (int)BuildingCategories.numCategories; j++)
+                        {
+                            categoryToggles[j].isChecked = false;
+                        }
+                    }
 
-                // Double click event handler - enable this button and deactivate all others.
-                categoryToggles[i].eventDoubleClick += (c, p) =>
-                {
-                    for (int j = 0; j < (int)BuildingCategories.numCategories; j++)
-                        categoryToggles[j].isChecked = false;
+                    // Select this toggle.
                     ((UICheckBox)c).isChecked = true;
 
+                    // Trigger an update.
                     eventFilteringChanged(this, 0);
                 };
             }
+
+            // 'All categories' button.
+            allCategories = UIUtils.CreateButton(this, 120);
+            allCategories.text = "All categories";
+            allCategories.relativePosition = new Vector3(405, 5);
+
+            // All categories event handler.
+            allCategories.eventClick += (c, p) =>
+            {
+                // Select all category toggles.
+                for (int i = 0; i < (int)BuildingCategories.numCategories; i++)
+                {
+                    categoryToggles[i].isChecked = true;
+                }
+
+                // Trigger an update.
+                eventFilteringChanged(this, 0);
+            };
 
             // Name filter.
             UILabel nameLabel = AddUIComponent<UILabel>();

@@ -44,7 +44,7 @@ namespace RealisticPopulationRevisited
 
             // Panel title.
             UILabel title = this.AddUIComponent<UILabel>();
-            title.relativePosition = new Vector3(0, 0);
+            title.relativePosition = new Vector3(0, 5);
             title.textAlignment = UIHorizontalAlignment.Center;
             title.text = "Custom settings";
             title.textScale = 1.2f;
