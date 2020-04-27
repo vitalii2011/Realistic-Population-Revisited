@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using ColossalFramework;
-using System.Diagnostics;
 
 
 namespace RealisticPopulationRevisited
@@ -78,9 +77,10 @@ namespace RealisticPopulationRevisited
                         // Reset the bounding box to be the smallest that can encapsulate all verticies of the new mesh.
                         // That way the preview image is the largest size that fits cleanly inside the preview size.
                         currentBounds = new Bounds(Vector3.zero, Vector3.zero);
-                        for (int i = 0; i < currentMesh.vertices.Length; i++)
+                        Vector3[] vertices = Mesh.vertices;
+                        for (int i = 0; i < vertices.Length; i++)
                         {
-                            currentBounds.Encapsulate(currentMesh.vertices[i]);
+                            currentBounds.Encapsulate(vertices[i]);
                         }
                     }
                 }
@@ -129,44 +129,33 @@ namespace RealisticPopulationRevisited
             {
                 return;
             }
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
+            
+            // Basic setup.
             float magnitude = currentBounds.extents.magnitude;
             float num = magnitude + 16f;
             float num2 = magnitude * currentZoom;
 
+            // Transforms and clip.
             renderCamera.transform.position = -Vector3.forward * num2;
             renderCamera.transform.rotation = Quaternion.identity;
             renderCamera.nearClipPlane = Mathf.Max(num2 - num * 1.5f, 0.01f);
             renderCamera.farClipPlane = num2 + num * 1.5f;
 
+            // Yay!  Matrix math, my favourite!
             Quaternion quaternion = Quaternion.Euler(-20f, 0f, 0f) * Quaternion.Euler(0f, currentRotation, 0f);
             Vector3 pos = quaternion * -currentBounds.center;
             Matrix4x4 matrix = Matrix4x4.TRS(pos, quaternion, Vector3.one);
 
+            // Create new InfoManager instance and copy current game mode settings for rendering.
             InfoManager infoManager = Singleton<InfoManager>.instance;
             InfoManager.InfoMode currentMode = infoManager.CurrentMode;
             InfoManager.SubInfoMode currentSubMode = infoManager.CurrentSubMode; ;
             infoManager.SetCurrentMode(InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
 
-            sw.Stop();
-            UnityEngine.Debug.Log("CAT!!! SetCurrentMode " + sw.ElapsedMilliseconds);
-            sw.Reset();
-            sw.Start();
-
-
+            // Render!
             Graphics.DrawMesh(currentMesh, matrix, material, 0, renderCamera, 0, null, true, true);
             renderCamera.RenderWithShader(material.shader, "");
-            sw.Stop();
-            UnityEngine.Debug.Log("CAT!!! RenderWithShader " + sw.ElapsedMilliseconds);
-            sw.Reset();
-            sw.Start();
-
             infoManager.SetCurrentMode(currentMode, currentSubMode);
-            sw.Stop();
-            UnityEngine.Debug.Log("CAT!!! SetCurrentMode " + sw.ElapsedMilliseconds);
         }
     }
 }
