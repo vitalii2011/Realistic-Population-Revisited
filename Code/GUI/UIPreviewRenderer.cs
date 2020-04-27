@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using ColossalFramework;
+using System.Diagnostics;
 
 
 namespace RealisticPopulationRevisited
@@ -124,7 +125,13 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void Render()
         {
-            if (currentMesh == null) return;
+            if (currentMesh == null)
+            {
+                return;
+            }
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 
             float magnitude = currentBounds.extents.magnitude;
             float num = magnitude + 16f;
@@ -140,14 +147,26 @@ namespace RealisticPopulationRevisited
             Matrix4x4 matrix = Matrix4x4.TRS(pos, quaternion, Vector3.one);
 
             InfoManager infoManager = Singleton<InfoManager>.instance;
-            InfoManager.InfoMode currentMod = infoManager.CurrentMode;
-            InfoManager.SubInfoMode currentSubMod = infoManager.CurrentSubMode; ;
+            InfoManager.InfoMode currentMode = infoManager.CurrentMode;
+            InfoManager.SubInfoMode currentSubMode = infoManager.CurrentSubMode; ;
             infoManager.SetCurrentMode(InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+
+            sw.Stop();
+            UnityEngine.Debug.Log("CAT!!! SetCurrentMode " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+
 
             Graphics.DrawMesh(currentMesh, matrix, material, 0, renderCamera, 0, null, true, true);
             renderCamera.RenderWithShader(material.shader, "");
+            sw.Stop();
+            UnityEngine.Debug.Log("CAT!!! RenderWithShader " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
 
-            infoManager.SetCurrentMode(currentMod, currentSubMod);
+            infoManager.SetCurrentMode(currentMode, currentSubMode);
+            sw.Stop();
+            UnityEngine.Debug.Log("CAT!!! SetCurrentMode " + sw.ElapsedMilliseconds);
         }
     }
 }

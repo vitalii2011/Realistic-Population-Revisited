@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Linq;
 using UnityEngine;
 using ColossalFramework;
 using ColossalFramework.UI;
-using ColossalFramework.Globalization;
 
 
 namespace RealisticPopulationRevisited
@@ -36,7 +33,7 @@ namespace RealisticPopulationRevisited
         private UIModCalcs modCalcs;
 
         // General vars.
-        public BuildingInfo currentSelection;
+        private BuildingInfo currentSelection;
 
         // Instance references.
         private static GameObject uiGameObject;
@@ -55,7 +52,7 @@ namespace RealisticPopulationRevisited
                 uiGameObject = GameObject.Find("RealPopBuildingEditor");
                 if (uiGameObject != null)
                 {
-                    Debug.Log("Realistic Population Revisited: destroying existing building details panel instance.");
+                    UnityEngine.Debug.Log("Realistic Population Revisited: destroying existing building details panel instance.");
                     GameObject.Destroy(uiGameObject);
                 }
 
@@ -67,7 +64,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
+                UnityEngine.Debug.LogException(e);
             }
         }
 
@@ -165,7 +162,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
+                UnityEngine.Debug.LogException(e);
             }
         }
 
@@ -212,6 +209,24 @@ namespace RealisticPopulationRevisited
 
             // Update mod calculations and edit panels.
             UpdateSelectedBuilding(currentSelection);
+        }
+
+
+        // Selects the current building and updates
+        public void SelectBuilding(BuildingInfo building)
+        {
+            // Ensure the fastlist is filtered to include this building.
+            filterBar.SelectBuildingCategory(building.m_class);
+            buildingSelection.rowsData = GenerateFastList();
+
+            // Clear the name filter.
+            filterBar.nameFilter.text = String.Empty;
+
+            // Find and select the building in the fastlist.
+            buildingSelection.FindBuilding(building.name);
+
+            // Update the selected building to the current.
+            UpdateSelectedBuilding(building);
         }
 
 

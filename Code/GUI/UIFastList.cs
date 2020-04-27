@@ -7,7 +7,7 @@ namespace RealisticPopulationRevisited
 {
     /// <summary>
     /// From SamSamTS's work with Building Themes mod, via AJ3D's Ploppable RICO.
-    /// Code and comments are unchanged.
+    /// Code and comments are unchanged, except for FindBuilding() added by algernon.
     /// </summary>
     public interface UIFastListRow
     {
@@ -314,6 +314,32 @@ namespace RealisticPopulationRevisited
         #endregion
 
         #region Public methods
+
+        /// <summary>
+        /// Sets the selection to the named building.
+        /// If no building is found, clears the selection.
+        /// </summary>
+        /// <param name="building">The (raw prefab) name of the building to find</param>
+        /// <returns></returns>
+        public void FindBuilding(string name)
+        {
+            // Iterate through the list 
+            for (int i = 0; i < m_rowsData.m_size; i++)
+            {
+                if (((BuildingInfo)m_rowsData.m_buffer[i]).name.Equals(name))
+                {
+                    selectedIndex = i;
+                    listPosition = i;
+                    return;
+                }
+            }
+
+            // No building found; reset the selection.
+            selectedIndex = -1;
+            listPosition = 0;
+        }
+
+
         /// <summary>
         /// Clear the list
         /// </summary>

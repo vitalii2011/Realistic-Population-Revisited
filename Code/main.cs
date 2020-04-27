@@ -4,7 +4,6 @@ using System.IO;
 using System.Xml;
 using ICities;
 using ColossalFramework.Math;
-using UnityEngine;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
 using System.Linq;
@@ -30,6 +29,10 @@ namespace RealisticPopulationRevisited
 
         // Used to flag if a conflicting mod is running.
         private static bool conflictingMod = false;
+
+        // Button (in building info panels) to access building details screen.
+        private UIButton buildingButton;
+
 
         public static bool IsModEnabled(UInt64 id)
         {
@@ -176,6 +179,27 @@ namespace RealisticPopulationRevisited
 
             // Create building editor panel.
             UIBuildingDetails.Create();
+
+            // Add button to access building details from building info panels, if it doesn't already exist.
+            if(buildingButton == null)
+            {
+                // Basic setup.
+                ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);
+                buildingButton = UIUtils.CreateButton(infoPanel.component, 250);
+                buildingButton.text = "Realistic Population settings";
+                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 300);
+
+                // Make the info panel a bit higher to accomodate button.
+                infoPanel.component.height = infoPanel.component.height + 10;
+
+                // Event handler.
+                buildingButton.eventClick += (c, p) =>
+                {
+                    // Select current building in the building details panel and show.
+                    UIBuildingDetails.instance.SelectBuilding(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
+                    UIBuildingDetails.instance.Show();
+                };
+            }
         }
 
 
