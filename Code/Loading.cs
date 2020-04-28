@@ -12,7 +12,7 @@ using Harmony;
 
 namespace RealisticPopulationRevisited
 {
-    public class LoadingExtension : LoadingExtensionBase
+    public class Loading : LoadingExtensionBase
     {
         const string HarmonyID = "com.github.algernon-A.csl.realisticpopulationrevisited";
         private HarmonyInstance _harmony = HarmonyInstance.Create(HarmonyID);
