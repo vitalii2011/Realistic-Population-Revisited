@@ -1,3 +1,7 @@
+Version 1.2 -
+- Add building details GUI
+
+
 Version 1.1.1 -
 
 - Remove unnecessary logging of tourist building levels

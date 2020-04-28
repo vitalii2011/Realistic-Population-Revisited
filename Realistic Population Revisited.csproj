@@ -108,6 +108,17 @@
     <Content Include="XML_Files\WG_OfficeAndLowResidentialChange.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\GUI\UIEditPanel.cs" />
+    <Compile Include="Code\GUI\UIModCalcs.cs" />
+    <Compile Include="Code\GUI\UIBuildingDetails.cs" />
+    <Compile Include="Code\GUI\UIBuildingFilter.cs" />
+    <Compile Include="Code\GUI\UIBuildingRow.cs" />
+    <Compile Include="Code\GUI\UIPreviewPanel.cs" />
+    <Compile Include="Code\GUI\UIPreviewRenderer.cs" />
+    <Compile Include="Code\GUI\UITitleBar.cs" />
+    <Compile Include="Code\GUI\UIFastList.cs" />
+    <Compile Include="Code\GUI\UIThreading.cs" />
+    <Compile Include="Code\GUI\UIUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\AI_Files\AI_Building.cs" />
     <Compile Include="Code\AI_Files\AI_Commercial.cs" />
@@ -119,7 +130,7 @@
     <Compile Include="Code\DataStore.cs" />
     <Compile Include="Code\Debugging.cs" />
     <Compile Include="Code\Mod.cs" />
-    <Compile Include="Code\main.cs" />
+    <Compile Include="Code\Loading.cs" />
     <Compile Include="Code\Utils\AI_Utils.cs" />
     <Compile Include="Code\Utils\ExternalCalls.cs" />
     <Compile Include="Code\XML\WG_XMLBaseVersion.cs" />

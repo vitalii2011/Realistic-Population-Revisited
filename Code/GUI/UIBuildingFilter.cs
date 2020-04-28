@@ -1,0 +1,224 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using ColossalFramework.UI;
+
+
+namespace RealisticPopulationRevisited
+{
+    /// <summary>
+    /// Index numbers for building category filter buttons.
+    /// </summary>
+    public enum BuildingCategories
+    {
+        None = -1,
+        ResidentialLow,
+        ResidentialHigh,
+        CommercialLow,
+        CommercialHigh,
+        Office,
+        Industrial,
+        Tourism,
+        Leisure,
+        Organic,
+        Selfsufficient,
+        numCategories
+    }
+
+
+    /// <summary>
+    /// Building filter category buttons.
+    /// </summary>
+    public class CategoryIcons
+    {
+        // ItemClass ServiceClass services for each toggle.
+        public static readonly ItemClass.Service[] serviceMapping =
+        {
+            ItemClass.Service.Residential,
+            ItemClass.Service.Residential,
+            ItemClass.Service.Commercial,
+            ItemClass.Service.Commercial,
+            ItemClass.Service.Office,
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Commercial,
+            ItemClass.Service.Commercial,
+            ItemClass.Service.Commercial,
+            ItemClass.Service.Residential
+        };
+
+        // ItemClass ServiceClass services for each toggle.
+        public static readonly ItemClass.SubService[] subServiceMapping =
+        {
+            ItemClass.SubService.ResidentialLow,
+            ItemClass.SubService.ResidentialHigh,
+            ItemClass.SubService.CommercialLow,
+            ItemClass.SubService.CommercialHigh,
+            ItemClass.SubService.None,
+            ItemClass.SubService.None,
+            ItemClass.SubService.CommercialTourist,
+            ItemClass.SubService.CommercialLeisure,
+            ItemClass.SubService.CommercialEco,
+            ItemClass.SubService.ResidentialLowEco
+        };
+
+
+        // Atlas that each icon sprite comes from.
+        public static readonly string[] atlases = { "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails" };
+
+        // Icon sprite enabled names.
+        public static readonly string[] spriteNames =
+        {
+            "ZoningResidentialLow",
+            "ZoningResidentialHigh",
+            "ZoningCommercialLow",
+            "ZoningCommercialHigh",
+            "ZoningOffice",
+            "ZoningIndustrial",
+            "DistrictSpecializationTourist",
+            "DistrictSpecializationLeisure",
+            "DistrictSpecializationOrganic",
+            "DistrictSpecializationSelfsufficient"
+        };
+
+        // Icon sprite disnabled names.
+        public static readonly string[] disabledSpriteNames =
+        {
+            "ZoningResidentialLowDisabled",
+            "ZoningResidentialHighDisabled",
+            "ZoningCommercialLowDisabled",
+            "ZoningCommercialHighDisabled",
+            "ZoningOfficeDisabled",
+            "ZoningIndustrialDisabled",
+            "IconPolicyTourist",
+            "IconPolicyLeisure",
+            "IconPolicyOrganic",
+            "IconPolicySelfsufficient"
+        };
+
+        // Icon sprite tooltips.
+        public static readonly string[] tooltips =
+        {
+            "Residential low",
+            "Residential high",
+            "Commercial low",
+            "Commercial high",
+            "Office" ,
+            "Industrial",
+            "Tourism",
+            "Leisure",
+            "Organic commercial",
+            "Self-sufficient homes"
+        };
+    }
+
+
+    /// <summary>
+    /// Panel containing filtering mechanisms (category buttons, name search) for the building list.
+    /// </summary>
+    public class UIBuildingFilter : UIPanel
+    {
+        // Panel components.
+        public UICheckBox[] categoryToggles;
+        public UIButton allCategories;
+        public UITextField nameFilter;
+
+        // Basic event handler for filtering changes.
+        public event PropertyChangedEventHandler<int> eventFilteringChanged;
+
+
+        /// <summary>
+        /// Set up filter bar.
+        /// We don't use Start() here as we need to access the category toggle states to set up the initial filtering list before Start() is called by UnityEngine.
+        /// </summary>
+        public void Setup()
+        {
+            // Catgegory buttons.
+            categoryToggles = new UICheckBox[(int)BuildingCategories.numCategories];
+
+            for (int i = 0; i < (int)BuildingCategories.numCategories; i++)
+            {
+                // Basic setup.
+                categoryToggles[i] = UIUtils.CreateIconToggle(this, CategoryIcons.atlases[i], CategoryIcons.spriteNames[i], CategoryIcons.spriteNames[i] + "Disabled");
+                categoryToggles[i].tooltip = CategoryIcons.tooltips[i];
+                categoryToggles[i].relativePosition = new Vector3(40 * i, 0);
+                categoryToggles[i].isChecked = true;
+                categoryToggles[i].readOnly = true;
+
+                // Single click event handler - toggle state of this button.
+                categoryToggles[i].eventClick += (c, p) =>
+                {
+                    // If either shift or control is NOT held down, deselect all other toggles.
+                    if (!(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
+                    {
+                        for (int j = 0; j < (int)BuildingCategories.numCategories; j++)
+                        {
+                            categoryToggles[j].isChecked = false;
+                        }
+                    }
+
+                    // Select this toggle.
+                    ((UICheckBox)c).isChecked = true;
+
+                    // Trigger an update.
+                    eventFilteringChanged(this, 0);
+                };
+            }
+
+            // 'All categories' button.
+            allCategories = UIUtils.CreateButton(this, 120);
+            allCategories.text = "All categories";
+            allCategories.relativePosition = new Vector3(405, 5);
+
+            // All categories event handler.
+            allCategories.eventClick += (c, p) =>
+            {
+                // Select all category toggles.
+                for (int i = 0; i < (int)BuildingCategories.numCategories; i++)
+                {
+                    categoryToggles[i].isChecked = true;
+                }
+
+                // Trigger an update.
+                eventFilteringChanged(this, 0);
+            };
+
+            // Name filter.
+            UILabel nameLabel = AddUIComponent<UILabel>();
+            nameLabel.textScale = 0.8f;
+            nameLabel.padding = new RectOffset(0, 0, 8, 0);
+            nameLabel.relativePosition = new Vector3(width - 250, 0);
+            nameLabel.text = "Name: ";
+
+            nameFilter = UIUtils.CreateTextField(this, 200f, 30f);
+            nameFilter.relativePosition = new Vector3(width - nameFilter.width, 0);
+
+            // Name filter event handling - update on any change.
+            nameFilter.eventTextChanged += (c, s) => eventFilteringChanged(this, 5);
+            nameFilter.eventTextSubmitted += (c, s) => eventFilteringChanged(this, 5);
+        }
+
+
+        public void SelectBuildingCategory(ItemClass buildingClass)
+        {
+            for (int i = 0; i < (int)BuildingCategories.numCategories; i ++)
+            {
+                if (CategoryIcons.subServiceMapping[i] == ItemClass.SubService.None && buildingClass.m_service == CategoryIcons.serviceMapping[i])
+                {
+                    categoryToggles[i].isChecked = true;
+                }
+                else if (buildingClass.m_subService == CategoryIcons.subServiceMapping[i])
+                {
+                    categoryToggles[i].isChecked = true;
+                }
+                else if (buildingClass.m_subService == ItemClass.SubService.ResidentialHighEco && CategoryIcons.subServiceMapping[i] == ItemClass.SubService.ResidentialLowEco)
+                {
+                    categoryToggles[i].isChecked = true;
+                }
+                else
+                {
+                    categoryToggles[i].isChecked = false;
+                }
+            }
+        }
+    }
+}

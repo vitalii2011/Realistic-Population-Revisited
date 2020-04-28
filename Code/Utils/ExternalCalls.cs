@@ -1,79 +1,170 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+
 
 namespace RealisticPopulationRevisited
 {
+    /// <summary>
+    /// External interfaces that can be used by other mods.
+    /// Also used by the building details UI to modify buildings.
+    /// </summary>
     class ExternalCalls
     {
-        public static int GetResidential(string name)
+        /// <summary>
+        /// Returns the customised number of households for a given prefab.
+        /// Returns 0 if no custom settings exist.
+        /// </summary>
+        /// <param name="prefab">The prefab (BuldingInfo) to query</param>
+        /// <returns>The custom household count (0 if no settings)</returns>
+        public static int GetResidential(BuildingInfo prefab)
         {
             int returnValue;
-            if (DataStore.householdCache.TryGetValue(name, out returnValue))
+            if (DataStore.householdCache.TryGetValue(prefab.name, out returnValue))
             {
                 return returnValue;
             }
             return 0;
         }
 
-        public static void AddResidential(string name, int houses)
+
+        /// <summary>
+        /// Sets the customised number of households for a given prefab.
+        /// If a record doesn't already exist, a new one will be created.
+        /// </summary>
+        /// <param name="prefab">The prefab (BuildingInfo) to set</param>
+        /// <param name="houses">The updated households</param>
+        public static void SetResidential(BuildingInfo prefab, int houses)
         {
-            Dictionary<string, int> cache = DataStore.householdCache;
-            if (cache.ContainsKey(name))
+            // Update or add entry to configuration file cache.
+            if (DataStore.householdCache.ContainsKey(prefab.name))
             {
-                cache.Remove(name);
+                // Prefab already has a record; update.
+                DataStore.householdCache[prefab.name] = houses;
             }
-            cache.Add(name, houses);
+            else
+            {
+                // Prefab doesn't already have a record; create.
+                DataStore.householdCache.Add(prefab.name, houses);
+            }
+
+            // Save the updated configuration file.
+            Save();
+
+            // Get current building hash (for updating prefab dictionary).
+            var prefabHash = prefab.gameObject.GetHashCode();
+
+            // Update entry in 'live' settings.
+            if (DataStore.prefabHouseHolds.ContainsKey(prefabHash))
+            {
+                // Prefab already has a record; update.
+                DataStore.prefabHouseHolds[prefabHash] = houses;
+            }
+            else
+            {
+                // Prefab doesn't already have a record; create.
+                DataStore.prefabHouseHolds.Add(prefabHash, houses);
+            }
         }
 
-        public static void RemoveResidential(string name)
+
+        /// <summary>
+        /// Removes the custom household record (if any) for a given prefab.
+        /// </summary>
+        /// <param name="prefab">The prefab (BuildingInfo) to remove the record from</param>
+        public static void RemoveResidential(BuildingInfo prefab)
         {
-            Dictionary<string, int> cache = DataStore.householdCache;
-            cache.Remove(name);
-            // Add the default back in if it is there
-            if (DataStore.defaultHousehold.ContainsKey(name))
-            {
-                int value;
-                DataStore.defaultHousehold.TryGetValue(name, out value);
-                cache.Add(name, value);
-            }
+            // Remove the entry from the configuration file cache.
+            DataStore.householdCache.Remove(prefab.name);
+
+            // Save the updated configuration file.
+            Save();
+
+            // Remove current building's record from 'live' dictionary.
+            DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
         }
 
-        public static int GeWorker(string name)
+        /// <summary>
+        /// Returns the customised number of workers for a given prefab.
+        /// Returns 0 if no custom settings exist.
+        /// </summary>
+        /// <param name="prefab">The custom worker count (0 if no settings)</param>
+        /// <returns></returns>
+        public static int GetWorker(BuildingInfo prefab)
         {
             int returnValue;
-            if (DataStore.workerCache.TryGetValue(name, out returnValue))
+            if (DataStore.workerCache.TryGetValue(prefab.name, out returnValue))
             {
                 return returnValue;
             }
             return 0;
         }
 
-        public static void AddWorker(string name, int workers)
+
+        /// <summary>
+        /// Sets the customised number of workers for a given prefab.
+        /// If a record doesn't already exist, a new one will be created.
+        /// </summary>
+        /// <param name="prefab">The prefab (BuildingInfo) to set</param>
+        /// <param name="workers">The updated worker count</param>
+        public static void SetWorker(BuildingInfo prefab, int workers)
         {
-            Dictionary<string, int> cache = DataStore.workerCache;
-            if (cache.ContainsKey(name))
+            // Update or add entry to configuration file cache.
+            if (DataStore.workerCache.ContainsKey(prefab.name))
             {
-                cache.Remove(name);
+                // Prefab already has a record; update.
+                DataStore.workerCache[prefab.name] = workers;
             }
-            cache.Add(name, workers);
+            else
+            {
+                // Prefab doesn't already have a record; create.
+                DataStore.workerCache.Add(prefab.name, workers);
+            }
+
+            // Save the updated configuration file.
+            Save();
+
+            // Get current building hash (for updating prefab dictionary).
+            var prefabHash = prefab.gameObject.GetHashCode();
+
+            // Calculate employment breakdown.
+            int[] array = CommercialBuildingAIMod.GetArray(prefab, (int)prefab.GetClassLevel());
+            PrefabEmployStruct output = new PrefabEmployStruct();
+            AI_Utils.CalculateprefabWorkerVisit(prefab.GetWidth(), prefab.GetLength(), ref prefab, 4, ref array, out output);
+
+            // Update entry in 'live' settings.
+            if (DataStore.prefabWorkerVisit.ContainsKey(prefabHash))
+            {
+                // Prefab already has a record; update.
+                DataStore.prefabWorkerVisit[prefabHash] = output;
+            }
+            else
+            {
+                // Prefab doesn't already have a record; create.
+                DataStore.prefabWorkerVisit.Add(prefabHash, output);
+            }
         }
 
-        public static void RemoveWorker(string name)
+
+        /// <summary>
+        /// Removes the custom household record (if any) for a given prefab.
+        /// </summary>
+        /// <param name="prefab">The prefab (BuildingInfo) to remove the record from</param>
+        public static void RemoveWorker(BuildingInfo prefab)
         {
-            Dictionary<string, int> cache = DataStore.workerCache;
-            cache.Remove(name);
-            // Add the default back in if it is there
-            if (DataStore.defaultWorker.ContainsKey(name))
-            {
-                int value;
-                DataStore.defaultWorker.TryGetValue(name, out value);
-                cache.Add(name, value);
-            }
+            // Remove the entry from the configuration file cache.
+            DataStore.workerCache.Remove(prefab.name);
+
+            // Save the updated configuration file.
+            Save();
+
+            // Remove current building's record from 'live' dictionary.
+            DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
         }
 
-        public static void Save()
+
+        /// <summary>
+        /// Saves the configuration file cache to disk.
+        /// </summary>
+        private static void Save()
         {
             WG_XMLBaseVersion xml = new XML_VersionSix();
             xml.writeXML(DataStore.currentFileLocation);
