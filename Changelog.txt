@@ -1,5 +1,6 @@
 Version 1.2 -
 - Add building details GUI
+- Suppress logging for level 1 buildings assigned to array index 0
 
 
 Version 1.1.1 -
