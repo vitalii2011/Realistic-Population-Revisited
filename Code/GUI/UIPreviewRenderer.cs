@@ -77,6 +77,9 @@ namespace RealisticPopulationRevisited
                         // Reset the bounding box to be the smallest that can encapsulate all verticies of the new mesh.
                         // That way the preview image is the largest size that fits cleanly inside the preview size.
                         currentBounds = new Bounds(Vector3.zero, Vector3.zero);
+
+                        // Use separate verticies instance instead of accessing Mesh.vertices each time (which is slow).
+                        // >10x measured performance improvement by doing things this way instead.
                         Vector3[] vertices = Mesh.vertices;
                         for (int i = 0; i < vertices.Length; i++)
                         {

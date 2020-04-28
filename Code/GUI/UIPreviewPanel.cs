@@ -17,7 +17,6 @@ namespace RealisticPopulationRevisited
 
         // Currently selected building and its pre-rendered (by game) equivalent for rendering.
         private BuildingInfo currentSelection;
-        private BuildingInfo currentRender;
 
 
         /// <summary>
@@ -84,19 +83,17 @@ namespace RealisticPopulationRevisited
                 return;
             }
 
-            // Update to current selection to the new building and find pre-rendered game instance.
+            // Update current selection to the new building.
             currentSelection = building;
-            currentRender = PrefabCollection<BuildingInfo>.FindLoaded(currentSelection.name);
-
 
             // Generate render if there's a selection with a mesh.
-            if (currentRender != null && currentRender.m_mesh != null)
+            if (currentSelection != null && currentSelection.m_mesh != null)
             {
                 // Set default values.
                 previewRender.CameraRotation = 210f;
                 previewRender.Zoom = 4f;
-                previewRender.Mesh = currentRender.m_mesh;
-                previewRender.material = currentRender.m_material;
+                previewRender.Mesh = currentSelection.m_mesh;
+                previewRender.material = currentSelection.m_material;
 
                 RenderPreview();
 
@@ -120,7 +117,7 @@ namespace RealisticPopulationRevisited
             {
                 // Set and show building name.
                 buildingName.isVisible = true;
-                buildingName.text = UIBuildingDetails.GetDisplayName(currentRender.name);
+                buildingName.text = UIBuildingDetails.GetDisplayName(currentSelection.name);
                 UIUtils.TruncateLabel(buildingName, width - 45);
                 buildingName.autoHeight = true;
             }
@@ -132,18 +129,18 @@ namespace RealisticPopulationRevisited
         /// </summary>
         private void RenderPreview()
         {
-            if (currentRender == null)
+            if (currentSelection == null)
             {
                 return;
             }
 
             // If the selected building has colour variations, temporarily set the colour to the default for rendering.
-            if (currentRender.m_useColorVariations)
+            if (currentSelection.m_useColorVariations)
             {
-                Color originalColor = currentRender.m_material.color;
-                currentRender.m_material.color = currentRender.m_color0;
+                Color originalColor = currentSelection.m_material.color;
+                currentSelection.m_material.color = currentSelection.m_color0;
                 previewRender.Render();
-                currentRender.m_material.color = originalColor;
+                currentSelection.m_material.color = originalColor;
             }
             else
             {
