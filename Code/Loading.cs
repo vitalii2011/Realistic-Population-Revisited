@@ -187,10 +187,7 @@ namespace RealisticPopulationRevisited
                 ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);
                 buildingButton = UIUtils.CreateButton(infoPanel.component, 250);
                 buildingButton.text = "Realistic Population settings";
-                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 300);
-
-                // Make the info panel a bit higher to accomodate button.
-                infoPanel.component.height = infoPanel.component.height + 10;
+                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 298);
 
                 // Event handler.
                 buildingButton.eventClick += (c, p) =>
