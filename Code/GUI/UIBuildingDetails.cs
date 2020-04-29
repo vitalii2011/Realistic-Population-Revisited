@@ -21,7 +21,6 @@ namespace RealisticPopulationRevisited
         private const float panelHeight = 550;
         private const float bottomMargin = 10;
         private const float spacing = 5;
-
         public const float titleHeight = 40;
 
         // Panel components.
@@ -212,7 +211,11 @@ namespace RealisticPopulationRevisited
         }
 
 
-        // Selects the current building and updates
+        /// <summary>
+        /// Called to select a building from 'outside' the building details editor (e.g. by button on building info panel).
+        /// Sets the filter to only display the relevant category for the relevant building, and makes that building selected in the list.
+        /// </summary>
+        /// <param name="building"></param>
         public void SelectBuilding(BuildingInfo building)
         {
             // Ensure the fastlist is filtered to include this building.
