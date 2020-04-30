@@ -33,6 +33,9 @@ namespace RealisticPopulationRevisited
         // Button (in building info panels) to access building details screen.
         private UIButton buildingButton;
 
+        // XML settings file.
+        public static SettingsFile settingsFile;
+
 
         public static bool IsModEnabled(UInt64 id)
         {
@@ -199,6 +202,16 @@ namespace RealisticPopulationRevisited
                     UIBuildingDetails.instance.SelectBuilding(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
                     UIBuildingDetails.instance.Show();
                 };
+            }
+
+            // Load settings file and check if we need to display update notification.
+            settingsFile = Configuration<SettingsFile>.Load();
+            if (settingsFile.NotificationVersion != 1)
+            {
+                // No update notification "Don't show again" flag found; show the notification.
+                UpdateNotification notification = new UpdateNotification();
+                notification.Create();
+                notification.Show();
             }
         }
 

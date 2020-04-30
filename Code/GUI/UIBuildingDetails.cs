@@ -48,7 +48,7 @@ namespace RealisticPopulationRevisited
             try
             {
                 // Destroy existing (if any) instances.
-                uiGameObject = GameObject.Find("RealPopBuildingEditor");
+                uiGameObject = GameObject.Find("RealPopBuildingDetails");
                 if (uiGameObject != null)
                 {
                     UnityEngine.Debug.Log("Realistic Population Revisited: destroying existing building details panel instance.");

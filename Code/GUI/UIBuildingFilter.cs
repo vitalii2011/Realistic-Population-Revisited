@@ -198,6 +198,10 @@ namespace RealisticPopulationRevisited
         }
 
 
+        /// <summary>
+        /// Sets the category toggles so that the one that includes this building is on, and the rest are off
+        /// </summary>
+        /// <param name="buildingClass">ItemClass of the building (to match toggle categories)</param>
         public void SelectBuildingCategory(ItemClass buildingClass)
         {
             for (int i = 0; i < (int)BuildingCategories.numCategories; i ++)

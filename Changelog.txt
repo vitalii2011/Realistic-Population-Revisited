@@ -1,6 +1,7 @@
 Version 1.2 -
 - Add building details GUI
 - Allow live updating of home and job counts for existing buildings
+- Add update notification
 - Suppress logging for level 1 buildings assigned to array index 0
 
 
