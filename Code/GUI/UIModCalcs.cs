@@ -101,7 +101,7 @@ namespace RealisticPopulationRevisited
             homesJobsCustomLabel.textAlignment = UIHorizontalAlignment.Left;
 
             homesJobsActualLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsActualLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 4) * 30);
+            homesJobsActualLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 5) * 30);
             homesJobsActualLabel.width = 270;
             homesJobsActualLabel.textAlignment = UIHorizontalAlignment.Left;
         }
