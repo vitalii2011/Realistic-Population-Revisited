@@ -187,10 +187,10 @@ namespace RealisticPopulationRevisited
                 ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);
                 buildingButton = UIUtils.CreateButton(infoPanel.component, 133);
                 buildingButton.height = 19.5f;
-                buildingButton.textScale = 0.75f;
+                buildingButton.textScale = 0.65f;
                 buildingButton.textVerticalAlignment = UIVerticalAlignment.Bottom;
-                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 105);
-                buildingButton.text = "Realistic Population settings";
+                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 80);
+                buildingButton.text = "Realistic Population";
 
                 // Event handler.
                 buildingButton.eventClick += (c, p) =>

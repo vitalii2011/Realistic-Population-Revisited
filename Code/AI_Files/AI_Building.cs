@@ -18,7 +18,7 @@ namespace RealisticPopulationRevisited
         private static Citizen[] citizenArray = Singleton<CitizenManager>.instance.m_citizens.m_buffer;
 
         
-        static bool Prefix(ref BuildingAI __instance, ushort buildingID, ref Building data, int homeCount, int workCount, int visitCount, int studentCount)
+        public static bool Prefix(ref BuildingAI __instance, ushort buildingID, ref Building data, int homeCount, int workCount, int visitCount, int studentCount)
         {
             int totalWorkCount = (workCount + 4) / 5;
             int totalVisitCount = (visitCount + 4) / 5;
