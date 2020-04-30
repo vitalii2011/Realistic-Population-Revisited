@@ -35,6 +35,7 @@ namespace RealisticPopulationRevisited
         private UILabel title;
         private UIPanel detailsPanel;
         private UILabel[] detailLabels;
+        private UILabel messageLabel;
 
         // Special-purpose labels used to display either jobs or households as appropriate.
         private UILabel homesJobsCalcLabel;
@@ -104,6 +105,18 @@ namespace RealisticPopulationRevisited
             homesJobsActualLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 5) * 30);
             homesJobsActualLabel.width = 270;
             homesJobsActualLabel.textAlignment = UIHorizontalAlignment.Left;
+
+
+            // Message label (initially hidden).
+            messageLabel = detailsPanel.AddUIComponent<UILabel>();
+            messageLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 6) * 30);
+            messageLabel.textAlignment = UIHorizontalAlignment.Left;
+            messageLabel.autoSize = false;
+            messageLabel.autoHeight = true;
+            messageLabel.wordWrap = true;
+            messageLabel.width = 270;
+            messageLabel.text = "No message to display";
+            messageLabel.isVisible = false;
         }
 
 
@@ -118,167 +131,187 @@ namespace RealisticPopulationRevisited
                 // If no valid building selected, then hide the calculations panel.
                 detailsPanel.height = 0;
                 detailsPanel.isVisible = false;
+                return;
+            }
+
+            // Variables to compare actual counts vs. mod count, to see if there's another mod overriding counts.
+            int appliedCount;
+            int modCount;
+
+            // Building model size, not plot size.
+            Vector3 buildingSize = building.m_size;
+            int floorCount;
+            // Array used for calculations depending on building service/subservice (via DataStore).
+            int[] array;
+            // Default minimum number of homes or jobs is one; different service types will override this.
+            int minHomesJobs = 1;
+            int customHomeJobs;
+
+            // Check for valid building AI.
+            if (!(building.GetAI() is PrivateBuildingAI buildingAI))
+            {
+                Debug.Log("Realistic Population Revisited: invalid building AI type in building details!");
+                return;
+            }
+
+            // Residential vs. workplace AI.
+            if (buildingAI is ResidentialBuildingAI)
+            {
+                // Get appropriate calculation array.
+                array = ResidentialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
+
+                // Set calculated homes label.
+                homesJobsCalcLabel.text = "Calculated homes: ";
+
+                // Set customised homes label and get value (if any).
+                homesJobsCustomLabel.text = "Customised homes: ";
+                customHomeJobs = ExternalCalls.GetResidential(building);
+
+                // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
+                // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
+                appliedCount = buildingAI.CalculateHomeCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength());
+                homesJobsActualLabel.text = "Applied homes: " + appliedCount;
             }
             else
             {
-                // A building is selected - determine calculatons.
+                // Workplace AI.
+                // Default minimum number of jobs is 4.
+                minHomesJobs = 4;
 
-                // Building model size, not plot size.
-                Vector3 buildingSize = building.m_size;
-                int floorCount;
-                // Array used for calculations depending on building service/subservice (via DataStore).
-                int[] array;
-                // Default minimum number of homes or jobs is one; different service types will override this.
-                int minHomesJobs = 1;
-                int customHomeJobs;
-
-                // Check for valid building AI.
-                if (!(building.GetAI() is PrivateBuildingAI buildingAI))
+                // Find the correct array for the relevant building AI.
+                switch (building.GetService())
                 {
-                    Debug.Log("Realistic Population Revisited: invalid building AI type in building details!");
-                    return;
+                    case ItemClass.Service.Commercial:
+                        array = CommercialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
+                        break;
+                    case ItemClass.Service.Office:
+                        array = OfficeBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
+                        break;
+                    case ItemClass.Service.Industrial:
+                        if (buildingAI is IndustrialExtractorAI)
+                        {
+                            array = IndustrialExtractorAIMod.GetArray(building, (int)building.GetClassLevel());
+                        }
+                        else
+                        {
+                            array = IndustrialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
+                        }
+                        break;
+                    default:
+                        Debug.Log("Realistic Population Revisited: invalid building service in building details!");
+                        return;
                 }
 
-                // Residential vs. workplace AI.
-                if (buildingAI is ResidentialBuildingAI)
-                {
-                    // Get appropriate calculation array.
-                    array = ResidentialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
+                // Set calculated jobs label.
+                homesJobsCalcLabel.text = "Calculated jobs (min. 4): ";
 
-                    // Set calculated homes label.
-                    homesJobsCalcLabel.text = "Calculated homes: ";
+                // Set customised jobs label and get value (if any).
+                homesJobsCustomLabel.text = "Customised jobs: ";
+                customHomeJobs = ExternalCalls.GetWorker(building);
 
-                    // Set customised homes label and get value (if any).
-                    homesJobsCustomLabel.text = "Customised homes: ";
-                    customHomeJobs = ExternalCalls.GetResidential(building);
-
-                    // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
-                    // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
-                    homesJobsActualLabel.text = "Applied homes: " + buildingAI.CalculateHomeCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength());
-                }
-                else
-                {
-                    // Workplace AI.
-                    // Default minimum number of jobs is 4.
-                    minHomesJobs = 4;
-
-                    // Find the correct array for the relevant building AI.
-                    switch (building.GetService())
-                    {
-                        case ItemClass.Service.Commercial:
-                            array = CommercialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                            break;
-                        case ItemClass.Service.Office:
-                            array = OfficeBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                            break;
-                        case ItemClass.Service.Industrial:
-                            if (buildingAI is IndustrialExtractorAI)
-                            {
-                                array = IndustrialExtractorAIMod.GetArray(building, (int)building.GetClassLevel());
-                            }
-                            else
-                            {
-                                array = IndustrialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                            }
-                            break;
-                        default:
-                            Debug.Log("Realistic Population Revisited: invalid building service in building details!");
-                            return;
-                    }
-
-                    // Set calculated jobs label.
-                    homesJobsCalcLabel.text = "Calculated jobs (min. 4): ";
-
-                    // Set customised jobs label and get value (if any).
-                    homesJobsCustomLabel.text = "Customised jobs: ";
-                    customHomeJobs = ExternalCalls.GetWorker(building);
-
-                    // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
-                    // It differs from calculated jobs if there's an override value for that building with this mod, or if another mod is overriding.
-                    int[] jobs = new int[4];
-                    buildingAI.CalculateWorkplaceCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
-                    homesJobsActualLabel.text = "Applied jobs: " + (jobs[0] + jobs[1] + jobs[2] + jobs[3]);
-                }
-
-                // Reproduce CalcBase calculations to get building area.
-                int calcWidth = building.GetWidth();
-                int calcLength = building.GetLength();
-                floorCount = Mathf.Max(1, Mathf.FloorToInt(buildingSize.y / array[DataStore.LEVEL_HEIGHT]));
-
-                // If CALC_METHOD is zero, then calculations are based on building model size, not plot size.
-                if (array[DataStore.CALC_METHOD] == 0)
-                {
-                    // If asset has small x dimension, then use plot width in squares x 6m (75% of standard width) instead.
-                    if (buildingSize.x <= 1)
-                    {
-                        calcWidth *= 6;
-                    }
-                    else
-                    {
-                        calcWidth = (int)buildingSize.x;
-                    }
-
-                    // If asset has small z dimension, then use plot length in squares x 6m (75% of standard length) instead.
-                    if (buildingSize.z <= 1)
-                    {
-                        calcLength *= 6;
-                    }
-                    else
-                    {
-                        calcLength = (int)buildingSize.z;
-                    }
-                }
-                else
-                {
-                    // If CALC_METHOD is nonzero, then caluclations are based on plot size, not building size.
-                    // Plot size is 8 metres per square.
-                    calcWidth *= 8;
-                    calcLength *= 8;
-                }
-
-                // Display calculated (and retrieved) details.
-                detailLabels[(int)Details.width].text = "Building width (m): " + calcWidth;
-                detailLabels[(int)Details.length].text = "Building length (m): " + calcLength;
-                detailLabels[(int)Details.height].text = "Scaffolding height (m): " + (int)buildingSize.y;
-                detailLabels[(int)Details.personArea].text = "m2 per person: " + array[DataStore.PEOPLE];
-                detailLabels[(int)Details.floorHeight].text = "Floor height (m): " + array[DataStore.LEVEL_HEIGHT];
-                detailLabels[(int)Details.floors].text = "Calculated floors: " + floorCount;
-
-                // Area calculation - will need this later.
-                int calculatedArea = calcWidth * calcLength;
-                detailLabels[(int)Details.area].text = "Calculated area: " + calculatedArea;
-
-                // Show or hide extra floor modifier as appropriate (hide for zero or less, otherwise show).
-                if (array[DataStore.DENSIFICATION] > 0)
-                {
-                    detailLabels[(int)Details.extraFloors].text = "Floor modifier: " + array[DataStore.DENSIFICATION];
-                    detailLabels[(int)Details.extraFloors].isVisible = true;
-                }
-                else
-                {
-                    detailLabels[(int)Details.extraFloors].isVisible = false;
-                }
-
-                // Set minimum residences for high density.
-                if ((building.GetSubService() == ItemClass.SubService.ResidentialHigh) || (building.GetSubService() == ItemClass.SubService.ResidentialHighEco))
-                {
-                    // Minimum of 2, or 90% number of floors, whichever is greater. This helps the 1x1 high density.
-                    minHomesJobs = Mathf.Max(2, Mathf.CeilToInt(0.9f * floorCount));
-                }
-
-                // Set customised homes/jobs label (leave blank if no custom setting retrieved).
-                if (customHomeJobs > 0)
-                {
-                    homesJobsCustomLabel.text += customHomeJobs.ToString();
-                }
-
-                // Perform actual household or workplace calculation.
-                homesJobsCalcLabel.text += Mathf.Max(minHomesJobs, (calculatedArea * (floorCount + Mathf.Max(0, array[DataStore.DENSIFICATION]))) / array[DataStore.PEOPLE]);
-
-                // We've got a valid building and results, so show panel.
-                detailsPanel.height = 270;
-                detailsPanel.isVisible = true;
+                // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
+                // It differs from calculated jobs if there's an override value for that building with this mod, or if another mod is overriding.
+                int[] jobs = new int[4];
+                buildingAI.CalculateWorkplaceCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
+                appliedCount = jobs[0] + jobs[1] + jobs[2] + jobs[3];
+                homesJobsActualLabel.text = "Applied jobs: " + appliedCount;
             }
+
+            // Reproduce CalcBase calculations to get building area.
+            int calcWidth = building.GetWidth();
+            int calcLength = building.GetLength();
+            floorCount = Mathf.Max(1, Mathf.FloorToInt(buildingSize.y / array[DataStore.LEVEL_HEIGHT]));
+
+            // If CALC_METHOD is zero, then calculations are based on building model size, not plot size.
+            if (array[DataStore.CALC_METHOD] == 0)
+            {
+                // If asset has small x dimension, then use plot width in squares x 6m (75% of standard width) instead.
+                if (buildingSize.x <= 1)
+                {
+                    calcWidth *= 6;
+                }
+                else
+                {
+                    calcWidth = (int)buildingSize.x;
+                }
+
+                // If asset has small z dimension, then use plot length in squares x 6m (75% of standard length) instead.
+                if (buildingSize.z <= 1)
+                {
+                    calcLength *= 6;
+                }
+                else
+                {
+                    calcLength = (int)buildingSize.z;
+                }
+            }
+            else
+            {
+                // If CALC_METHOD is nonzero, then caluclations are based on plot size, not building size.
+                // Plot size is 8 metres per square.
+                calcWidth *= 8;
+                calcLength *= 8;
+            }
+
+            // Display calculated (and retrieved) details.
+            detailLabels[(int)Details.width].text = "Building width (m): " + calcWidth;
+            detailLabels[(int)Details.length].text = "Building length (m): " + calcLength;
+            detailLabels[(int)Details.height].text = "Scaffolding height (m): " + (int)buildingSize.y;
+            detailLabels[(int)Details.personArea].text = "m2 per person: " + array[DataStore.PEOPLE];
+            detailLabels[(int)Details.floorHeight].text = "Floor height (m): " + array[DataStore.LEVEL_HEIGHT];
+            detailLabels[(int)Details.floors].text = "Calculated floors: " + floorCount;
+
+            // Area calculation - will need this later.
+            int calculatedArea = calcWidth * calcLength;
+            detailLabels[(int)Details.area].text = "Calculated area: " + calculatedArea;
+
+            // Show or hide extra floor modifier as appropriate (hide for zero or less, otherwise show).
+            if (array[DataStore.DENSIFICATION] > 0)
+            {
+                detailLabels[(int)Details.extraFloors].text = "Floor modifier: " + array[DataStore.DENSIFICATION];
+                detailLabels[(int)Details.extraFloors].isVisible = true;
+            }
+            else
+            {
+                detailLabels[(int)Details.extraFloors].isVisible = false;
+            }
+
+            // Set minimum residences for high density.
+            if ((building.GetSubService() == ItemClass.SubService.ResidentialHigh) || (building.GetSubService() == ItemClass.SubService.ResidentialHighEco))
+            {
+                // Minimum of 2, or 90% number of floors, whichever is greater. This helps the 1x1 high density.
+                minHomesJobs = Mathf.Max(2, Mathf.CeilToInt(0.9f * floorCount));
+            }
+
+            // Perform actual household or workplace calculation.
+            modCount = Mathf.Max(minHomesJobs, (calculatedArea * (floorCount + Mathf.Max(0, array[DataStore.DENSIFICATION]))) / array[DataStore.PEOPLE]);
+            homesJobsCalcLabel.text += modCount;
+
+            // Set customised homes/jobs label (leave blank if no custom setting retrieved).
+            if (customHomeJobs > 0)
+            {
+                homesJobsCustomLabel.text += customHomeJobs.ToString();
+
+                // Update modCount to reflect the custom figures.
+                modCount = customHomeJobs;
+            }
+
+            // Check to see if the count calculated by this mod matches the actual building count; if it doesn't, another mod is overriding this one.
+            if (modCount == appliedCount)
+            {
+                // No override; hide message text.
+                messageLabel.Hide();
+            }
+            else
+            {
+                // Another mod is overriding this one.  Display message.
+                messageLabel.text = "Either another mod is overriding the figures for this building, or this building existed before the current Realistic Population settings were applied.";
+                messageLabel.Show();
+            }
+
+            // We've got a valid building and results, so show panel.
+            detailsPanel.height = 270;
+            detailsPanel.isVisible = true;
         }
     }
 }

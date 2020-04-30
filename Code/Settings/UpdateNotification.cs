@@ -80,7 +80,7 @@ namespace RealisticPopulationRevisited
                 UILabel note1 = this.AddUIComponent<UILabel>();
                 note1.relativePosition = new Vector3(spacing, 40);
                 note1.textAlignment = UIHorizontalAlignment.Left;
-                note1.text = "Realistic Population Revisited has been updated to 1.2.  This update adds an interactive building options editor, accessible through the 'Realistic Population' button on the info panel of any residential, industrial, commercial or office building.";
+                note1.text = "Realistic Population Revisited has been updated to 1.2.  This update adds an interactive building houseold/jobs number editor and mod calculation viewer, accessible through the 'Realistic Population' button on the info panel of any residential, industrial, commercial or office building.";
                 note1.textScale = 0.8f;
                 note1.autoSize = false;
                 note1.autoHeight = true;
