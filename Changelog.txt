@@ -1,3 +1,6 @@
+- Adjusted building info panel button position to give better visibility of specialisation markers
+
+
 Version 1.2 -
 - Add building details GUI
 - Allow live updating of home and job counts for existing buildings

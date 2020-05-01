@@ -192,7 +192,7 @@ namespace RealisticPopulationRevisited
                 buildingButton.height = 19.5f;
                 buildingButton.textScale = 0.65f;
                 buildingButton.textVerticalAlignment = UIVerticalAlignment.Bottom;
-                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 80);
+                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 120);
                 buildingButton.text = "Realistic Population";
 
                 // Event handler.
