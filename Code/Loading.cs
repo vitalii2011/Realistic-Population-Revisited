@@ -44,6 +44,15 @@ namespace RealisticPopulationRevisited
 
         public override void OnCreated(ILoading loading)
         {
+            // Don't do anything if not in game (e.g. if we're going into an editor).
+            if (loading.currentMode != AppMode.Game)
+            {
+                isModEnabled = false;
+                UnityEngine.Debug.Log("Realistic Population Revisited: not loading into game, skipping activation.");
+                return;
+            }
+
+
             // Check for original WG Realistic Population and Consumption Mod; if it's enabled, flag and don't activate this mod.
             if (IsModEnabled(426163185ul))
             {
@@ -158,6 +167,13 @@ namespace RealisticPopulationRevisited
                 ExceptionPanel panel = UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel");
                 panel.SetMessage("Realistic Population Revisited", "Original Realistic Population and Consumption Mod mod detected - Realistic Population Revisited is shutting down to protect your game.  Only ONE of these mods can be enabled at the same time; please unsubscribe from the old Realistic Population and Consumption Mod, which is now deprecated!", false);
             }
+
+            // Don't do anything further if mod hasn't activated (conflicting mod detected, or loading into editor instead of game).
+            if (!isModEnabled)
+            {
+                return;
+            }
+
             else if (mode == LoadMode.LoadGame || mode == LoadMode.NewGame)
             {
                 if (!isLevelLoaded)
@@ -184,7 +200,7 @@ namespace RealisticPopulationRevisited
             UIBuildingDetails.Create();
 
             // Add button to access building details from building info panels, if it doesn't already exist.
-            if(buildingButton == null)
+            if (buildingButton == null)
             {
                 // Basic setup.
                 ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);

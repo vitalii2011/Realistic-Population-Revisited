@@ -1,4 +1,5 @@
 - Adjusted building info panel button position to give better visibility of specialisation markers
+- Mod no longer loads in editors
 
 
 Version 1.2 -
