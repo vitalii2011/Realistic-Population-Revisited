@@ -305,7 +305,7 @@ namespace RealisticPopulationRevisited
             else
             {
                 // Another mod is overriding this one.  Display message.
-                messageLabel.text = "Either another mod is overriding the figures for this building, or this building existed before the current Realistic Population settings were applied.";
+                messageLabel.text = "Another mod is overriding the figures for this building.";
                 messageLabel.Show();
             }
 
