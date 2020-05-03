@@ -161,11 +161,10 @@ namespace RealisticPopulationRevisited
 
         public override void OnLevelLoaded(LoadMode mode)
         {
-            // Check to see if a conflicting mod has been detected - if so, alert the user and abort operation.
+            // Check to see if a conflicting mod has been detected - if so, alert the user.
             if (conflictingMod)
             {
-                ExceptionPanel panel = UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel");
-                panel.SetMessage("Realistic Population Revisited", "Original Realistic Population and Consumption Mod mod detected - Realistic Population Revisited is shutting down to protect your game.  Only ONE of these mods can be enabled at the same time; please unsubscribe from the old Realistic Population and Consumption Mod, which is now deprecated!", false);
+                UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Realistic Population Revisited", "Original Realistic Population and Consumption Mod mod detected - Realistic Population Revisited is shutting down to protect your game.  Only ONE of these mods can be enabled at the same time; please unsubscribe from the old Realistic Population and Consumption Mod, which is now deprecated!", true);
             }
 
             // Don't do anything further if mod hasn't activated (conflicting mod detected, or loading into editor instead of game).

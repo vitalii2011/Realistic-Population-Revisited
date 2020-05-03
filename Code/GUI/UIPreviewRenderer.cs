@@ -144,6 +144,24 @@ namespace RealisticPopulationRevisited
             renderCamera.nearClipPlane = Mathf.Max(num2 - num * 1.5f, 0.01f);
             renderCamera.farClipPlane = num2 + num * 1.5f;
 
+            // Backup current lighting by game and replace with our render lighting settings.
+            Light gameMainLight = RenderManager.instance.MainLight;
+            Light renderLight = DayNightProperties.instance.sunLightSource;
+
+            RenderManager.instance.MainLight = renderLight;
+
+            // If game is currently in nighttime, enable sun and disable moon lighting.
+            if (gameMainLight == DayNightProperties.instance.moonLightSource)
+            {
+                DayNightProperties.instance.sunLightSource.enabled = true;
+                DayNightProperties.instance.moonLightSource.enabled = false;
+            }
+
+            // Light settings. 
+            renderLight.intensity = 2f;
+            renderLight.color = Color.white;
+            renderLight.transform.eulerAngles = new Vector3(35, 0, 0);
+
             // Yay!  Matrix math, my favourite!
             Quaternion quaternion = Quaternion.Euler(-20f, 0f, 0f) * Quaternion.Euler(0f, currentRotation, 0f);
             Vector3 pos = quaternion * -currentBounds.center;
@@ -158,6 +176,18 @@ namespace RealisticPopulationRevisited
             // Render!
             Graphics.DrawMesh(currentMesh, matrix, material, 0, renderCamera, 0, null, true, true);
             renderCamera.RenderWithShader(material.shader, "");
+
+            // Restore game lighting.
+            RenderManager.instance.MainLight = gameMainLight;
+
+            // Reset to moon lighting if the game is currently in nighttime.
+            if (gameMainLight == DayNightProperties.instance.moonLightSource)
+            {
+                DayNightProperties.instance.sunLightSource.enabled = false;
+                DayNightProperties.instance.moonLightSource.enabled = true;
+            }
+
+            // Reset mode.
             infoManager.SetCurrentMode(currentMode, currentSubMode);
         }
     }
