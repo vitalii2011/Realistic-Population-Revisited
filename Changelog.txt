@@ -1,5 +1,7 @@
+Version 1.2.1 -
+
 - Adjusted building info panel button position to give better visibility of specialisation markers
-- Standardise lighting for builiding info preview renders
+- Standardise lighting for builiding preview renders
 - Mod no longer loads in editors
 
 

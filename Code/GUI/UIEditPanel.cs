@@ -251,7 +251,7 @@ namespace RealisticPopulationRevisited
                         int homeCount = ((ResidentialBuildingAI)thisAI).CalculateHomeCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
                         int visitCount = ((ResidentialBuildingAI)thisAI).CalculateVisitplaceCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
 
-                        // Apply changes via direct call to EnsureCitizenUnits prefix patch from this mod (original method is protected so can't call directly).
+                        // Apply changes via direct call to EnsureCitizenUnits prefix patch from this mod.
                         RealisticCitizenUnits.Prefix(ref thisAI, i, ref thisBuilding, homeCount, 0, visitCount, 0);
                     }
                 }
