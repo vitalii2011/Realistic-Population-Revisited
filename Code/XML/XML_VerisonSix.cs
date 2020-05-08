@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Security;
 
 
 namespace RealisticPopulationRevisited
@@ -176,7 +177,7 @@ namespace RealisticPopulationRevisited
             foreach (string name in list.Keys)
             {
                 XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                meshNameNode.InnerXml = name;
+                meshNameNode.InnerXml = SecurityElement.Escape(name);
                 attribute = xmlDoc.CreateAttribute("value");
                 int value = 1;
                 DataStore.householdCache.TryGetValue(name, out value);
@@ -237,7 +238,7 @@ namespace RealisticPopulationRevisited
             foreach (string name in wList.Keys)
             {
                 XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
-                meshNameNode.InnerXml = name;
+                meshNameNode.InnerXml = SecurityElement.Escape(name);
                 int value = 1;
                 DataStore.workerCache.TryGetValue(name, out value);
                 attribute = xmlDoc.CreateAttribute("value");

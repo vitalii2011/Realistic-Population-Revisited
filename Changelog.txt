@@ -1,3 +1,8 @@
+Version 1.2.2 -
+
+- Escape building names when encoding into XML.
+
+
 Version 1.2.1 -
 
 - Adjusted building info panel button position to give better visibility of specialisation markers
