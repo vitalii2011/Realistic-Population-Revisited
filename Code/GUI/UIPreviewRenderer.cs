@@ -23,15 +23,17 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public UIPreviewRenderer()
         {
+
             // Set up camera.
             renderCamera = new GameObject("Camera").AddComponent<Camera>();
             renderCamera.transform.SetParent(transform);
             renderCamera.targetTexture = new RenderTexture(512, 512, 24, RenderTextureFormat.ARGB32);
-            renderCamera.pixelRect = new Rect(0f, 0f, 512, 512);
             renderCamera.allowHDR = true;
             renderCamera.enabled = false;
+            renderCamera.clearFlags = CameraClearFlags.SolidColor;
 
             // Basic defaults.
+            renderCamera.pixelRect = new Rect(0f, 0f, 512, 512);
             renderCamera.backgroundColor = new Color(0, 0, 0, 0);
             renderCamera.fieldOfView = 30f;
             renderCamera.nearClipPlane = 1f;

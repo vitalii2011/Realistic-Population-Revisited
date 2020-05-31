@@ -1,6 +1,6 @@
 Version 1.2.2 -
 
-- Escape building names when encoding into XML.
+- Escape building names when encoding into XML
 
 
 Version 1.2.1 -

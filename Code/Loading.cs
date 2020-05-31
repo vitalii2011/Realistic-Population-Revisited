@@ -64,7 +64,7 @@ namespace RealisticPopulationRevisited
                 isModEnabled = true;
 
                 // Harmony patches.
-                UnityEngine.Debug.Log("Realistic Population Revisited: version v" + PopBalanceMod.version + " loading.");
+                UnityEngine.Debug.Log("Realistic Population Revisited: version v" + PopBalanceMod.Version + " loading.");
                 _harmony.PatchAll(GetType().Assembly);
                 UnityEngine.Debug.Log("Realistic Population Revisited: patching complete.");
 

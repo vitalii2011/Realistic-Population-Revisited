@@ -15,7 +15,7 @@ namespace RealisticPopulationRevisited
         // Panel components.
         private UIPanel panelBackground;
         private UILabel buildingName;
-        private BuildingInfo selectedBuilding;
+        private BuildingInfo thisBuilding;
         private UISprite hasCustom;
 
 
@@ -61,7 +61,7 @@ namespace RealisticPopulationRevisited
         protected override void OnClick(UIMouseEventParameter p)
         {
             base.OnClick(p);
-            UIBuildingDetails.instance.UpdateSelectedBuilding(selectedBuilding);
+            UIBuildingDetails.instance.UpdateSelectedBuilding(thisBuilding);
         }
 
 
@@ -92,11 +92,11 @@ namespace RealisticPopulationRevisited
             }
 
             // Set selected building.
-            selectedBuilding = data as BuildingInfo;
-            buildingName.text = UIBuildingDetails.GetDisplayName(selectedBuilding.name);
+            thisBuilding = data as BuildingInfo;
+            buildingName.text = UIBuildingDetails.GetDisplayName(thisBuilding.name);
 
             // Update custom settings checkbox to correct state.
-            if (ExternalCalls.GetResidential(selectedBuilding) > 0 || ExternalCalls.GetWorker(selectedBuilding) > 0)
+            if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0)
             {
                 // Custom value found.
                 hasCustom.spriteName = "AchievementCheckedTrue";
