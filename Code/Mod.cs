@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ICities;
-using UnityEngine;
+﻿using ICities;
 
 
 namespace RealisticPopulationRevisited
@@ -15,5 +10,15 @@ namespace RealisticPopulationRevisited
         public string Name => "Realistic Population Revisited " + Version;
         
         public string Description => "More realistic building populations (based on building size) and utility needs.";
+
+
+        /// <summary>
+        /// Called by the game when the mod options panel is setup.
+        /// </summary>
+        public void OnSettingsUI(UIHelperBase helper)
+        {
+            // Create options panel.
+            OptionsPanel optionsPanel = new OptionsPanel(helper);
+        }
     }
 }

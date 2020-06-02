@@ -13,10 +13,14 @@ namespace RealisticPopulationRevisited
     [ConfigurationPath("RealisticPopulation.xml")]
     public class SettingsFile
     {
-        /// <summary>
-        /// Stores the version of the most recent update notification that the user has decided to "Don't show again".
-        /// </summary>
+        // Stores the version of the most recent update notification that the user has decided to "Don't show again".
         public int NotificationVersion { get; set; } = 0;
+
+        // Building details panel hotkey.
+        public string hotkey { get; set; } = "E";
+        public bool ctrl { get; set; } = false;
+        public bool alt { get; set; } = true;
+        public bool shift { get; set; } = false;
     }
 
     public abstract class Configuration<C> where C : class, new()

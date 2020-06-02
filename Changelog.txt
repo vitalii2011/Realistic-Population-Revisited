@@ -1,3 +1,7 @@
+- Add mod options panel
+- Add customisation of building details hotkey in options panel
+
+
 Version 1.2.2 -
 
 - Escape building names when encoding into XML

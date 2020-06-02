@@ -119,6 +119,9 @@
     <Compile Include="Code\GUI\UIFastList.cs" />
     <Compile Include="Code\GUI\UIThreading.cs" />
     <Compile Include="Code\GUI\UIUtils.cs" />
+    <Compile Include="Code\Settings\PanelUtils.cs" />
+    <Compile Include="Code\Settings\OptionsPanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\ModOptionsPanel.cs" />
     <Compile Include="Code\Settings\SettingsXML.cs" />
     <Compile Include="Code\Settings\UpdateNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

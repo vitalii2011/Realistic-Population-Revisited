@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using UnityEngine;
 using ICities;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
@@ -228,6 +229,25 @@ namespace RealisticPopulationRevisited
                 notification.Create();
                 notification.Show();
             }
+
+            // Load settings.
+            SettingsFile settings = Configuration<SettingsFile>.Load();
+
+            // Hotkey.
+            try
+            {
+                // Should throw an exception if this doesn't work.
+                UIThreading.hotKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), settings.hotkey);
+            }
+            catch
+            {
+                // Don't care - just don't do anything.
+            }
+
+            // Hotkey modifiers.
+            UIThreading.hotCtrl = settings.ctrl;
+            UIThreading.hotAlt = settings.alt;
+            UIThreading.hotShift = settings.shift;
         }
 
 
