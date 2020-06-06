@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
 using UnityEngine;
 using ICities;
 using ColossalFramework.Math;
@@ -17,13 +15,6 @@ namespace RealisticPopulationRevisited
     {
         const string HarmonyID = "com.github.algernon-A.csl.realisticpopulationrevisited";
         private HarmonyInstance _harmony = HarmonyInstance.Create(HarmonyID);
-
-        private const int RES = 0;
-        private const int COM = 0;
-        private const int IND = 0;
-        private const int INDEX = 0;
-        private const int OFFICE = 0;
-        public const String XML_FILE = "WG_RealisticCity.xml";
 
         private static volatile bool isModEnabled = false;
         private static volatile bool isLevelLoaded = false;
@@ -71,7 +62,7 @@ namespace RealisticPopulationRevisited
 
                 DataStore.ClearCache();
 
-                ReadFromXML();
+                XMLUtils.ReadFromXML();
                 MergeDefaultBonus();
 
                 // Remove bonus names from over rides
@@ -100,7 +91,7 @@ namespace RealisticPopulationRevisited
                     }
                 }
 
-                UnityEngine.Debug.Log("Realistic Population Revisited successfully loaded.");
+                Debug.Log("Realistic Population Revisited successfully loaded.");
             }
         }
 
@@ -145,7 +136,7 @@ namespace RealisticPopulationRevisited
 
                 // Unapply Harmony patches.
                 _harmony.UnpatchAll(HarmonyID);
-                UnityEngine.Debug.Log("Realistic Population Revisited: patches unapplied.");
+                Debug.Log("Realistic Population Revisited: patches unapplied.");
             }
         }
 
@@ -186,15 +177,8 @@ namespace RealisticPopulationRevisited
                 }
             }
 
-            try
-            {
-                WG_XMLBaseVersion xml = new XML_VersionSix();
-                xml.writeXML(DataStore.currentFileLocation);
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.Log("Realistic Population Revisited: XML writing exception:\r\n" + e.Message);
-            }
+            // Save updated XML (or create new).
+            XMLUtils.WriteToXML();
 
             // Create building editor panel.
             UIBuildingDetails.Create();
@@ -215,8 +199,8 @@ namespace RealisticPopulationRevisited
                 buildingButton.eventClick += (c, p) =>
                 {
                     // Select current building in the building details panel and show.
-                    UIBuildingDetails.instance.SelectBuilding(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
-                    UIBuildingDetails.instance.Show();
+                    UIBuildingDetails.Instance.SelectBuilding(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
+                    UIBuildingDetails.Instance.Show();
                 };
             }
 
@@ -248,65 +232,6 @@ namespace RealisticPopulationRevisited
             UIThreading.hotCtrl = settings.ctrl;
             UIThreading.hotAlt = settings.alt;
             UIThreading.hotShift = settings.shift;
-        }
-
-
-        /// <summary>
-        ///
-        /// </summary>
-        private void ReadFromXML()
-        {
-            // Check the exe directory first
-            DataStore.currentFileLocation = ColossalFramework.IO.DataLocation.executableDirectory + Path.DirectorySeparatorChar + XML_FILE;
-            bool fileAvailable = File.Exists(DataStore.currentFileLocation);
-
-            if (!fileAvailable)
-            {
-                // Switch to default which is the cities skylines in the application data area.
-                DataStore.currentFileLocation = ColossalFramework.IO.DataLocation.localApplicationData + Path.DirectorySeparatorChar + XML_FILE;
-                fileAvailable = File.Exists(DataStore.currentFileLocation);
-            }
-
-            if (fileAvailable)
-            {
-                // Load in from XML - Designed to be flat file for ease
-                WG_XMLBaseVersion reader = new XML_VersionSix();
-                XmlDocument doc = new XmlDocument();
-                try
-                {
-                    doc.Load(DataStore.currentFileLocation);
-
-                    int version = Convert.ToInt32(doc.DocumentElement.Attributes["version"].InnerText);
-                    if (version > 3 && version <= 5)
-                    {
-                        // Use version 5
-                        reader = new XML_VersionFive();
-
-                        // Make a back up copy of the old system to be safe
-                        File.Copy(DataStore.currentFileLocation, DataStore.currentFileLocation + ".ver5", true);
-                        string error = "Detected an old version of the XML (v5). " + DataStore.currentFileLocation + ".ver5 has been created for future reference and will be upgraded to the new version.";
-                        Debugging.bufferWarning(error);
-                    }
-                    else if (version <= 3) // Uh oh... version 4 was a while back..
-                    {
-                        string error = "Detected an unsupported version of the XML (v4 or less). Backing up for a new configuration as :" + DataStore.currentFileLocation + ".ver4";
-                        Debugging.bufferWarning(error);
-                        File.Copy(DataStore.currentFileLocation, DataStore.currentFileLocation + ".ver4", true);
-                        return;
-                    }
-                    reader.readXML(doc);
-                }
-                catch (Exception e)
-                {
-                    // Game will now use defaults
-                    Debugging.bufferWarning("The following exception(s) were detected while loading the XML file. Some (or all) values may not be loaded.");
-                    Debugging.bufferWarning(e.Message);
-                }
-            }
-            else
-            {
-                UnityEngine.Debug.Log("Realistic Population Revisited: configuration file not found. Will output new file to : " + DataStore.currentFileLocation);
-            }
         }
     }
 }

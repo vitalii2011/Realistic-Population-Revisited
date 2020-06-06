@@ -12,7 +12,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     class RealisticExtractorWorkplaceCount
     {
-        static bool Prefix(ref IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        static bool Prefix(IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
             BuildingInfo item = __instance.m_info;
 
@@ -42,7 +42,7 @@ namespace RealisticPopulationRevisited
       new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     class RealisticExtractorConsumption
     {
-        static bool Prefix(ref IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        static bool Prefix(IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
             ulong seed = r.seed;
             ItemClass item = __instance.m_info.m_class;
@@ -77,7 +77,7 @@ namespace RealisticPopulationRevisited
     class RealisticExtractorPollution
     {
 
-        static bool Prefix(ref IndustrialExtractorAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        static bool Prefix(IndustrialExtractorAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
             groundPollution = 0;
             noisePollution = 0;
@@ -97,7 +97,7 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
     class RealisticExtractorProduction
     {
-        static bool Prefix(ref int __result, ref IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        static bool Prefix(ref int __result, IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             int[] array = IndustrialExtractorAIMod.GetArray(__instance.m_info, IndustrialExtractorAIMod.EXTRACT_LEVEL);
 

@@ -794,7 +794,15 @@ namespace RealisticPopulationRevisited
                         Debugging.bufferWarning("readOverrideHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
                         overrideValue = 1;
                     }
-                    DataStore.householdCache.Add(name, overrideValue);
+
+                    try
+                    {
+                        DataStore.householdCache.Add(name, overrideValue);
+                    }
+                    catch
+                    {
+                        // Don't care - most likely a duplicate key due to a reload of the configuration file.
+                    }
                 }
             }
         }
@@ -835,7 +843,15 @@ namespace RealisticPopulationRevisited
                         Debugging.bufferWarning("readOverrideWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
                         overrideValue = 5;
                     }
-                    DataStore.workerCache.Add(name, overrideValue);
+
+                    try
+                    {
+                        DataStore.workerCache.Add(name, overrideValue);
+                    }
+                    catch
+                    {
+                        // Don't care - most likely a duplicate key due to a reload of the configuration file.
+                    }
                 }
             }
         }

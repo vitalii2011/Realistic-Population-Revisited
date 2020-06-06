@@ -78,7 +78,7 @@ namespace RealisticPopulationRevisited
             deleteButton.Disable();
 
             // Save button event handler.
-            saveButton.eventClick += (c, p) =>
+            saveButton.eventClick += (component, clickEvent) =>
             {
                 // Hide message.
                 messageLabel.isVisible = false;
@@ -113,7 +113,7 @@ namespace RealisticPopulationRevisited
                     }
 
                     // Refresh the display so that all panels reflect the updated settings.
-                    UIBuildingDetails.instance.Refresh();
+                    UIBuildingDetails.Instance.Refresh();
                 }
                 else
                 {
@@ -125,7 +125,7 @@ namespace RealisticPopulationRevisited
             };
 
             // Delete button event handler.
-            deleteButton.eventClick += (c, p) =>
+            deleteButton.eventClick += (component, clickEvent) =>
             {
                 // Hide message.
                 messageLabel.isVisible = false;
@@ -155,7 +155,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Refresh the display so that all panels reflect the updated settings.
-                UIBuildingDetails.instance.Refresh();
+                UIBuildingDetails.Instance.Refresh();
                 homeJobsCount.text = string.Empty;
             };
 

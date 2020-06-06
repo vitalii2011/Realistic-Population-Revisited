@@ -47,7 +47,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Save the updated configuration file.
-            Save();
+            XMLUtils.WriteToXML();
 
             // Get current building hash (for updating prefab dictionary).
             var prefabHash = prefab.gameObject.GetHashCode();
@@ -76,7 +76,7 @@ namespace RealisticPopulationRevisited
             DataStore.householdCache.Remove(prefab.name);
 
             // Save the updated configuration file.
-            Save();
+            XMLUtils.WriteToXML();
 
             // Remove current building's record from 'live' dictionary.
             DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
@@ -120,7 +120,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Save the updated configuration file.
-            Save();
+            XMLUtils.WriteToXML();
 
             // Get current building hash (for updating prefab dictionary).
             var prefabHash = prefab.gameObject.GetHashCode();
@@ -154,20 +154,10 @@ namespace RealisticPopulationRevisited
             DataStore.workerCache.Remove(prefab.name);
 
             // Save the updated configuration file.
-            Save();
+            XMLUtils.WriteToXML();
 
             // Remove current building's record from 'live' dictionary.
             DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
-        }
-
-
-        /// <summary>
-        /// Saves the configuration file cache to disk.
-        /// </summary>
-        private static void Save()
-        {
-            WG_XMLBaseVersion xml = new XML_VersionSix();
-            xml.writeXML(DataStore.currentFileLocation);
         }
     }
 }

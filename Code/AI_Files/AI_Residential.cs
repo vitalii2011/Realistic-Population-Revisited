@@ -11,7 +11,7 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
     class RealisticHomeCount
     {
-        static bool Prefix(ref int __result, ref ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        static bool Prefix(ref int __result, ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             BuildingInfo item = __instance.m_info;
             int returnValue = 0;
@@ -38,7 +38,7 @@ namespace RealisticPopulationRevisited
        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     class RealisticResidentialConsumption
     {
-        static bool Prefix(ref ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        static bool Prefix(ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
             ItemClass item = __instance.m_info.m_class;
 
@@ -71,7 +71,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
     class RealisticResidentialPollution
     {
-        static bool Prefix(ref ResidentialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        static bool Prefix(ResidentialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
             ItemClass @class = __instance.m_info.m_class;
             int[] array = ResidentialBuildingAIMod.GetArray(__instance.m_info, (int)level);

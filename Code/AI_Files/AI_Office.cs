@@ -11,7 +11,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     class RealisticOfficeWorkplaceCount
     {
-        static bool Prefix(ref OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
             ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;
@@ -42,7 +42,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     class RealisticOfficeConsumption
     {
-        static bool Prefix(ref OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
             ItemClass item = __instance.m_info.m_class;
             int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
@@ -75,7 +75,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
     class RealisticOfficePollution
     {
-        static bool Prefix(ref OfficeBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
             ItemClass @class = __instance.m_info.m_class;
             int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int) level);
@@ -95,7 +95,7 @@ namespace RealisticPopulationRevisited
     class RealisticOfficeProduction
     {
 
-        static bool Prefix(ref int __result, ref OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        static bool Prefix(ref int __result, OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;

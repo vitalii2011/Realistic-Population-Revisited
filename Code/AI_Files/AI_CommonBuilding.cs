@@ -12,7 +12,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal })]
     class RealisticCrime
     {
-        static bool Prefix(ref CommonBuildingAI __instance, ushort buildingID, ref Building data, int crimeAccumulation, int citizenCount)
+        static bool Prefix(CommonBuildingAI __instance, ushort buildingID, ref Building data, int crimeAccumulation, int citizenCount)
         {
             int number = 10;
             if (crimeAccumulation != 0)
@@ -72,7 +72,7 @@ namespace RealisticPopulationRevisited
                 int num2 = 0;
                 int num3 = 0;
                 int num4 = 0;
-                CalculateGuestVehicles(ref __instance, buildingID, ref data, TransferManager.TransferReason.Crime, ref num, ref num2, ref num3, ref num4);
+                CalculateGuestVehicles(__instance, buildingID, ref data, TransferManager.TransferReason.Crime, ref num, ref num2, ref num3, ref num4);
                 if (num == 0)
                 {
                     TransferManager.TransferOffer offer = default(TransferManager.TransferOffer);
@@ -101,7 +101,7 @@ namespace RealisticPopulationRevisited
 
         // Copied from vanilla.  Clunky, but temporary.  Want to avoid reflection and its performance overhead, and Harmony 1.2 doesn't have reverse redirection.
         // TODO - Revist this and remove.
-        static void CalculateGuestVehicles(ref CommonBuildingAI __instance, ushort buildingID, ref Building data, TransferManager.TransferReason material, ref int count, ref int cargo, ref int capacity, ref int outside)
+        static void CalculateGuestVehicles(CommonBuildingAI __instance, ushort buildingID, ref Building data, TransferManager.TransferReason material, ref int count, ref int cargo, ref int capacity, ref int outside)
         {
             VehicleManager instance = Singleton<VehicleManager>.instance;
             ushort num = data.m_guestVehicles;

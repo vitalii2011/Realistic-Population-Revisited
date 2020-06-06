@@ -8,17 +8,17 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Class to handle the mod settings options panel.
     /// </summary>
-    public class OptionsPanel
+    internal class OptionsPanel
     {
         // Settings file.
-        public static SettingsFile settings;
+        internal static SettingsFile settings;
 
 
         /// <summary>
         /// Options panel constructor.
         /// </summary>
         /// <param name="helper">UIHelperBase parent</param>
-        public OptionsPanel(UIHelperBase helper)
+        internal OptionsPanel(UIHelperBase helper)
         {
             // Load settings.
             settings = Configuration<SettingsFile>.Load();
@@ -36,8 +36,15 @@ namespace RealisticPopulationRevisited
             tabContainer.size = new Vector3(744, 713);
             tabStrip.tabPages = tabContainer;
 
+            // Populate Datastore from configuration file.
+            XMLUtils.ReadFromXML();
+
             // Add tabs and panels.
             new ModOptionsPanel(tabStrip, 0);
+            ResidentialPanel residentialPanel = new ResidentialPanel(tabStrip, 1);
+            IndustrialPanel industrialPanel = new IndustrialPanel(tabStrip, 2);
+            CommercialPanel commercialPanel = new CommercialPanel(tabStrip, 3);
+            OfficePanel officePanel = new OfficePanel(tabStrip, 4);
         }
     }
 }

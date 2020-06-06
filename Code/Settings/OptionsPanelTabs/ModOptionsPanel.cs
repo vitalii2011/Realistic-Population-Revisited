@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 using ICities;
 using ColossalFramework.UI;
-using ColossalFramework;
+
 
 namespace RealisticPopulationRevisited
 {
     /// <summary>
     /// Options panel for setting basic mod options.
     /// </summary>
-    public class ModOptionsPanel
+    internal class ModOptionsPanel
     {
         /// <summary>
         /// Adds mod options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public ModOptionsPanel(UITabstrip tabStrip, int tabIndex)
+        internal ModOptionsPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
             UIHelper calculationsTab = PanelUtils.AddTab(tabStrip, "Mod settings", tabIndex);

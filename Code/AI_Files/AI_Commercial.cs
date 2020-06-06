@@ -12,7 +12,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     class RealisticCommercialWorkplaceCount
     {
-        static bool Prefix(ref CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
             ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;
@@ -43,7 +43,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     class RealisticCommercialConsumption
     {
-        static bool Prefix(ref CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
             ItemClass item = __instance.m_info.m_class;
 
@@ -77,7 +77,7 @@ namespace RealisticPopulationRevisited
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
     class RealisticCommercialPollution
     {
-        static bool Prefix(ref CommercialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
             ItemClass item = __instance.m_info.m_class;
             int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
@@ -103,7 +103,7 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
     class RealisticCommercialVisits
     {
-        static bool Prefix(ref int __result, ref CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             PrefabEmployStruct visitors;
 
@@ -144,7 +144,7 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
     class RealisticCommercialProduction
     {
-        static bool Prefix(ref int __result, ref IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             ItemClass @class = __instance.m_info.m_class;
             int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);

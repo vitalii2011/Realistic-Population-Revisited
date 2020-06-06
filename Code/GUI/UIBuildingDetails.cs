@@ -21,7 +21,7 @@ namespace RealisticPopulationRevisited
         private const float panelHeight = 550;
         private const float bottomMargin = 10;
         private const float spacing = 5;
-        public const float titleHeight = 40;
+        internal const float titleHeight = 40;
 
         // Panel components.
         private UITitleBar titleBar;
@@ -37,13 +37,13 @@ namespace RealisticPopulationRevisited
         // Instance references.
         private static GameObject uiGameObject;
         private static UIBuildingDetails _instance;
-        public static UIBuildingDetails instance { get { return _instance; } }
+        public static UIBuildingDetails Instance => _instance;
 
 
         /// <summary>
         /// Creates the panel object in-game.
         /// </summary>
-        public static void Create()
+        internal static void Create()
         {
             try
             {
@@ -51,7 +51,7 @@ namespace RealisticPopulationRevisited
                 uiGameObject = GameObject.Find("RealPopBuildingDetails");
                 if (uiGameObject != null)
                 {
-                    UnityEngine.Debug.Log("Realistic Population Revisited: destroying existing building details panel instance.");
+                    Debug.Log("Realistic Population Revisited: destroying existing building details panel instance.");
                     GameObject.Destroy(uiGameObject);
                 }
 
@@ -63,7 +63,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.LogException(e);
+                Debug.LogException(e);
             }
         }
 

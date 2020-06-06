@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using UnityEngine;
+
 
 namespace RealisticPopulationRevisited
 {
-    public class AI_Utils
+    internal class AI_Utils
     {
         /// <summary>
         /// 
@@ -18,7 +15,7 @@ namespace RealisticPopulationRevisited
         /// <param name="minWorkers"></param>
         /// <param name="array"></param>
         /// <param name="output"></param>
-        public static void CalculateprefabWorkerVisit(int width, int length, ref BuildingInfo item, int minWorkers, ref int[] array, out PrefabEmployStruct output)
+        internal static void CalculateprefabWorkerVisit(int width, int length, ref BuildingInfo item, int minWorkers, ref int[] array, out PrefabEmployStruct output)
         {
             // Prefabs are tied to a level
 
@@ -93,7 +90,7 @@ namespace RealisticPopulationRevisited
         /// <param name="length"></param>
         /// <param name="item"></param>
         /// <param name="returnValue"></param>
-        public static int CalculatePrefabHousehold(int width, int length, ref BuildingInfo item, ref int[] array, int level)
+        internal static int CalculatePrefabHousehold(int width, int length, ref BuildingInfo item, ref int[] array, int level)
         {
             Vector3 v = item.m_size;
             int floorCount = Mathf.Max(1, Mathf.FloorToInt(v.y / array[DataStore.LEVEL_HEIGHT]));
@@ -146,7 +143,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="seed"></param>
         /// <returns></returns>
-        public static int GetLandValueIncomeComponent(ulong seed)
+        internal static int GetLandValueIncomeComponent(ulong seed)
         {
             int landValue = 0;
 

@@ -36,7 +36,7 @@ namespace RealisticPopulationRevisited
 
                 try
                 {
-                    UIBuildingDetails.instance.Toggle();
+                    UIBuildingDetails.Instance.Toggle();
                 }
                 catch (Exception e)
                 {

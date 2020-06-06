@@ -9,7 +9,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Utilities for Options Panel UI.
     /// </summary>
-    public static class PanelUtils
+    internal static class PanelUtils
     {
         /// <summary>
         /// Adds a tab to a UI tabstrip.
@@ -18,7 +18,7 @@ namespace RealisticPopulationRevisited
         /// <param name="tabName">Name of this tab</param>
         /// <param name="tabIndex">Index number of this tab</param>
         /// <returns>UIHelper instance for the new tab panel</returns>
-        public static UIHelper AddTab(UITabstrip tabStrip, string tabName, int tabIndex)
+        internal static UIHelper AddTab(UITabstrip tabStrip, string tabName, int tabIndex)
         {
             // Create tab.
             UIButton tabButton = tabStrip.AddTab(tabName);
@@ -58,7 +58,7 @@ namespace RealisticPopulationRevisited
         /// <param name="panel">UI panel to add the label to</param>
         /// <param name="text">Label text</param>
         /// <returns></returns>
-        public static UILabel AddLabel(UIPanel panel, string text)
+        internal static UILabel AddLabel(UIPanel panel, string text)
         {
             // Add label.
             UILabel label = (UILabel)panel.AddUIComponent<UILabel>();
@@ -86,7 +86,7 @@ namespace RealisticPopulationRevisited
         /// <param name="defaultValue">Slider initial value</param>
         /// <param name="eventCallback">Slider event handler</param>
         /// <returns></returns>
-        public static UISlider AddSliderWithValue(UIHelperBase helper, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback)
+        internal static UISlider AddSliderWithValue(UIHelperBase helper, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback)
         {
             // Slider control.
             UISlider newSlider = helper.AddSlider(text, min, max, step, defaultValue, value => { }) as UISlider;
@@ -130,7 +130,7 @@ namespace RealisticPopulationRevisited
         /// <param name="margin">Margin between components</param>
         /// <param name="horizontalOffset">Horizontal offset from first to second component</param>
         /// <returns></returns>
-        private static Vector3 PositionUnder(UIComponent uIComponent, float margin = 8f, float horizontalOffset = 0f)
+        internal static Vector3 PositionUnder(UIComponent uIComponent, float margin = 8f, float horizontalOffset = 0f)
         {
             return new Vector3(uIComponent.relativePosition.x + horizontalOffset, uIComponent.relativePosition.y + uIComponent.height + margin);
         }
@@ -143,7 +143,7 @@ namespace RealisticPopulationRevisited
         /// <param name="margin">Margin between components</param>
         /// <param name="verticalOffset">Vertical offset from first to second component</param>
         /// <returns></returns>
-        public static Vector3 PositionRightOf(UIComponent uIComponent, float margin = 10f, float verticalOffset = 0f)
+        internal static Vector3 PositionRightOf(UIComponent uIComponent, float margin = 10f, float verticalOffset = 0f)
         {
             return new Vector3(uIComponent.relativePosition.x + uIComponent.width + margin, uIComponent.relativePosition.y + verticalOffset);
         }
