@@ -40,7 +40,7 @@ namespace RealisticPopulationRevisited
             if (loading.currentMode != AppMode.Game)
             {
                 isModEnabled = false;
-                UnityEngine.Debug.Log("Realistic Population Revisited: not loading into game, skipping activation.");
+                Debug.Log("Realistic Population Revisited: not loading into game, skipping activation.");
                 return;
             }
 
@@ -49,16 +49,16 @@ namespace RealisticPopulationRevisited
             if (IsModEnabled(426163185ul))
             {
                 conflictingMod = true;
-                UnityEngine.Debug.Log("Realistic Population Revisited: Realistic Population and Consumption Mod detected, skipping activation.");
+                Debug.Log("Realistic Population Revisited: Realistic Population and Consumption Mod detected, skipping activation.");
             }
             else if (!isModEnabled)
             {
                 isModEnabled = true;
 
                 // Harmony patches.
-                UnityEngine.Debug.Log("Realistic Population Revisited: version v" + PopBalanceMod.Version + " loading.");
+                Debug.Log("Realistic Population Revisited: version v" + PopBalanceMod.Version + " loading.");
                 _harmony.PatchAll(GetType().Assembly);
-                UnityEngine.Debug.Log("Realistic Population Revisited: patching complete.");
+                Debug.Log("Realistic Population Revisited: patching complete.");
 
                 DataStore.ClearCache();
 
@@ -173,7 +173,7 @@ namespace RealisticPopulationRevisited
                     // Now we can remove people
                     DataStore.allowRemovalOfCitizens = true;
                     Debugging.releaseBuffer();
-                    UnityEngine.Debug.Log("Realistic Population Revisited successfully applied.");
+                    Debug.Log("Realistic Population Revisited successfully applied.");
                 }
             }
 
@@ -206,7 +206,7 @@ namespace RealisticPopulationRevisited
 
             // Load settings file and check if we need to display update notification.
             settingsFile = Configuration<SettingsFile>.Load();
-            if (settingsFile.NotificationVersion != 1)
+            if (settingsFile.NotificationVersion != 2)
             {
                 // No update notification "Don't show again" flag found; show the notification.
                 UpdateNotification notification = new UpdateNotification();

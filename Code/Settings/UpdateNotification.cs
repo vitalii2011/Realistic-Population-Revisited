@@ -80,7 +80,7 @@ namespace RealisticPopulationRevisited
                 UILabel note1 = this.AddUIComponent<UILabel>();
                 note1.relativePosition = new Vector3(spacing, 40);
                 note1.textAlignment = UIHorizontalAlignment.Left;
-                note1.text = "Realistic Population Revisited has been updated to 1.2.  This update adds an interactive building houseold/jobs number editor and mod calculation viewer, accessible by pressing Alt-E or through the 'Realistic Population' button on the info panel of any residential, industrial, commercial or office building.";
+                note1.text = "Realistic Population Revisited has been updated to 1.3.  This update adds a mod options panel (accessible through the options menu) that enables direct editing of all key configuration options for population, jobs, and consumption calculations.";
                 note1.textScale = 0.8f;
                 note1.autoSize = false;
                 note1.autoHeight = true;
@@ -111,7 +111,7 @@ namespace RealisticPopulationRevisited
                 noShowButton.eventClick += (c, p) =>
                 {
                     // Update and save settings file.
-                    Loading.settingsFile.NotificationVersion = 1;
+                    Loading.settingsFile.NotificationVersion = 2;
                     Configuration<SettingsFile>.Save();
 
                     // Just hide this panel and destroy the game object - nothing more to do.
