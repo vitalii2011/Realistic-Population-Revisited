@@ -71,7 +71,7 @@ namespace RealisticPopulationRevisited
                 UILabel title = this.AddUIComponent<UILabel>();
                 title.relativePosition = new Vector3(0, spacing);
                 title.textAlignment = UIHorizontalAlignment.Center;
-                title.text = "Realistic Population Revisited 1.2 update";
+                title.text = "Realistic Population Revisited 1.3 update";
                 title.textScale = 1.0f;
                 title.autoSize = false;
                 title.width = this.width;
