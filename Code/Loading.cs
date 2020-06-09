@@ -232,6 +232,9 @@ namespace RealisticPopulationRevisited
             UIThreading.hotCtrl = settings.ctrl;
             UIThreading.hotAlt = settings.alt;
             UIThreading.hotShift = settings.shift;
+
+            // Set up options panel event handler.
+            OptionsPanel.OptionsEventHook();
         }
     }
 }

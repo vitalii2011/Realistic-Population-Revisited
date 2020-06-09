@@ -12,7 +12,7 @@ namespace RealisticPopulationRevisited
     {
         // Settings file.
         internal static SettingsFile settings;
-
+        private static UIScrollablePanel optionsPanel;
 
         /// <summary>
         /// Options panel constructor.
@@ -24,7 +24,7 @@ namespace RealisticPopulationRevisited
             settings = Configuration<SettingsFile>.Load();
 
             // Set up tab strip and containers.
-            UIScrollablePanel optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
+            optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             optionsPanel.autoLayout = false;
 
             UITabstrip tabStrip = optionsPanel.AddUIComponent<UITabstrip>();
@@ -45,6 +45,33 @@ namespace RealisticPopulationRevisited
             IndustrialPanel industrialPanel = new IndustrialPanel(tabStrip, 2);
             CommercialPanel commercialPanel = new CommercialPanel(tabStrip, 3);
             OfficePanel officePanel = new OfficePanel(tabStrip, 4);
+
+            // Start deactivated.
+            optionsPanel.gameObject.SetActive(false);
+        }
+
+
+        /// <summary>
+        /// Attaches an event hook to options panel visibility, to activate/deactivate our options panel as appropriate.
+        /// Deactivating when not visible saves UI overhead and performance impacts, especially with so many UITextFields.
+        /// </summary>
+        public static void OptionsEventHook()
+        {
+            // Get options panel instance.
+            UIPanel gameOptionsPanel = UIView.library.Get<UIPanel>("OptionsPanel");
+
+            if (gameOptionsPanel == null)
+            {
+                Debug.Log("Realistic Population Revisited: couldn't find OptionsPanel!");
+            }
+            else
+            {
+                // Simple event hook to enable/disable GameObject based on appropriate visibility.
+                gameOptionsPanel.eventVisibilityChanged += (control, isVisible) =>
+                {
+                    optionsPanel.gameObject.SetActive(isVisible);
+                };
+            }
         }
     }
 }

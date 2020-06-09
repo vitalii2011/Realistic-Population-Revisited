@@ -1,3 +1,6 @@
+- Performance improvement: deactivate options panel when not visible
+
+
 Version 1.3 -
 
 - Add mod options panel
