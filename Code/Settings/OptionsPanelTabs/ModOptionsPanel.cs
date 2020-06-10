@@ -17,15 +17,13 @@ namespace RealisticPopulationRevisited
         /// <param name="tabIndex">Index number of tab</param>
         internal ModOptionsPanel(UITabstrip tabStrip, int tabIndex)
         {
-            // Add tab.
-            UIHelper calculationsTab = PanelUtils.AddTab(tabStrip, "Mod settings", tabIndex);
-
-            UIHelperBase titleGroup = calculationsTab.AddGroup("Realistic Population Revisited v" + PopBalanceMod.Version);
-
-            UIHelperBase hotKeyGroup = calculationsTab.AddGroup("Building options panel hotkey");
+            // Add tab and helper.
+            UIPanel panel = PanelUtils.AddTab(tabStrip, "Mod settings", tabIndex);
+            UIHelper helper = new UIHelper(panel);
+            panel.autoLayout = true;
 
             // Hotkey textfield
-            UITextField hotkeyText = (UITextField)hotKeyGroup.AddTextfield("Hotkey for building options screen", OptionsPanel.settings.hotkey.ToString(), (value) => { });
+            UITextField hotkeyText = (UITextField)helper.AddTextfield("Hotkey for building options screen", OptionsPanel.settings.hotkey.ToString(), (value) => { }, (value) => { });
 
             // Event handler for getting the hotkey.
             hotkeyText.eventTextChanged += (control, value) =>
@@ -56,7 +54,7 @@ namespace RealisticPopulationRevisited
             };
 
 
-            UICheckBox controlBox = (UICheckBox)hotKeyGroup.AddCheckbox("Control", OptionsPanel.settings.ctrl, (isChecked) =>
+            UICheckBox controlBox = (UICheckBox)helper.AddCheckbox("Control", OptionsPanel.settings.ctrl, (isChecked) =>
             {
                 // Update threading settings.
                 UIThreading.hotCtrl = isChecked;
@@ -65,7 +63,7 @@ namespace RealisticPopulationRevisited
                 OptionsPanel.settings.ctrl = isChecked;
                 Configuration<SettingsFile>.Save();
             });
-            UICheckBox altBox = (UICheckBox)hotKeyGroup.AddCheckbox("Alt", OptionsPanel.settings.alt, (isChecked) =>
+            UICheckBox altBox = (UICheckBox)helper.AddCheckbox("Alt", OptionsPanel.settings.alt, (isChecked) =>
             {
                 // Update threading settings.
                 UIThreading.hotAlt = isChecked;
@@ -74,7 +72,7 @@ namespace RealisticPopulationRevisited
                 OptionsPanel.settings.alt = isChecked;
                 Configuration<SettingsFile>.Save();
             });
-            UICheckBox shiftBox = (UICheckBox)hotKeyGroup.AddCheckbox("Shift", OptionsPanel.settings.shift, (isChecked) =>
+            UICheckBox shiftBox = (UICheckBox)helper.AddCheckbox("Shift", OptionsPanel.settings.shift, (isChecked) =>
             {
                 // Update threading settings.
                 UIThreading.hotShift = isChecked;

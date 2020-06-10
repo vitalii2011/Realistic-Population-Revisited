@@ -18,7 +18,7 @@ namespace RealisticPopulationRevisited
         /// <param name="tabName">Name of this tab</param>
         /// <param name="tabIndex">Index number of this tab</param>
         /// <returns>UIHelper instance for the new tab panel</returns>
-        internal static UIHelper AddTab(UITabstrip tabStrip, string tabName, int tabIndex)
+        internal static UIPanel AddTab(UITabstrip tabStrip, string tabName, int tabIndex, bool autoLayout = false)
         {
             // Create tab.
             UIButton tabButton = tabStrip.AddTab(tabName);
@@ -42,13 +42,14 @@ namespace RealisticPopulationRevisited
             UIPanel rootPanel = tabStrip.tabContainer.components[tabIndex] as UIPanel;
 
             // Panel setup.
-            rootPanel.autoLayout = true;
+            rootPanel.autoLayout = autoLayout;
             rootPanel.autoLayoutDirection = LayoutDirection.Vertical;
             rootPanel.autoLayoutPadding.top = 5;
             rootPanel.autoLayoutPadding.left = 10;
 
             // UIHelper.
-            return new UIHelper(rootPanel);
+            //return new UIHelper(rootPanel);
+            return rootPanel;
         }
 
 

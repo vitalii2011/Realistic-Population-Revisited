@@ -36,10 +36,7 @@ namespace RealisticPopulationRevisited
         public CommercialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIHelper commercialTab = PanelUtils.AddTab(tabStrip, "Commercial", tabIndex);
-            UIPanel panel = commercialTab.self as UIPanel;
-
-            panel.autoLayout = false;
+            UIPanel panel = PanelUtils.AddTab(tabStrip, "Commercial", tabIndex);
 
             // Initialise textfield array.
             SetupArrays(NumSubServices);

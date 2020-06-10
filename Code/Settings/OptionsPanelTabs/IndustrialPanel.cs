@@ -36,10 +36,7 @@ namespace RealisticPopulationRevisited
         public IndustrialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIHelper industrialTab = PanelUtils.AddTab(tabStrip, "Industrial", tabIndex);
-            UIPanel panel = industrialTab.self as UIPanel;
-
-            panel.autoLayout = false;
+            UIPanel panel = PanelUtils.AddTab(tabStrip, "Industrial", tabIndex);
 
             // Initialise textfield array.
             SetupArrays(NumSubServices);

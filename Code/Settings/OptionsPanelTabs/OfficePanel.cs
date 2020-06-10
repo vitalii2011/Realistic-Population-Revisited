@@ -30,10 +30,7 @@ namespace RealisticPopulationRevisited
         public OfficePanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIHelper officeTab = PanelUtils.AddTab(tabStrip, "Office", tabIndex);
-            UIPanel panel = officeTab.self as UIPanel;
-
-            panel.autoLayout = false;
+            UIPanel panel = PanelUtils.AddTab(tabStrip, "Office", tabIndex);
 
             // Initialise textfield array.
             SetupArrays(NumSubServices);

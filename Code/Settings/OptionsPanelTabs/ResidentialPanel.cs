@@ -34,10 +34,7 @@ namespace RealisticPopulationRevisited
         public ResidentialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIHelper residentialTab = PanelUtils.AddTab(tabStrip, "Residential", tabIndex);
-            UIPanel panel = residentialTab.self as UIPanel;
-
-            panel.autoLayout = false;
+            UIPanel panel = PanelUtils.AddTab(tabStrip, "Residential", tabIndex);
 
             // Set residential flag.
             notResidential = false;
