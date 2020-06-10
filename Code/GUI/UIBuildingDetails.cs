@@ -9,6 +9,64 @@ using ColossalFramework.UI;
 namespace RealisticPopulationRevisited
 {
     /// <summary>
+    /// Buidling details panel manager static class.
+    /// </summary>
+    public static class BuildingDetailsPanel
+    {
+        // Instance references.
+        private static GameObject uiGameObject;
+        private static UIBuildingDetails _panel;
+        public static UIBuildingDetails Panel => _panel;
+
+
+        /// <summary>
+        /// Creates the panel object in-game and displays it.
+        /// </summary>
+        internal static void Open(BuildingInfo selected = null)
+        {
+            try
+            {
+                // If no instance already set, create one.
+                if (uiGameObject == null)
+                {
+                    // Give it a unique name for easy finding with ModTools.
+                    uiGameObject = new GameObject("RICOSettingsPanel");
+                    uiGameObject.transform.parent = UIView.GetAView().transform;
+
+                    _panel = uiGameObject.AddComponent<UIBuildingDetails>();
+
+                    // Set up panel.
+                    Panel.Setup();
+                }
+
+                // Select appropriate building if there's a preselection.
+                if (selected != null)
+                {
+                    Panel.SelectBuilding(selected);
+                }
+
+                Panel.Show();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                return;
+            }
+        }
+
+
+        /// <summary>
+        /// Closes the panel by destroying the object (removing any ongoing UI overhead).
+        /// </summary>
+        internal static void Close()
+        {
+            GameObject.Destroy(_panel);
+            GameObject.Destroy(uiGameObject);
+        }
+    }
+
+
+    /// <summary>
     /// Base class of the building details screen.  Based (via AJ3D's Ploppable RICO) ultimately on SamsamTS's Building Themes panel; many thanks to him for his work.
     /// </summary>
     public class UIBuildingDetails : UIPanel
@@ -34,47 +92,12 @@ namespace RealisticPopulationRevisited
         // General vars.
         private BuildingInfo currentSelection;
 
-        // Instance references.
-        private static GameObject uiGameObject;
-        private static UIBuildingDetails _instance;
-        public static UIBuildingDetails Instance => _instance;
-
 
         /// <summary>
-        /// Creates the panel object in-game.
+        /// Create the building editor panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
-        internal static void Create()
+        internal void Setup()
         {
-            try
-            {
-                // Destroy existing (if any) instances.
-                uiGameObject = GameObject.Find("RealPopBuildingDetails");
-                if (uiGameObject != null)
-                {
-                    Debug.Log("Realistic Population Revisited: destroying existing building details panel instance.");
-                    GameObject.Destroy(uiGameObject);
-                }
-
-                // Create new instance.
-                // Give it a unique name for easy finding with ModTools.
-                uiGameObject = new GameObject("RealPopBuildingDetails");
-                uiGameObject.transform.parent = UIView.GetAView().transform;
-                _instance = uiGameObject.AddComponent<UIBuildingDetails>();
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-
-
-        /// <summary>
-        /// Create the building editor panel; called by Unity just before any of the Update methods is called for the first time.
-        /// </summary>
-        public override void Start()
-        {
-            base.Start();
-
             try
             {
                 // Basic setup.
@@ -88,6 +111,7 @@ namespace RealisticPopulationRevisited
 
                 // Titlebar.
                 titleBar = AddUIComponent<UITitleBar>();
+                titleBar.Setup();
 
                 // Filter.
                 filterBar = AddUIComponent<UIBuildingFilter>();
@@ -124,11 +148,13 @@ namespace RealisticPopulationRevisited
                 previewPanel.width = middlePanel.width;
                 previewPanel.height = (panelHeight - spacing) / 2;
                 previewPanel.relativePosition = Vector3.zero;
+                previewPanel.Setup();
 
                 editPanel = middlePanel.AddUIComponent<UIEditPanel>();
                 editPanel.width = middlePanel.width;
                 editPanel.height = (panelHeight - spacing) / 2;
                 editPanel.relativePosition = new Vector3(0, previewPanel.height + spacing);
+                editPanel.Setup();
 
                 // Right panel - mod calculations.
                 UIPanel rightPanel = AddUIComponent<UIPanel>();
@@ -140,6 +166,7 @@ namespace RealisticPopulationRevisited
                 modCalcs.width = rightWidth;
                 modCalcs.height = panelHeight;
                 modCalcs.relativePosition = Vector3.zero;
+                modCalcs.Setup();
 
                 // Building selection list.
                 buildingSelection = UIFastList.Create<UIBuildingRow>(leftPanel);
@@ -163,18 +190,6 @@ namespace RealisticPopulationRevisited
             {
                 UnityEngine.Debug.LogException(e);
             }
-        }
-
-
-        /// <summary>
-        /// Shows/hides the building details screen.
-        /// </summary>
-        public void Toggle()
-        {
-            if (isVisible)
-                Hide();
-            else
-                Show(true);
         }
 
 
@@ -216,7 +231,7 @@ namespace RealisticPopulationRevisited
         /// Sets the filter to only display the relevant category for the relevant building, and makes that building selected in the list.
         /// </summary>
         /// <param name="building"></param>
-        public void SelectBuilding(BuildingInfo building)
+        internal void SelectBuilding(BuildingInfo building)
         {
             // Ensure the fastlist is filtered to include this building.
             filterBar.SelectBuildingCategory(building.m_class);

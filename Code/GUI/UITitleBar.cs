@@ -17,12 +17,10 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Create the titlebar; called by Unity just before any of the Update methods is called for the first time.
+        /// Create the titlebar; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
-        public override void Start()
+        public void Setup()
         {
-            base.Start();
-
             // Basic setup.
             width = parent.width;
             height = UIBuildingDetails.titleHeight;
@@ -58,7 +56,7 @@ namespace RealisticPopulationRevisited
             closeButton.pressedBgSprite = "buttonclosepressed";
             closeButton.eventClick += (component, param) =>
             {
-                parent.Hide();
+                BuildingDetailsPanel.Close();
             };
         }
     }

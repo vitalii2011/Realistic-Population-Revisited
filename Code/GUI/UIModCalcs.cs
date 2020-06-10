@@ -44,12 +44,10 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Create the mod calcs panel; called by Unity just before any of the Update methods is called for the first time.
+        /// Create the mod calcs panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
-        public override void Start()
+        public void Setup()
         {
-            base.Start();
-
             // Generic setup.
             isVisible = true;
             canFocus = true;

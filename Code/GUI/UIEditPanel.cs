@@ -20,16 +20,14 @@ namespace RealisticPopulationRevisited
 
         // Currently selected building.
         private BuildingInfo currentSelection;
-        
+
 
         /// <summary>
-        /// Create the panel; called by Unity just before any of the Update methods is called for the first time.
+        /// Create the panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
-        public override void Start()
+        public void Setup()
         {
             const int marginPadding = 10;
-
-            base.Start();
 
             // Generic setup.
             isVisible = true;
@@ -113,7 +111,7 @@ namespace RealisticPopulationRevisited
                     }
 
                     // Refresh the display so that all panels reflect the updated settings.
-                    UIBuildingDetails.Instance.Refresh();
+                    BuildingDetailsPanel.Panel.Refresh();
                 }
                 else
                 {
@@ -155,7 +153,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Refresh the display so that all panels reflect the updated settings.
-                UIBuildingDetails.Instance.Refresh();
+                BuildingDetailsPanel.Panel.Refresh();
                 homeJobsCount.text = string.Empty;
             };
 

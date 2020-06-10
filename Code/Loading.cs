@@ -180,9 +180,6 @@ namespace RealisticPopulationRevisited
             // Save updated XML (or create new).
             XMLUtils.WriteToXML();
 
-            // Create building editor panel.
-            UIBuildingDetails.Create();
-
             // Add button to access building details from building info panels, if it doesn't already exist.
             if (buildingButton == null)
             {
@@ -199,8 +196,7 @@ namespace RealisticPopulationRevisited
                 buildingButton.eventClick += (c, p) =>
                 {
                     // Select current building in the building details panel and show.
-                    UIBuildingDetails.Instance.SelectBuilding(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
-                    UIBuildingDetails.Instance.Show();
+                    BuildingDetailsPanel.Open(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
                 };
             }
 

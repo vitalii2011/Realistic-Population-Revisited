@@ -61,7 +61,7 @@ namespace RealisticPopulationRevisited
         protected override void OnClick(UIMouseEventParameter p)
         {
             base.OnClick(p);
-            UIBuildingDetails.Instance.UpdateSelectedBuilding(thisBuilding);
+            BuildingDetailsPanel.Open(thisBuilding);
         }
 
 
