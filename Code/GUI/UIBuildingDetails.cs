@@ -30,7 +30,7 @@ namespace RealisticPopulationRevisited
                 if (uiGameObject == null)
                 {
                     // Give it a unique name for easy finding with ModTools.
-                    uiGameObject = new GameObject("RICOSettingsPanel");
+                    uiGameObject = new GameObject("RealPopBuildingDetails");
                     uiGameObject.transform.parent = UIView.GetAView().transform;
 
                     _panel = uiGameObject.AddComponent<UIBuildingDetails>();
@@ -62,6 +62,31 @@ namespace RealisticPopulationRevisited
         {
             GameObject.Destroy(_panel);
             GameObject.Destroy(uiGameObject);
+        }
+
+
+        /// <summary>
+        /// Adds button to access building details from building info panels.
+        /// </summary>
+        internal static void AddInfoPanelButton()
+        {
+            // Get parent panel and apply button.
+            ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);
+            UIButton panelButton = UIUtils.CreateButton(infoPanel.component, 133);
+
+            // Basic setup.
+            panelButton.height = 19.5f;
+            panelButton.textScale = 0.65f;
+            panelButton.textVerticalAlignment = UIVerticalAlignment.Bottom;
+            panelButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - panelButton.width - 10, 120);
+            panelButton.text = "Realistic Population";
+
+            // Event handler.
+            panelButton.eventClick += (control, clickEvent) =>
+            {
+                // Select current building in the building details panel and show.
+                BuildingDetailsPanel.Open(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
+            };
         }
     }
 

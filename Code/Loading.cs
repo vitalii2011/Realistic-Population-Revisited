@@ -22,9 +22,6 @@ namespace RealisticPopulationRevisited
         // Used to flag if a conflicting mod is running.
         private static bool conflictingMod = false;
 
-        // Button (in building info panels) to access building details screen.
-        private UIButton buildingButton;
-
         // XML settings file.
         public static SettingsFile settingsFile;
 
@@ -180,25 +177,8 @@ namespace RealisticPopulationRevisited
             // Save updated XML (or create new).
             XMLUtils.WriteToXML();
 
-            // Add button to access building details from building info panels, if it doesn't already exist.
-            if (buildingButton == null)
-            {
-                // Basic setup.
-                ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);
-                buildingButton = UIUtils.CreateButton(infoPanel.component, 133);
-                buildingButton.height = 19.5f;
-                buildingButton.textScale = 0.65f;
-                buildingButton.textVerticalAlignment = UIVerticalAlignment.Bottom;
-                buildingButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - buildingButton.width - 10, 120);
-                buildingButton.text = "Realistic Population";
-
-                // Event handler.
-                buildingButton.eventClick += (c, p) =>
-                {
-                    // Select current building in the building details panel and show.
-                    BuildingDetailsPanel.Open(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
-                };
-            }
+            // Add button to building info panels.
+            BuildingDetailsPanel.AddInfoPanelButton();
 
             // Load settings file and check if we need to display update notification.
             settingsFile = Configuration<SettingsFile>.Load();
