@@ -12,7 +12,10 @@ namespace RealisticPopulationRevisited
     {
         // Settings file.
         internal static SettingsFile settings;
+
+        // Parent UI panel reference.
         private static UIScrollablePanel optionsPanel;
+
 
         /// <summary>
         /// Options panel constructor.
@@ -41,10 +44,10 @@ namespace RealisticPopulationRevisited
 
             // Add tabs and panels.
             new ModOptionsPanel(tabStrip, 0);
-            ResidentialPanel residentialPanel = new ResidentialPanel(tabStrip, 1);
-            IndustrialPanel industrialPanel = new IndustrialPanel(tabStrip, 2);
-            CommercialPanel commercialPanel = new CommercialPanel(tabStrip, 3);
-            OfficePanel officePanel = new OfficePanel(tabStrip, 4);
+            new ResidentialPanel(tabStrip, 1);
+            new IndustrialPanel(tabStrip, 2);
+            new CommercialPanel(tabStrip, 3);
+            new OfficePanel(tabStrip, 4);
 
             // Start deactivated.
             optionsPanel.gameObject.SetActive(false);

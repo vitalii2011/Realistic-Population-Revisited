@@ -1,7 +1,6 @@
 ﻿using ICities;
-
 using ColossalFramework.UI;
-using UnityEngine;
+
 
 namespace RealisticPopulationRevisited
 {
