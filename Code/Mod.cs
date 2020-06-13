@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
 {
     public class PopBalanceMod : IUserMod
     {
-        public static string Version => "1.3";
+        public static string Version => "1.3.1";
 
         public string Name => "Realistic Population Revisited " + Version;
         
