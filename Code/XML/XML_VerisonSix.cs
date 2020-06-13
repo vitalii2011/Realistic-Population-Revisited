@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Security;
-
+using Microsoft.SqlServer.Server;
 
 namespace RealisticPopulationRevisited
 {
@@ -797,11 +797,15 @@ namespace RealisticPopulationRevisited
 
                     try
                     {
-                        DataStore.householdCache.Add(name, overrideValue);
+                        // Don't do anything if this key is already in the dictionary.
+                        if (!DataStore.householdCache.ContainsKey(name))
+                        {
+                            DataStore.householdCache.Add(name, overrideValue);
+                        }
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        // Don't care - most likely a duplicate key due to a reload of the configuration file.
+                        Debugging.bufferWarning("ReadOverrideHouseNode exception:\r\n" + e.ToString());
                     }
                 }
             }
@@ -846,11 +850,15 @@ namespace RealisticPopulationRevisited
 
                     try
                     {
-                        DataStore.workerCache.Add(name, overrideValue);
+                        // Don't do anything if this key is already in the dictionary.
+                        if (!DataStore.workerCache.ContainsKey(name))
+                        {
+                            DataStore.workerCache.Add(name, overrideValue);
+                        }
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        // Don't care - most likely a duplicate key due to a reload of the configuration file.
+                        Debugging.bufferWarning("ReadOverrideWorkers exception:\r\n" + e.ToString());
                     }
                 }
             }
@@ -869,15 +877,19 @@ namespace RealisticPopulationRevisited
                         int BonusValue = 1;
                         BonusValue = Convert.ToInt32(node.Attributes["value"].InnerText);
 
+                        // Needs a value to be valid
                         if (name.Length > 0)
                         {
-                            // Needs a value to be valid
-                            DataStore.bonusHouseholdCache.Add(name, BonusValue);
+                            // Don't do anything if this key is already in the dictionary.
+                            if (!DataStore.bonusHouseholdCache.ContainsKey(name))
+                            {
+                                DataStore.bonusHouseholdCache.Add(name, BonusValue);
+                            }
                         }
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readBonusHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
+                        Debugging.bufferWarning("ReadBonusHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
                     }
                 }
             }
@@ -896,16 +908,19 @@ namespace RealisticPopulationRevisited
                         int BonusValue = 5;
                         BonusValue = Convert.ToInt32(node.Attributes["value"].InnerText);
 
+                        // Needs a value to be valid
                         if (name.Length > 0)
                         {
-                            // Needs a value to be valid
-                            int endResult = BonusValue;
-                            DataStore.bonusWorkerCache.Add(name, endResult);
+                            // Don't do anything if this key is already in the dictionary.
+                            if (!DataStore.bonusWorkerCache.ContainsKey(name))
+                            {
+                                DataStore.bonusWorkerCache.Add(name, BonusValue);
+                            }
                         }
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readBonusWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
+                        Debugging.bufferWarning("ReadBonusWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
                     }
                 }
             }
@@ -924,15 +939,19 @@ namespace RealisticPopulationRevisited
                         int PrintValue = 1;
                         PrintValue = Convert.ToInt32(node.Attributes["value"].InnerText);
 
+                        // Needs a value to be valid
                         if (name.Length > 0)
                         {
-                            // Needs a value to be valid
-                            DataStore.housePrintOutCache.Add(name, PrintValue);
+                            // Don't do anything if this key is already in the dictionary.
+                            if (!DataStore.housePrintOutCache.ContainsKey(name))
+                            {
+                                DataStore.housePrintOutCache.Add(name, PrintValue);
+                            }
                         }
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readPrintHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
+                        Debugging.bufferWarning("ReadPrintHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
                     }
                 }
             }
@@ -951,16 +970,19 @@ namespace RealisticPopulationRevisited
                         int PrintValue = 5;
                         PrintValue = Convert.ToInt32(node.Attributes["value"].InnerText);
 
+                        // Needs a value to be valid
                         if (name.Length > 0)
                         {
-                            // Needs a value to be valid
-                            int endResult = PrintValue;
-                            DataStore.workerPrintOutCache.Add(name, endResult);
+                            // Don't do anything if this key is already in the dictionary.
+                            if (!DataStore.workerPrintOutCache.ContainsKey(name))
+                            {
+                                DataStore.workerPrintOutCache.Add(name, PrintValue);
+                            }
                         }
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readPrintWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
+                        Debugging.bufferWarning("ReadPrintWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
                     }
                 }
             }
