@@ -90,6 +90,19 @@ namespace RealisticPopulationRevisited
                 // Read textfield if possible.
                 if (int.TryParse(homeJobsCount.text, out int homesJobs))
                 {
+                    // Minimum value of 1.
+                    if (homesJobs < 1)
+                    {
+                        // Reset to one.
+                        homesJobs = 1;
+                        homeJobsCount.text = "1";
+
+                        // Print warning message in red.
+                        messageLabel.textColor = new Color32(255, 0, 0, 255);
+                        messageLabel.text = "ERROR: must be at least one";
+                        messageLabel.isVisible = true;
+                    }
+
                     // Homes or jobs?
                     if (currentSelection.GetService() == ItemClass.Service.Residential)
                     {

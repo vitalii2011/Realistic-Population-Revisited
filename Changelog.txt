@@ -1,3 +1,9 @@
+Version 1.3.2 -
+
+- UI enforces minimum custom homecount of one
+- Refresh configuration file whenever options panel restarts and on level loading
+
+
 Version 1.3.1 -
 
 - Improve handling of redundant configuration file loading attempts

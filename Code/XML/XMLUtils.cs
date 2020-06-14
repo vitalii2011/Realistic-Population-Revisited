@@ -14,21 +14,12 @@ namespace RealisticPopulationRevisited
         // Configuration file name.
         internal const String XML_FILE = "WG_RealisticCity.xml";
 
-        // Loaded flag.
-        static bool configLoaded = false;
 
         /// <summary>
         /// Loads the configuration XML file and sets the datastore.
         /// </summary>
         internal static void ReadFromXML()
         {
-            // Check to see if we've already loaded the file; if so, don't do anything.
-            if(configLoaded)
-            {
-                Debug.Log("Realistic Population Revisited: ignoring reload of configuration file.");
-                return;
-            }
-
             // Check the exe directory first
             DataStore.currentFileLocation = ColossalFramework.IO.DataLocation.executableDirectory + Path.DirectorySeparatorChar + XML_FILE;
             bool fileAvailable = File.Exists(DataStore.currentFileLocation);
@@ -70,9 +61,6 @@ namespace RealisticPopulationRevisited
                         return;
                     }
                     reader.readXML(doc);
-
-                    // Successfully loaded.
-                    configLoaded = true;
                 }
                 catch (Exception e)
                 {
