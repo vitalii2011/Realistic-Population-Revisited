@@ -93,38 +93,37 @@ namespace RealisticPopulationRevisited
                     // Minimum value of 1.
                     if (homesJobs < 1)
                     {
-                        // Reset to one.
-                        homesJobs = 1;
-                        homeJobsCount.text = "1";
-
                         // Print warning message in red.
                         messageLabel.textColor = new Color32(255, 0, 0, 255);
-                        messageLabel.text = "ERROR: must be at least one";
+                        messageLabel.text = "ERROR: value needs to be greater than zero";
                         messageLabel.isVisible = true;
-                    }
-
-                    // Homes or jobs?
-                    if (currentSelection.GetService() == ItemClass.Service.Residential)
-                    {
-                        Debug.Log("Realistic Population Revisited: adding custom household count of " + homesJobs + " for '" + currentSelection.name + "'.");
-
-                        // Residential building.
-                        ExternalCalls.SetResidential(currentSelection, homesJobs);
-
-                        // Update household counts for existing instances of this building - only needed for residential buildings.
-                        // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                        UpdateHouseholds(currentSelection.name);
                     }
                     else
                     {
-                        Debug.Log("Realistic Population Revisited: adding custom workplace count of " + homesJobs + " for '" + currentSelection.name + "'.");
+                        // Homes or jobs?
+                        if (currentSelection.GetService() == ItemClass.Service.Residential)
+                        {
+                            Debug.Log("Realistic Population Revisited: adding custom household count of " + homesJobs + " for '" + currentSelection.name + "'.");
 
-                        // Employment building.
-                        ExternalCalls.SetWorker(currentSelection, homesJobs);
+                            // Residential building.
+                            ExternalCalls.SetResidential(currentSelection, homesJobs);
+
+                            // Update household counts for existing instances of this building - only needed for residential buildings.
+                            // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
+                            UpdateHouseholds(currentSelection.name);
+                        }
+                        else
+                        {
+                            Debug.Log("Realistic Population Revisited: adding custom workplace count of " + homesJobs + " for '" + currentSelection.name + "'.");
+
+                            // Employment building.
+                            ExternalCalls.SetWorker(currentSelection, homesJobs);
+                        }
+
+                        // Refresh the display so that all panels reflect the updated settings.
+                        BuildingDetailsPanel.Panel.UpdateSelectedBuilding(currentSelection);
+                        BuildingDetailsPanel.Panel.Refresh();
                     }
-
-                    // Refresh the display so that all panels reflect the updated settings.
-                    BuildingDetailsPanel.Panel.Refresh();
                 }
                 else
                 {
@@ -174,8 +173,12 @@ namespace RealisticPopulationRevisited
             messageLabel = this.AddUIComponent<UILabel>();
             messageLabel.relativePosition = new Vector3(marginPadding, 160);
             messageLabel.textAlignment = UIHorizontalAlignment.Left;
-            messageLabel.text = "No message to display";
+            messageLabel.autoSize = false;
+            messageLabel.autoHeight = true;
+            messageLabel.wordWrap = true;
+            messageLabel.width = this.width - (marginPadding * 2);
             messageLabel.isVisible = false;
+            messageLabel.text = "No message to display";
         }
 
 
@@ -252,7 +255,7 @@ namespace RealisticPopulationRevisited
                 Building thisBuilding = instance.m_buildings.m_buffer[i];
 
                 // Only interested in residential buildings.
-                BuildingAI thisAI = thisBuilding.Info.GetAI() as ResidentialBuildingAI;
+                BuildingAI thisAI = thisBuilding.Info?.GetAI() as ResidentialBuildingAI;
                 if (thisAI != null)
                 {
                     // Residential building; check for name match.
