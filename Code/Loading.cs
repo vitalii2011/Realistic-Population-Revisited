@@ -88,6 +88,9 @@ namespace RealisticPopulationRevisited
                     }
                 }
 
+                // Check for Ploppable RICO Revisited.
+                ModUtils.isRICOEnabled = ModUtils.IsModInstalled("ploppablerico");
+
                 Debug.Log("Realistic Population Revisited successfully loaded.");
             }
         }

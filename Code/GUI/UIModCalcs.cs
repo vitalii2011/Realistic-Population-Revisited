@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.Math;
 using ColossalFramework.UI;
+using PloppableRICO;
 using UnityEngine;
 
 
@@ -294,17 +295,16 @@ namespace RealisticPopulationRevisited
                 modCount = customHomeJobs;
             }
 
-            // Check to see if the count calculated by this mod matches the actual building count; if it doesn't, another mod is overriding this one.
-            if (modCount == appliedCount)
+            // Check to see if Ploppable RICO Revisited is controlling this building's population.
+            if (ModUtils.isRICOEnabled && ModUtils.CheckRICO(building))
             {
-                // No override; hide message text.
-                messageLabel.Hide();
+                messageLabel.text = "Ploppable RICO Revisited is controlling the figures for this building.";
+                messageLabel.Show();
             }
             else
             {
-                // Another mod is overriding this one.  Display message.
-                messageLabel.text = "Another mod is overriding the figures for this building.";
-                messageLabel.Show();
+                // Hide message text by default.
+                messageLabel.Hide();
             }
 
             // We've got a valid building and results, so show panel.
