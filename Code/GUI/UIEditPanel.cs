@@ -103,7 +103,7 @@ namespace RealisticPopulationRevisited
                         // Homes or jobs?
                         if (currentSelection.GetService() == ItemClass.Service.Residential)
                         {
-                            Debug.Log("Realistic Population Revisited: adding custom household count of " + homesJobs + " for '" + currentSelection.name + "'.");
+                            Debugging.Message("adding custom household count of " + homesJobs + " for " + currentSelection.name);
 
                             // Residential building.
                             ExternalCalls.SetResidential(currentSelection, homesJobs);
@@ -114,7 +114,7 @@ namespace RealisticPopulationRevisited
                         }
                         else
                         {
-                            Debug.Log("Realistic Population Revisited: adding custom workplace count of " + homesJobs + " for '" + currentSelection.name + "'.");
+                            Debugging.Message("adding custom workplace count of " + homesJobs + " for " + currentSelection.name);
 
                             // Employment building.
                             ExternalCalls.SetWorker(currentSelection, homesJobs);
@@ -146,7 +146,7 @@ namespace RealisticPopulationRevisited
                     return;
                 }
 
-                Debug.Log("Realistic Population Revisited: deleting custom entry for '" + currentSelection.name + "'.");
+                Debugging.Message("deleting custom entry for " + currentSelection.name);
 
                 // Homes or jobs?  Remove custom entry as appropriate.
                 if (currentSelection.GetService() == ItemClass.Service.Residential)

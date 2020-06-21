@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Security;
-using Microsoft.SqlServer.Server;
 
 namespace RealisticPopulationRevisited
 {
@@ -87,8 +86,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning(e.Message);
-                    UnityEngine.Debug.LogException(e);
+                    Debugging.LogException(e);
                 }
             }
         } // end readXML
@@ -147,7 +145,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log("Realistic Population Revisited - XML MakeNodes exception:\r\n" + e.ToString());
+                Debugging.Message("XML MakeNodes exception:\r\n" + e.ToString());
             }
 
             // First segment
@@ -300,7 +298,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log("Realistic Population Revisited - PathFileName exception:\r\n" + e.ToString());
+                Debugging.Message("PathFileName exception:\r\n" + e.ToString());
             }
 
             try
@@ -309,7 +307,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log("Realistic Population Revisited - XML save exception:\r\n" + e.ToString());
+                Debugging.Message("XML save exception:\r\n" + e.ToString());
                 return false;  // Only time when we say there's an error
             }
 
@@ -1117,7 +1115,7 @@ namespace RealisticPopulationRevisited
                     break;
 
                 default:
-                    UnityEngine.Debug.Log("Realistic Population Revisited: callingFunction " + callingFunction + ". unknown element name: " + name);
+                    Debugging.Message("callingFunction " + callingFunction + ". unknown element name: " + name);
                     break;
             }
             return array;

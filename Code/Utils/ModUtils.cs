@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using UnityEngine;
 using ColossalFramework.Plugins;
 
 
@@ -32,7 +31,7 @@ namespace RealisticPopulationRevisited
                 {
                     if (assembly.GetName().Name.ToLower().Equals(assemblyNameLower))
                     {
-                        Debug.Log("Realistic Population Revisited: found mod assembly " + assemblyName);
+                        Debugging.Message("found mod assembly " + assemblyName);
                         if (enabledOnly)
                         {
                             return plugin.isEnabled;

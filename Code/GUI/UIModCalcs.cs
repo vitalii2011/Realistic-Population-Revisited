@@ -1,6 +1,5 @@
 ﻿using ColossalFramework.Math;
 using ColossalFramework.UI;
-using PloppableRICO;
 using UnityEngine;
 
 
@@ -149,7 +148,7 @@ namespace RealisticPopulationRevisited
             // Check for valid building AI.
             if (!(building.GetAI() is PrivateBuildingAI buildingAI))
             {
-                Debug.Log("Realistic Population Revisited: invalid building AI type in building details!");
+                Debugging.Message("invalid building AI type in building details");
                 return;
             }
 
@@ -197,7 +196,7 @@ namespace RealisticPopulationRevisited
                         }
                         break;
                     default:
-                        Debug.Log("Realistic Population Revisited: invalid building service in building details!");
+                        Debugging.Message("invalid building service in building details");
                         return;
                 }
 

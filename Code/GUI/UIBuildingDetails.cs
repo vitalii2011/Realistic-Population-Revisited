@@ -49,7 +49,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
+                Debugging.LogException(e);
                 return;
             }
         }
@@ -213,7 +213,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.LogException(e);
+                Debugging.LogException(e);
             }
         }
 

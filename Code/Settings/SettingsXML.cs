@@ -2,7 +2,6 @@
 using System.IO;
 using System.Xml.Serialization;
 using System.Linq;
-using UnityEngine;
 
 
 namespace RealisticPopulationRevisited
@@ -45,7 +44,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debug.LogException(e);
+                    Debugging.LogException(e);
                 }
             }
             return instance ?? (instance = new C());
@@ -69,7 +68,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
+                Debugging.LogException(e);
             }
         }
 
@@ -84,7 +83,7 @@ namespace RealisticPopulationRevisited
             }
             else
             {
-                Debug.LogError("ConfigurationPath attribute missing in " + typeof(C).Name);
+                Debugging.Message("ConfigurationPath attribute missing in " + typeof(C).Name);
                 return typeof(C).Name + ".xml";
             }
         }

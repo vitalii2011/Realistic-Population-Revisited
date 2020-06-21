@@ -46,7 +46,7 @@ namespace RealisticPopulationRevisited
             // Titlebar label.
             titleLabel = AddUIComponent<UILabel>();
             titleLabel.relativePosition = new Vector3(50, 13);
-            titleLabel.text = "Realistic Population v" + PopBalanceMod.Version;
+            titleLabel.text = RealPopMod.ModName;
 
             // Close button.
             closeButton = AddUIComponent<UIButton>();

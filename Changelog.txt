@@ -2,6 +2,7 @@
 - Fix building list custom settings checkbox not updating on settings change
 - Entering a minimum home/worker count of less than one now results in just the error with no application
 - Added active Ploppable RICO Revisited integration for determining which mod controls a particular building's population
+- Standardise logging
 
 
 Version 1.3.2 -

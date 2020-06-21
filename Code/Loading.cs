@@ -37,7 +37,7 @@ namespace RealisticPopulationRevisited
             if (loading.currentMode != AppMode.Game)
             {
                 isModEnabled = false;
-                Debug.Log("Realistic Population Revisited: not loading into game, skipping activation.");
+                Debugging.Message("not loading into game, skipping activation");
                 return;
             }
 
@@ -46,16 +46,16 @@ namespace RealisticPopulationRevisited
             if (IsModEnabled(426163185ul))
             {
                 conflictingMod = true;
-                Debug.Log("Realistic Population Revisited: Realistic Population and Consumption Mod detected, skipping activation.");
+                Debugging.Message("Realistic Population and Consumption Mod detected, skipping activation");
             }
             else if (!isModEnabled)
             {
                 isModEnabled = true;
 
                 // Harmony patches.
-                Debug.Log("Realistic Population Revisited: version v" + PopBalanceMod.Version + " loading.");
+                Debugging.Message("version v" + RealPopMod.Version + " loading.");
                 _harmony.PatchAll(GetType().Assembly);
-                Debug.Log("Realistic Population Revisited: patching complete.");
+                Debugging.Message("patching complete.");
 
                 DataStore.ClearCache();
 
@@ -91,7 +91,7 @@ namespace RealisticPopulationRevisited
                 // Check for Ploppable RICO Revisited.
                 ModUtils.isRICOEnabled = ModUtils.IsModInstalled("ploppablerico");
 
-                Debug.Log("Realistic Population Revisited successfully loaded.");
+                Debugging.Message("successfully loaded");
             }
         }
 
@@ -136,7 +136,7 @@ namespace RealisticPopulationRevisited
 
                 // Unapply Harmony patches.
                 _harmony.UnpatchAll(HarmonyID);
-                Debug.Log("Realistic Population Revisited: patches unapplied.");
+                Debugging.Message("patches unapplied");
             }
         }
 
@@ -173,7 +173,7 @@ namespace RealisticPopulationRevisited
                     // Now we can remove people
                     DataStore.allowRemovalOfCitizens = true;
                     Debugging.releaseBuffer();
-                    Debug.Log("Realistic Population Revisited successfully applied.");
+                    Debugging.Message("successfully applied");
                 }
             }
 

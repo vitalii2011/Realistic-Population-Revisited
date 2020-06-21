@@ -65,7 +65,7 @@ namespace RealisticPopulationRevisited
 
             if (gameOptionsPanel == null)
             {
-                Debug.Log("Realistic Population Revisited: couldn't find OptionsPanel!");
+                Debugging.Message("couldn't find OptionsPanel");
             }
             else
             {

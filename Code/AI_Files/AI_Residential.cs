@@ -116,7 +116,7 @@ namespace RealisticPopulationRevisited
             }
             catch (System.Exception)
             {
-                UnityEngine.Debug.Log("Realistic Population Revisited: " + item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.");
+                Debugging.Message(item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0");
                 return array[0];
             }
         }

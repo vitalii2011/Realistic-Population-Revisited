@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
-using UnityEngine;
 
 
 namespace RealisticPopulationRevisited
@@ -33,7 +32,7 @@ namespace RealisticPopulationRevisited
 
             if (fileAvailable)
             {
-                Debug.Log("Realistic Population Revisited: loading configuration file " + DataStore.currentFileLocation);
+                Debugging.Message("loading configuration file " + DataStore.currentFileLocation);
 
                 // Load in from XML - Designed to be flat file for ease
                 WG_XMLBaseVersion reader = new XML_VersionSix();
@@ -71,7 +70,7 @@ namespace RealisticPopulationRevisited
             }
             else
             {
-                Debug.Log("Realistic Population Revisited: configuration file not found. Will output new file to : " + DataStore.currentFileLocation);
+                Debugging.Message("configuration file not found. Will output new file to: " + DataStore.currentFileLocation);
             }
         }
 
@@ -88,7 +87,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debug.Log("Realistic Population Revisited: XML writing exception:\r\n" + e.Message);
+                Debugging.Message("XML writing exception:\r\n" + e.Message);
             }
         }
     }

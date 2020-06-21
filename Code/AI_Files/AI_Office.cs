@@ -3,6 +3,7 @@ using ColossalFramework.Math;
 using UnityEngine;
 using Harmony;
 
+
 namespace RealisticPopulationRevisited
 {
     [HarmonyPatch(typeof(OfficeBuildingAI))]
@@ -149,7 +150,7 @@ namespace RealisticPopulationRevisited
                 // Prevent unnecessary log spamming due to 'level-less' buildings returning level 1 instead of level 0.
                 if (level != 1)
                 {
-                    UnityEngine.Debug.Log("Realistic Population Revisited: " + item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0.");
+                    Debugging.Message(item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0");
                 }
                 return array[0];
             }

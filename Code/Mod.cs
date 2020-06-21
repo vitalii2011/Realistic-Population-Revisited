@@ -4,12 +4,13 @@ using ColossalFramework.UI;
 
 namespace RealisticPopulationRevisited
 {
-    public class PopBalanceMod : IUserMod
+    public class RealPopMod : IUserMod
     {
+        public static string ModName => "Realistic Population Revisited";
         public static string Version => "1.3.2";
 
-        public string Name => "Realistic Population Revisited " + Version;
-        
+        public string Name => ModName + " " + Version;
+
         public string Description => "More realistic building populations (based on building size) and utility needs.";
 
 

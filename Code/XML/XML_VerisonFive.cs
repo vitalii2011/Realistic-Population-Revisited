@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 
 
@@ -66,7 +64,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    UnityEngine.Debug.Log("Realistic Population Revisited - XML readNodes exception:\r\n" + e.ToString());
+                    Debugging.Message("XML readNodes exception:\r\n" + e.ToString());
                 }
             }
         } // end readXML
@@ -733,7 +731,7 @@ namespace RealisticPopulationRevisited
                     break;
 
                 default:
-                    UnityEngine.Debug.Log("Realistic Population Revisited: callingFunction " + callingFunction + ". unknown element name: " + name);
+                    Debugging.Message("callingFunction " + callingFunction + ". unknown element name: " + name);
                     break;
             }
             return array;
