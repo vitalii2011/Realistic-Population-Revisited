@@ -108,18 +108,18 @@ namespace RealisticPopulationRevisited
         {
             // Reset button.
             UIButton resetButton = UIUtils.CreateButton(panel, 150);
-            resetButton.text = "Reset to defaults";
+            resetButton.text = Translations.Translate("RPR_OPT_RTD");
             resetButton.relativePosition = new Vector3(Margin, currentY);
             resetButton.eventClicked += (component, clickEvent) => ResetToDefaults();
 
             UIButton revertToSaveButton = UIUtils.CreateButton(panel, 150);
-            revertToSaveButton.text = "Revert to saved";
+            revertToSaveButton.text = Translations.Translate("RPR_OPT_RTS");
             revertToSaveButton.relativePosition = new Vector3((Margin * 2) + 150, currentY);
 
             revertToSaveButton.eventClicked += (component, clickEvent) => { XMLUtils.ReadFromXML(); PopulateFields(); };
 
             UIButton saveButton = UIUtils.CreateButton(panel, 150);
-            saveButton.text = "Save and apply";
+            saveButton.text = Translations.Translate("SRPR_OPT_SAA");
             saveButton.relativePosition = new Vector3((Margin * 3) + 300, currentY);
             saveButton.eventClicked += (component, clickEvent) => ApplyFields();
         }

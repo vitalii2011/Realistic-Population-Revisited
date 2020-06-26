@@ -70,5 +70,8 @@
     <Translation ID="RPR_OPT_CHI" String="High com level" />
     <Translation ID="RPR_OPT_ORG" String="Organic and local" />
     <Translation ID="RPR_OPT_IND" String="Generic ind level" />
+    <Translation ID="RPR_OPT_RTD" String="Reset to defaults" />
+    <Translation ID="RPR_OPT_RTS" String="Revert to saved" />
+    <Translation ID="RPR_OPT_SAA" String="Save and apply" />
   </Translations>
 </Language>
