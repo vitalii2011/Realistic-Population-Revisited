@@ -1,4 +1,5 @@
 - Add configurable translation framework
+- Add icons to options panel configuration screens
 
 
 Version 1.3.3 -

@@ -75,14 +75,14 @@ namespace RealisticPopulationRevisited
             // Headings.
             ColumnLabel(panel, Column1, Column1Width, Translations.Translate(notResidential ? "RPR_OPT_APW" : "RPR_OPT_APH"), 1.0f);
             ColumnLabel(panel, Column2, ColumnWidth, Translations.Translate("RPR_OPT_FLR"), 1.0f);
-            ColumnLabel(panel, Column4, ColumnWidth, Translations.Translate("RPR_OPT_POW"));
-            ColumnLabel(panel, Column5, ColumnWidth, Translations.Translate("RPR_OPT_WAT"));
-            ColumnLabel(panel, Column6, ColumnWidth, Translations.Translate("RPR_OPT_SEW"));
-            ColumnLabel(panel, Column7, ColumnWidth, Translations.Translate("RPR_OPT_GAR"));
-            ColumnLabel(panel, Column8, Column8Width, Translations.Translate("RPR_OPT_WEA"));
+            ColumnIcon(panel, Column4, ColumnWidth, Translations.Translate("RPR_OPT_POW"), "ToolbarIconElectricity");
+            ColumnIcon(panel, Column5, ColumnWidth, Translations.Translate("RPR_OPT_WAT"), "ToolbarIconWaterAndSewage");
+            ColumnIcon(panel, Column6, ColumnWidth, Translations.Translate("RPR_OPT_SEW"), "ToolbarIconWaterAndSewageDisabled");
+            ColumnIcon(panel, Column7, ColumnWidth, Translations.Translate("RPR_OPT_GAR"), "InfoIconGarbage");
+            ColumnIcon(panel, Column8, Column8Width, Translations.Translate("RPR_OPT_WEA"), "ToolbarIconMoney");
 
             // Bonus floors.
-            if(notResidential)
+            if (notResidential)
             {
                 ColumnLabel(panel, Column3, ColumnWidth, "Floor mod", 0.8f);
             }
@@ -96,7 +96,7 @@ namespace RealisticPopulationRevisited
             headingLabel.verticalAlignment = UIVerticalAlignment.Middle;
             headingLabel.textAlignment = UIHorizontalAlignment.Center;
             headingLabel.width = Column8 + Column8Width - Column4;
-            headingLabel.text = Translations.Translate("RPR_OPT_UTIL") + "\r\n" + Translations.Translate(notResidential ? "RPR_OPT_PERW" : "RPR_OPT_PERH");
+            headingLabel.text = Translations.Translate(notResidential ? "RPR_OPT_PERW" : "RPR_OPT_PERH");
         }
 
 
@@ -131,9 +131,10 @@ namespace RealisticPopulationRevisited
         /// <param name="panel">UI panel</param>
         /// <param name="xPos">Reference X position</param>
         /// <param name="text">Label text</param>
+        /// <param name="scale">Label text size (default 0.8)</param>
         protected void ColumnLabel(UIPanel panel, float xPos, float width, string text, float scale = 0.8f)
         {
-
+            // Basic setup.
             UILabel lineLabel = panel.AddUIComponent<UILabel>();
             lineLabel.textScale = scale;
             lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
@@ -141,10 +142,39 @@ namespace RealisticPopulationRevisited
             lineLabel.autoSize = false;
             lineLabel.autoHeight = true;
             lineLabel.wordWrap = true;
+            lineLabel.width = width + Margin;
 
             lineLabel.text = text;
-            lineLabel.width = width + Margin;
+
+            // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
             lineLabel.relativePosition = new Vector3(xPos + ((width - lineLabel.width) / 2), TitleHeight - lineLabel.height);
+        }
+
+
+        /// <summary>
+        /// Adds a column header icon label.
+        /// </summary>
+        /// <param name="panel">UI panel</param>
+        /// <param name="xPos">Reference X position</param>
+        /// <param name="text">Tooltip text</param>
+        /// <param name="icon">Icon name</param>
+        protected void ColumnIcon(UIPanel panel, float xPos, float width, string text, string icon)
+        {
+            // Create mini-panel for the icon background.
+            UIPanel thumbPanel = panel.AddUIComponent<UIPanel>();
+            thumbPanel.width = 35f;
+            thumbPanel.height = 35f;
+            thumbPanel.relativePosition = new Vector3(xPos + ((width - 35f) / 2), TitleHeight - 40f);
+            thumbPanel.clipChildren = true;
+            thumbPanel.backgroundSprite = "IconPolicyBaseRect";
+            thumbPanel.tooltip = text;
+
+            // Actual icon.
+            UISprite thumbSprite = thumbPanel.AddUIComponent<UISprite>();
+            thumbSprite.relativePosition = Vector3.zero;
+            thumbSprite.size = thumbPanel.size;
+            thumbSprite.atlas = UIUtils.GetAtlas("Ingame");
+            thumbSprite.spriteName = icon;
         }
 
 
