@@ -53,8 +53,10 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            AddSubService(panel, Translations.Translate(subServiceLables[Office]), true, Office);
-            AddSubService(panel, Translations.Translate(subServiceLables[HighTech]), false, HighTech);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Office]), "ZoningOffice", "Thumbnails");
+            AddSubService(panel, true, Office);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[HighTech]), "IconPolicyHightech", "Ingame");
+            AddSubService(panel, false, HighTech, label: Translations.Translate(subServiceLables[HighTech]));
 
             // Populate initial values.
             PopulateFields();

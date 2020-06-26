@@ -11,12 +11,14 @@ namespace RealisticPopulationRevisited
     internal class PanelBase
     {
         // UI layout constants.
-        protected const float Margin = 10f;
-        protected const float RowHeight = 25f;
+        protected const float Margin = 5f;
+        protected const float LeftTitle = 50f;
+        protected const float LeftItem = 75f;
+        protected const float RowHeight = 23f;
         protected const float ColumnWidth = 50f;
         protected const float Column1Width = 100f;
         protected const float Column8Width = 60f;
-        protected const float Column1 = 175f;
+        protected const float Column1 = 180f;
         protected const float Column2 = Column1 + Column1Width + Margin;
         protected const float Column3 = Column2 + ColumnWidth + Margin;
         protected const float Column4 = Column3 + ColumnWidth + Margin + Margin;
@@ -106,6 +108,9 @@ namespace RealisticPopulationRevisited
         /// <param name="panel">UI panel instance</param>
         protected void AddButtons(UIPanel panel)
         {
+            // Add extra space.
+            currentY += RowHeight;
+
             // Reset button.
             UIButton resetButton = UIUtils.CreateButton(panel, 150);
             resetButton.text = Translations.Translate("RPR_OPT_RTD");
@@ -119,7 +124,7 @@ namespace RealisticPopulationRevisited
             revertToSaveButton.eventClicked += (component, clickEvent) => { XMLUtils.ReadFromXML(); PopulateFields(); };
 
             UIButton saveButton = UIUtils.CreateButton(panel, 150);
-            saveButton.text = Translations.Translate("SRPR_OPT_SAA");
+            saveButton.text = Translations.Translate("RPR_OPT_SAA");
             saveButton.relativePosition = new Vector3((Margin * 3) + 300, currentY);
             saveButton.eventClicked += (component, clickEvent) => ApplyFields();
         }
@@ -176,23 +181,50 @@ namespace RealisticPopulationRevisited
             thumbSprite.atlas = UIUtils.GetAtlas("Ingame");
             thumbSprite.spriteName = icon;
         }
+        
+        
+        /// <summary>
+         /// Adds a column header icon label.
+         /// </summary>
+         /// <param name="panel">UI panel</param>
+         /// <param name="xPos">Reference X position</param>
+         /// <param name="text">Tooltip text</param>
+         /// <param name="icon">Icon name</param>
+        protected void RowHeaderIcon(UIPanel panel, float yPos, string text, string icon, string atlas)
+        {
+            // Actual icon.
+            UISprite thumbSprite = panel.AddUIComponent<UISprite>();
+            thumbSprite.relativePosition = new Vector3(Margin, yPos - 2.5f);
+            thumbSprite.width = 35f;
+            thumbSprite.height = 35f;
+            thumbSprite.atlas = UIUtils.GetAtlas(atlas);
+            thumbSprite.spriteName = icon;
+
+            // Text label.
+            UILabel lineLabel = panel.AddUIComponent<UILabel>();
+            lineLabel.textScale = 1.0f;
+            lineLabel.text = text;
+            lineLabel.relativePosition = new Vector3(LeftTitle, yPos + 7);
+            lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
+
+            currentY += 30f;
+        }
 
 
         /// <summary>
         /// Adds a sub-service field group to the panel.
         /// </summary>
         /// <param name="panel">UI panel instance</param>
-        /// <param name="label">Text label base for each row</param>
-        /// <param name="addLevels">True to add building levels to the end of the label, false to leave label as given</param>
         /// <param name="subService">Subservice reference number</param>
-        /// <param name="isExtract">Set this to true (and addLevels to false) to add extractor/processor labels</param>
-        protected void AddSubService(UIPanel panel, string label, bool addLevels, int subService, bool isExtract = false)
+        /// <param name="isExtract">Set this to true (and label to null) to add extractor/processor labels (default false, which is plain level labels)</param>
+        /// <param name="label">Text label base for each row; null (default) to use level numbers or extractor/prcessor</param>
+        protected void AddSubService(UIPanel panel, bool addLevels, int subService, bool isExtract = false, string label = null)
         {
             // Add a row for each level within this subservice.
             for (int i = 0; i < areaFields[subService].Length; i++)
             {
                 // Row label.
-                RowLabel(panel, currentY, label + " " +  (addLevels ? (i + 1).ToString() : (isExtract ? Translations.Translate( i == 0 ? "RPR_CAT_EXT" : "RPR_CAT_PRO") : string.Empty)));
+                RowLabel(panel, currentY, label ?? (isExtract ? Translations.Translate( i == 0 ? "RPR_CAT_EXT" : "RPR_CAT_PRO") : Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString()));
 
                 // Textfields.
                 areaFields[subService][i] = AddTextField(panel, Column1Width, Column1, currentY);
@@ -213,8 +245,8 @@ namespace RealisticPopulationRevisited
                 currentY += RowHeight;
             }
 
-            // Add an extra blank line at the end.
-            currentY += RowHeight;
+            // Add an extra bit of space at the end.
+            currentY += Margin;
         }
 
 
@@ -296,9 +328,11 @@ namespace RealisticPopulationRevisited
         /// <param name="text">Label text</param>
         private void RowLabel(UIPanel panel, float yPos, string text)
         {
+            // Text label.
             UILabel lineLabel = panel.AddUIComponent<UILabel>();
+            lineLabel.textScale = 0.9f;
             lineLabel.text = text;
-            lineLabel.relativePosition = new Vector3(Margin, yPos + 2);
+            lineLabel.relativePosition = new Vector3(LeftItem, yPos + 2);
             lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
         }
 
@@ -312,7 +346,7 @@ namespace RealisticPopulationRevisited
         /// <param name="posY">Relative Y position</param>
         private UITextField AddTextField(UIPanel panel, float width, float posX, float posY)
         {
-            UITextField textField = UIUtils.CreateTextField(panel, width, 20);
+            UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
             textField.relativePosition = new Vector3(posX, posY);
             textField.eventTextChanged += (control, value) => TextFilter((UITextField)control, value);
 

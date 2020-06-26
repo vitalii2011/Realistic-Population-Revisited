@@ -21,7 +21,7 @@ namespace RealisticPopulationRevisited
         // Label constants.
         private string[] subServiceLables =
         {
-            "RPR_OPT_IND",
+            "RPR_CAT_IND",
             "RPR_CAT_FAR",
             "RPR_CAT_FOR",
             "RPR_CAT_OIL",
@@ -59,11 +59,16 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            AddSubService(panel, Translations.Translate(subServiceLables[Generic]), true, Generic);
-            AddSubService(panel, Translations.Translate(subServiceLables[Farming]), false, Farming, true);
-            AddSubService(panel, Translations.Translate(subServiceLables[Forestry]), false, Forestry, true);
-            AddSubService(panel, Translations.Translate(subServiceLables[Oil]), false, Oil, true);
-            AddSubService(panel, Translations.Translate(subServiceLables[Ore]), false, Ore, true);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
+            AddSubService(panel, true, Generic);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
+            AddSubService(panel, false, Farming, true);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
+            AddSubService(panel, false, Forestry, true);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
+            AddSubService(panel, false, Oil, true);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
+            AddSubService(panel, false, Ore, true);
 
             // Populate initial values.
             PopulateFields();

@@ -21,9 +21,9 @@ namespace RealisticPopulationRevisited
         // Label constants.
         private string[] subServiceLables =
         {
-            "RPR_OPT_CLO",
-            "RPR_OPT_CHI",
-            "RPR_OPT_ORG",
+            "RPR_CAT_CLO",
+            "RPR_CAT_CHI",
+            "RPR_CAT_ORG",
             "RPR_CAT_LEI",
             "RPR_CAT_TOU"
         };
@@ -59,11 +59,16 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            AddSubService(panel, Translations.Translate(subServiceLables[LowCom]), true, LowCom);
-            AddSubService(panel, Translations.Translate(subServiceLables[HighCom]), true, HighCom);
-            AddSubService(panel, Translations.Translate(subServiceLables[EcoCom]), false, EcoCom);
-            AddSubService(panel, Translations.Translate(subServiceLables[Leisure]), false, Leisure);
-            AddSubService(panel, Translations.Translate(subServiceLables[Tourist]), false, Tourist);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[LowCom]), "ZoningCommercialLow", "Thumbnails");
+            AddSubService(panel, true, LowCom);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[HighCom]), "ZoningCommercialHigh", "Thumbnails");
+            AddSubService(panel, true, HighCom);
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[EcoCom]), "IconPolicyOrganic", "Ingame");
+            AddSubService(panel, false, EcoCom, label: Translations.Translate("RPR_CAT_ECO"));
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Leisure]), "IconPolicyLeisure", "Ingame");
+            AddSubService(panel, false, Leisure, label: Translations.Translate(subServiceLables[Leisure]));
+            RowHeaderIcon(panel, currentY, Translations.Translate(subServiceLables[Tourist]), "IconPolicyTourist", "Ingame");
+            AddSubService(panel, false, Tourist, label: Translations.Translate(subServiceLables[Tourist]));
 
             // Populate initial values.
             PopulateFields();

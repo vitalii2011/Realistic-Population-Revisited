@@ -23,8 +23,11 @@
     <Translation ID="RPR_CAT_PRO" String="Processor" />
     <Translation ID="RPR_CAT_TOU" String="Tourism" />
     <Translation ID="RPR_CAT_LEI" String="Leisure" />
-    <Translation ID="RPR_CAT_ORG" String="Organic commercial" />
+    <Translation ID="RPR_CAT_ORG" String="Organic and local produce" />
+    <Translation ID="RPR_CAT_ECO" String="Eco shops" />
     <Translation ID="RPR_CAT_SSH" String="Self-sufficient homes" />
+    <Translation ID="RPR_CAT_ERL" String="Eco residential low" />
+    <Translation ID="RPR_CAT_ERH" String="Eco residential high" />
     <Translation ID="RPR_FIL_NAME" String="Name:" />
     <Translation ID="RPR_CUS_HAS" String="Has custom settings" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />
@@ -51,6 +54,7 @@
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />
     <Translation ID="RPR_OPT_MOD" String="Mod settings" />
     <Translation ID="RPR_OPT_KEY" String="Hotkey for building options screen" />
+    <Translation ID="RPR_OPT_LVL" String="Level" />
     <Translation ID="RPR_OPT_PERW" String="Amounts per worker" />
     <Translation ID="RPR_OPT_PERH" String="Amounts per household" />
     <Translation ID="RPR_OPT_APH" String="Area per household (m2)" />
@@ -61,14 +65,6 @@
     <Translation ID="RPR_OPT_SEW" String="Sewage" />
     <Translation ID="RPR_OPT_GAR" String="Garbage" />
     <Translation ID="RPR_OPT_WEA" String="Wealth" />
-    <Translation ID="RPR_OPT_RLO" String="Low res level" />
-    <Translation ID="RPR_OPT_RHI" String="High res level" />
-    <Translation ID="RPR_OPT_ELO" String="Low eco res lvl" />
-    <Translation ID="RPR_OPT_EHI" String="High eco res lvl" />
-    <Translation ID="RPR_OPT_CLO" String="Low com level" />
-    <Translation ID="RPR_OPT_CHI" String="High com level" />
-    <Translation ID="RPR_OPT_ORG" String="Organic and local" />
-    <Translation ID="RPR_OPT_IND" String="Generic ind level" />
     <Translation ID="RPR_OPT_RTD" String="Reset to defaults" />
     <Translation ID="RPR_OPT_RTS" String="Revert to saved" />
     <Translation ID="RPR_OPT_SAA" String="Save and apply" />
