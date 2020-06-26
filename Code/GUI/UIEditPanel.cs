@@ -45,7 +45,7 @@ namespace RealisticPopulationRevisited
             UILabel title = this.AddUIComponent<UILabel>();
             title.relativePosition = new Vector3(0, 5);
             title.textAlignment = UIHorizontalAlignment.Center;
-            title.text = "Custom settings";
+            title.text = Translations.Translate("RPR_CUS_TITLE");
             title.textScale = 1.2f;
             title.autoSize = false;
             title.width = this.width;
@@ -55,7 +55,7 @@ namespace RealisticPopulationRevisited
             homeJobLabel = this.AddUIComponent<UILabel>();
             homeJobLabel.relativePosition = new Vector3(marginPadding, 40);
             homeJobLabel.textAlignment = UIHorizontalAlignment.Left;
-            homeJobLabel.text = "Homes:";
+            homeJobLabel.text = Translations.Translate("RPR_LBL_HOM");
 
             // Home or jobs count text field.
             homeJobsCount = UIUtils.CreateTextField(this, this.width - (marginPadding * 3) - homeJobLabel.width, 20);
@@ -64,15 +64,15 @@ namespace RealisticPopulationRevisited
             // Save button.
             saveButton = UIUtils.CreateButton(this, 200);
             saveButton.relativePosition = new Vector3(marginPadding, 70);
-            saveButton.text = "Add custom setting";
-            saveButton.tooltip = "Adds (or updates) a custom setting for the selected building";
+            saveButton.text = Translations.Translate("RPR_CUS_ADD");
+            saveButton.tooltip = Translations.Translate("RPR_CUS_ADD_TIP");
             saveButton.Disable();
 
             // Delete button.
             deleteButton = UIUtils.CreateButton(this, 200);
             deleteButton.relativePosition = new Vector3(marginPadding, 110);
-            deleteButton.text = "Delete custom setting";
-            deleteButton.tooltip = "Removes the custom setting from the selected building";
+            deleteButton.text = Translations.Translate("RPR_CUS_DEL");
+            deleteButton.tooltip = Translations.Translate("RPR_CUS_DEL_TIP");
             deleteButton.Disable();
 
             // Save button event handler.
@@ -95,7 +95,7 @@ namespace RealisticPopulationRevisited
                     {
                         // Print warning message in red.
                         messageLabel.textColor = new Color32(255, 0, 0, 255);
-                        messageLabel.text = "ERROR: value needs to be greater than zero";
+                        messageLabel.text = Translations.Translate("RPR_ERR_ZERO");
                         messageLabel.isVisible = true;
                     }
                     else
@@ -129,7 +129,7 @@ namespace RealisticPopulationRevisited
                 {
                     // TryParse couldn't parse the data; print warning message in red.
                     messageLabel.textColor = new Color32(255, 0, 0, 255);
-                    messageLabel.text = "ERROR: invalid value";
+                    messageLabel.text = Translations.Translate("RPR_ERR_INV");
                     messageLabel.isVisible = true;
                 }
             };
@@ -209,27 +209,27 @@ namespace RealisticPopulationRevisited
             {
                 // See if a custom number of households applies to this building.
                 homesJobs = ExternalCalls.GetResidential(building);
-                homeJobLabel.text = "Homes:";
+                homeJobLabel.text = Translations.Translate("RPR_LBL_HOM");
             }
             else
             {
                 // Workplace building; see if a custom number of jobs applies to this building.
                 homesJobs = ExternalCalls.GetWorker(building);
-                homeJobLabel.text = "Jobs:";
+                homeJobLabel.text = Translations.Translate("RPR_LBL_JOB");
             }
 
             // If no custom settings have been found (return value was zero), then blank the text field, rename the save button, and disable the delete button.
             if (homesJobs == 0)
             {
                 homeJobsCount.text = string.Empty;
-                saveButton.text = "Add custom setting";
+                saveButton.text = Translations.Translate("RPR_CUS_ADD");
                 deleteButton.Disable();
             }
             else
             {
                 // Valid custom settings found; display the result, rename the save button, and enable the delete button.
                 homeJobsCount.text = homesJobs.ToString();
-                saveButton.text = "Update custom setting";
+                saveButton.text = Translations.Translate("RPR_CUS_UPD");
                 deleteButton.Enable();
             }
 

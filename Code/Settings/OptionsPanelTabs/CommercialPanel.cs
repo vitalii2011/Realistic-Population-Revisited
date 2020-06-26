@@ -21,11 +21,11 @@ namespace RealisticPopulationRevisited
         // Label constants.
         private string[] subServiceLables =
         {
-            "Low com level ",
-            "High com level ",
-            "Eco commercial",
-            "Leisure",
-            "Tourism"
+            "RPR_OPT_CLO",
+            "RPR_OPT_CHI",
+            "RPR_OPT_ORG",
+            "RPR_CAT_LEI",
+            "RPR_CAT_TOU"
         };
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace RealisticPopulationRevisited
         public CommercialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "Commercial", tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_COM"), tabIndex);
 
             // Initialise textfield array.
             SetupArrays(NumSubServices);
@@ -59,11 +59,11 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            AddSubService(panel, subServiceLables[LowCom], true, LowCom);
-            AddSubService(panel, subServiceLables[HighCom], true, HighCom);
-            AddSubService(panel, subServiceLables[EcoCom], false, EcoCom);
-            AddSubService(panel, subServiceLables[Leisure], false, Leisure);
-            AddSubService(panel, subServiceLables[Tourist], false, Tourist);
+            AddSubService(panel, Translations.Translate(subServiceLables[LowCom]), true, LowCom);
+            AddSubService(panel, Translations.Translate(subServiceLables[HighCom]), true, HighCom);
+            AddSubService(panel, Translations.Translate(subServiceLables[EcoCom]), false, EcoCom);
+            AddSubService(panel, Translations.Translate(subServiceLables[Leisure]), false, Leisure);
+            AddSubService(panel, Translations.Translate(subServiceLables[Tourist]), false, Tourist);
 
             // Populate initial values.
             PopulateFields();

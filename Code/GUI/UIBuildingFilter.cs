@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using ColossalFramework.UI;
 
 
@@ -98,16 +96,16 @@ namespace RealisticPopulationRevisited
         // Icon sprite tooltips.
         public static readonly string[] tooltips =
         {
-            "Residential low",
-            "Residential high",
-            "Commercial low",
-            "Commercial high",
-            "Office" ,
-            "Industrial",
-            "Tourism",
-            "Leisure",
-            "Organic commercial",
-            "Self-sufficient homes"
+            "RPR_CAT_RLO",
+            "RPR_CAT_RHI",
+            "RPR_CAT_CLO",
+            "RPR_CAT_CHI",
+            "RPR_CAT_OFF",
+            "RPR_CAT_IND",
+            "RPR_CAT_TOU",
+            "RPR_CAT_LEI",
+            "RPR_CAT_ORG",
+            "RPR_CAT_SSH"
         };
     }
 
@@ -139,7 +137,7 @@ namespace RealisticPopulationRevisited
             {
                 // Basic setup.
                 categoryToggles[i] = UIUtils.CreateIconToggle(this, CategoryIcons.atlases[i], CategoryIcons.spriteNames[i], CategoryIcons.spriteNames[i] + "Disabled");
-                categoryToggles[i].tooltip = CategoryIcons.tooltips[i];
+                categoryToggles[i].tooltip = Translations.Translate(CategoryIcons.tooltips[i]);
                 categoryToggles[i].relativePosition = new Vector3(40 * i, 0);
                 categoryToggles[i].isChecked = true;
                 categoryToggles[i].readOnly = true;
@@ -166,7 +164,7 @@ namespace RealisticPopulationRevisited
 
             // 'All categories' button.
             allCategories = UIUtils.CreateButton(this, 120);
-            allCategories.text = "All categories";
+            allCategories.text = Translations.Translate("RPR_CAT_ALL");
             allCategories.relativePosition = new Vector3(405, 5);
 
             // All categories event handler.
@@ -187,7 +185,7 @@ namespace RealisticPopulationRevisited
             nameLabel.textScale = 0.8f;
             nameLabel.padding = new RectOffset(0, 0, 8, 0);
             nameLabel.relativePosition = new Vector3(width - 250, 0);
-            nameLabel.text = "Name: ";
+            nameLabel.text = Translations.Translate("RPR_FIL_NAME");
 
             nameFilter = UIUtils.CreateTextField(this, 200f, 30f);
             nameFilter.relativePosition = new Vector3(width - nameFilter.width, 0);

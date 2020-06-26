@@ -11,7 +11,7 @@ namespace RealisticPopulationRevisited
 
         public string Name => ModName + " " + Version;
 
-        public string Description => "More realistic building populations (based on building size) and utility needs.";
+        public string Description => Translations.Translate("RPR_DESC");
 
 
         /// <summary>

@@ -79,7 +79,10 @@ namespace RealisticPopulationRevisited
             panelButton.textScale = 0.65f;
             panelButton.textVerticalAlignment = UIVerticalAlignment.Bottom;
             panelButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - panelButton.width - 10, 120);
-            panelButton.text = "Realistic Population";
+            panelButton.text = Translations.Translate("RPR_REALPOP");
+
+            // Just in case other mods are interfering.
+            panelButton.Enable();
 
             // Event handler.
             panelButton.eventClick += (control, clickEvent) =>

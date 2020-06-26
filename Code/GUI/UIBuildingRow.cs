@@ -88,7 +88,7 @@ namespace RealisticPopulationRevisited
                 hasCustom = AddUIComponent<UISprite>();
                 hasCustom.size = new Vector2(20, 20);
                 hasCustom.relativePosition = new Vector3(340, 10);
-                hasCustom.tooltip = "Has custom settings";
+                hasCustom.tooltip = Translations.Translate("RPR_CUS_HAS");
             }
 
             // Set selected building.

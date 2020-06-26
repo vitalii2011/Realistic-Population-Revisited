@@ -103,6 +103,7 @@
     <Content Include="Images\Screen_Office.jpg" />
     <Content Include="Images\Screen_PloppableRICO.jpg" />
     <Content Include="RegressionList.txt" />
+    <Content Include="Translations\en.xml" />
     <Content Include="XML_Files\LocalRICOSettings.xml" />
     <Content Include="XML_Files\WG_DefaultValuesFromKundun.xml" />
     <Content Include="XML_Files\WG_GameDefaults.xml" />
@@ -132,6 +133,8 @@
     <Compile Include="Code\Settings\OptionsPanelTabs\ModOptionsPanel.cs" />
     <Compile Include="Code\Settings\SettingsXML.cs" />
     <Compile Include="Code\Settings\UpdateNotification.cs" />
+    <Compile Include="Code\TranslationFramework\TranslationFramework.cs" />
+    <Compile Include="Code\TranslationFramework\TranslationXML.cs" />
     <Compile Include="Code\Utils\ModUtils.cs" />
     <Compile Include="Code\XML\XMLUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,6 +171,9 @@ del "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName
 xcopy /y "$(SolutionDir)\XML_Files\*xml" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
 del "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\0Harmony.dll"
 xcopy /y "$(SolutionDir)packages\Lib.Harmony.1.2.0.1\lib\net35\0Harmony.dll" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\Translations"
+del "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\Translations\*.xml"
+xcopy /y "$(SolutionDir)\Translations\" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\Translations" /s /e
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

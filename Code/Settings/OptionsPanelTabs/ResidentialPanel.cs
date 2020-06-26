@@ -19,10 +19,10 @@ namespace RealisticPopulationRevisited
         // Label constants.
         private string[] subServiceLables =
         {
-            "Low res level ",
-            "High res level ",
-            "Low eco res lvl ",
-            "High eco res lvl "
+            "RPR_OPT_RLO",
+            "RPR_OPT_RHI",
+            "RPR_OPT_ELO",
+            "RPR_OPT_EHI"
         };
 
 
@@ -34,7 +34,7 @@ namespace RealisticPopulationRevisited
         public ResidentialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "Residential", tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex);
 
             // Set residential flag.
             notResidential = false;
@@ -57,10 +57,10 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            AddSubService(panel, subServiceLables[LowRes], true, LowRes);
-            AddSubService(panel, subServiceLables[HighRes], true, HighRes);
-            AddSubService(panel, subServiceLables[LowEcoRes], true, LowEcoRes);
-            AddSubService(panel, subServiceLables[HighEcoRes], true, HighEcoRes);
+            AddSubService(panel, Translations.Translate(subServiceLables[LowRes]), true, LowRes);
+            AddSubService(panel, Translations.Translate(subServiceLables[HighRes]), true, HighRes);
+            AddSubService(panel, Translations.Translate(subServiceLables[LowEcoRes]), true, LowEcoRes);
+            AddSubService(panel, Translations.Translate(subServiceLables[HighEcoRes]), true, HighEcoRes);
 
             // Populate initial values.
             PopulateFields();

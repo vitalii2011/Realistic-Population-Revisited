@@ -9,7 +9,7 @@ namespace RealisticPopulationRevisited
     internal class IndustrialPanel : PanelBase
     {
         // Array reference constants.
-        private const int Industrial = 0;
+        private const int Generic = 0;
         private const int Farming = 1;
         private const int Forestry = 2;
         private const int Oil = 3;
@@ -21,11 +21,11 @@ namespace RealisticPopulationRevisited
         // Label constants.
         private string[] subServiceLables =
         {
-            "Industrial level ",
-            "Farming ",
-            "Forestry ",
-            "Oil ",
-            "Ore "
+            "RPR_OPT_IND",
+            "RPR_CAT_FAR",
+            "RPR_CAT_FOR",
+            "RPR_CAT_OIL",
+            "RPR_CAT_ORE"
         };
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace RealisticPopulationRevisited
         public IndustrialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "Industrial", tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_IND"), tabIndex);
 
             // Initialise textfield array.
             SetupArrays(NumSubServices);
@@ -59,11 +59,11 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            AddSubService(panel, subServiceLables[Industrial], true, Industrial);
-            AddSubService(panel, subServiceLables[Farming], true, Farming);
-            AddSubService(panel, subServiceLables[Forestry], true, Forestry);
-            AddSubService(panel, subServiceLables[Oil], true, Oil);
-            AddSubService(panel, subServiceLables[Ore], true, Ore);
+            AddSubService(panel, Translations.Translate(subServiceLables[Generic]), true, Generic);
+            AddSubService(panel, Translations.Translate(subServiceLables[Farming]), false, Farming, true);
+            AddSubService(panel, Translations.Translate(subServiceLables[Forestry]), false, Forestry, true);
+            AddSubService(panel, Translations.Translate(subServiceLables[Oil]), false, Oil, true);
+            AddSubService(panel, Translations.Translate(subServiceLables[Ore]), false, Ore, true);
 
             // Populate initial values.
             PopulateFields();
@@ -79,7 +79,7 @@ namespace RealisticPopulationRevisited
         protected override void PopulateFields()
         {
             // Populate each subservice.
-            PopulateSubService(DataStore.industry, Industrial);
+            PopulateSubService(DataStore.industry, Generic);
             PopulateSubService(DataStore.industry_farm, Farming);
             PopulateSubService(DataStore.industry_forest, Forestry);
             PopulateSubService(DataStore.industry_oil, Oil);
@@ -93,7 +93,7 @@ namespace RealisticPopulationRevisited
         protected override void ApplyFields()
         {
             // Apply each subservice.
-            ApplySubService(DataStore.industry, Industrial);
+            ApplySubService(DataStore.industry, Generic);
             ApplySubService(DataStore.industry_farm, Farming);
             ApplySubService(DataStore.industry_forest, Forestry);
             ApplySubService(DataStore.industry_oil, Oil);
@@ -134,7 +134,7 @@ namespace RealisticPopulationRevisited
                                                new int [] {38, 30, 0, 0, -1,   10, 35, 45, 10,   180, 200, 240, 50, 400,   300, 400,   100, 25} };
 
             // Populate text fields with these.
-            PopulateSubService(industry, Industrial);
+            PopulateSubService(industry, Generic);
             PopulateSubService(industry_farm, Farming);
             PopulateSubService(industry_forest, Forestry);
             PopulateSubService(industry_oil, Oil);

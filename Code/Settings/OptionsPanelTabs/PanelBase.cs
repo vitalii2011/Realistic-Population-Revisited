@@ -73,13 +73,13 @@ namespace RealisticPopulationRevisited
         protected void AddHeadings(UIPanel panel)
         {
             // Headings.
-            ColumnLabel(panel, Column1, Column1Width, "Area per\r\n"+ (notResidential ? "worker" : "household") + "\r\n(m2)", 1.0f);
-            ColumnLabel(panel, Column2, ColumnWidth, "Floor\r\nheight\r\n(m)", 1.0f);
-            ColumnLabel(panel, Column4, ColumnWidth, "Power");
-            ColumnLabel(panel, Column5, ColumnWidth, "Water");
-            ColumnLabel(panel, Column6, ColumnWidth, "Sewage");
-            ColumnLabel(panel, Column7, ColumnWidth, "Garbage");
-            ColumnLabel(panel, Column8, Column8Width, "Wealth");
+            ColumnLabel(panel, Column1, Column1Width, Translations.Translate(notResidential ? "RPR_OPT_APW" : "RPR_OPT_APH"), 1.0f);
+            ColumnLabel(panel, Column2, ColumnWidth, Translations.Translate("RPR_OPT_FLR"), 1.0f);
+            ColumnLabel(panel, Column4, ColumnWidth, Translations.Translate("RPR_OPT_POW"));
+            ColumnLabel(panel, Column5, ColumnWidth, Translations.Translate("RPR_OPT_WAT"));
+            ColumnLabel(panel, Column6, ColumnWidth, Translations.Translate("RPR_OPT_SEW"));
+            ColumnLabel(panel, Column7, ColumnWidth, Translations.Translate("RPR_OPT_GAR"));
+            ColumnLabel(panel, Column8, Column8Width, Translations.Translate("RPR_OPT_WEA"));
 
             // Bonus floors.
             if(notResidential)
@@ -96,7 +96,7 @@ namespace RealisticPopulationRevisited
             headingLabel.verticalAlignment = UIVerticalAlignment.Middle;
             headingLabel.textAlignment = UIHorizontalAlignment.Center;
             headingLabel.width = Column8 + Column8Width - Column4;
-            headingLabel.text = "Utility consumption/production\r\nper " + (notResidential ? "unit" : "household");
+            headingLabel.text = Translations.Translate("RPR_OPT_UTIL") + "\r\n" + Translations.Translate(notResidential ? "RPR_OPT_PERW" : "RPR_OPT_PERH");
         }
 
 
@@ -155,13 +155,14 @@ namespace RealisticPopulationRevisited
         /// <param name="label">Text label base for each row</param>
         /// <param name="addLevels">True to add building levels to the end of the label, false to leave label as given</param>
         /// <param name="subService">Subservice reference number</param>
-        protected void AddSubService(UIPanel panel, string label, bool addLevels, int subService)
+        /// <param name="isExtract">Set this to true (and addLevels to false) to add extractor/processor labels</param>
+        protected void AddSubService(UIPanel panel, string label, bool addLevels, int subService, bool isExtract = false)
         {
             // Add a row for each level within this subservice.
             for (int i = 0; i < areaFields[subService].Length; i++)
             {
                 // Row label.
-                RowLabel(panel, currentY, label + (addLevels ? (i + 1).ToString() : string.Empty));
+                RowLabel(panel, currentY, label + " " +  (addLevels ? (i + 1).ToString() : (isExtract ? Translations.Translate( i == 0 ? "RPR_CAT_EXT" : "RPR_CAT_PRO") : string.Empty)));
 
                 // Textfields.
                 areaFields[subService][i] = AddTextField(panel, Column1Width, Column1, currentY);

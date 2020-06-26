@@ -17,12 +17,12 @@ namespace RealisticPopulationRevisited
         internal ModOptionsPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "Mod settings", tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_OPT_MOD"), tabIndex);
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = true;
 
             // Hotkey textfield
-            UITextField hotkeyText = (UITextField)helper.AddTextfield("Hotkey for building options screen", OptionsPanel.settings.hotkey.ToString(), (value) => { }, (value) => { });
+            UITextField hotkeyText = (UITextField)helper.AddTextfield(Translations.Translate("RPR_OPT_KEY"), OptionsPanel.settings.hotkey.ToString(), (value) => { }, (value) => { });
 
             // Event handler for getting the hotkey.
             hotkeyText.eventTextChanged += (control, value) =>

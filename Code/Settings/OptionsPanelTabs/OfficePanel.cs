@@ -18,8 +18,8 @@ namespace RealisticPopulationRevisited
         // Label constants.
         private string[] subServiceLables =
         {
-            "Office level ",
-            "IT Cluster"
+            "RPR_CAT_OFF",
+            "RPR_CAT_ITC"
         };
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace RealisticPopulationRevisited
         public OfficePanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "Office", tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_OFF"), tabIndex);
 
             // Initialise textfield array.
             SetupArrays(NumSubServices);
@@ -53,8 +53,8 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            AddSubService(panel, subServiceLables[Office], true, Office);
-            AddSubService(panel, subServiceLables[HighTech], false, HighTech);
+            AddSubService(panel, Translations.Translate(subServiceLables[Office]), true, Office);
+            AddSubService(panel, Translations.Translate(subServiceLables[HighTech]), false, HighTech);
 
             // Populate initial values.
             PopulateFields();

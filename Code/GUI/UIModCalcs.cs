@@ -159,16 +159,16 @@ namespace RealisticPopulationRevisited
                 array = ResidentialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
 
                 // Set calculated homes label.
-                homesJobsCalcLabel.text = "Calculated homes: ";
+                homesJobsCalcLabel.text = Translations.Translate("RPR_CAL_HOM_CALC");
 
                 // Set customised homes label and get value (if any).
-                homesJobsCustomLabel.text = "Customised homes: ";
+                homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_HOM_CUST");
                 customHomeJobs = ExternalCalls.GetResidential(building);
 
                 // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
                 // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
                 appliedCount = buildingAI.CalculateHomeCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength());
-                homesJobsActualLabel.text = "Applied homes: " + appliedCount;
+                homesJobsActualLabel.text = Translations.Translate("RPR_CAL_HOM_APPL") + appliedCount;
             }
             else
             {
@@ -252,21 +252,21 @@ namespace RealisticPopulationRevisited
             }
 
             // Display calculated (and retrieved) details.
-            detailLabels[(int)Details.width].text = "Building width (m): " + calcWidth;
-            detailLabels[(int)Details.length].text = "Building length (m): " + calcLength;
-            detailLabels[(int)Details.height].text = "Scaffolding height (m): " + (int)buildingSize.y;
-            detailLabels[(int)Details.personArea].text = "m2 per person: " + array[DataStore.PEOPLE];
-            detailLabels[(int)Details.floorHeight].text = "Floor height (m): " + array[DataStore.LEVEL_HEIGHT];
-            detailLabels[(int)Details.floors].text = "Calculated floors: " + floorCount;
+            detailLabels[(int)Details.width].text = Translations.Translate("RPR_CAL_BLD_X") + " " + calcWidth;
+            detailLabels[(int)Details.length].text = Translations.Translate("RPR_CAL_BLD_Z") + " " + calcLength;
+            detailLabels[(int)Details.height].text = Translations.Translate("RPR_CAL_BLD_Y") + " " + (int)buildingSize.y;
+            detailLabels[(int)Details.personArea].text = Translations.Translate("RPR_CAL_BLD_M2") + " " + array[DataStore.PEOPLE];
+            detailLabels[(int)Details.floorHeight].text = Translations.Translate("RPR_CAL_FLR_Y") + " " + array[DataStore.LEVEL_HEIGHT];
+            detailLabels[(int)Details.floors].text = Translations.Translate("RPR_CAL_FLR") + " " + floorCount;
 
             // Area calculation - will need this later.
             int calculatedArea = calcWidth * calcLength;
-            detailLabels[(int)Details.area].text = "Calculated area: " + calculatedArea;
+            detailLabels[(int)Details.area].text = Translations.Translate("RPR_CAL_M2") + " " + calculatedArea;
 
             // Show or hide extra floor modifier as appropriate (hide for zero or less, otherwise show).
             if (array[DataStore.DENSIFICATION] > 0)
             {
-                detailLabels[(int)Details.extraFloors].text = "Floor modifier: " + array[DataStore.DENSIFICATION];
+                detailLabels[(int)Details.extraFloors].text = Translations.Translate("RPR_CAL_FLR_M") + " " + array[DataStore.DENSIFICATION];
                 detailLabels[(int)Details.extraFloors].isVisible = true;
             }
             else
@@ -297,7 +297,7 @@ namespace RealisticPopulationRevisited
             // Check to see if Ploppable RICO Revisited is controlling this building's population.
             if (ModUtils.isRICOEnabled && ModUtils.CheckRICO(building))
             {
-                messageLabel.text = "Ploppable RICO Revisited is controlling the figures for this building.";
+                messageLabel.text = Translations.Translate("RPR_CAL_RICO");
                 messageLabel.Show();
             }
             else
