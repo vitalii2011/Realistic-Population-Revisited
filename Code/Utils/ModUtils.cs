@@ -15,21 +15,19 @@ namespace RealisticPopulationRevisited
 
         /// <summary>
         /// Checks to see if another mod is installed, based on a provided assembly name.
+        /// Case-sensitive!  PloppableRICO is not the same as ploppablerico!
         /// </summary>
         /// <param name="assemblyName">Name of the mod assembly</param>
         /// <param name="enabledOnly">True if the mod needs to be enabled for the purposes of this check; false if it doesn't matter</param>
         /// <returns>True if the mod is installed (and, if enabledOnly is true, is also enabled), false otherwise</returns>
         internal static bool IsModInstalled(string assemblyName, bool enabledOnly = false)
         {
-            // Convert assembly name to lower case.
-            string assemblyNameLower = assemblyName.ToLower();
-
             // Iterate through the full list of plugins.
             foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
             {
                 foreach (Assembly assembly in plugin.GetAssemblies())
                 {
-                    if (assembly.GetName().Name.ToLower().Equals(assemblyNameLower))
+                    if (assembly.GetName().Name.Equals(assemblyName))
                     {
                         Debugging.Message("found mod assembly " + assemblyName);
                         if (enabledOnly)
