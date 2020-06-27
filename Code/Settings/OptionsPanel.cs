@@ -26,6 +26,22 @@ namespace RealisticPopulationRevisited
             // Load settings.
             settings = Configuration<SettingsFile>.Load();
 
+            // Apply hotkey settings.
+            try
+            {
+                // Should throw an exception if this doesn't work.
+                UIThreading.hotKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), settings.hotkey);
+            }
+            catch
+            {
+                // Don't care - just don't do anything.
+            }
+
+            // Hotkey modifiers.
+            UIThreading.hotCtrl = settings.ctrl;
+            UIThreading.hotAlt = settings.alt;
+            UIThreading.hotShift = settings.shift;
+
             // Set up tab strip and containers.
             optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             optionsPanel.autoLayout = false;

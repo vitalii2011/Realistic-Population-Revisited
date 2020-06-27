@@ -54,6 +54,7 @@
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />
     <Translation ID="RPR_OPT_MOD" String="Mod settings" />
     <Translation ID="RPR_OPT_KEY" String="Hotkey for building options screen" />
+    <Translation ID="RPR_OPT_PRS" String="Press any key" />
     <Translation ID="RPR_OPT_LVL" String="Level" />
     <Translation ID="RPR_OPT_PERW" String="Amounts per worker" />
     <Translation ID="RPR_OPT_PERH" String="Amounts per household" />

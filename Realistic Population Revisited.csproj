@@ -123,6 +123,7 @@
     <Compile Include="Code\GUI\UIFastList.cs" />
     <Compile Include="Code\GUI\UIThreading.cs" />
     <Compile Include="Code\GUI\UIUtils.cs" />
+    <Compile Include="Code\Settings\OptionsKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CommercialPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\IndustrialPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\OfficePanel.cs" />
