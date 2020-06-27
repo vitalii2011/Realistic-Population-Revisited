@@ -8,7 +8,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Class for XML configuration file utility methods.
     /// </summary>
-    internal static class XMLUtils
+    internal static class XMLUtilsWG
     {
         // Configuration file name.
         internal const String XML_FILE = "WG_RealisticCity.xml";

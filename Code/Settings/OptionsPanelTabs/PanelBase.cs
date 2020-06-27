@@ -121,7 +121,7 @@ namespace RealisticPopulationRevisited
             revertToSaveButton.text = Translations.Translate("RPR_OPT_RTS");
             revertToSaveButton.relativePosition = new Vector3((Margin * 2) + 150, currentY);
 
-            revertToSaveButton.eventClicked += (component, clickEvent) => { XMLUtils.ReadFromXML(); PopulateFields(); };
+            revertToSaveButton.eventClicked += (component, clickEvent) => { XMLUtilsWG.ReadFromXML(); PopulateFields(); };
 
             UIButton saveButton = UIUtils.CreateButton(panel, 150);
             saveButton.text = Translations.Translate("RPR_OPT_SAA");

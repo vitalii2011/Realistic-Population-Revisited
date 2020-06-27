@@ -10,9 +10,6 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal class OptionsPanel
     {
-        // Settings file.
-        internal static SettingsFile settings;
-
         // Parent UI panel reference.
         private static UIScrollablePanel optionsPanel;
 
@@ -23,25 +20,6 @@ namespace RealisticPopulationRevisited
         /// <param name="helper">UIHelperBase parent</param>
         internal OptionsPanel(UIHelperBase helper)
         {
-            // Load settings.
-            settings = Configuration<SettingsFile>.Load();
-
-            // Apply hotkey settings.
-            try
-            {
-                // Should throw an exception if this doesn't work.
-                UIThreading.hotKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), settings.hotkey);
-            }
-            catch
-            {
-                // Don't care - just don't do anything.
-            }
-
-            // Hotkey modifiers.
-            UIThreading.hotCtrl = settings.ctrl;
-            UIThreading.hotAlt = settings.alt;
-            UIThreading.hotShift = settings.shift;
-
             // Set up tab strip and containers.
             optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             optionsPanel.autoLayout = false;
@@ -56,7 +34,7 @@ namespace RealisticPopulationRevisited
             tabStrip.tabPages = tabContainer;
 
             // Populate Datastore from configuration file.
-            XMLUtils.ReadFromXML();
+            XMLUtilsWG.ReadFromXML();
 
             // Add tabs and panels.
             new ModOptionsPanel(tabStrip, 0);

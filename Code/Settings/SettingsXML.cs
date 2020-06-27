@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.ComponentModel;
 using System.Xml.Serialization;
-using System.Linq;
+using UnityEngine;
 
 
 namespace RealisticPopulationRevisited
@@ -9,95 +10,137 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Defines the XML settings file.
     /// </summary>
-    [ConfigurationPath("RealisticPopulation.xml")]
-    public class SettingsFile
+    [XmlRoot("SettingsFile")]
+    public class XMLSettingsFile
     {
         // Stores the version of the most recent update notification that the user has decided to "Don't show again".
-        public int NotificationVersion { get; set; } = 0;
+        [XmlElement("NotificationVersion")]
+        public int NotificationVersion { get => UpdateNotification.notificationVersion; set { UpdateNotification.notificationVersion = value; } }
 
-        // Building details panel hotkey.
-        public string hotkey { get; set; } = "E";
-        public bool ctrl { get; set; } = false;
-        public bool alt { get; set; } = true;
-        public bool shift { get; set; } = false;
+        // Building details panel hotkey backwards-compatibility.
+        [XmlElement("hotkey")]
+        [DefaultValue("")]
+        public string hotkey { get => ""; set => UIThreading.hotKey = (KeyCode)Enum.Parse(typeof(KeyCode), value); }
+
+        [XmlElement("ctrl")]
+        [DefaultValue(false)]
+        public bool ctrl { get => false;  set => UIThreading.hotCtrl = value; }
+
+        [XmlElement("alt")]
+        [DefaultValue(false)]
+        public bool alt { get => false;  set => UIThreading.hotAlt = value; }
+
+        [XmlElement("shift")]
+        [DefaultValue(false)]
+        public bool shift { get => false;  set => UIThreading.hotShift = value; }
+
+        // New building details panel hotkey element.
+        [XmlElement("PanelKey")]
+        public KeyBinding PanelKey
+        {
+            get
+            {
+                return new KeyBinding
+                {
+                    keyCode = (int)UIThreading.hotKey,
+                    control = UIThreading.hotCtrl,
+                    shift = UIThreading.hotShift,
+                    alt = UIThreading.hotAlt
+                };
+            }
+            set
+            {
+                // Backwads compatibility - this won't exist in older-format configuration files.
+                if (value != null)
+                {
+                    UIThreading.hotKey = (KeyCode)value.keyCode;
+                    UIThreading.hotCtrl = value.control;
+                    UIThreading.hotShift = value.shift;
+                    UIThreading.hotAlt = value.alt;
+                }
+            }
+        }
     }
 
-    public abstract class Configuration<C> where C : class, new()
-    {
-        private static C instance;
 
-        public static C Load()
+    /// <summary>
+    /// Basic keybinding class - code and modifiers.
+    /// </summary>
+    public class KeyBinding
+    {
+        [XmlAttribute("KeyCode")]
+        public int keyCode;
+
+        [XmlAttribute("Control")]
+        public bool control;
+
+        [XmlAttribute("Shift")]
+        public bool shift;
+
+        [XmlAttribute("Alt")]
+        public bool alt;
+    }
+
+
+    /// XML serialization/deserialization utilities class.
+    /// </summary>
+    internal static class SettingsUtils
+    {
+        internal static readonly string SettingsFileName = "RealisticPopulation.xml";
+
+
+        /// <summary>
+        /// Load settings from XML file.
+        /// </summary>
+        internal static void LoadSettings()
         {
-            if (instance == null)
+            try
             {
-                var configPath = GetConfigPath();
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(C));
-                try
+                // Check to see if configuration file exists.
+                if (File.Exists(SettingsFileName))
                 {
-                    if (File.Exists(configPath))
+                    // Read it.
+                    using (StreamReader reader = new StreamReader(SettingsFileName))
                     {
-                        using (StreamReader streamReader = new System.IO.StreamReader(configPath))
+                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLSettingsFile));
+                        if (!(xmlSerializer.Deserialize(reader) is XMLSettingsFile xmlSettingsFile))
                         {
-                            instance = xmlSerializer.Deserialize(streamReader) as C;
+                            Debugging.Message("couldn't deserialize settings file");
                         }
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    Debugging.LogException(e);
-                }
-            }
-            return instance ?? (instance = new C());
-        }
-
-        public static void Save()
-        {
-            if (instance == null) return;
-
-            var configPath = GetConfigPath();
-
-            var xmlSerializer = new XmlSerializer(typeof(C));
-            var noNamespaces = new XmlSerializerNamespaces();
-            noNamespaces.Add("", "");
-            try
-            {
-                using (var streamWriter = new System.IO.StreamWriter(configPath))
-                {
-                    xmlSerializer.Serialize(streamWriter, instance, noNamespaces);
+                    Debugging.Message("no settings file found");
                 }
             }
             catch (Exception e)
             {
+                Debugging.Message("exception reading XML settings file");
                 Debugging.LogException(e);
             }
         }
 
-        private static string GetConfigPath()
-        {
-            var configPathAttribute = typeof(C).GetCustomAttributes(typeof(ConfigurationPathAttribute), true)
-                .FirstOrDefault() as ConfigurationPathAttribute;
 
-            if (configPathAttribute != null)
+        /// <summary>
+        /// Save settings to XML file.
+        /// </summary>
+        internal static void SaveSettings()
+        {
+            try
             {
-                return configPathAttribute.Value;
+                // Pretty straightforward.  Serialisation is within GBRSettingsFile class.
+                using (StreamWriter writer = new StreamWriter(SettingsFileName))
+                {
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLSettingsFile));
+                    xmlSerializer.Serialize(writer, new XMLSettingsFile());
+                }
             }
-            else
+            catch (Exception e)
             {
-                Debugging.Message("ConfigurationPath attribute missing in " + typeof(C).Name);
-                return typeof(C).Name + ".xml";
+                Debugging.Message("exception saving XML settings file");
+                Debugging.LogException(e);
             }
         }
-    }
-
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ConfigurationPathAttribute : Attribute
-    {
-        public ConfigurationPathAttribute(string value)
-        {
-            Value = value;
-        }
-
-        public string Value { get; private set; }
     }
 }

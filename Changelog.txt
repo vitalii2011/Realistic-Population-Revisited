@@ -1,6 +1,7 @@
 - Add configurable translation framework
 - Add icons to options panel configuration screens
 - Replace hotkey selection controls with CO-style single control
+- Overhaul XML settings file handling and format
 
 
 Version 1.3.3 -

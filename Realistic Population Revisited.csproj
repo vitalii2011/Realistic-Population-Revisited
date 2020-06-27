@@ -137,7 +137,7 @@
     <Compile Include="Code\TranslationFramework\TranslationFramework.cs" />
     <Compile Include="Code\TranslationFramework\TranslationXML.cs" />
     <Compile Include="Code\Utils\ModUtils.cs" />
-    <Compile Include="Code\XML\XMLUtils.cs" />
+    <Compile Include="Code\XML\XML_UtilsWG.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\AI_Files\AI_Building.cs" />
     <Compile Include="Code\AI_Files\AI_Commercial.cs" />

@@ -22,8 +22,6 @@ namespace RealisticPopulationRevisited
         // Used to flag if a conflicting mod is running.
         private static bool conflictingMod = false;
 
-        // XML settings file.
-        public static SettingsFile settingsFile;
 
 
         public static bool IsModEnabled(UInt64 id)
@@ -59,7 +57,7 @@ namespace RealisticPopulationRevisited
 
                 DataStore.ClearCache();
 
-                XMLUtils.ReadFromXML();
+                XMLUtilsWG.ReadFromXML();
                 MergeDefaultBonus();
 
                 // Remove bonus names from over rides
@@ -178,39 +176,19 @@ namespace RealisticPopulationRevisited
             }
 
             // Save updated XML (or create new).
-            XMLUtils.WriteToXML();
+            XMLUtilsWG.WriteToXML();
 
             // Add button to building info panels.
             BuildingDetailsPanel.AddInfoPanelButton();
 
-            // Load settings file and check if we need to display update notification.
-            settingsFile = Configuration<SettingsFile>.Load();
-            if (settingsFile.NotificationVersion != 2)
+            // Check if we need to display update notification.
+            if (UpdateNotification.notificationVersion != 2)
             {
                 // No update notification "Don't show again" flag found; show the notification.
                 UpdateNotification notification = new UpdateNotification();
                 notification.Create();
                 notification.Show();
             }
-
-            // Load settings.
-            SettingsFile settings = Configuration<SettingsFile>.Load();
-
-            // Hotkey.
-            try
-            {
-                // Should throw an exception if this doesn't work.
-                UIThreading.hotKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), settings.hotkey);
-            }
-            catch
-            {
-                // Don't care - just don't do anything.
-            }
-
-            // Hotkey modifiers.
-            UIThreading.hotCtrl = settings.ctrl;
-            UIThreading.hotAlt = settings.alt;
-            UIThreading.hotShift = settings.shift;
 
             // Set up options panel event handler.
             OptionsPanel.OptionsEventHook();

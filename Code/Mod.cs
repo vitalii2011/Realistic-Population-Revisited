@@ -29,6 +29,9 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void OnEnabled()
         {
+            // Load settings file.
+            SettingsUtils.LoadSettings();
+
             // Check to see if UIView is ready.
             if (UIView.GetAView() != null)
             {

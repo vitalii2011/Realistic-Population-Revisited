@@ -25,7 +25,7 @@ namespace RealisticPopulationRevisited
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             // Check keypress according to settings.
-            if (Input.GetKey(hotKey) && (!hotAlt || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+            if (Input.GetKey(hotKey) && (!hotAlt || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr))
                 && (!hotCtrl || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
                 && (!hotShift || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {

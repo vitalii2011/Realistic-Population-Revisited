@@ -10,6 +10,9 @@ namespace RealisticPopulationRevisited
     /// </summary>
     public class UpdateNotification : UIPanel
     {
+        // Loaded from configuration file.
+        internal static int notificationVersion;
+
         // Constants.
         private const float panelWidth = 450;
         private const float panelHeight = 200;
@@ -110,9 +113,9 @@ namespace RealisticPopulationRevisited
                 // Event handler.
                 noShowButton.eventClick += (c, p) =>
                 {
-                    // Update and save settings file.
-                    Loading.settingsFile.NotificationVersion = 2;
-                    Configuration<SettingsFile>.Save();
+                    // Save settings.
+                    notificationVersion = 2;
+                    SettingsUtils.SaveSettings();
 
                     // Just hide this panel and destroy the game object - nothing more to do.
                     this.Hide();

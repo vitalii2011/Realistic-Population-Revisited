@@ -84,15 +84,9 @@ namespace RealisticPopulationRevisited
                     inputKey = (keyEvent.keycode == KeyCode.Backspace) ? SavedInputKey.Empty : SavedInputKey.Encode(keyEvent.keycode, keyEvent.control, keyEvent.shift, keyEvent.alt);
                 }
 
-                // Apply mod settings.
+                // Apply settings and save.
                 CurrentHotkey = inputKey;
-
-                /// Save to configuration file.
-                OptionsPanel.settings.hotkey = UIThreading.hotKey.ToString();
-                OptionsPanel.settings.ctrl = UIThreading.hotCtrl;
-                OptionsPanel.settings.shift = UIThreading.hotShift;
-                OptionsPanel.settings.alt = UIThreading.hotAlt;
-                Configuration<SettingsFile>.Save();
+                SettingsUtils.SaveSettings();
 
                 // Set the label for the new hotkey.
                 button.text = SavedInputKey.ToLocalizedString("KEYNAME", inputKey);
