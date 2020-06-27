@@ -19,8 +19,9 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void OnSettingsUI(UIHelperBase helper)
         {
-            // Create options panel.
-            OptionsPanel optionsPanel = new OptionsPanel(helper);
+            // Setup options panel reference.
+            OptionsPanel.optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
+            OptionsPanel.optionsPanel.autoLayout = false;
         }
 
 
@@ -31,6 +32,9 @@ namespace RealisticPopulationRevisited
         {
             // Load settings file.
             SettingsUtils.LoadSettings();
+
+            // Populate Datastore from configuration file.
+            XMLUtilsWG.ReadFromXML();
 
             // Check to see if UIView is ready.
             if (UIView.GetAView() != null)

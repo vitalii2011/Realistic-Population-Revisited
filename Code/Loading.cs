@@ -57,7 +57,6 @@ namespace RealisticPopulationRevisited
 
                 DataStore.ClearCache();
 
-                XMLUtilsWG.ReadFromXML();
                 MergeDefaultBonus();
 
                 // Remove bonus names from over rides
