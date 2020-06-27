@@ -17,6 +17,20 @@ namespace RealisticPopulationRevisited
         [XmlElement("NotificationVersion")]
         public int NotificationVersion { get => UpdateNotification.notificationVersion; set { UpdateNotification.notificationVersion = value; } }
 
+        // Language.
+        [XmlElement("Language")]
+        public string language
+        {
+            get
+            {
+                return Translations.Language;
+            }
+            set
+            {
+                Translations.Language = value;
+            }
+        }
+
         // Building details panel hotkey backwards-compatibility.
         [XmlElement("hotkey")]
         [DefaultValue("")]
