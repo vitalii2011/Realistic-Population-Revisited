@@ -7,7 +7,7 @@ namespace RealisticPopulationRevisited
     public class RealPopMod : IUserMod
     {
         public static string ModName => "Realistic Population Revisited";
-        public static string Version => "1.3.3";
+        public static string Version => "1.4";
 
         public string Name => ModName + " " + Version;
 
