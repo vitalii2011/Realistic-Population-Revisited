@@ -60,6 +60,11 @@ namespace RealisticPopulationRevisited
                     _processed = false;
                 }
             }
+            else
+            {
+                // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                _processed = false;
+            }
         }
     }
 

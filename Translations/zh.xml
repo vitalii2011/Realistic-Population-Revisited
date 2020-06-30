@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language UniqueName="zh" ReadableName="中文">
+  <Translations>
+    <Translation ID="RPR_NAME" String="真實人口重製版(Realistic Population Revisited)" />
+    <Translation ID="RPR_DESC" String="更真實的建築人口(依據建築尺吋)和效用需求。" />"
+    <Translation ID="RPR_REALPOP" String="真實人口" />
+    <Translation ID="RPR_CAT_ALL" String="所有分類" />
+    <Translation ID="RPR_CAT_RES" String="住宅建築" />
+    <Translation ID="RPR_CAT_RLO" String="低密度住宅建築" />
+    <Translation ID="RPR_CAT_RHI" String="高密度住宅建築" />
+    <Translation ID="RPR_CAT_COM" String="商業建築" />
+    <Translation ID="RPR_CAT_CLO" String="低密度商業建築" />
+    <Translation ID="RPR_CAT_CHI" String="高密度商業建築" />
+    <Translation ID="RPR_CAT_OFF" String="辦公建築" />
+    <Translation ID="RPR_CAT_GEN" String="一般建築" />
+    <Translation ID="RPR_CAT_ITC" String="專業化IT產業行政專區建築" />
+    <Translation ID="RPR_CAT_IND" String="工業建築" />
+    <Translation ID="RPR_CAT_FAR" String="專業化農牧業行政專區建築" />
+    <Translation ID="RPR_CAT_FOR" String="專業化林業行政專區建築" />
+    <Translation ID="RPR_CAT_OIL" String="專業化石化工業行政專區建" />
+    <Translation ID="RPR_CAT_ORE" String="專業化礦業行政專區建築" />
+    <Translation ID="RPR_CAT_EXT" String="萃取器" />
+    <Translation ID="RPR_CAT_PRO" String="提煉器" />
+    <Translation ID="RPR_CAT_TOU" String="專業化觀光旅遊行政專區建築" />
+    <Translation ID="RPR_CAT_LEI" String="專業化休閒娛樂行政專區建築" />
+    <Translation ID="RPR_CAT_ORG" String="專業化本土製造服務和有機農業行政專區建築" />
+    <Translation ID="RPR_CAT_ECO" String="專業化自給住宅行政專區商店建築" />
+    <Translation ID="RPR_CAT_SSH" String="專業化自給住宅行政專區建築" />
+    <Translation ID="RPR_CAT_ERL" String="低密度-專業化自給住宅行政專區建築" />
+    <Translation ID="RPR_CAT_ERH" String="高密度-專業化自給住宅行政專區建築" />
+    <Translation ID="RPR_FIL_NAME" String="名稱:" />
+    <Translation ID="RPR_CUS_HAS" String="具有自訂設置" />
+    <Translation ID="RPR_CUS_TITLE" String="自訂設置" />
+    <Translation ID="RPR_CUS_ADD" String="添加自訂設置" />
+    <Translation ID="RPR_CUS_ADD_TIP" String="為一棟已選中的建築添加(或更新)一個自訂設置" />
+    <Translation ID="RPR_CUS_DEL" String="刪除自訂設置" />
+    <Translation ID="RPR_CUS_DEL_TIP" String="從一棟已選中的建築移除自訂設置" />
+    <Translation ID="RPR_CUS_UPD" String="更新自訂設置" />
+    <Translation ID="RPR_ERR_ZERO" String="錯誤： 數值須要比零大" />
+    <Translation ID="RPR_ERR_INV" String="錯誤： 無效數值" />
+    <Translation ID="RPR_LBL_HOM" String="戶數：" />
+    <Translation ID="RPR_LBL_JOB" String="職缺：" />
+    <Translation ID="RPR_CAL_HOM_CALC" String="已計算戶數：" />
+    <Translation ID="RPR_CAL_HOM_CUST" String="客制化戶數：" />
+    <Translation ID="RPR_CAL_HOM_APPL" String="已應用戶數：" />
+    <Translation ID="RPR_CAL_BLD_X" String="建築寬度(米)：" />
+    <Translation ID="RPR_CAL_BLD_Z" String="建築長度(米)：" />
+    <Translation ID="RPR_CAL_BLD_Y" String="建築高度(米)：" />
+    <Translation ID="RPR_CAL_BLD_M2" String="人/平方米：" />
+    <Translation ID="RPR_CAL_FLR_Y" String="樓層高度(米)：" />
+    <Translation ID="RPR_CAL_FLR_M" String="樓層模組" />
+    <Translation ID="RPR_CAL_FLR" String="已計算的樓層：" />
+    <Translation ID="RPR_CAL_M2" String="已計算的面積：" />
+    <Translation ID="RPR_CAL_RICO" String="”Ploppable RICO Revisited“模組(Mod)正在控制該建築的數值。" />
+    <Translation ID="RPR_OPT_MOD" String="模組(Mod)設置" />
+    <Translation ID="RPR_OPT_KEY" String="建築選項螢幕快鍵" />
+    <Translation ID="RPR_OPT_PRS" String="按下任意鍵" />
+    <Translation ID="RPR_OPT_LVL" String="級別" />
+    <Translation ID="RPR_OPT_PERW" String="每個工人的數量" />
+    <Translation ID="RPR_OPT_PERH" String="每戶的數量" />
+    <Translation ID="RPR_OPT_APH" String="每戶面積(平方米)" />
+    <Translation ID="RPR_OPT_APW" String="每個工人面積(平方米)" />
+    <Translation ID="RPR_OPT_FLR" String="樓層高度(米)" />
+    <Translation ID="RPR_OPT_POW" String="電力" />
+    <Translation ID="RPR_OPT_WAT" String="用水" />
+    <Translation ID="RPR_OPT_SEW" String="汙水" />
+    <Translation ID="RPR_OPT_GAR" String="垃圾" />
+    <Translation ID="RPR_OPT_WEA" String="財富" />
+    <Translation ID="RPR_OPT_RTD" String="重置為默認值" />
+    <Translation ID="RPR_OPT_RTS" String="還原為已存檔" />
+    <Translation ID="RPR_OPT_SAA" String="保存並應用" />
+    <Translation ID="TRN_CHOICE" String="語言設置" />
+    <Translation ID="TRN_SYS" String="使用遊戲默認語言" />
+  </Translations>
+</Language>
