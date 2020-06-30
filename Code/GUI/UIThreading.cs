@@ -24,37 +24,41 @@ namespace RealisticPopulationRevisited
         /// <param name="simulationTimeDelta"></param>
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            // Check keypress according to settings.
-            bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
-            bool ctrlPressed = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-            bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-
-            // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
-            bool altOkay = altPressed == hotAlt;
-            bool ctrlOkay = ctrlPressed == hotCtrl;
-            bool shiftOkay = shiftPressed == hotShift;
-
-            // Process keystroke.
-            if (altOkay && ctrlOkay && shiftOkay)
+            // Has hotkey been pressed?
+            if (Input.GetKey(hotKey))
             {
-                // Cancel if key input is already queued for processing.
-                if (_processed) return;
+                // Check modifier keys according to settings.
+                bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
+                bool ctrlPressed = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+                bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-                _processed = true;
+                // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
+                bool altOkay = altPressed == hotAlt;
+                bool ctrlOkay = ctrlPressed == hotCtrl;
+                bool shiftOkay = shiftPressed == hotShift;
 
-                try
+                // Process keystroke.
+                if (altOkay && ctrlOkay && shiftOkay)
                 {
-                    BuildingDetailsPanel.Open();
+                    // Cancel if key input is already queued for processing.
+                    if (_processed) return;
+
+                    _processed = true;
+
+                    try
+                    {
+                        BuildingDetailsPanel.Open();
+                    }
+                    catch (Exception e)
+                    {
+                        Debugging.LogException(e);
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    Debugging.LogException(e);
+                    // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                    _processed = false;
                 }
-            }
-            else
-            {
-                // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                _processed = false;
             }
         }
     }
