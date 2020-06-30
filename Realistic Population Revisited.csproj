@@ -104,6 +104,7 @@
     <Content Include="Images\Screen_PloppableRICO.jpg" />
     <Content Include="RegressionList.txt" />
     <Content Include="Translations\en.xml" />
+    <Content Include="Translations\zh-tw.xml" />
     <Content Include="Translations\zh.xml" />
     <Content Include="XML_Files\LocalRICOSettings.xml" />
     <Content Include="XML_Files\WG_DefaultValuesFromKundun.xml" />
