@@ -1,4 +1,7 @@
+Version 1.4.0.1 -
+
 - Add Chinese translation by M.S.Referee
+- Tweak UI layout to accomodate longer translation strings
 
 
 Version 1.4 -

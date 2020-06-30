@@ -43,6 +43,9 @@
     <Translation ID="RPR_CAL_HOM_CALC" String="Calculated homes:" />
     <Translation ID="RPR_CAL_HOM_CUST" String="Customised homes:" />
     <Translation ID="RPR_CAL_HOM_APPL" String="Applied homes:" />
+    <Translation ID="RPR_CAL_JOB_CALC" String="Calculated jobs:" />
+    <Translation ID="RPR_CAL_JOB_CUST" String="Customised jobs:" />
+    <Translation ID="RPR_CAL_JOB_APPL" String="Applied jobs:" />
     <Translation ID="RPR_CAL_BLD_X" String="Building width (m):" />
     <Translation ID="RPR_CAL_BLD_Z" String="Building length (m):" />
     <Translation ID="RPR_CAL_BLD_Y" String="Scaffolding height (m):" />

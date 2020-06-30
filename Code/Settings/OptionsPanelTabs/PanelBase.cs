@@ -351,9 +351,19 @@ namespace RealisticPopulationRevisited
             // Text label.
             UILabel lineLabel = panel.AddUIComponent<UILabel>();
             lineLabel.textScale = 0.9f;
-            lineLabel.text = text;
-            lineLabel.relativePosition = new Vector3(LeftItem, yPos + 2);
             lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
+            lineLabel.text = text;
+
+            // X position: by default it's LeftItem, but we move it further left if the label is too long to fit (e.g. long translation strings).
+            float xPos = Mathf.Min(LeftItem, (Column1 - Margin) - lineLabel.width);
+            // But never further left than the edge of the screen.
+            if (xPos < 0)
+            {
+                xPos = LeftItem;
+                // Too long to fit in the given space, so we'll let this wrap across and just move the textfields down an extra line.
+                currentY += RowHeight;
+            }
+            lineLabel.relativePosition = new Vector3(xPos, yPos + 2);
         }
 
 

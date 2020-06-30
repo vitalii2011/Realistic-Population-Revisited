@@ -201,10 +201,10 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Set calculated jobs label.
-                homesJobsCalcLabel.text = "Calculated jobs (min. 4): ";
+                homesJobsCalcLabel.text = Translations.Translate("RPR_CAL_JOB_CALC") + " ";
 
                 // Set customised jobs label and get value (if any).
-                homesJobsCustomLabel.text = "Customised jobs: ";
+                homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_JOB_CUST") + " ";
                 customHomeJobs = ExternalCalls.GetWorker(building);
 
                 // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
@@ -212,7 +212,7 @@ namespace RealisticPopulationRevisited
                 int[] jobs = new int[4];
                 buildingAI.CalculateWorkplaceCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
                 appliedCount = jobs[0] + jobs[1] + jobs[2] + jobs[3];
-                homesJobsActualLabel.text = "Applied jobs: " + appliedCount;
+                homesJobsActualLabel.text = Translations.Translate("RPR_CAL_JOB_APPL") + " " + appliedCount;
             }
 
             // Reproduce CalcBase calculations to get building area.
