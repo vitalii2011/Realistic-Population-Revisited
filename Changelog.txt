@@ -2,6 +2,7 @@ Version 1.4 -
 
 - Add configurable translation framework
 - Add icons to options panel configuration screens
+- Add tooltips to options panel configuration screens
 - Replace hotkey selection controls with CO-style single control
 - Hotkey now only opens on exact modifier key match (not superset)
 - Overhaul XML settings file handling and format

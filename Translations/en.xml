@@ -48,7 +48,7 @@
     <Translation ID="RPR_CAL_BLD_Y" String="Scaffolding height (m):" />
     <Translation ID="RPR_CAL_BLD_M2" String="m2 per person:" />
     <Translation ID="RPR_CAL_FLR_Y" String="Floor height (m):" />
-    <Translation ID="RPR_CAL_FLR_M" String="Floor modifier:" />
+    <Translation ID="RPR_CAL_FLR_M" String="Floor mod" />
     <Translation ID="RPR_CAL_FLR" String="Calculated floors:" />
     <Translation ID="RPR_CAL_M2" String="Calculated area:" />
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />

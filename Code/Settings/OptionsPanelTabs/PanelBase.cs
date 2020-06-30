@@ -39,6 +39,16 @@ namespace RealisticPopulationRevisited
         protected UITextField[][] garbageFields;
         protected UITextField[][] incomeFields;
 
+        // Column labels.
+        protected string areaLabel;
+        protected string floorLabel;
+        protected string extraFloorLabel;
+        protected string powerLabel;
+        protected string waterLabel;
+        protected string sewageLabel;
+        protected string garbageLabel;
+        protected string wealthLabel;
+
         // Reference variables.
         protected float currentY = TitleHeight;
         protected bool notResidential = true;
@@ -74,19 +84,29 @@ namespace RealisticPopulationRevisited
         /// <param name="panel">UI panel instance</param>
         protected void AddHeadings(UIPanel panel)
         {
+            // Set string references (we'll reference these multiple times with the textfields, so this saves calling translate each time).
+            areaLabel = Translations.Translate(notResidential ? "RPR_OPT_APW" : "RPR_OPT_APH");
+            floorLabel = Translations.Translate("RPR_OPT_FLR");
+            extraFloorLabel = Translations.Translate("RPR_CAL_FLR_M");
+            powerLabel = Translations.Translate("RPR_OPT_POW");
+            waterLabel = Translations.Translate("RPR_OPT_WAT");
+            sewageLabel = Translations.Translate("RPR_OPT_SEW");
+            garbageLabel = Translations.Translate("RPR_OPT_GAR");
+            wealthLabel = Translations.Translate("RPR_OPT_WEA");
+
             // Headings.
-            ColumnLabel(panel, Column1, Column1Width, Translations.Translate(notResidential ? "RPR_OPT_APW" : "RPR_OPT_APH"), 1.0f);
-            ColumnLabel(panel, Column2, ColumnWidth, Translations.Translate("RPR_OPT_FLR"), 1.0f);
-            ColumnIcon(panel, Column4, ColumnWidth, Translations.Translate("RPR_OPT_POW"), "ToolbarIconElectricity");
-            ColumnIcon(panel, Column5, ColumnWidth, Translations.Translate("RPR_OPT_WAT"), "ToolbarIconWaterAndSewage");
-            ColumnIcon(panel, Column6, ColumnWidth, Translations.Translate("RPR_OPT_SEW"), "ToolbarIconWaterAndSewageDisabled");
-            ColumnIcon(panel, Column7, ColumnWidth, Translations.Translate("RPR_OPT_GAR"), "InfoIconGarbage");
-            ColumnIcon(panel, Column8, Column8Width, Translations.Translate("RPR_OPT_WEA"), "ToolbarIconMoney");
+            ColumnLabel(panel, Column1, Column1Width, areaLabel, 1.0f);
+            ColumnLabel(panel, Column2, ColumnWidth, floorLabel, 1.0f);
+            ColumnIcon(panel, Column4, ColumnWidth, powerLabel, "ToolbarIconElectricity");
+            ColumnIcon(panel, Column5, ColumnWidth, waterLabel, "ToolbarIconWaterAndSewage");
+            ColumnIcon(panel, Column6, ColumnWidth, sewageLabel, "ToolbarIconWaterAndSewageDisabled");
+            ColumnIcon(panel, Column7, ColumnWidth, garbageLabel, "InfoIconGarbage");
+            ColumnIcon(panel, Column8, Column8Width, wealthLabel, "ToolbarIconMoney");
 
             // Bonus floors.
             if (notResidential)
             {
-                ColumnLabel(panel, Column3, ColumnWidth, "Floor mod", 0.8f);
+                ColumnLabel(panel, Column3, ColumnWidth, extraFloorLabel, 0.8f);
             }
 
             // Consumption heading
@@ -140,19 +160,19 @@ namespace RealisticPopulationRevisited
         protected void ColumnLabel(UIPanel panel, float xPos, float width, string text, float scale = 0.8f)
         {
             // Basic setup.
-            UILabel lineLabel = panel.AddUIComponent<UILabel>();
-            lineLabel.textScale = scale;
-            lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
-            lineLabel.textAlignment = UIHorizontalAlignment.Center;
-            lineLabel.autoSize = false;
-            lineLabel.autoHeight = true;
-            lineLabel.wordWrap = true;
-            lineLabel.width = width + Margin;
+            UILabel columnLabel = panel.AddUIComponent<UILabel>();
+            columnLabel.textScale = scale;
+            columnLabel.verticalAlignment = UIVerticalAlignment.Middle;
+            columnLabel.textAlignment = UIHorizontalAlignment.Center;
+            columnLabel.autoSize = false;
+            columnLabel.autoHeight = true;
+            columnLabel.wordWrap = true;
+            columnLabel.width = width + Margin;
 
-            lineLabel.text = text;
+            columnLabel.text = text;
 
             // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
-            lineLabel.relativePosition = new Vector3(xPos + ((width - lineLabel.width) / 2), TitleHeight - lineLabel.height);
+            columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), TitleHeight - columnLabel.height);
         }
 
 
@@ -227,18 +247,18 @@ namespace RealisticPopulationRevisited
                 RowLabel(panel, currentY, label ?? (isExtract ? Translations.Translate( i == 0 ? "RPR_CAT_EXT" : "RPR_CAT_PRO") : Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString()));
 
                 // Textfields.
-                areaFields[subService][i] = AddTextField(panel, Column1Width, Column1, currentY);
-                floorFields[subService][i] = AddTextField(panel, ColumnWidth, Column2, currentY);
-                powerFields[subService][i] = AddTextField(panel, ColumnWidth, Column4, currentY);
-                waterFields[subService][i] = AddTextField(panel, ColumnWidth, Column5, currentY);
-                sewageFields[subService][i] = AddTextField(panel, ColumnWidth, Column6, currentY);
-                garbageFields[subService][i] = AddTextField(panel, ColumnWidth, Column7, currentY);
-                incomeFields[subService][i] = AddTextField(panel, Column8Width, Column8, currentY);
+                areaFields[subService][i] = AddTextField(panel, Column1Width, Column1, currentY, areaLabel);
+                floorFields[subService][i] = AddTextField(panel, ColumnWidth, Column2, currentY, floorLabel);
+                powerFields[subService][i] = AddTextField(panel, ColumnWidth, Column4, currentY, powerLabel);
+                waterFields[subService][i] = AddTextField(panel, ColumnWidth, Column5, currentY, waterLabel);
+                sewageFields[subService][i] = AddTextField(panel, ColumnWidth, Column6, currentY, sewageLabel);
+                garbageFields[subService][i] = AddTextField(panel, ColumnWidth, Column7, currentY, garbageLabel);
+                incomeFields[subService][i] = AddTextField(panel, Column8Width, Column8, currentY, wealthLabel);
 
                 // Bonus levels.
                 if (notResidential)
                 {
-                    extraFloorFields[subService][i] = AddTextField(panel, ColumnWidth, Column3, currentY);
+                    extraFloorFields[subService][i] = AddTextField(panel, ColumnWidth, Column3, currentY, extraFloorLabel);
                 }
 
                 // Increment Y position.
@@ -344,11 +364,18 @@ namespace RealisticPopulationRevisited
         /// <param name="panel">panel to add to</param>
         /// <param name="posX">Relative X postion</param>
         /// <param name="posY">Relative Y position</param>
-        private UITextField AddTextField(UIPanel panel, float width, float posX, float posY)
+        /// <param name="tooltip">Tooltip, if any</param>
+        private UITextField AddTextField(UIPanel panel, float width, float posX, float posY, string tooltip = null)
         {
             UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
             textField.relativePosition = new Vector3(posX, posY);
             textField.eventTextChanged += (control, value) => TextFilter((UITextField)control, value);
+
+            // Add tooltip.
+            if (tooltip != null)
+            {
+                textField.tooltip = tooltip;
+            }
 
             return textField;
         }
