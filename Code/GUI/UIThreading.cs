@@ -25,9 +25,17 @@ namespace RealisticPopulationRevisited
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             // Check keypress according to settings.
-            if (Input.GetKey(hotKey) && (!hotAlt || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr))
-                && (!hotCtrl || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-                && (!hotShift || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
+            bool ctrlPressed = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+            bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+            // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
+            bool altOkay = altPressed == hotAlt;
+            bool ctrlOkay = ctrlPressed == hotCtrl;
+            bool shiftOkay = shiftPressed == hotShift;
+
+            // Process keystroke.
+            if (altOkay && ctrlOkay && shiftOkay)
             {
                 // Cancel if key input is already queued for processing.
                 if (_processed) return;
@@ -42,7 +50,6 @@ namespace RealisticPopulationRevisited
                 {
                     Debugging.LogException(e);
                 }
-
             }
             else
             {
