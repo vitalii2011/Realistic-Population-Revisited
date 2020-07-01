@@ -1,8 +1,10 @@
-- Add Simplified Chinese translation by CRS
+- Refresh options panel on game locale change
+
 
 Version 1.4.0.1 -
 
-- Add Chinese translation by M.S.Referee
+- Add Traditional Chinese translation by M.S.Referee
+- Add Simplified Chinese translation by CRS
 - Tweak UI layout to accomodate longer translation strings
 
 
