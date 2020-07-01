@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using ColossalFramework.Plugins;
 
 
@@ -10,7 +11,7 @@ namespace RealisticPopulationRevisited
     internal static class ModUtils
     {
         // RICO installed and enabled flag.
-        internal static bool isRICOEnabled;
+        internal static MethodInfo ricoPopManaged;
 
 
         /// <summary>
@@ -55,7 +56,55 @@ namespace RealisticPopulationRevisited
         /// <returns>True if Ploppable RICO is managing this prefab, false otherwise.</returns>
         internal static bool CheckRICO(BuildingInfo prefab)
         {
-            return PloppableRICO.ModUtils.IsRICOPopManaged(prefab);
+            // If we haven't got the RICO method by reflection, the answer is always false.
+            if (ricoPopManaged != null)
+            {
+                object result = ricoPopManaged.Invoke(null, new object[] { prefab });
+
+                if (result is bool)
+                {
+                    return (bool)result;
+                }
+            }
+
+            // Default result.
+            return false;
+        }
+
+
+        /// <summary>
+        /// Uses reflection to find the IsRICOPopManaged method of Ploppable RICO Revisited.
+        /// If successful, sets ricoPopManaged to 
+        /// </summary>
+        internal static void RICOReflection()
+        {
+            // Iterate through each loaded plugin assembly.
+            foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
+            {
+                foreach (Assembly assembly in plugin.GetAssemblies())
+                {
+                    if (assembly.GetName().Name.Equals("ploppablerico"))
+                    {
+                        // Found ploppablerico.dll; try to get its ModUtils class.
+                        Type ricoModUtils = assembly.GetType("PloppableRICO.ModUtils");
+
+                        if (ricoModUtils != null)
+                        {
+                            // Try to get IsRICOPopManaged method.
+                            ricoPopManaged = ricoModUtils.GetMethod("IsRICOPopManaged", BindingFlags.Public | BindingFlags.Static);
+                            if (ricoPopManaged != null)
+                            {
+                                // Success!  We're done here.
+                                Debugging.Message("found IsRICOPopManaged");
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // If we got here, we were unsuccessful.
+            Debugging.Message("didn't find IsRICOPopManaged");
         }
     }
 }

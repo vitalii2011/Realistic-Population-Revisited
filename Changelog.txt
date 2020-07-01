@@ -1,3 +1,6 @@
+- Overhaul Ploppable RICO Revisited integration using Reflection
+
+
 Version 1.4.1 -
 
 - Fix settings being reset on load for some users

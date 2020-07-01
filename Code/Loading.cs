@@ -51,9 +51,9 @@ namespace RealisticPopulationRevisited
                 isModEnabled = true;
 
                 // Harmony patches.
-                Debugging.Message("version v" + RealPopMod.Version + " loading.");
+                Debugging.Message("version v" + RealPopMod.Version + " loading");
                 _harmony.PatchAll(GetType().Assembly);
-                Debugging.Message("patching complete.");
+                Debugging.Message("patching complete");
 
                 MergeDefaultBonus();
 
@@ -84,9 +84,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Check for Ploppable RICO Revisited.
-                ModUtils.isRICOEnabled = ModUtils.IsModInstalled("ploppablerico");
-
-                Debugging.Message("successfully loaded");
+                ModUtils.RICOReflection();
             }
         }
 
