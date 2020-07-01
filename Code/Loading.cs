@@ -1,11 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Collections.Generic;
-using UnityEngine;
 using ICities;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
-using System.Linq;
 using Harmony;
 
 
@@ -172,8 +172,11 @@ namespace RealisticPopulationRevisited
                 }
             }
 
-            // Save updated XML (or create new).
-            XMLUtilsWG.WriteToXML();
+            // Create new XML if one doesn't already exist.
+            if (!File.Exists(DataStore.currentFileLocation))
+            {
+                XMLUtilsWG.WriteToXML();
+            }
 
             // Add button to building info panels.
             BuildingDetailsPanel.AddInfoPanelButton();
