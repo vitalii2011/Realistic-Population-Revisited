@@ -55,8 +55,6 @@ namespace RealisticPopulationRevisited
                 _harmony.PatchAll(GetType().Assembly);
                 Debugging.Message("patching complete.");
 
-                DataStore.ClearCache();
-
                 MergeDefaultBonus();
 
                 // Remove bonus names from over rides
