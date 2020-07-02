@@ -78,6 +78,8 @@ namespace RealisticPopulationRevisited
         /// </summary>
         internal static void RICOReflection()
         {
+            string methodName = "IsRICOPopManaged";
+
             // Iterate through each loaded plugin assembly.
             foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
             {
@@ -86,16 +88,16 @@ namespace RealisticPopulationRevisited
                     if (assembly.GetName().Name.Equals("ploppablerico"))
                     {
                         // Found ploppablerico.dll; try to get its ModUtils class.
-                        Type ricoModUtils = assembly.GetType("PloppableRICO.ModUtils");
+                        Type ricoModUtils = assembly.GetType("PloppableRICO.Interfaces");
 
                         if (ricoModUtils != null)
                         {
                             // Try to get IsRICOPopManaged method.
-                            ricoPopManaged = ricoModUtils.GetMethod("IsRICOPopManaged", BindingFlags.Public | BindingFlags.Static);
+                            ricoPopManaged = ricoModUtils.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
                             if (ricoPopManaged != null)
                             {
                                 // Success!  We're done here.
-                                Debugging.Message("found IsRICOPopManaged");
+                                Debugging.Message("found " + methodName);
                                 return;
                             }
                         }
@@ -104,7 +106,7 @@ namespace RealisticPopulationRevisited
             }
 
             // If we got here, we were unsuccessful.
-            Debugging.Message("didn't find IsRICOPopManaged");
+            Debugging.Message("didn't find " + methodName);
         }
     }
 }
