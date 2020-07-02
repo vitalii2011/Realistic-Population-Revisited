@@ -100,14 +100,14 @@ namespace RealisticPopulationRevisited
     public class UIBuildingDetails : UIPanel
     {
         // Constants.
-        private const float leftWidth = 400;
-        private const float middleWidth = 250;
-        private const float rightWidth = 280;
-        private const float filterHeight = 40;
-        private const float panelHeight = 550;
-        private const float bottomMargin = 10;
-        private const float spacing = 5;
-        internal const float titleHeight = 40;
+        private const float LeftWidth = 400;
+        private const float MiddleWidth = 250;
+        private const float RightWidth = 280;
+        private const float FilterHeight = 40;
+        private const float PanelHeight = 550;
+        private const float BottomMargin = 10;
+        private const float Spacing = 5;
+        internal const float TitleHeight = 40;
 
         // Panel components.
         private UITitleBar titleBar;
@@ -132,8 +132,8 @@ namespace RealisticPopulationRevisited
                 isVisible = false;
                 canFocus = true;
                 isInteractive = true;
-                width = leftWidth + middleWidth + rightWidth + (spacing * 4);
-                height = panelHeight + titleHeight + filterHeight + (spacing * 2) + bottomMargin;
+                width = LeftWidth + MiddleWidth + RightWidth + (Spacing * 4);
+                height = PanelHeight + TitleHeight + FilterHeight + (Spacing * 2) + BottomMargin;
                 relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
                 backgroundSprite = "UnlockingPanel2";
 
@@ -143,9 +143,9 @@ namespace RealisticPopulationRevisited
 
                 // Filter.
                 filterBar = AddUIComponent<UIBuildingFilter>();
-                filterBar.width = width - (spacing * 2);
-                filterBar.height = filterHeight;
-                filterBar.relativePosition = new Vector3(spacing, titleHeight);
+                filterBar.width = width - (Spacing * 2);
+                filterBar.height = FilterHeight;
+                filterBar.relativePosition = new Vector3(Spacing, TitleHeight);
 
                 filterBar.eventFilteringChanged += (c, i) =>
                 {
@@ -162,37 +162,37 @@ namespace RealisticPopulationRevisited
                 // Set up panels.
                 // Left panel - list of buildings.
                 UIPanel leftPanel = AddUIComponent<UIPanel>();
-                leftPanel.width = leftWidth;
-                leftPanel.height = panelHeight;
-                leftPanel.relativePosition = new Vector3(spacing, titleHeight + filterHeight + spacing);
+                leftPanel.width = LeftWidth;
+                leftPanel.height = PanelHeight;
+                leftPanel.relativePosition = new Vector3(Spacing, TitleHeight + FilterHeight + Spacing);
 
                 // Middle panel - building preview and edit panels.
                 UIPanel middlePanel = AddUIComponent<UIPanel>();
-                middlePanel.width = middleWidth;
-                middlePanel.height = panelHeight;
-                middlePanel.relativePosition = new Vector3(leftWidth + (spacing * 2), titleHeight + filterHeight + spacing);
+                middlePanel.width = MiddleWidth;
+                middlePanel.height = PanelHeight;
+                middlePanel.relativePosition = new Vector3(LeftWidth + (Spacing * 2), TitleHeight + FilterHeight + Spacing);
 
                 previewPanel = middlePanel.AddUIComponent<UIPreviewPanel>();
                 previewPanel.width = middlePanel.width;
-                previewPanel.height = (panelHeight - spacing) / 2;
+                previewPanel.height = (PanelHeight - Spacing) / 2;
                 previewPanel.relativePosition = Vector3.zero;
                 previewPanel.Setup();
 
                 editPanel = middlePanel.AddUIComponent<UIEditPanel>();
                 editPanel.width = middlePanel.width;
-                editPanel.height = (panelHeight - spacing) / 2;
-                editPanel.relativePosition = new Vector3(0, previewPanel.height + spacing);
+                editPanel.height = (PanelHeight - Spacing) / 2;
+                editPanel.relativePosition = new Vector3(0, previewPanel.height + Spacing);
                 editPanel.Setup();
 
                 // Right panel - mod calculations.
                 UIPanel rightPanel = AddUIComponent<UIPanel>();
-                rightPanel.width = rightWidth;
-                rightPanel.height = panelHeight;
-                rightPanel.relativePosition = new Vector3(leftWidth + middleWidth + (spacing * 3), titleHeight + filterHeight + spacing);
+                rightPanel.width = RightWidth;
+                rightPanel.height = PanelHeight;
+                rightPanel.relativePosition = new Vector3(LeftWidth + MiddleWidth + (Spacing * 3), TitleHeight + FilterHeight + Spacing);
 
                 modCalcs = rightPanel.AddUIComponent<UIModCalcs>();
-                modCalcs.width = rightWidth;
-                modCalcs.height = panelHeight;
+                modCalcs.width = RightWidth;
+                modCalcs.height = PanelHeight;
                 modCalcs.relativePosition = Vector3.zero;
                 modCalcs.Setup();
 
@@ -279,7 +279,7 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Generates the list of buildings depending on current filter settings.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of buildings</returns>
         private FastList<object> GenerateFastList()
         {
             // List to store all building prefabs that pass the filter.
@@ -291,7 +291,7 @@ namespace RealisticPopulationRevisited
                 BuildingInfo item = PrefabCollection<BuildingInfo>.GetLoaded(i);
 
                 // Skip any null or invalid prefabs.
-                if ((item == null) || (item.name == null))
+                if (item?.name == null)
                 {
                     continue;
                 }

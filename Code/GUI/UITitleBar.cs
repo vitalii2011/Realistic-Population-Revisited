@@ -23,7 +23,7 @@ namespace RealisticPopulationRevisited
         {
             // Basic setup.
             width = parent.width;
-            height = UIBuildingDetails.titleHeight;
+            height = UIBuildingDetails.TitleHeight;
             isVisible = true;
             canFocus = true;
             isInteractive = true;
