@@ -47,8 +47,6 @@ namespace RealisticPopulationRevisited
             rootPanel.autoLayoutPadding.top = 5;
             rootPanel.autoLayoutPadding.left = 10;
 
-            // UIHelper.
-            //return new UIHelper(rootPanel);
             return rootPanel;
         }
 
