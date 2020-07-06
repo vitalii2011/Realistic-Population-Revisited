@@ -1,3 +1,6 @@
+- Add custom mouse button keybinding option
+
+
 Version 1.4.3 -
 
 - Fix bug when Ploppable RICO Revisited is installed but not enabled
