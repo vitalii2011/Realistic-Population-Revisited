@@ -25,7 +25,7 @@ namespace RealisticPopulationRevisited
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             // Has hotkey been pressed?
-            if (Input.GetKey(hotKey))
+            if (hotKey != KeyCode.None && Input.GetKey(hotKey))
             {
                 // Check modifier keys according to settings.
                 bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
@@ -47,7 +47,12 @@ namespace RealisticPopulationRevisited
 
                     try
                     {
-                        BuildingDetailsPanel.Open();
+
+                        // Is options panel open?  If so, we ignore this and don't do anything.
+                        if (!OptionsPanel.IsOpen)
+                        {
+                            BuildingDetailsPanel.Open();
+                        }
                     }
                     catch (Exception e)
                     {

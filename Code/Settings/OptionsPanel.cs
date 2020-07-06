@@ -17,6 +17,7 @@ namespace RealisticPopulationRevisited
 
         // Instance reference.
         private static GameObject optionsGameObject;
+        internal static bool IsOpen => optionsGameObject != null;
 
 
         /// <summary>
