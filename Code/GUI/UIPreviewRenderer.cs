@@ -134,6 +134,8 @@ namespace RealisticPopulationRevisited
             {
                 return;
             }
+
+            currentRotation += 180f;
             
             // Basic setup.
             float magnitude = currentBounds.extents.magnitude;
@@ -191,6 +193,10 @@ namespace RealisticPopulationRevisited
 
             // Reset mode.
             infoManager.SetCurrentMode(currentMode, currentSubMode);
+
+
+
+            currentRotation -= 180f;
         }
     }
 }

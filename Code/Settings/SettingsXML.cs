@@ -143,7 +143,7 @@ namespace RealisticPopulationRevisited
         {
             try
             {
-                // Pretty straightforward.  Serialisation is within GBRSettingsFile class.
+                // Pretty straightforward.  Serialisation is within settings file class.
                 using (StreamWriter writer = new StreamWriter(SettingsFileName))
                 {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLSettingsFile));

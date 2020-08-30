@@ -111,8 +111,14 @@
     <Content Include="XML_Files\WG_OfficeAndLowResidentialChange.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\GUI\UIEditPanel.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
+    <Compile Include="Code\VolumetricData\BuildingXML.cs" />
+    <Compile Include="Code\VolumetricData\CalcPacks.cs" />
+    <Compile Include="Code\VolumetricData\EmploymentData.cs" />
+    <Compile Include="Code\VolumetricData\PopData.cs" />
+    <Compile Include="Code\GUI\UIEditPanel.cs" />
+    <Compile Include="Code\GUI\UIFloorList.cs" />
+    <Compile Include="Code\GUI\UILegacyCalcs.cs" />
     <Compile Include="Code\GUI\UIBuildingDetails.cs" />
     <Compile Include="Code\GUI\UIBuildingFilter.cs" />
     <Compile Include="Code\GUI\UIBuildingRow.cs" />
@@ -122,6 +128,7 @@
     <Compile Include="Code\GUI\UIFastList.cs" />
     <Compile Include="Code\GUI\UIThreading.cs" />
     <Compile Include="Code\GUI\UIUtils.cs" />
+    <Compile Include="Code\GUI\UIVolumetricPanel.cs" />
     <Compile Include="Code\Settings\OptionsKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CommercialPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\IndustrialPanel.cs" />

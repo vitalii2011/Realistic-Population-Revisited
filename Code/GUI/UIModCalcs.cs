@@ -1,46 +1,23 @@
-﻿using ColossalFramework.Math;
+﻿using UnityEngine;
 using ColossalFramework.UI;
-using UnityEngine;
 
 
 namespace RealisticPopulationRevisited
 {
-    /// <summary>
-    /// Different mod calculations shown (in text labels) by this panel.
-    /// </summary>
-    public enum Details
-    {
-        width,
-        length,
-        area,
-        personArea,
-        height,
-        floorHeight,
-        floors,
-        extraFloors,
-        numDetails
-    }
-
-
-    /// <summary>
-    /// Panel to display the mod's calculations for jobs/workplaces.
-    /// </summary>
     public class UIModCalcs : UIPanel
     {
-        // Margin at left of standard selection
-        private const int leftPadding = 10;
-
-        // Panel components. 
-        private UIPanel titlePanel;
+        // Panel components.
         private UILabel title;
-        private UIPanel detailsPanel;
-        private UILabel[] detailLabels;
-        private UILabel messageLabel;
+        private UILegacyCalcs legacyPanel;
+        private UIVolumetricPanel volumetricPanel;
+        private UIDropDown presetMenu;
 
-        // Special-purpose labels used to display either jobs or households as appropriate.
-        private UILabel homesJobsCalcLabel;
-        private UILabel homesJobsCustomLabel;
-        private UILabel homesJobsActualLabel;
+        // Data.
+        private CalcPack[] availablePacks;
+
+        // Current selections.
+        private BuildingInfo currentBuilding;
+        private CalcPack currentPack;
 
 
         /// <summary>
@@ -48,23 +25,11 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void Setup()
         {
-            // Generic setup.
-            isVisible = true;
-            canFocus = true;
-            isInteractive = true;
-            backgroundSprite = "UnlockingPanel";
-            autoLayout = true;
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoLayoutPadding.top = 5;
-            autoLayoutPadding.right = 5;
-            builtinKeyNavigation = true;
+            // Basic setup.
             clipChildren = true;
 
-            // Panel title.
-            titlePanel = this.AddUIComponent<UIPanel>();
-            titlePanel.height = 20;
-
-            title = titlePanel.AddUIComponent<UILabel>();
+            // Title.
+            title = this.AddUIComponent<UILabel>();
             title.relativePosition = new Vector3(0, 0);
             title.textAlignment = UIHorizontalAlignment.Center;
             title.text = "Mod calculations";
@@ -72,243 +37,181 @@ namespace RealisticPopulationRevisited
             title.autoSize = false;
             title.width = this.width;
 
-            // Panel to display calculations; hidden when no building is selected.
-            detailsPanel = this.AddUIComponent<UIPanel>();
-            detailsPanel.height = 0;
-            detailsPanel.isVisible = false;
-            detailsPanel.name = "DetailsPanel";
+            // Volumetric calculations panel.
+            volumetricPanel = this.AddUIComponent<UIVolumetricPanel>();
+            volumetricPanel.relativePosition = new Vector3(0, title.height + 30f);
+            volumetricPanel.height = this.height - title.height + 30f;
+            volumetricPanel.width = this.width;
+            volumetricPanel.Setup();
 
-            // Set up detail fields.
-            detailLabels = new UILabel[(int)Details.numDetails];
-            for (int i = 0; i < (int)Details.numDetails; i++)
+            // Legacy calculations panel - copy volumetric calculations panel.
+            legacyPanel = this.AddUIComponent<UILegacyCalcs>();
+            legacyPanel.relativePosition = volumetricPanel.relativePosition;
+            legacyPanel.height = volumetricPanel.height;
+            legacyPanel.width = volumetricPanel.width;
+            legacyPanel.Setup();
+            legacyPanel.Hide();
+
+            // Preset dropdown.
+            presetMenu = CreateDropDown(this, "Preset", yPos: title.height);
+            presetMenu.eventSelectedIndexChanged += (component, index) =>
             {
-                detailLabels[i] = detailsPanel.AddUIComponent<UILabel>();
-                detailLabels[i].relativePosition = new Vector3(leftPadding, (i * 30) + 30);
-                detailLabels[i].width = 270;
-                detailLabels[i].textAlignment = UIHorizontalAlignment.Left;
-            }
 
-            // Homes/jobs labels.
-            homesJobsCalcLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsCalcLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 2) * 30);
-            homesJobsCalcLabel.width = 270;
-            homesJobsCalcLabel.textAlignment = UIHorizontalAlignment.Left;
+                // Update selected pack.
+                currentPack = availablePacks[index];
 
-            homesJobsCustomLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsCustomLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 3) * 30);
-            homesJobsCustomLabel.width = 270;
-            homesJobsCustomLabel.textAlignment = UIHorizontalAlignment.Left;
+                // Update building setting and save.
+                PopData.UpdateBuildingPack(currentBuilding, currentPack);
+                ConfigUtils.SaveSettings();
 
-            homesJobsActualLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsActualLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 5) * 30);
-            homesJobsActualLabel.width = 270;
-            homesJobsActualLabel.textAlignment = UIHorizontalAlignment.Left;
+                // Check if we're using legacy or volumetric data.
+                if (currentPack is VolumetricPack)
+                {
+                    // Volumetric pack.
+                    // Update panel with new calculations.
+                    LevelData thisLevel = GetFloorData();
+                    volumetricPanel.UpdateText(thisLevel);
+                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel);
 
-
-            // Message label (initially hidden).
-            messageLabel = detailsPanel.AddUIComponent<UILabel>();
-            messageLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 6) * 30);
-            messageLabel.textAlignment = UIHorizontalAlignment.Left;
-            messageLabel.autoSize = false;
-            messageLabel.autoHeight = true;
-            messageLabel.wordWrap = true;
-            messageLabel.width = 270;
-            messageLabel.text = "No message to display";
-            messageLabel.isVisible = false;
+                    // Set visibility.
+                    legacyPanel.Hide();
+                    volumetricPanel.Show();
+                }
+                else
+                {
+                    // Set visibility.
+                    volumetricPanel.Hide();
+                    legacyPanel.Show();
+                }
+            };
         }
+
+
+        /// <summary>
+        /// Returns the level data record from the current floor pack that's relevant to the selected building's level.
+        /// </summary>
+        /// <returns>Floordata instance for building</returns>
+        private LevelData GetFloorData() => ((VolumetricPack)currentPack).levels[(int)currentBuilding.GetClassLevel()];
 
 
         /// <summary>
         /// Called whenever the currently selected building is changed to update the panel display.
         /// </summary>
-        /// <param name="building"></param>
+        /// <param name="building">Newly selected building</param>
         public void SelectionChanged(BuildingInfo building)
         {
-            if ((building == null) || (building.name == null))
+            // Set current building.
+            currentBuilding = building;
+
+            // Safety first!
+            if (currentBuilding != null)
             {
-                // If no valid building selected, then hide the calculations panel.
-                detailsPanel.height = 0;
-                detailsPanel.isVisible = false;
-                return;
-            }
+                // Get available packs for this building.
+                availablePacks = PopData.GetPacks(building);
 
-            // Variables to compare actual counts vs. mod count, to see if there's another mod overriding counts.
-            int appliedCount;
-            int modCount;
+                // Get current and default packs for this item
+                CalcPack currentPack = PopData.ActivePack(building);
+                CalcPack defaultPack = PopData.DefaultPack(building);
 
-            // Building model size, not plot size.
-            Vector3 buildingSize = building.m_size;
-            int floorCount;
-            // Array used for calculations depending on building service/subservice (via DataStore).
-            int[] array;
-            // Default minimum number of homes or jobs is one; different service types will override this.
-            int minHomesJobs = 1;
-            int customHomeJobs;
-
-            // Check for valid building AI.
-            if (!(building.GetAI() is PrivateBuildingAI buildingAI))
-            {
-                Debugging.Message("invalid building AI type in building details");
-                return;
-            }
-
-            // Residential vs. workplace AI.
-            if (buildingAI is ResidentialBuildingAI)
-            {
-                // Get appropriate calculation array.
-                array = ResidentialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-
-                // Set calculated homes label.
-                homesJobsCalcLabel.text = Translations.Translate("RPR_CAL_HOM_CALC");
-
-                // Set customised homes label and get value (if any).
-                homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_HOM_CUST");
-                customHomeJobs = ExternalCalls.GetResidential(building);
-
-                // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
-                // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
-                appliedCount = buildingAI.CalculateHomeCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength());
-                homesJobsActualLabel.text = Translations.Translate("RPR_CAL_HOM_APPL") + appliedCount;
-            }
-            else
-            {
-                // Workplace AI.
-                // Default minimum number of jobs is 4.
-                minHomesJobs = 4;
-
-                // Find the correct array for the relevant building AI.
-                switch (building.GetService())
+                // Build preset menu.
+                presetMenu.items = new string[availablePacks.Length];
+                for (int i = 0; i < presetMenu.items.Length; ++i)
                 {
-                    case ItemClass.Service.Commercial:
-                        array = CommercialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                        break;
-                    case ItemClass.Service.Office:
-                        array = OfficeBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                        break;
-                    case ItemClass.Service.Industrial:
-                        if (buildingAI is IndustrialExtractorAI)
-                        {
-                            array = IndustrialExtractorAIMod.GetArray(building, (int)building.GetClassLevel());
-                        }
-                        else
-                        {
-                            array = IndustrialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                        }
-                        break;
-                    default:
-                        Debugging.Message("invalid building service in building details");
-                        return;
+                    presetMenu.items[i] = availablePacks[i].displayName;
+
+                    // Check for deefault name match,
+                    if (availablePacks[i].name.Equals(defaultPack.name))
+                    {
+                        presetMenu.items[i] += " (default)";
+                    }
+
+                    // Set menu selection to current pack if it matches.
+                    if (availablePacks[i].Equals(currentPack))
+                    {
+                        presetMenu.selectedIndex = i;
+                    }
                 }
 
-                // Set calculated jobs label.
-                homesJobsCalcLabel.text = Translations.Translate("RPR_CAL_JOB_CALC") + " ";
-
-                // Set customised jobs label and get value (if any).
-                homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_JOB_CUST") + " ";
-                customHomeJobs = ExternalCalls.GetWorker(building);
-
-                // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
-                // It differs from calculated jobs if there's an override value for that building with this mod, or if another mod is overriding.
-                int[] jobs = new int[4];
-                buildingAI.CalculateWorkplaceCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
-                appliedCount = jobs[0] + jobs[1] + jobs[2] + jobs[3];
-                homesJobsActualLabel.text = Translations.Translate("RPR_CAL_JOB_APPL") + " " + appliedCount;
+                // Update legacy panel (volumetric panel is updated by menu selection change above).
+                legacyPanel.SelectionChanged(building);
             }
+        }
 
-            // Reproduce CalcBase calculations to get building area.
-            int calcWidth = building.GetWidth();
-            int calcLength = building.GetLength();
-            floorCount = Mathf.Max(1, Mathf.FloorToInt(buildingSize.y / array[DataStore.LEVEL_HEIGHT]));
 
-            // If CALC_METHOD is zero, then calculations are based on building model size, not plot size.
-            if (array[DataStore.CALC_METHOD] == 0)
-            {
-                // If asset has small x dimension, then use plot width in squares x 6m (75% of standard width) instead.
-                if (buildingSize.x <= 1)
-                {
-                    calcWidth *= 6;
-                }
-                else
-                {
-                    calcWidth = (int)buildingSize.x;
-                }
+        /// <summary>
+        /// Creates a dropdown menu.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="text">Text label</param>
+        /// <param name="xPos">Relative x position (default 20)</param>
+        /// <param name="yPos">Relative y position (default 0)</param>
+        /// <returns></returns>
+        private UIDropDown CreateDropDown(UIComponent parent, string text, float xPos = 20f, float yPos = 0f)
+        {
+            // Constants.
+            const float Width = 200f;
+            const float Height = 25f;
+            const int ItemHeight = 20;
 
-                // If asset has small z dimension, then use plot length in squares x 6m (75% of standard length) instead.
-                if (buildingSize.z <= 1)
-                {
-                    calcLength *= 6;
-                }
-                else
-                {
-                    calcLength = (int)buildingSize.z;
-                }
-            }
-            else
-            {
-                // If CALC_METHOD is nonzero, then caluclations are based on plot size, not building size.
-                // Plot size is 8 metres per square.
-                calcWidth *= 8;
-                calcLength *= 8;
-            }
+            // Add container at specified position.
+            UIPanel container = parent.AddUIComponent<UIPanel>();
+            container.height = 25;
+            container.relativePosition = new Vector3(xPos, yPos);
 
-            // Display calculated (and retrieved) details.
-            detailLabels[(int)Details.width].text = Translations.Translate("RPR_CAL_BLD_X") + " " + calcWidth;
-            detailLabels[(int)Details.length].text = Translations.Translate("RPR_CAL_BLD_Z") + " " + calcLength;
-            detailLabels[(int)Details.height].text = Translations.Translate("RPR_CAL_BLD_Y") + " " + (int)buildingSize.y;
-            detailLabels[(int)Details.personArea].text = Translations.Translate("RPR_CAL_BLD_M2") + " " + array[DataStore.PEOPLE];
-            detailLabels[(int)Details.floorHeight].text = Translations.Translate("RPR_CAL_FLR_Y") + " " + array[DataStore.LEVEL_HEIGHT];
-            detailLabels[(int)Details.floors].text = Translations.Translate("RPR_CAL_FLR") + " " + floorCount;
+            // Add label.
+            UILabel label = container.AddUIComponent<UILabel>();
+            label.textScale = 0.8f;
+            label.text = text;
+            label.relativePosition = new Vector3(0f, 6f);
 
-            // Area calculation - will need this later.
-            int calculatedArea = calcWidth * calcLength;
-            detailLabels[(int)Details.area].text = Translations.Translate("RPR_CAL_M2") + " " + calculatedArea;
+            // Create dropdown menu.
+            UIDropDown dropDown = container.AddUIComponent<UIDropDown>();
+            dropDown.listBackground = "GenericPanelLight";
+            dropDown.itemHover = "ListItemHover";
+            dropDown.itemHighlight = "ListItemHighlight";
+            dropDown.normalBgSprite = "ButtonMenu";
+            dropDown.disabledBgSprite = "ButtonMenuDisabled";
+            dropDown.hoveredBgSprite = "ButtonMenuHovered";
+            dropDown.focusedBgSprite = "ButtonMenu";
+            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
+            dropDown.popupColor = new Color32(45, 52, 61, 255);
+            dropDown.popupTextColor = new Color32(170, 170, 170, 255);
+            dropDown.zOrder = 1;
+            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
+            dropDown.textFieldPadding = new RectOffset(8, 0, 8, 0);
+            dropDown.itemPadding = new RectOffset(14, 0, 8, 0);
 
-            // Show or hide extra floor modifier as appropriate (hide for zero or less, otherwise show).
-            if (array[DataStore.DENSIFICATION] > 0)
-            {
-                detailLabels[(int)Details.extraFloors].text = Translations.Translate("RPR_CAL_FLR_M") + " " + array[DataStore.DENSIFICATION];
-                detailLabels[(int)Details.extraFloors].isVisible = true;
-            }
-            else
-            {
-                detailLabels[(int)Details.extraFloors].isVisible = false;
-            }
+            // Dropdown relative position - right of label.
+            dropDown.relativePosition = new Vector3(label.width + 10f, 0f);
 
-            // Set minimum residences for high density.
-            if ((building.GetSubService() == ItemClass.SubService.ResidentialHigh) || (building.GetSubService() == ItemClass.SubService.ResidentialHighEco))
-            {
-                // Minimum of 2, or 90% number of floors, whichever is greater. This helps the 1x1 high density.
-                minHomesJobs = Mathf.Max(2, Mathf.CeilToInt(0.9f * floorCount));
-            }
+            // Dropdown size parameters.
+            dropDown.size = new Vector2(Width, Height);
+            dropDown.listWidth = (int)Width;
+            dropDown.listHeight = 500;
+            dropDown.itemHeight = ItemHeight;
+            dropDown.textScale = 0.7f;
 
-            // Perform actual household or workplace calculation.
-            modCount = Mathf.Max(minHomesJobs, (calculatedArea * (floorCount + Mathf.Max(0, array[DataStore.DENSIFICATION]))) / array[DataStore.PEOPLE]);
-            homesJobsCalcLabel.text += modCount;
+            // Create dropdown button.
+            UIButton button = dropDown.AddUIComponent<UIButton>();
+            dropDown.triggerButton = button;
+            button.size = dropDown.size;
+            button.text = "";
+            button.relativePosition = new Vector3(0f, 0f);
+            button.textVerticalAlignment = UIVerticalAlignment.Middle;
+            button.textHorizontalAlignment = UIHorizontalAlignment.Left;
+            button.normalFgSprite = "IconDownArrow";
+            button.hoveredFgSprite = "IconDownArrowHovered";
+            button.pressedFgSprite = "IconDownArrowPressed";
+            button.focusedFgSprite = "IconDownArrowFocused";
+            button.disabledFgSprite = "IconDownArrowDisabled";
+            button.spritePadding = new RectOffset(3, 3, 3, 3);
+            button.foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+            button.horizontalAlignment = UIHorizontalAlignment.Right;
+            button.verticalAlignment = UIVerticalAlignment.Middle;
+            button.zOrder = 0;
 
-            // Set customised homes/jobs label (leave blank if no custom setting retrieved).
-            if (customHomeJobs > 0)
-            {
-                homesJobsCustomLabel.text += customHomeJobs.ToString();
-
-                // Update modCount to reflect the custom figures.
-                modCount = customHomeJobs;
-            }
-
-            // Check to see if Ploppable RICO Revisited is controlling this building's population.
-            if (ModUtils.CheckRICO(building))
-            {
-                messageLabel.text = Translations.Translate("RPR_CAL_RICO");
-                messageLabel.Show();
-            }
-            else
-            {
-                // Hide message text by default.
-                messageLabel.Hide();
-            }
-
-            // We've got a valid building and results, so show panel.
-            detailsPanel.height = 270;
-            detailsPanel.isVisible = true;
+            return dropDown;
         }
     }
 }

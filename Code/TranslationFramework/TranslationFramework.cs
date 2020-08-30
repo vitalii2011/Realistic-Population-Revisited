@@ -48,7 +48,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// The current language index number (equals the index number of the language names list provied bye LanguageList).
+        /// The current language index number (equals the index number of the language names list provied by LanguageList).
         /// Useful for easy automatic drop-down language selection menus, working in conjunction with LanguageList:
         /// Set to set the language to the equivalent LanguageList index.
         /// Get to return the LanguageList index of the current languge.

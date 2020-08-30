@@ -47,7 +47,6 @@ namespace RealisticPopulationRevisited
 
                     try
                     {
-
                         // Is options panel open?  If so, we ignore this and don't do anything.
                         if (!OptionsPanel.IsOpen)
                         {

@@ -1,3 +1,6 @@
+- Major overhaul: introduce new volumetric population calculations
+- Add selectable configuration presets for each service type
+
 - Add custom mouse button keybinding option
 
 

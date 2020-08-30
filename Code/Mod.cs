@@ -7,7 +7,7 @@ namespace RealisticPopulationRevisited
     public class RealPopMod : IUserMod
     {
         public static string ModName => "Realistic Population Revisited";
-        public static string Version => "1.4.3";
+        public static string Version => "2.0 ALPHA";
 
         public string Name => ModName + " " + Version;
 
@@ -30,10 +30,17 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void OnEnabled()
         {
+            // Initialise datastores.
+            PopData.Setup();
+            EmploymentData.Setup();
+
             // Load settings file.
             SettingsUtils.LoadSettings();
+            
+            // Load (volumetric) building settings file.
+            ConfigUtils.LoadSettings();
 
-            // Populate Datastore from configuration file.
+            // Populate (legacy) Datastore from configuration file.
             XMLUtilsWG.ReadFromXML();
 
             // Check to see if UIView is ready.

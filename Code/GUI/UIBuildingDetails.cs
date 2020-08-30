@@ -102,7 +102,7 @@ namespace RealisticPopulationRevisited
         // Constants.
         private const float LeftWidth = 400;
         private const float MiddleWidth = 250;
-        private const float RightWidth = 280;
+        private const float RightWidth = 350;
         private const float FilterHeight = 40;
         private const float PanelHeight = 550;
         private const float BottomMargin = 10;
@@ -115,7 +115,7 @@ namespace RealisticPopulationRevisited
         private UIFastList buildingSelection;
         private UIPreviewPanel previewPanel;
         private UIEditPanel editPanel;
-        private UIModCalcs modCalcs;
+        private UIModCalcs calcsPanel;
 
         // General vars.
         private BuildingInfo currentSelection;
@@ -132,7 +132,7 @@ namespace RealisticPopulationRevisited
                 isVisible = false;
                 canFocus = true;
                 isInteractive = true;
-                width = LeftWidth + MiddleWidth + RightWidth + (Spacing * 4);
+                width = LeftWidth + MiddleWidth + RightWidth + (Spacing * 4) + Spacing;
                 height = PanelHeight + TitleHeight + FilterHeight + (Spacing * 2) + BottomMargin;
                 relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
                 backgroundSprite = "UnlockingPanel2";
@@ -185,16 +185,11 @@ namespace RealisticPopulationRevisited
                 editPanel.Setup();
 
                 // Right panel - mod calculations.
-                UIPanel rightPanel = AddUIComponent<UIPanel>();
-                rightPanel.width = RightWidth;
-                rightPanel.height = PanelHeight;
-                rightPanel.relativePosition = new Vector3(LeftWidth + MiddleWidth + (Spacing * 3), TitleHeight + FilterHeight + Spacing);
-
-                modCalcs = rightPanel.AddUIComponent<UIModCalcs>();
-                modCalcs.width = RightWidth;
-                modCalcs.height = PanelHeight;
-                modCalcs.relativePosition = Vector3.zero;
-                modCalcs.Setup();
+                calcsPanel = this.AddUIComponent<UIModCalcs>();
+                calcsPanel.width = RightWidth;
+                calcsPanel.height = PanelHeight;
+                calcsPanel.relativePosition = new Vector3(LeftWidth + MiddleWidth + (Spacing * 3), TitleHeight + FilterHeight + Spacing);
+                calcsPanel.Setup();
 
                 // Building selection list.
                 buildingSelection = UIFastList.Create<UIBuildingRow>(leftPanel);
@@ -224,7 +219,7 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Called when the building selection changes to update other panels.
         /// </summary>
-        /// <param name="building"></param>
+        /// <param name="building">Newly selected building</param>
         public void UpdateSelectedBuilding(BuildingInfo building)
         {
             if (building != null)
@@ -235,7 +230,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Update mod calculations and edit panels.
-            modCalcs.SelectionChanged(building);
+            calcsPanel.SelectionChanged(building);
             editPanel.SelectionChanged(building);
         }
 
