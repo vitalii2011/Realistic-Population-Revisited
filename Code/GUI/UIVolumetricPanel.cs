@@ -53,16 +53,16 @@ namespace RealisticPopulationRevisited
             scrollWheelDirection = UIOrientation.Vertical;
 
             // Labels.
-            numFloorsLabel = AddLabel(this, "Floors", margin + (0f * 30f));
-            floorAreaLabel = AddLabel(this, "Total floor area", margin + (1f * 30f));
-            totalLabel = AddLabel(this, "Total units", margin + (2f * 30f));
-            floorHeightLabel = AddLabel(this, "Floor height", margin + (3f * 30f));
-            firstMinLabel = AddLabel(this, "First floor height min", margin + (4f * 30f));
-            firstMaxLabel = AddLabel(this, "First floor height max", margin + (5f * 30f));
-            perLabel = AddLabel(this, "Area per unit", margin + (6f * 30f));
+            numFloorsLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLR"), margin + (0f * 30f));
+            floorAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_TFA"), margin + (1f * 30f));
+            totalLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_UTS"), margin + (2f * 30f));
+            floorHeightLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), margin + (3f * 30f));
+            firstMinLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), margin + (4f * 30f));
+            firstMaxLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), margin + (5f * 30f));
+            perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), margin + (6f * 30f));
 
             // Checkbox.
-            ignoreFirstCheckBox = AddCheckBox(this, "Ignore first floor", margin + (7f * 30f));
+            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), margin + (7f * 30f));
             ignoreFirstCheckBox.enabled = false;
 
             // Floor panel.
@@ -127,7 +127,7 @@ namespace RealisticPopulationRevisited
             int totalUnits = PopData.VolumetricPopulation(building.m_generatedInfo, levelData, floors, totalArea);
 
             // Initialise total units counter and floor labels list.
-            string unitName = building.GetService() == ItemClass.Service.Residential ? "households" : "workers";
+            string unitName = Translations.Translate(building.GetService() == ItemClass.Service.Residential ? "RPR_CAL_VOL_HOU" : "RPR_CAL_VOL_WOR");
             List<string> floorLabels = new List<string>();
 
             // See if we're using area calculations for numbers of units, i.e. areaPer is at least one.
@@ -141,7 +141,7 @@ namespace RealisticPopulationRevisited
 
                     // Floor number
                     floorString.Append(i + 1);
-                    floorString.Append(": area ");
+                    floorString.Append(" " + Translations.Translate("RPR_CAL_VOL_ARA") + " ");
                     floorString.Append(floors[i]);
 
                     // See if we're calculating units per individual floor.
