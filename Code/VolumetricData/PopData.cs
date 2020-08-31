@@ -384,9 +384,9 @@ namespace RealisticPopulationRevisited
             // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
             // 20% gross-up for conversion from NIA to GIA.
             VolumetricPack entertainment = new VolumetricPack();
-            entertainment.name = Translations.Translate("RPR_PCK_LEN_NAM");
-            entertainment.displayName = Translations.Translate("RPR_PCK_LEN_DES");
-            entertainment.description = "Cinemas, amusements, and entertainment centers.";
+            entertainment.name = "entertainment";
+            entertainment.displayName = Translations.Translate("RPR_PCK_LEN_NAM");
+            entertainment.description = Translations.Translate("RPR_PCK_LEN_DES"); ;
             entertainment.version = (int)DataVersion.one;
             entertainment.service = ItemClass.Service.Commercial;
             entertainment.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure };
@@ -470,7 +470,7 @@ namespace RealisticPopulationRevisited
             VolumetricPack offLow = new VolumetricPack();
             offLow.name = "offlow";
             offLow.displayName = Translations.Translate("RPR_PCK_OLD_NAM");
-            offLow.description = Translations.Translate("RPR_PCK_OHD_DES");
+            offLow.description = Translations.Translate("RPR_PCK_OLD_DES");
             offLow.version = (int)DataVersion.one;
             offLow.service = ItemClass.Service.Office;
             offLow.subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech };

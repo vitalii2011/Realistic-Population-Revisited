@@ -5,16 +5,15 @@
     <Translation ID="RPR_DESC" String="More realistic building populations (based on building size) and utility needs." />"
     <Translation ID="RPR_REALPOP" String="Realistic Population" />
     <Translation ID="RPR_PCK_DEF" String=" (default)" />
+    <Translation ID="RPR_PCK_NAM" String="Calculations" />
     <Translation ID="RPR_PCK_LEG_NAM" String="Legacy WG calculations" />
-    <Translation ID="RPR_PCK_LEG_DES" String="Use old calculations (as used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod)" />
+    <Translation ID="RPR_PCK_LEG_DES" String="Old calculations used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod." />
     <Translation ID="RPR_PCK_RLS_NAM" String="Single dwellings" />
     <Translation ID="RPR_PCK_RLS_DES" String="One household per building." />
     <Translation ID="RPR_PCK_RMD_NAM" String="Medium density" />
     <Translation ID="RPR_PCK_RMD_DES" String="Medium-density residential buildings - townhouse blocks and low-rise apartments." />
     <Translation ID="RPR_PCK_RHR_NAM" String="Highrise" />
     <Translation ID="RPR_PCK_RHR_DES" String="High-rise apartment buildings with lobbies." />
-    <Translation ID="RPR_PCK_CLS_NAM" String="Highrise" />
-    <Translation ID="RPR_PCK_RHS_DES" String="High-rise apartment buildings with lobbies." />
     <Translation ID="RPR_PCK_CLS_NAM" String="Standalone shops" />
     <Translation ID="RPR_PCK_CLS_DES" String="Low-density commercial services." />
     <Translation ID="RPR_PCK_CHC_NAM" String="Shopping malls" />
@@ -36,7 +35,7 @@
     <Translation ID="RPR_PCK_IHB_NAM" String="Large warehouses" />
     <Translation ID="RPR_PCK_IHB_DES" String="Large-scale and high-bay warehouses - lots of storage and very low employment density." />
     <Translation ID="RPR_PCK_OLD_NAM" String="Small offices" />
-    <Translation ID="RPR_PCK_OHD_DES" String="Smaller office buildings." />
+    <Translation ID="RPR_PCK_OLD_DES" String="Smaller office buildings." />
     <Translation ID="RPR_PCK_OHD_NAM" String="Large offices" />
     <Translation ID="RPR_PCK_OHD_DES" String="Large office buildings." />
     <Translation ID="RPR_CAT_RES" String="Residential" />

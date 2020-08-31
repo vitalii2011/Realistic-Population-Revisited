@@ -10,7 +10,8 @@ namespace RealisticPopulationRevisited
         private UILabel title;
         private UILegacyCalcs legacyPanel;
         private UIVolumetricPanel volumetricPanel;
-        private UIDropDown presetMenu;
+        private UIDropDown packMenu;
+        private UILabel packDescription;
 
         // Data.
         private CalcPack[] availablePacks;
@@ -39,8 +40,8 @@ namespace RealisticPopulationRevisited
 
             // Volumetric calculations panel.
             volumetricPanel = this.AddUIComponent<UIVolumetricPanel>();
-            volumetricPanel.relativePosition = new Vector3(0, title.height + 30f);
-            volumetricPanel.height = this.height - title.height + 30f;
+            volumetricPanel.relativePosition = new Vector3(0, title.height + 80f);
+            volumetricPanel.height = this.height - title.height + 80f;
             volumetricPanel.width = this.width;
             volumetricPanel.Setup();
 
@@ -53,12 +54,27 @@ namespace RealisticPopulationRevisited
             legacyPanel.Hide();
 
             // Preset dropdown.
-            presetMenu = CreateDropDown(this, "Preset", yPos: title.height);
-            presetMenu.eventSelectedIndexChanged += (component, index) =>
-            {
+            packMenu = CreateDropDown(this, Translations.Translate("RPR_PCK_NAM"), yPos: title.height);;
 
+            // Preset description.
+            packDescription = this.AddUIComponent<UILabel>();
+            //packDescription.relativePosition = new Vector3(packMenu.parent.relativePosition.x + packMenu.relativePosition.x, packMenu.parent.relativePosition.y + packMenu.parent.height + 5f);
+            packDescription.relativePosition = new Vector3(legacyPanel.relativePosition.x + 10f, packMenu.parent.relativePosition.y + packMenu.parent.height + 15f);
+            packDescription.autoSize = false;
+            packDescription.autoHeight = true;
+            packDescription.wordWrap = true;
+            packDescription.textScale = 0.7f;
+            //packDescription.width = this.width - packDescription.relativePosition.x - 5f;
+            packDescription.width = legacyPanel.width - 20f;
+
+            // Dropdown event handler.
+            packMenu.eventSelectedIndexChanged += (component, index) =>
+            {
                 // Update selected pack.
                 currentPack = availablePacks[index];
+
+                // Update description.
+                packDescription.text = currentPack.description;
 
                 // Update building setting and save.
                 PopData.UpdateBuildingPack(currentBuilding, currentPack);
@@ -114,21 +130,21 @@ namespace RealisticPopulationRevisited
                 CalcPack defaultPack = PopData.DefaultPack(building);
 
                 // Build preset menu.
-                presetMenu.items = new string[availablePacks.Length];
-                for (int i = 0; i < presetMenu.items.Length; ++i)
+                packMenu.items = new string[availablePacks.Length];
+                for (int i = 0; i < packMenu.items.Length; ++i)
                 {
-                    presetMenu.items[i] = availablePacks[i].displayName;
+                    packMenu.items[i] = availablePacks[i].displayName;
 
                     // Check for deefault name match,
                     if (availablePacks[i].name.Equals(defaultPack.name))
                     {
-                        presetMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                        packMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
                     }
 
                     // Set menu selection to current pack if it matches.
                     if (availablePacks[i].Equals(currentPack))
                     {
-                        presetMenu.selectedIndex = i;
+                        packMenu.selectedIndex = i;
                     }
                 }
 
