@@ -514,15 +514,27 @@ namespace RealisticPopulationRevisited
             // Local reference.
             string buildingName = building.name;
 
+            // Check to see if this pack matches the default.
+            bool isDefault = pack == DefaultPack(building);
+
             // Check to see if this building already has an entry.
             if (buildingDict.ContainsKey(buildingName))
             {
-                // Contains an entry - update it.
-                buildingDict[buildingName] = pack;
+                // Contains an entry - check to see if this pack matches the default.
+                if (isDefault)
+                {
+                    // Matches the default - just remove the custom entry.
+                    buildingDict.Remove(buildingName);
+                }
+                else
+                {
+                    // Doesn't match the default - update the existing entry.
+                    buildingDict[buildingName] = pack;
+                }
             }
-            else
+            else if (!isDefault)
             {
-                // No entry yet - add one.
+                // No entry yet and the pack isn't the default - add a custom entry.
                 buildingDict.Add(buildingName, pack);
             }
         }
