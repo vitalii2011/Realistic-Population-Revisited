@@ -85,6 +85,13 @@ namespace RealisticPopulationRevisited
 
                 // Check for Ploppable RICO Revisited.
                 ModUtils.RICOReflection();
+
+                // Initialise volumetric datastores.
+                PopData.Setup();
+                EmploymentData.Setup();
+
+                // Load (volumetric) building settings file.
+                ConfigUtils.LoadSettings();
             }
         }
 

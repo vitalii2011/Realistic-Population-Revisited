@@ -44,11 +44,6 @@ namespace RealisticPopulationRevisited
                 employStruct.visitors = 0;
             }
 
-
-
-
-            Debugging.Message("calculating volumetric workplace count for building " + prefab.name + " with workplaces " + employStruct.level0 + "," + employStruct.level1 + "," + employStruct.level2 + "," + employStruct.level3);
-
             return employStruct;
         }
 

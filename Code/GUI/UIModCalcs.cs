@@ -122,7 +122,7 @@ namespace RealisticPopulationRevisited
                     // Check for deefault name match,
                     if (availablePacks[i].name.Equals(defaultPack.name))
                     {
-                        presetMenu.items[i] += " (default)";
+                        presetMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
                     }
 
                     // Set menu selection to current pack if it matches.

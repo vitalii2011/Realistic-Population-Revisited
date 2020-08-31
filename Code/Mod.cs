@@ -30,15 +30,8 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void OnEnabled()
         {
-            // Initialise datastores.
-            PopData.Setup();
-            EmploymentData.Setup();
-
             // Load settings file.
             SettingsUtils.LoadSettings();
-            
-            // Load (volumetric) building settings file.
-            ConfigUtils.LoadSettings();
 
             // Populate (legacy) Datastore from configuration file.
             XMLUtilsWG.ReadFromXML();

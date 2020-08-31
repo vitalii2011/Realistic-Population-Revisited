@@ -122,8 +122,6 @@ namespace RealisticPopulationRevisited
                 totalUnits = 1;
             }
 
-            Debugging.Message("calculating volumetric population for prefab " + buildingInfoGen.name + " with population " + totalUnits);
-
             return totalUnits;
         }
 
@@ -206,8 +204,8 @@ namespace RealisticPopulationRevisited
             // Legacy residential.
             LegacyResPack resWG = new LegacyResPack();
             resWG.name = "resWG";
-            resWG.displayName = "Legacy WG calculations";
-            resWG.description = "Use old calculations (as used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod)";
+            resWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
+            resWG.description = Translations.Translate("RPR_PCK_LEG_DES");
             resWG.version = (int)DataVersion.legacy;
             resWG.service = ItemClass.Service.Residential;
             calcPacks.Add(resWG);
@@ -215,8 +213,8 @@ namespace RealisticPopulationRevisited
             // Legacy industrial.
             LegacyIndPack indWG = new LegacyIndPack();
             indWG.name = "indWG";
-            indWG.displayName = "Legacy WG calculations";
-            indWG.description = "Use old calculations (as used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod)";
+            indWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
+            indWG.description = Translations.Translate("RPR_PCK_LEG_DES");
             indWG.version = (int)DataVersion.legacy;
             indWG.service = ItemClass.Service.Industrial;
             calcPacks.Add(indWG);
@@ -224,8 +222,8 @@ namespace RealisticPopulationRevisited
             // Legacy commercial.
             LegacyComPack comWG = new LegacyComPack();
             comWG.name = "comWG";
-            comWG.displayName = "Legacy WG calculations";
-            comWG.description = "Use old calculations (as used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod)";
+            comWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
+            comWG.description = Translations.Translate("RPR_PCK_LEG_DES");
             comWG.version = (int)DataVersion.legacy;
             comWG.service = ItemClass.Service.Commercial;
             calcPacks.Add(comWG);
@@ -233,8 +231,8 @@ namespace RealisticPopulationRevisited
             // Legacy office.
             LegacyOffPack offWG = new LegacyOffPack();
             offWG.name = "offWG";
-            offWG.displayName = "Legacy WG calculations";
-            offWG.description = "Use old calculations (as used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod)";
+            offWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
+            offWG.description = Translations.Translate("RPR_PCK_LEG_DES");
             offWG.version = (int)DataVersion.legacy;
             offWG.service = ItemClass.Service.Office;
             calcPacks.Add(offWG);
@@ -243,8 +241,8 @@ namespace RealisticPopulationRevisited
             // Low-density residential.
             VolumetricPack resLow = new VolumetricPack();
             resLow.name = "reslow";
-            resLow.displayName = "Single dwellings";
-            resLow.description = "One household per building.";
+            resLow.displayName = Translations.Translate("RPR_PCK_RLS_NAM");
+            resLow.description = Translations.Translate("RPR_PCK_RLS_DES");
             resLow.version = (int)DataVersion.one;
             resLow.service = ItemClass.Service.Residential;
             resLow.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialLow, ItemClass.SubService.ResidentialLowEco };
@@ -261,8 +259,8 @@ namespace RealisticPopulationRevisited
             // Medium-density residential.
             VolumetricPack resMed = new VolumetricPack();
             resMed.name = "resmed";
-            resMed.displayName = "Medium density";
-            resMed.description = "Medium-density residential buildings - low-rise apartments.";
+            resMed.displayName = Translations.Translate("RPR_PCK_RMD_NAM");
+            resMed.description = Translations.Translate("RPR_PCK_RMD_DES");
             resMed.version = (int)DataVersion.one;
             resMed.service = ItemClass.Service.Residential;
             resMed.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialLow, ItemClass.SubService.ResidentialLowEco, ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
@@ -279,8 +277,8 @@ namespace RealisticPopulationRevisited
             // High-density residential.
             VolumetricPack resHigh = new VolumetricPack();
             resHigh.name = "reshigh";
-            resHigh.displayName = "Highrise";
-            resHigh.description = "High-rise apartment buildings with lobbies.";
+            resHigh.displayName = Translations.Translate("RPR_PCK_RHR_NAM");
+            resHigh.description = Translations.Translate("RPR_PCK_RHR_DES");
             resHigh.version = (int)DataVersion.one;
             resHigh.service = ItemClass.Service.Residential;
             resHigh.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
@@ -298,8 +296,8 @@ namespace RealisticPopulationRevisited
             // Figures are from Montgomery County round 7.0.
             VolumetricPack comLow = new VolumetricPack();
             comLow.name = "comlow";
-            comLow.displayName = "Standalone shops";
-            comLow.description = "Low-density commercial services.";
+            comLow.displayName = Translations.Translate("RPR_PCK_CLS_NAM");
+            comLow.description = Translations.Translate("RPR_PCK_CLS_DES");
             comLow.version = (int)DataVersion.one;
             comLow.service = ItemClass.Service.Commercial;
             comLow.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist };
@@ -316,8 +314,8 @@ namespace RealisticPopulationRevisited
             // 20% gross-up for conversion from NIA to GIA.
             VolumetricPack comHigh = new VolumetricPack();
             comHigh.name = "comhigh";
-            comHigh.displayName = "Shopping centres";
-            comHigh.description = "High-density retail (shopping malls and high streets).";
+            comHigh.displayName = Translations.Translate("RPR_PCK_CHC_NAM");
+            comHigh.description = Translations.Translate("RPR_PCK_CHC_DES");
             comHigh.version = (int)DataVersion.one;
             comHigh.service = ItemClass.Service.Commercial;
             comHigh.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialHigh, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist };
@@ -334,8 +332,8 @@ namespace RealisticPopulationRevisited
             // 20% gross-up for conversion from NIA to GIA.
             VolumetricPack retailWarehouse = new VolumetricPack();
             retailWarehouse.name = "retailware";
-            retailWarehouse.displayName = "Retail warehouses";
-            retailWarehouse.description = "Non-food superstores and retail warehouses";
+            retailWarehouse.displayName = Translations.Translate("RPR_PCK_CLW_NAM");
+            retailWarehouse.description = Translations.Translate("RPR_PCK_CLW_DES");
             retailWarehouse.version = (int)DataVersion.one;
             retailWarehouse.service = ItemClass.Service.Commercial;
             retailWarehouse.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh };
@@ -351,8 +349,8 @@ namespace RealisticPopulationRevisited
             // Figures are from Montgomery County round 7.0.
             VolumetricPack hotel = new VolumetricPack();
             hotel.name = "hotel";
-            hotel.displayName = "Hotels";
-            hotel.description = "Hotels and motels.";
+            hotel.displayName = Translations.Translate("RPR_PCK_THT_NAM");
+            hotel.description = Translations.Translate("RPR_PCK_THT_DES");
             hotel.version = (int)DataVersion.one;
             hotel.service = ItemClass.Service.Commercial;
             hotel.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialTourist };
@@ -369,8 +367,8 @@ namespace RealisticPopulationRevisited
             // 20% gross-up for conversion from NIA to GIA.
             VolumetricPack restaurant = new VolumetricPack();
             restaurant.name = "restaurant";
-            restaurant.displayName = "Restaurants";
-            restaurant.description = "Restaurants and cafes.";
+            restaurant.displayName = Translations.Translate("RPR_PCK_LFD_NAM");
+            restaurant.description = Translations.Translate("RPR_PCK_LFD_DES");
             restaurant.version = (int)DataVersion.one;
             restaurant.service = ItemClass.Service.Commercial;
             restaurant.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure };
@@ -386,8 +384,8 @@ namespace RealisticPopulationRevisited
             // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
             // 20% gross-up for conversion from NIA to GIA.
             VolumetricPack entertainment = new VolumetricPack();
-            entertainment.name = "entertainment";
-            entertainment.displayName = "Entertainment";
+            entertainment.name = Translations.Translate("RPR_PCK_LEN_NAM");
+            entertainment.displayName = Translations.Translate("RPR_PCK_LEN_DES");
             entertainment.description = "Cinemas, amusements, and entertainment centers.";
             entertainment.version = (int)DataVersion.one;
             entertainment.service = ItemClass.Service.Commercial;
@@ -400,12 +398,46 @@ namespace RealisticPopulationRevisited
 
             calcPacks.Add(entertainment);
 
+            // Light industry.
+            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
+            VolumetricPack lightIndustry = new VolumetricPack();
+            lightIndustry.name = "lightind";
+            lightIndustry.displayName = Translations.Translate("RPR_PCK_ILG_NAM");
+            lightIndustry.description = Translations.Translate("RPR_PCK_ILG_DES");
+            lightIndustry.version = (int)DataVersion.one;
+            lightIndustry.service = ItemClass.Service.Industrial;
+            lightIndustry.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
+
+            lightIndustry.levels = new LevelData[3];
+            lightIndustry.levels[0] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
+            lightIndustry.levels[1] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
+            lightIndustry.levels[2] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
+
+            calcPacks.Add(lightIndustry);
+
+            // Industry factory.
+            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
+            VolumetricPack indFactory = new VolumetricPack();
+            indFactory.name = "factory";
+            indFactory.displayName = Translations.Translate("RPR_PCK_IFC_NAM");
+            indFactory.description = Translations.Translate("RPR_PCK_IFC_DES");
+            indFactory.version = (int)DataVersion.one;
+            indFactory.service = ItemClass.Service.Industrial;
+            indFactory.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
+
+            indFactory.levels = new LevelData[3];
+            indFactory.levels[0] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
+            indFactory.levels[1] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
+            indFactory.levels[2] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
+
+            calcPacks.Add(indFactory);
+
             // Industry warehouse.
             // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
             VolumetricPack indWarehouse = new VolumetricPack();
             indWarehouse.name = "warehouse";
-            indWarehouse.displayName = "General warehousing";
-            indWarehouse.description = "Industrial warehouses - lots of storage and low employment density.";
+            indWarehouse.displayName = Translations.Translate("RPR_PCK_IGW_NAM");
+            indWarehouse.description = Translations.Translate("RPR_PCK_IGW_DES");
             indWarehouse.version = (int)DataVersion.one;
             indWarehouse.service = ItemClass.Service.Industrial;
             indWarehouse.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
@@ -421,8 +453,8 @@ namespace RealisticPopulationRevisited
             // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
             VolumetricPack highBay = new VolumetricPack();
             highBay.name = "highbay";
-            highBay.displayName = "Large warehouses";
-            highBay.description = "Large-scale and high-bay warehouses - lots of storage and low employment density.";
+            highBay.displayName = Translations.Translate("RPR_PCK_IHB_NAM");
+            highBay.description = Translations.Translate("RPR_PCK_IHB_DES");
             highBay.version = (int)DataVersion.one;
             highBay.service = ItemClass.Service.Industrial;
             highBay.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
@@ -434,45 +466,11 @@ namespace RealisticPopulationRevisited
 
             calcPacks.Add(highBay);
 
-            // Industry factory.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
-            VolumetricPack indFactory = new VolumetricPack();
-            indFactory.name = "factory";
-            indFactory.displayName = "Factories";
-            indFactory.description = "Industrial factories.";
-            indFactory.version = (int)DataVersion.one;
-            indFactory.service = ItemClass.Service.Industrial;
-            indFactory.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
-
-            indFactory.levels = new LevelData[3];
-            indFactory.levels[0] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-            indFactory.levels[1] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-            indFactory.levels[2] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-
-            calcPacks.Add(indFactory);
-
-            // Light industry.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
-            VolumetricPack lightIndustry = new VolumetricPack();
-            lightIndustry.name = "lightind";
-            lightIndustry.displayName = "Light industry";
-            lightIndustry.description = "Light industries and business parks.";
-            lightIndustry.version = (int)DataVersion.one;
-            lightIndustry.service = ItemClass.Service.Industrial;
-            lightIndustry.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
-
-            lightIndustry.levels = new LevelData[3];
-            lightIndustry.levels[0] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-            lightIndustry.levels[1] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-            lightIndustry.levels[2] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-
-            calcPacks.Add(lightIndustry);
-
             // Low-density office.
             VolumetricPack offLow = new VolumetricPack();
             offLow.name = "offlow";
-            offLow.displayName = "Small offices";
-            offLow.description = "Smaller office buildings.";
+            offLow.displayName = Translations.Translate("RPR_PCK_OLD_NAM");
+            offLow.description = Translations.Translate("RPR_PCK_OHD_DES");
             offLow.version = (int)DataVersion.one;
             offLow.service = ItemClass.Service.Office;
             offLow.subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech };
@@ -488,8 +486,8 @@ namespace RealisticPopulationRevisited
             // Figures are from Montgomery County round 7.0.
             VolumetricPack offHigh = new VolumetricPack();
             offHigh.name = "offhigh";
-            offHigh.displayName = "Large offices";
-            offHigh.description = "Large office buildings.";
+            offHigh.displayName = Translations.Translate("RPR_PCK_OHD_NAM");
+            offHigh.description = Translations.Translate("RPR_PCK_OHD_DES");
             offHigh.version = (int)DataVersion.one;
             offHigh.service = ItemClass.Service.Office;
             offHigh.subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech };
@@ -500,7 +498,6 @@ namespace RealisticPopulationRevisited
             offHigh.levels[2] = new LevelData { floorHeight = 4f, areaPer = 25, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = true, multiFloorUnits = false };
 
             calcPacks.Add(offHigh);
-
 
             // Initialise building setting dictionary.
             buildingDict = new Dictionary<string, CalcPack>();
