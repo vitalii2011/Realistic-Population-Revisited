@@ -126,9 +126,26 @@ namespace RealisticPopulationRevisited
             // Get total units.
             int totalUnits = PopData.VolumetricPopulation(building.m_generatedInfo, levelData, floors, totalArea);
 
-            // Initialise total units counter and floor labels list.
-            string unitName = Translations.Translate(building.GetService() == ItemClass.Service.Residential ? "RPR_CAL_VOL_HOU" : "RPR_CAL_VOL_WOR");
+            // Floor labels list.
             List<string> floorLabels = new List<string>();
+
+            // What we call our units for this building.
+            string unitName;
+            switch (building.GetService())
+            {
+                case ItemClass.Service.Residential:
+                    // Residential - households.
+                    unitName = Translations.Translate("RPR_CAL_VOL_HOU");
+                    break;
+                case ItemClass.Service.Education:
+                    // Education - students.
+                    unitName = Translations.Translate("RPR_CAL_VOL_STU");
+                    break;
+                default:
+                    // Default - workplaces.
+                    unitName = Translations.Translate("RPR_CAL_VOL_WOR");
+                    break;
+            }
 
             // See if we're using area calculations for numbers of units, i.e. areaPer is at least one.
             if (levelData.areaPer > 0)

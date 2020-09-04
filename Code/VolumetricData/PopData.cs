@@ -229,7 +229,6 @@ namespace RealisticPopulationRevisited
             offWG.service = ItemClass.Service.Office;
             calcPacks.Add(offWG);
 
-
             // Low-density residential.
             VolumetricPack resLow = new VolumetricPack();
             resLow.name = "reslow";
@@ -238,14 +237,12 @@ namespace RealisticPopulationRevisited
             resLow.version = (int)DataVersion.one;
             resLow.service = ItemClass.Service.Residential;
             resLow.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialLow, ItemClass.SubService.ResidentialLowEco };
-
             resLow.levels = new LevelData[5];
             resLow.levels[0] = new LevelData { floorHeight = 3f, areaPer = -1, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = true };
             resLow.levels[1] = new LevelData { floorHeight = 3f, areaPer = -1, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = true };
             resLow.levels[2] = new LevelData { floorHeight = 3f, areaPer = -1, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = true };
             resLow.levels[3] = new LevelData { floorHeight = 3f, areaPer = -1, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = true };
             resLow.levels[4] = new LevelData { floorHeight = 3f, areaPer = -1, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = true };
-
             calcPacks.Add(resLow);
 
             // Medium-density residential.
@@ -256,14 +253,12 @@ namespace RealisticPopulationRevisited
             resMed.version = (int)DataVersion.one;
             resMed.service = ItemClass.Service.Residential;
             resMed.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialLow, ItemClass.SubService.ResidentialLowEco, ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
-
             resMed.levels = new LevelData[5];
             resMed.levels[0] = new LevelData { floorHeight = 3f, areaPer = 140, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = false };
             resMed.levels[1] = new LevelData { floorHeight = 3f, areaPer = 145, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = false };
             resMed.levels[2] = new LevelData { floorHeight = 3f, areaPer = 150, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = false };
             resMed.levels[3] = new LevelData { floorHeight = 3f, areaPer = 160, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = false };
             resMed.levels[4] = new LevelData { floorHeight = 3f, areaPer = 170, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(resMed);
 
             // High-density residential.
@@ -274,14 +269,12 @@ namespace RealisticPopulationRevisited
             resHigh.version = (int)DataVersion.one;
             resHigh.service = ItemClass.Service.Residential;
             resHigh.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
-
             resHigh.levels = new LevelData[5];
             resHigh.levels[0] = new LevelData { floorHeight = 3f, areaPer = 140, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = true, multiFloorUnits = false };
             resHigh.levels[1] = new LevelData { floorHeight = 3f, areaPer = 145, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = true, multiFloorUnits = false };
             resHigh.levels[2] = new LevelData { floorHeight = 3f, areaPer = 150, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = true, multiFloorUnits = false };
             resHigh.levels[3] = new LevelData { floorHeight = 3f, areaPer = 160, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = true, multiFloorUnits = false };
             resHigh.levels[4] = new LevelData { floorHeight = 3f, areaPer = 170, firstFloorMin = 3f, firstFloorMax = 3f, firstFloorEmpty = true, multiFloorUnits = false };
-
             calcPacks.Add(resHigh);
 
             // Low-density commercial.
@@ -293,12 +286,10 @@ namespace RealisticPopulationRevisited
             comLow.version = (int)DataVersion.one;
             comLow.service = ItemClass.Service.Commercial;
             comLow.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist };
-
             comLow.levels = new LevelData[3];
             comLow.levels[0] = new LevelData { floorHeight = 3f, areaPer = 40, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
             comLow.levels[1] = new LevelData { floorHeight = 3f, areaPer = 40, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
             comLow.levels[2] = new LevelData { floorHeight = 3f, areaPer = 40, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
-
             calcPacks.Add(comLow);
 
             // High-density commercial.
@@ -311,12 +302,10 @@ namespace RealisticPopulationRevisited
             comHigh.version = (int)DataVersion.one;
             comHigh.service = ItemClass.Service.Commercial;
             comHigh.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialHigh, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist };
-
             comHigh.levels = new LevelData[3];
             comHigh.levels[0] = new LevelData { floorHeight = 4f, areaPer = 23, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = false };
             comHigh.levels[1] = new LevelData { floorHeight = 4f, areaPer = 23, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = false };
             comHigh.levels[2] = new LevelData { floorHeight = 4f, areaPer = 23, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(comHigh);
 
             // Retail warehouses.
@@ -329,12 +318,10 @@ namespace RealisticPopulationRevisited
             retailWarehouse.version = (int)DataVersion.one;
             retailWarehouse.service = ItemClass.Service.Commercial;
             retailWarehouse.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh };
-
             retailWarehouse.levels = new LevelData[3];
             retailWarehouse.levels[0] = new LevelData { floorHeight = 12f, areaPer = 108, firstFloorMin = 3f, firstFloorMax = 12f, firstFloorEmpty = false, multiFloorUnits = false };
             retailWarehouse.levels[1] = new LevelData { floorHeight = 12f, areaPer = 108, firstFloorMin = 3f, firstFloorMax = 12f, firstFloorEmpty = false, multiFloorUnits = false };
             retailWarehouse.levels[2] = new LevelData { floorHeight = 12f, areaPer = 108, firstFloorMin = 3f, firstFloorMax = 12f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(retailWarehouse);
 
             // Hotels.
@@ -346,12 +333,10 @@ namespace RealisticPopulationRevisited
             hotel.version = (int)DataVersion.one;
             hotel.service = ItemClass.Service.Commercial;
             hotel.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialTourist };
-
             hotel.levels = new LevelData[3];
             hotel.levels[0] = new LevelData { floorHeight = 4f, areaPer = 130, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
             hotel.levels[1] = new LevelData { floorHeight = 4f, areaPer = 130, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
             hotel.levels[2] = new LevelData { floorHeight = 4f, areaPer = 130, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
-
             calcPacks.Add(hotel);
 
             // Restaurants and cafes.
@@ -364,12 +349,10 @@ namespace RealisticPopulationRevisited
             restaurant.version = (int)DataVersion.one;
             restaurant.service = ItemClass.Service.Commercial;
             restaurant.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure };
-
             restaurant.levels = new LevelData[3];
             restaurant.levels[0] = new LevelData { floorHeight = 4f, areaPer = 22, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = true };
             restaurant.levels[1] = new LevelData { floorHeight = 4f, areaPer = 22, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = true };
             restaurant.levels[2] = new LevelData { floorHeight = 4f, areaPer = 22, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = true };
-
             calcPacks.Add(restaurant);
 
             // Entertainment centres.
@@ -382,12 +365,10 @@ namespace RealisticPopulationRevisited
             entertainment.version = (int)DataVersion.one;
             entertainment.service = ItemClass.Service.Commercial;
             entertainment.subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure };
-
             entertainment.levels = new LevelData[3];
             entertainment.levels[0] = new LevelData { floorHeight = 6f, areaPer = 108, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
             entertainment.levels[1] = new LevelData { floorHeight = 6f, areaPer = 108, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
             entertainment.levels[2] = new LevelData { floorHeight = 6f, areaPer = 108, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = false, multiFloorUnits = true };
-
             calcPacks.Add(entertainment);
 
             // Light industry.
@@ -399,12 +380,10 @@ namespace RealisticPopulationRevisited
             lightIndustry.version = (int)DataVersion.one;
             lightIndustry.service = ItemClass.Service.Industrial;
             lightIndustry.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
-
             lightIndustry.levels = new LevelData[3];
             lightIndustry.levels[0] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
             lightIndustry.levels[1] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
             lightIndustry.levels[2] = new LevelData { floorHeight = 4f, areaPer = 47, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(lightIndustry);
 
             // Industry factory.
@@ -416,12 +395,10 @@ namespace RealisticPopulationRevisited
             indFactory.version = (int)DataVersion.one;
             indFactory.service = ItemClass.Service.Industrial;
             indFactory.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
-
             indFactory.levels = new LevelData[3];
             indFactory.levels[0] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
             indFactory.levels[1] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
             indFactory.levels[2] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(indFactory);
 
             // Industry warehouse.
@@ -433,12 +410,10 @@ namespace RealisticPopulationRevisited
             indWarehouse.version = (int)DataVersion.one;
             indWarehouse.service = ItemClass.Service.Industrial;
             indWarehouse.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
-
             indWarehouse.levels = new LevelData[3];
             indWarehouse.levels[0] = new LevelData { floorHeight = 9f, areaPer = 70, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
             indWarehouse.levels[1] = new LevelData { floorHeight = 9f, areaPer = 70, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
             indWarehouse.levels[2] = new LevelData { floorHeight = 9f, areaPer = 70, firstFloorMin = 3f, firstFloorMax = 9f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(indWarehouse);
 
             // Industry high-bay warehouse.
@@ -450,12 +425,10 @@ namespace RealisticPopulationRevisited
             highBay.version = (int)DataVersion.one;
             highBay.service = ItemClass.Service.Industrial;
             highBay.subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre };
-
             highBay.levels = new LevelData[3];
             highBay.levels[0] = new LevelData { floorHeight = 12f, areaPer = 80, firstFloorMin = 3f, firstFloorMax = 12f, firstFloorEmpty = false, multiFloorUnits = false };
             highBay.levels[1] = new LevelData { floorHeight = 12f, areaPer = 80, firstFloorMin = 3f, firstFloorMax = 12f, firstFloorEmpty = false, multiFloorUnits = false };
             highBay.levels[2] = new LevelData { floorHeight = 12f, areaPer = 80, firstFloorMin = 3f, firstFloorMax = 12f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(highBay);
 
             // Low-density office.
@@ -466,12 +439,10 @@ namespace RealisticPopulationRevisited
             offLow.version = (int)DataVersion.one;
             offLow.service = ItemClass.Service.Office;
             offLow.subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech };
-
             offLow.levels = new LevelData[3];
             offLow.levels[0] = new LevelData { floorHeight = 4f, areaPer = 34, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
             offLow.levels[1] = new LevelData { floorHeight = 4f, areaPer = 36, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
             offLow.levels[2] = new LevelData { floorHeight = 4f, areaPer = 38, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(offLow);
 
             // High-density office.
@@ -483,12 +454,10 @@ namespace RealisticPopulationRevisited
             offHigh.version = (int)DataVersion.one;
             offHigh.service = ItemClass.Service.Office;
             offHigh.subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech };
-
             offHigh.levels = new LevelData[3];
             offHigh.levels[0] = new LevelData { floorHeight = 4f, areaPer = 25, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = true, multiFloorUnits = false };
             offHigh.levels[1] = new LevelData { floorHeight = 4f, areaPer = 25, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = true, multiFloorUnits = false };
             offHigh.levels[2] = new LevelData { floorHeight = 4f, areaPer = 25, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = true, multiFloorUnits = false };
-
             calcPacks.Add(offHigh);
 
             // Initialise building setting dictionary.
@@ -507,8 +476,49 @@ namespace RealisticPopulationRevisited
             suburbanSchool.levels = new LevelData[2];
             suburbanSchool.levels[0] = new LevelData { floorHeight = 4f, areaPer = 8, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
             suburbanSchool.levels[1] = new LevelData { floorHeight = 4f, areaPer = 8, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
-
             calcPacks.Add(suburbanSchool);
+
+            // Suburban schools.
+            // Figures are from MN Department of Education Guide for Planning School Construction Projects (lowest density).
+            VolumetricPack mnLow = new VolumetricPack();
+            mnLow.name = "schoolmnlow";
+            mnLow.displayName = Translations.Translate("RPR_PCK_SML_NAM");
+            mnLow.description = Translations.Translate("RPR_PCK_SML_DES");
+            mnLow.version = (int)DataVersion.one;
+            mnLow.service = ItemClass.Service.Education;
+            mnLow.subServices = null;
+            mnLow.levels = new LevelData[2];
+            mnLow.levels[0] = new LevelData { floorHeight = 4f, areaPer = 14, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+            mnLow.levels[1] = new LevelData { floorHeight = 4f, areaPer = 30, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+            calcPacks.Add(mnLow);
+
+            // Suburban schools.
+            // Figures are from MN Department of Education Guide for Planning School Construction Projects (middle density).
+            VolumetricPack mnMed = new VolumetricPack();
+            mnMed.name = "schoolmnmed";
+            mnMed.displayName = Translations.Translate("RPR_PCK_SMM_NAM");
+            mnMed.description = Translations.Translate("RPR_PCK_SMM_DES");
+            mnMed.version = (int)DataVersion.one;
+            mnMed.service = ItemClass.Service.Education;
+            mnMed.subServices = null;
+            mnMed.levels = new LevelData[2];
+            mnMed.levels[0] = new LevelData { floorHeight = 4f, areaPer = 12, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+            mnMed.levels[1] = new LevelData { floorHeight = 4f, areaPer = 23, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+            calcPacks.Add(mnMed);
+
+            // Suburban schools.
+            // Figures are from MN Department of Education Guide for Planning School Construction Projects (highest density).
+            VolumetricPack mnHigh = new VolumetricPack();
+            mnHigh.name = "schoolmnhigh";
+            mnHigh.displayName = Translations.Translate("RPR_PCK_SMH_NAM");
+            mnHigh.description = Translations.Translate("RPR_PCK_SMH_DES");
+            mnHigh.version = (int)DataVersion.one;
+            mnHigh.service = ItemClass.Service.Education;
+            mnHigh.subServices = null;
+            mnHigh.levels = new LevelData[2];
+            mnHigh.levels[0] = new LevelData { floorHeight = 4f, areaPer = 9, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+            mnHigh.levels[1] = new LevelData { floorHeight = 4f, areaPer = 14, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+            calcPacks.Add(mnHigh);
 
         }
 

@@ -40,6 +40,12 @@
     <Translation ID="RPR_PCK_OHD_DES" String="Large office buildings." />
     <Translation ID="RPR_PCK_SSB_NAM" String="Surburban school" />
     <Translation ID="RPR_PCK_SSB_DES" String="Suburban schools" />
+    <Translation ID="RPR_PCK_SML_NAM" String="MN low" />
+    <Translation ID="RPR_PCK_SML_DES" String="Minnesota Dept of Education guide - lowest density" />
+    <Translation ID="RPR_PCK_SMM_NAM" String="MN medium" />
+    <Translation ID="RPR_PCK_SMM_DES" String="Minnesota Dept of Education guide - medium density" />
+    <Translation ID="RPR_PCK_SMH_NAM" String="MN high" />
+    <Translation ID="RPR_PCK_SMH_DES" String="Minnesota Dept of Education guide - highest density" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
     <Translation ID="RPR_CAT_RHI" String="Residential high" />
@@ -91,6 +97,7 @@
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
     <Translation ID="RPR_CAL_VOL_HOU" String="homes" />
     <Translation ID="RPR_CAL_VOL_WOR" String="workers" />
+    <Translation ID="RPR_CAL_VOL_STU" String="students" />
     <Translation ID="RPR_CAL_VOL_ARA" String="area" />
     <Translation ID="RPR_CAL_HOM_CALC" String="Calculated homes:" />
     <Translation ID="RPR_CAL_HOM_CUST" String="Customised homes:" />
