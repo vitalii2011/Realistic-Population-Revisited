@@ -103,8 +103,6 @@ namespace RealisticPopulationRevisited
                         // Homes or jobs?
                         if (currentSelection.GetService() == ItemClass.Service.Residential)
                         {
-                            Debugging.Message("adding custom household count of " + homesJobs + " for " + currentSelection.name);
-
                             // Residential building.
                             ExternalCalls.SetResidential(currentSelection, homesJobs);
 
@@ -114,8 +112,6 @@ namespace RealisticPopulationRevisited
                         }
                         else
                         {
-                            Debugging.Message("adding custom workplace count of " + homesJobs + " for " + currentSelection.name);
-
                             // Employment building.
                             ExternalCalls.SetWorker(currentSelection, homesJobs);
                         }

@@ -20,6 +20,7 @@ namespace RealisticPopulationRevisited
         Leisure,
         Organic,
         Selfsufficient,
+        Education,
         numCategories
     }
 
@@ -41,7 +42,8 @@ namespace RealisticPopulationRevisited
             ItemClass.Service.Commercial,
             ItemClass.Service.Commercial,
             ItemClass.Service.Commercial,
-            ItemClass.Service.Residential
+            ItemClass.Service.Residential,
+            ItemClass.Service.Education
         };
 
         // ItemClass ServiceClass services for each toggle.
@@ -56,12 +58,13 @@ namespace RealisticPopulationRevisited
             ItemClass.SubService.CommercialTourist,
             ItemClass.SubService.CommercialLeisure,
             ItemClass.SubService.CommercialEco,
-            ItemClass.SubService.ResidentialLowEco
+            ItemClass.SubService.ResidentialLowEco,
+            ItemClass.SubService.None
         };
 
 
         // Atlas that each icon sprite comes from.
-        public static readonly string[] atlases = { "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails" };
+        public static readonly string[] atlases = { "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Thumbnails", "Ingame" };
 
         // Icon sprite enabled names.
         public static readonly string[] spriteNames =
@@ -75,7 +78,8 @@ namespace RealisticPopulationRevisited
             "DistrictSpecializationTourist",
             "DistrictSpecializationLeisure",
             "DistrictSpecializationOrganic",
-            "DistrictSpecializationSelfsufficient"
+            "DistrictSpecializationSelfsufficient",
+            "ToolbarIconEducation"
         };
 
         // Icon sprite disnabled names.
@@ -90,7 +94,8 @@ namespace RealisticPopulationRevisited
             "IconPolicyTourist",
             "IconPolicyLeisure",
             "IconPolicyOrganic",
-            "IconPolicySelfsufficient"
+            "IconPolicySelfsufficient",
+            "ToolbarIconEducationDisabled"
         };
 
         // Icon sprite tooltips.
@@ -105,7 +110,8 @@ namespace RealisticPopulationRevisited
             "RPR_CAT_TOU",
             "RPR_CAT_LEI",
             "RPR_CAT_ORG",
-            "RPR_CAT_SSH"
+            "RPR_CAT_SSH",
+            "RPR_CAT_EDU"
         };
     }
 
@@ -165,7 +171,7 @@ namespace RealisticPopulationRevisited
             // 'All categories' button.
             allCategories = UIUtils.CreateButton(this, 120);
             allCategories.text = Translations.Translate("RPR_CAT_ALL");
-            allCategories.relativePosition = new Vector3(405, 5);
+            allCategories.relativePosition = new Vector3(445, 5);
 
             // All categories event handler.
             allCategories.eventClick += (c, p) =>

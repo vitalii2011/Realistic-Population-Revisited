@@ -277,7 +277,6 @@ namespace RealisticPopulationRevisited
             }
             else
             {
-                // TODO
                 // Hide message text by default.
                 messageLabel.Hide();
             }

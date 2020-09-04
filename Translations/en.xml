@@ -38,6 +38,8 @@
     <Translation ID="RPR_PCK_OLD_DES" String="Smaller office buildings." />
     <Translation ID="RPR_PCK_OHD_NAM" String="Large offices" />
     <Translation ID="RPR_PCK_OHD_DES" String="Large office buildings." />
+    <Translation ID="RPR_PCK_SSB_NAM" String="Surburban school" />
+    <Translation ID="RPR_PCK_SSB_DES" String="Suburban schools" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
     <Translation ID="RPR_CAT_RHI" String="Residential high" />
@@ -66,6 +68,7 @@
     <Translation ID="RPR_CAT_SSH" String="Self-sufficient homes" />
     <Translation ID="RPR_CAT_ERL" String="Eco residential low" />
     <Translation ID="RPR_CAT_ERH" String="Eco residential high" />
+    <Translation ID="RPR_CAT_EDU" String="Education" />
     <Translation ID="RPR_FIL_NAME" String="Name:" />
     <Translation ID="RPR_CUS_HAS" String="Has custom settings" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />

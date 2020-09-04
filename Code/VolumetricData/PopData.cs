@@ -16,14 +16,6 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Returns whether or not legacy calculations are in force for the given prefab.
-        /// </summary>
-        /// <param name="buildingPrefab">Building prefab record</param>
-        /// <returns>True if legacy calculations are in force, false otherwise</returns>
-        //internal static bool UseLegacy(BuildingInfo buildingPrefab) => ActivePack(buildingPrefab).name.Equals("legacy");
-        //TODO
-
-        /// <summary>
         /// Returns the population of the given building prefab and level.
         /// </summary>
         /// <param name="buildingPrefab">Building prefab record</param>
@@ -501,6 +493,23 @@ namespace RealisticPopulationRevisited
 
             // Initialise building setting dictionary.
             buildingDict = new Dictionary<string, CalcPack>();
+
+            // Suburban schools.
+            // Level 1 is elementary, level 2 is high school.
+            // Figures are from NSW Department of Education 2013 targets.
+            VolumetricPack suburbanSchool = new VolumetricPack();
+            suburbanSchool.name = "schoolsub";
+            suburbanSchool.displayName = Translations.Translate("RPR_PCK_SSB_NAM");
+            suburbanSchool.description = Translations.Translate("RPR_PCK_SSB_DES");
+            suburbanSchool.version = (int)DataVersion.one;
+            suburbanSchool.service = ItemClass.Service.Education;
+            suburbanSchool.subServices = null;
+            suburbanSchool.levels = new LevelData[2];
+            suburbanSchool.levels[0] = new LevelData { floorHeight = 4f, areaPer = 8, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+            suburbanSchool.levels[1] = new LevelData { floorHeight = 4f, areaPer = 8, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
+
+            calcPacks.Add(suburbanSchool);
+
         }
 
 
@@ -576,6 +585,9 @@ namespace RealisticPopulationRevisited
                 case ItemClass.Service.Office:
                     defaultName = "offlow";
                     break;
+                case ItemClass.Service.Education:
+                    defaultName = "schoolsub";
+                    break;
                 default:
                     // Default is commercial.
                     switch (subService)
@@ -616,30 +628,22 @@ namespace RealisticPopulationRevisited
             ItemClass.Service service = prefab.GetService();
             ItemClass.SubService subService = prefab.GetSubService();
 
-            // TODO
-            // Add legacy selection.
-            /*list.Add(new LegacyPack {
-                name = "legacy",
-                version = (int)DataVersion.legacy,
-                displayName = "Old calculations",
-                description = "Use older calculation style (as used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod"
-            });*/
-
             // Iterate through each floor pack and see if it applies.
             foreach (CalcPack pack in calcPacks)
             {
                 // Check for matching service.
                 if (pack.service == service)
                 {
-                    // Service matches; 
+                    // Service matches; check subservices.
+                    // If no subservices are listed, then this applies to all subservice types for this service.
+                    if (pack.subServices == null)
                     {
-                        // If no subservices are listed, then this applies to all subservice types for this service.
-                        if (pack.subServices == null)
-                        {
-                            list.Add(pack);
-                        }
-                        // Otherwise, iterate through subservices to see if there's a match.
-                        else foreach (ItemClass.SubService packSubService in pack.subServices)
+                        list.Add(pack);
+                    }
+                    // Otherwise, iterate through subservices to see if there's a match.
+                    else
+                    {
+                        foreach (ItemClass.SubService packSubService in pack.subServices)
                         {
                             if (packSubService == subService)
                             {

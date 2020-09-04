@@ -326,6 +326,9 @@ namespace RealisticPopulationRevisited
                 else if ((subService == ItemClass.SubService.ResidentialLowEco || subService == ItemClass.SubService.ResidentialHighEco) && filterBar.categoryToggles[(int)BuildingCategories.Selfsufficient].isChecked)
                 {
                 }
+                else if (service == ItemClass.Service.Education && filterBar.categoryToggles[(int)BuildingCategories.Education].isChecked && item.GetClassLevel() < ItemClass.Level.Level3)
+                {
+                }
                 else
                 {
                     // If we've gotten here, then we've matched no categories; move on to next item.

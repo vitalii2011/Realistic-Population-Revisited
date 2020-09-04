@@ -58,48 +58,53 @@ namespace RealisticPopulationRevisited
 
             // Preset description.
             packDescription = this.AddUIComponent<UILabel>();
-            //packDescription.relativePosition = new Vector3(packMenu.parent.relativePosition.x + packMenu.relativePosition.x, packMenu.parent.relativePosition.y + packMenu.parent.height + 5f);
             packDescription.relativePosition = new Vector3(legacyPanel.relativePosition.x + 10f, packMenu.parent.relativePosition.y + packMenu.parent.height + 15f);
             packDescription.autoSize = false;
             packDescription.autoHeight = true;
             packDescription.wordWrap = true;
             packDescription.textScale = 0.7f;
-            //packDescription.width = this.width - packDescription.relativePosition.x - 5f;
             packDescription.width = legacyPanel.width - 20f;
 
             // Dropdown event handler.
-            packMenu.eventSelectedIndexChanged += (component, index) =>
+            packMenu.eventSelectedIndexChanged += (component, index) => UpdatePackSelection(index);
+        }
+
+
+        /// <summary>
+        /// Updates the selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        public void UpdatePackSelection(int index)
+        {
+            // Update selected pack.
+            currentPack = availablePacks[index];
+
+            // Update description.
+            packDescription.text = currentPack.description;
+
+            // Update building setting and save.
+            PopData.UpdateBuildingPack(currentBuilding, currentPack);
+            ConfigUtils.SaveSettings();
+
+            // Check if we're using legacy or volumetric data.
+            if (currentPack is VolumetricPack)
             {
-                // Update selected pack.
-                currentPack = availablePacks[index];
+                // Volumetric pack.
+                // Update panel with new calculations.
+                LevelData thisLevel = GetFloorData();
+                volumetricPanel.UpdateText(thisLevel);
+                volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel);
 
-                // Update description.
-                packDescription.text = currentPack.description;
-
-                // Update building setting and save.
-                PopData.UpdateBuildingPack(currentBuilding, currentPack);
-                ConfigUtils.SaveSettings();
-
-                // Check if we're using legacy or volumetric data.
-                if (currentPack is VolumetricPack)
-                {
-                    // Volumetric pack.
-                    // Update panel with new calculations.
-                    LevelData thisLevel = GetFloorData();
-                    volumetricPanel.UpdateText(thisLevel);
-                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel);
-
-                    // Set visibility.
-                    legacyPanel.Hide();
-                    volumetricPanel.Show();
-                }
-                else
-                {
-                    // Set visibility.
-                    volumetricPanel.Hide();
-                    legacyPanel.Show();
-                }
-            };
+                // Set visibility.
+                legacyPanel.Hide();
+                volumetricPanel.Show();
+            }
+            else
+            {
+                // Set visibility.
+                volumetricPanel.Hide();
+                legacyPanel.Show();
+            }
         }
 
 
@@ -145,11 +150,17 @@ namespace RealisticPopulationRevisited
                     if (availablePacks[i].Equals(currentPack))
                     {
                         packMenu.selectedIndex = i;
+
+                        // Force pack selection update.
+                        UpdatePackSelection(i);
                     }
                 }
 
-                // Update legacy panel (volumetric panel is updated by menu selection change above).
-                legacyPanel.SelectionChanged(building);
+                // Update legacy panel for private building AIs (volumetric panel is updated by menu selection change above).
+                if (building.GetAI() is PrivateBuildingAI)
+                {
+                    legacyPanel.SelectionChanged(building);
+                }
             }
         }
 

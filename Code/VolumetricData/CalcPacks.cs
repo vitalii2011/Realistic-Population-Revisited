@@ -82,7 +82,6 @@
         /// <returns>Population</returns>
         public override int Population(BuildingInfo buildingPrefab, int level)// => PopData.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level]);
         {
-            Debugging.Message("instance calculating population for prefab " + buildingPrefab.name + " using pack " + name);
             return PopData.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level]);
         }
 
