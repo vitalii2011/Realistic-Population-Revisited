@@ -131,6 +131,8 @@
     <Translation ID="RPR_OPT_RTD" String="Reset to defaults" />
     <Translation ID="RPR_OPT_RTS" String="Revert to saved" />
     <Translation ID="RPR_OPT_SAA" String="Save and apply" />
+    <Translation ID="RPR_OPT_EDU" String="Schools" />
+    <Translation ID="RPR_OPT_EDU_ENB" String="Enable realistic school capacities" />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
   </Translations>

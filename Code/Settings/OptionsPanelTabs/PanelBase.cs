@@ -155,6 +155,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="panel">UI panel</param>
         /// <param name="xPos">Reference X position</param>
+        /// <param name="width">Width of reference item (for centering)</param>
         /// <param name="text">Label text</param>
         /// <param name="scale">Label text size (default 0.8)</param>
         protected void ColumnLabel(UIPanel panel, float xPos, float width, string text, float scale = 0.8f)
@@ -181,6 +182,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="panel">UI panel</param>
         /// <param name="xPos">Reference X position</param>
+        /// <param name="width">Width of reference item (for centering)</param>
         /// <param name="text">Tooltip text</param>
         /// <param name="icon">Icon name</param>
         protected void ColumnIcon(UIPanel panel, float xPos, float width, string text, string icon)
@@ -204,7 +206,7 @@ namespace RealisticPopulationRevisited
         
         
         /// <summary>
-         /// Adds a column header icon label.
+         /// Adds a row header icon label.
          /// </summary>
          /// <param name="panel">UI panel</param>
          /// <param name="xPos">Reference X position</param>

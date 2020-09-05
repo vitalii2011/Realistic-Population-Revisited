@@ -1,6 +1,6 @@
-- Major overhaul: introduce new volumetric population calculations
-- Add selectable configuration presets for each service type
-- Add elementary and high school student number calculation preview
+- Major overhaul: new volumetric population calculations
+- Major new feature: selectable configuration presets for each service type
+- Major new feature: optional realistic student capacity calculations for elementary and high schools
 - Add custom mouse button keybinding option
 
 

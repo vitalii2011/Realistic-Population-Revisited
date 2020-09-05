@@ -103,6 +103,7 @@ namespace RealisticPopulationRevisited
                 new IndustrialPanel(tabStrip, 2);
                 new CommercialPanel(tabStrip, 3);
                 new OfficePanel(tabStrip, 4);
+                new EducationPanel(tabStrip, 5);
             }
             catch (Exception e)
             {

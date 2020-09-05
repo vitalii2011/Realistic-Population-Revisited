@@ -111,7 +111,10 @@
     <Content Include="XML_Files\WG_OfficeAndLowResidentialChange.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\AI_Files\AI_School.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
+    <Compile Include="Code\Settings\ModSettings.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\EducationPanel.cs" />
     <Compile Include="Code\VolumetricData\BuildingXML.cs" />
     <Compile Include="Code\VolumetricData\CalcPacks.cs" />
     <Compile Include="Code\VolumetricData\EmploymentData.cs" />

@@ -184,9 +184,26 @@ namespace RealisticPopulationRevisited
         /// <param name="margin">Margin between components (default 8)</param>
         /// <param name="verticalOffset">Vertical offset from first to second component (default 0)</param>
         /// <returns>Offset position (to right of original)</returns>
-        public static Vector3 PositionRightOf(UIComponent uIComponent, float margin = 8f, float verticalOffset = 0f)
+        internal static Vector3 PositionRightOf(UIComponent uIComponent, float margin = 8f, float verticalOffset = 0f)
         {
             return new Vector3(uIComponent.relativePosition.x + uIComponent.width + margin, uIComponent.relativePosition.y + verticalOffset);
+        }
+
+
+        /// <summary>
+        /// Creates a plain checkbox using the game's option panel checkbox template.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="text">Descriptive label text</param>
+        /// <returns></returns>
+        internal static UICheckBox AddPlainCheckBox(UIComponent parent, string text)
+        {
+            UICheckBox checkBox = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsCheckBoxTemplate")) as UICheckBox;
+
+            // Set text.
+            checkBox.text = text;
+
+            return checkBox;
         }
     }
 }
