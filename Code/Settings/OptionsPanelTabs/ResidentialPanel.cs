@@ -42,7 +42,7 @@ namespace RealisticPopulationRevisited
             // Initialise textfield array.
             SetupArrays(NumSubServices);
 
-            for (int i = 0; i < NumSubServices; i ++)
+            for (int i = 0; i < NumSubServices; ++i)
             {
                 areaFields[i] = new UITextField[NumLevels];
                 floorFields[i] = new UITextField[NumLevels];

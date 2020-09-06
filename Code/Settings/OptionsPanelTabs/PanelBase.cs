@@ -243,7 +243,7 @@ namespace RealisticPopulationRevisited
         protected void AddSubService(UIPanel panel, bool addLevels, int subService, bool isExtract = false, string label = null)
         {
             // Add a row for each level within this subservice.
-            for (int i = 0; i < areaFields[subService].Length; i++)
+            for (int i = 0; i < areaFields[subService].Length; ++i)
             {
                 // Row label.
                 RowLabel(panel, currentY, label ?? (isExtract ? Translations.Translate( i == 0 ? "RPR_CAT_EXT" : "RPR_CAT_PRO") : Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString()));
@@ -296,7 +296,7 @@ namespace RealisticPopulationRevisited
         protected void PopulateSubService(int[][] dataArray, int subService)
         {
             // Iterate though each level, populating each row as we go.
-            for (int i = 0; i < areaFields[subService].Length; i++)
+            for (int i = 0; i < areaFields[subService].Length; ++i)
             {
                 areaFields[subService][i].text = dataArray[i][DataStore.PEOPLE].ToString();
                 floorFields[subService][i].text = dataArray[i][DataStore.LEVEL_HEIGHT].ToString();
@@ -323,7 +323,7 @@ namespace RealisticPopulationRevisited
         protected void ApplySubService(int[][] dataArray, int subService)
         {
             // Iterate though each level, populating each row as we go.
-            for (int i = 0; i < areaFields[subService].Length; i++)
+            for (int i = 0; i < areaFields[subService].Length; ++i)
             {
                 ParseInt(ref dataArray[i][DataStore.PEOPLE], areaFields[subService][i].text);
                 ParseInt(ref dataArray[i][DataStore.LEVEL_HEIGHT], floorFields[subService][i].text);

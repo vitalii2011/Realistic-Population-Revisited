@@ -104,6 +104,14 @@ namespace RealisticPopulationRevisited
                 new CommercialPanel(tabStrip, 3);
                 new OfficePanel(tabStrip, 4);
                 new EducationPanel(tabStrip, 5);
+                new CrimePanel(tabStrip, 6);
+
+                // Change tab size and text scale (to fit them all in...).
+                foreach (UIButton button in tabStrip.components)
+                {
+                    button.textScale = 0.8f;
+                    button.width = 100f;
+                }
             }
             catch (Exception e)
             {

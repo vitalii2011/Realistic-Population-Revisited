@@ -5,7 +5,7 @@
     /// </summary>
     internal static class ModSettings
     {
-        // Panel behaviour settings.
         internal static bool enableSchools = false;
+        internal static float crimeMultiplier = 100f;
     }
 }

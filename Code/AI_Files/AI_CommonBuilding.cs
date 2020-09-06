@@ -43,6 +43,9 @@ namespace RealisticPopulationRevisited
                 // Percentage reduction
                 crimeAccumulation = (crimeAccumulation * (number - percentage)) / number;
 
+                // Crime multiplier application.
+                crimeAccumulation = (int)((crimeAccumulation * ModSettings.crimeMultiplier) / 100f);
+
                 // ----- End of changes -----
 
                 if (Singleton<SimulationManager>.instance.m_isNightTime)
