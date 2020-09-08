@@ -8,7 +8,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Base class of the options panels.
     /// </summary>
-    internal class PanelBase
+    internal class ConsumptionPanelBase
     {
         // UI layout constants.
         protected const float Margin = 5f;

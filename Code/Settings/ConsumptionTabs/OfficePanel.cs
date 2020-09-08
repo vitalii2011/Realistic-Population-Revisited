@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting commercial calculation options.
     /// </summary>
-    internal class OfficePanel : PanelBase
+    internal class OfficePanel : ConsumptionPanelBase
     {
         // Array reference constants.
         private const int Office = 0;

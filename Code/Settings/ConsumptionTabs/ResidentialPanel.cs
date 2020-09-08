@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting residential calculation options.
     /// </summary>
-    internal class ResidentialPanel : PanelBase
+    internal class ResidentialPanel : ConsumptionPanelBase
     {
         // Array reference constants.
         private const int LowRes = 0;

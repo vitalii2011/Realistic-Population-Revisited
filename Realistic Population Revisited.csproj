@@ -135,11 +135,11 @@
     <Compile Include="Code\GUI\UIUtils.cs" />
     <Compile Include="Code\GUI\UIVolumetricPanel.cs" />
     <Compile Include="Code\Settings\OptionsKeymapping.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\CommercialPanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\IndustrialPanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\OfficePanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\PanelBase.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\ResidentialPanel.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\CommercialPanel.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\IndustrialPanel.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\OfficePanel.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\ConsumptionPanelBase.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\ResidentialPanel.cs" />
     <Compile Include="Code\Settings\PanelUtils.cs" />
     <Compile Include="Code\Settings\OptionsPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\ModOptionsPanel.cs" />

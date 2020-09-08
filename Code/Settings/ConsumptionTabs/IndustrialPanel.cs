@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting industrial calculation options.
     /// </summary>
-    internal class IndustrialPanel : PanelBase
+    internal class IndustrialPanel : ConsumptionPanelBase
     {
         // Array reference constants.
         private const int Generic = 0;
