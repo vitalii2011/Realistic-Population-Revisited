@@ -2,6 +2,7 @@
 - Major new feature: selectable configuration presets for each service type
 - Major new feature: optional realistic student capacity calculations for elementary and high schools
 - New feature: adjust crime rate
+- Rearrange options panel layout and add sub-tabs as required
 - Add custom mouse button keybinding option
 
 

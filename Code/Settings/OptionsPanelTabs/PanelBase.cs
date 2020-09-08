@@ -129,7 +129,7 @@ namespace RealisticPopulationRevisited
         protected void AddButtons(UIPanel panel)
         {
             // Add extra space.
-            currentY += RowHeight;
+            currentY += Margin;
 
             // Reset button.
             UIButton resetButton = UIUtils.CreateButton(panel, 150);
@@ -206,17 +206,16 @@ namespace RealisticPopulationRevisited
         
         
         /// <summary>
-         /// Adds a row header icon label.
+         /// Adds a row header icon label at the current Y position.
          /// </summary>
          /// <param name="panel">UI panel</param>
-         /// <param name="xPos">Reference X position</param>
          /// <param name="text">Tooltip text</param>
          /// <param name="icon">Icon name</param>
-        protected void RowHeaderIcon(UIPanel panel, float yPos, string text, string icon, string atlas)
+        protected void RowHeaderIcon(UIPanel panel, string text, string icon, string atlas)
         {
             // Actual icon.
             UISprite thumbSprite = panel.AddUIComponent<UISprite>();
-            thumbSprite.relativePosition = new Vector3(Margin, yPos - 2.5f);
+            thumbSprite.relativePosition = new Vector3(Margin, currentY - 2.5f);
             thumbSprite.width = 35f;
             thumbSprite.height = 35f;
             thumbSprite.atlas = UIUtils.GetAtlas(atlas);
@@ -226,9 +225,10 @@ namespace RealisticPopulationRevisited
             UILabel lineLabel = panel.AddUIComponent<UILabel>();
             lineLabel.textScale = 1.0f;
             lineLabel.text = text;
-            lineLabel.relativePosition = new Vector3(LeftTitle, yPos + 7);
+            lineLabel.relativePosition = new Vector3(LeftTitle, currentY + 7);
             lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
 
+            // Increment our current height.
             currentY += 30f;
         }
 

@@ -57,13 +57,13 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            RowHeaderIcon(panel, currentY, Translations.Translate("RPR_CAT_RLO"), "ZoningResidentialLow", "Thumbnails");
+            RowHeaderIcon(panel, Translations.Translate("RPR_CAT_RLO"), "ZoningResidentialLow", "Thumbnails");
             AddSubService(panel, true, LowRes);
-            RowHeaderIcon(panel, currentY, Translations.Translate("RPR_CAT_RHI"), "ZoningResidentialHigh", "Thumbnails");
+            RowHeaderIcon(panel, Translations.Translate("RPR_CAT_RHI"), "ZoningResidentialHigh", "Thumbnails");
             AddSubService(panel, true, HighRes);
-            RowHeaderIcon(panel, currentY, Translations.Translate("RPR_CAT_ERL"), "IconPolicySelfsufficient", "Ingame");
+            RowHeaderIcon(panel, Translations.Translate("RPR_CAT_ERL"), "IconPolicySelfsufficient", "Ingame");
             AddSubService(panel, true, LowEcoRes);
-            RowHeaderIcon(panel, currentY, Translations.Translate("RPR_CAT_ERH"), "IconPolicySelfsufficient", "Ingame");
+            RowHeaderIcon(panel, Translations.Translate("RPR_CAT_ERH"), "IconPolicySelfsufficient", "Ingame");
             AddSubService(panel, true, HighEcoRes);
 
             // Populate initial values.
