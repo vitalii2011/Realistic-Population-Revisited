@@ -8,11 +8,17 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal static class PopData
     {
+        // Initialised status flag.
+        internal static bool ready = false;
+
         // List of data definition packs.
         internal static List<CalcPack> calcPacks;
 
         // List of building settings.
         internal static Dictionary<string, CalcPack> buildingDict;
+
+        // List of (sub)service default settings.
+        internal static Dictionary<ItemClass.Service, Dictionary<ItemClass.SubService, CalcPack>> serviceDict;
 
 
         /// <summary>
@@ -52,7 +58,7 @@ namespace RealisticPopulationRevisited
             else
             {
                 // Use default selection.
-                return DefaultPack(building);
+                return CurrentDefaultPack(building);
             }
         }
 
@@ -115,6 +121,36 @@ namespace RealisticPopulationRevisited
             }
 
             return totalUnits;
+        }
+
+
+
+        /// <summary>
+        /// Adds/replaces service dictionary entry for the given service/subservice combination.
+        /// </summary>
+        /// <param name="service">Service</param>
+        /// <param name="subService">Sub-service</param>
+        /// <param name="calcPack">New default calculation pack to apply</param>
+        internal static void AddService(ItemClass.Service service, ItemClass.SubService subService, CalcPack calcPack)
+        {
+            // Check for existing key in our services dictionary for this service.
+            if (!serviceDict.ContainsKey(service))
+            {
+                // No existing entry - add one.
+                serviceDict.Add(service, new Dictionary<ItemClass.SubService, CalcPack>());
+            }
+
+            // Check for existing sub-service key.
+            if (PopData.serviceDict[service].ContainsKey(subService))
+            {
+                // Existing key found - update entry.
+                PopData.serviceDict[service][subService] = calcPack;
+            }
+            else
+            {
+                // No existing key found - add entry.
+                PopData.serviceDict[service].Add(subService, calcPack);
+            }
         }
 
 
@@ -460,9 +496,6 @@ namespace RealisticPopulationRevisited
             offHigh.levels[2] = new LevelData { floorHeight = 4f, areaPer = 25, firstFloorMin = 3f, firstFloorMax = 6f, firstFloorEmpty = true, multiFloorUnits = false };
             calcPacks.Add(offHigh);
 
-            // Initialise building setting dictionary.
-            buildingDict = new Dictionary<string, CalcPack>();
-
             // Suburban schools.
             // Level 1 is elementary, level 2 is high school.
             // Figures are from NSW Department of Education 2013 targets.
@@ -520,6 +553,12 @@ namespace RealisticPopulationRevisited
             mnHigh.levels[1] = new LevelData { floorHeight = 4f, areaPer = 14, firstFloorMin = 3f, firstFloorMax = 4f, firstFloorEmpty = false, multiFloorUnits = false };
             calcPacks.Add(mnHigh);
 
+            // Initialise building and service dictionaries.
+            serviceDict = new Dictionary<ItemClass.Service, Dictionary<ItemClass.SubService, CalcPack>>();
+            buildingDict = new Dictionary<string, CalcPack>();
+
+            // Set status flag.
+            ready = true;
         }
 
 
@@ -534,7 +573,7 @@ namespace RealisticPopulationRevisited
             string buildingName = building.name;
 
             // Check to see if this pack matches the default.
-            bool isDefault = pack == DefaultPack(building);
+            bool isDefault = pack == CurrentDefaultPack(building);
 
             // Check to see if this building already has an entry.
             if (buildingDict.ContainsKey(buildingName))
@@ -560,16 +599,46 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Returns the default calculation pack for the given prefab.
+        /// Returns the currently set default calculation pack for the given prefab's service/subservice.
         /// </summary>
         /// <param name="building">Building prefab</param>
         /// <returns>Default calculation data pack</returns>
-        internal static CalcPack DefaultPack(BuildingInfo building)
-        {
-            // Get service and subservice.
-            ItemClass.Service service = building.GetService();
-            ItemClass.SubService subService = building.GetSubService();
+        internal static CalcPack CurrentDefaultPack(BuildingInfo building) => CurrentDefaultPack(building.GetService(), building.GetSubService());
 
+
+
+        /// <summary>
+        /// Returns the currently set default calculation pack for the given service/subservice combination.
+        /// </summary>
+        /// <param name="service">Service</param>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Default calculation data pack</returns>
+        internal static CalcPack CurrentDefaultPack(ItemClass.Service service, ItemClass.SubService subService)
+        {
+            // See if we've got an entry for this service.
+            if (serviceDict.ContainsKey(service))
+            {
+                // We do; check for sub-service entry.
+                if (serviceDict[service].ContainsKey(subService))
+                {
+                    // Got an entry!  Return it.
+                    return serviceDict[service][subService];
+                }
+            }
+
+            // If we got here, we didn't get a match; return base default entry.
+            return BaseDefaultPack(service, subService);
+        }
+
+
+        /// <summary>
+        /// Returns the inbuilt default calculation pack for the given service/subservice combination.
+        /// </summary>
+        /// <param name="service">Service</param>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Default calculation data pack</returns>
+        internal static CalcPack BaseDefaultPack(ItemClass.Service service, ItemClass.SubService subService)
+        {
             string defaultName;
 
             // Manual breakdown.
@@ -629,14 +698,19 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="prefab">BuildingInfo prefab</param>
         /// <returns>Array of available calculation packs</returns>
-        internal static CalcPack[] GetPacks(BuildingInfo prefab)
+        internal static CalcPack[] GetPacks(BuildingInfo prefab) => GetPacks(prefab.GetService(), prefab.GetSubService());
+
+
+        /// <summary>
+        /// Returns a list of calculation packs available for the given service/subservice combination.
+        /// </summary>
+        /// <param name="service">Service</param>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Array of available calculation packs</returns>
+        internal static CalcPack[] GetPacks(ItemClass.Service service, ItemClass.SubService subService)
         {
             // Return list.
             List<CalcPack> list = new List<CalcPack>();
-
-            // Get service, subservice, and default name.
-            ItemClass.Service service = prefab.GetService();
-            ItemClass.SubService subService = prefab.GetSubService();
 
             // Iterate through each floor pack and see if it applies.
             foreach (CalcPack pack in calcPacks)

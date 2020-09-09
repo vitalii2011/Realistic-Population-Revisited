@@ -54,7 +54,7 @@ namespace RealisticPopulationRevisited
             legacyPanel.Hide();
 
             // Preset dropdown.
-            packMenu = CreateDropDown(this, Translations.Translate("RPR_PCK_NAM"), yPos: title.height);;
+            packMenu = PanelUtils.LabelledDropDown(this, Translations.Translate("RPR_PCK_NAM"), yPos: title.height);;
 
             // Preset description.
             packDescription = this.AddUIComponent<UILabel>();
@@ -132,7 +132,7 @@ namespace RealisticPopulationRevisited
 
                 // Get current and default packs for this item
                 CalcPack currentPack = PopData.ActivePack(building);
-                CalcPack defaultPack = PopData.DefaultPack(building);
+                CalcPack defaultPack = PopData.CurrentDefaultPack(building);
 
                 // Build preset menu.
                 packMenu.items = new string[availablePacks.Length];
@@ -162,83 +162,6 @@ namespace RealisticPopulationRevisited
                     legacyPanel.SelectionChanged(building);
                 }
             }
-        }
-
-
-        /// <summary>
-        /// Creates a dropdown menu.
-        /// </summary>
-        /// <param name="parent">Parent component</param>
-        /// <param name="text">Text label</param>
-        /// <param name="xPos">Relative x position (default 20)</param>
-        /// <param name="yPos">Relative y position (default 0)</param>
-        /// <returns></returns>
-        private UIDropDown CreateDropDown(UIComponent parent, string text, float xPos = 20f, float yPos = 0f)
-        {
-            // Constants.
-            const float Width = 200f;
-            const float Height = 25f;
-            const int ItemHeight = 20;
-
-            // Add container at specified position.
-            UIPanel container = parent.AddUIComponent<UIPanel>();
-            container.height = 25;
-            container.relativePosition = new Vector3(xPos, yPos);
-
-            // Add label.
-            UILabel label = container.AddUIComponent<UILabel>();
-            label.textScale = 0.8f;
-            label.text = text;
-            label.relativePosition = new Vector3(0f, 6f);
-
-            // Create dropdown menu.
-            UIDropDown dropDown = container.AddUIComponent<UIDropDown>();
-            dropDown.listBackground = "GenericPanelLight";
-            dropDown.itemHover = "ListItemHover";
-            dropDown.itemHighlight = "ListItemHighlight";
-            dropDown.normalBgSprite = "ButtonMenu";
-            dropDown.disabledBgSprite = "ButtonMenuDisabled";
-            dropDown.hoveredBgSprite = "ButtonMenuHovered";
-            dropDown.focusedBgSprite = "ButtonMenu";
-            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-            dropDown.popupColor = new Color32(45, 52, 61, 255);
-            dropDown.popupTextColor = new Color32(170, 170, 170, 255);
-            dropDown.zOrder = 1;
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
-            dropDown.textFieldPadding = new RectOffset(8, 0, 8, 0);
-            dropDown.itemPadding = new RectOffset(14, 0, 8, 0);
-
-            // Dropdown relative position - right of label.
-            dropDown.relativePosition = new Vector3(label.width + 10f, 0f);
-
-            // Dropdown size parameters.
-            dropDown.size = new Vector2(Width, Height);
-            dropDown.listWidth = (int)Width;
-            dropDown.listHeight = 500;
-            dropDown.itemHeight = ItemHeight;
-            dropDown.textScale = 0.7f;
-
-            // Create dropdown button.
-            UIButton button = dropDown.AddUIComponent<UIButton>();
-            dropDown.triggerButton = button;
-            button.size = dropDown.size;
-            button.text = "";
-            button.relativePosition = new Vector3(0f, 0f);
-            button.textVerticalAlignment = UIVerticalAlignment.Middle;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-            button.normalFgSprite = "IconDownArrow";
-            button.hoveredFgSprite = "IconDownArrowHovered";
-            button.pressedFgSprite = "IconDownArrowPressed";
-            button.focusedFgSprite = "IconDownArrowFocused";
-            button.disabledFgSprite = "IconDownArrowDisabled";
-            button.spritePadding = new RectOffset(3, 3, 3, 3);
-            button.foregroundSpriteMode = UIForegroundSpriteMode.Fill;
-            button.horizontalAlignment = UIHorizontalAlignment.Right;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
-            button.zOrder = 0;
-
-            return dropDown;
         }
     }
 }

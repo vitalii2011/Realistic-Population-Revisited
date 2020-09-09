@@ -4,12 +4,12 @@
 namespace RealisticPopulationRevisited
 {
     /// <summary>
-    /// Options panel for setting basic mod options.
+    /// Options panel for setting crime-related options.
     /// </summary>
     internal class CrimePanel
     {
         /// <summary>
-        /// Adds education options tab to tabstrip.
+        /// Adds crime options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>

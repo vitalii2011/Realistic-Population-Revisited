@@ -59,15 +59,15 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
             AddSubService(panel, true, Generic);
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
             AddSubService(panel, false, Farming, true);
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
             AddSubService(panel, false, Forestry, true);
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
             AddSubService(panel, false, Oil, true);
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
             AddSubService(panel, false, Ore, true);
 
             // Populate initial values.

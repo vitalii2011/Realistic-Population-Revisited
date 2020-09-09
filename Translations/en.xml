@@ -136,6 +136,7 @@
     <Translation ID="RPR_OPT_EDU_ENB" String="Enable realistic school capacities" />
     <Translation ID="RPR_OPT_CRI" String="Crime" />
     <Translation ID="RPR_OPT_CML" String="Crime multiplier (percentage)" />
+    <Translation ID="RPR_OPT_CAL" String="Calculations" />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
   </Translations>

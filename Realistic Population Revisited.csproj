@@ -116,8 +116,10 @@
     <Compile Include="Code\Settings\ModSettings.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\ConsumptionPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CrimePanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\EducationPanel.cs" />
-    <Compile Include="Code\VolumetricData\BuildingXML.cs" />
+    <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />
+    <Compile Include="Code\VolumetricData\ConfigurationXML.cs" />
     <Compile Include="Code\VolumetricData\CalcPacks.cs" />
     <Compile Include="Code\VolumetricData\EmploymentData.cs" />
     <Compile Include="Code\VolumetricData\PopData.cs" />

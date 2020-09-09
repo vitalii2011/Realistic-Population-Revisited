@@ -203,34 +203,6 @@ namespace RealisticPopulationRevisited
             thumbSprite.atlas = UIUtils.GetAtlas("Ingame");
             thumbSprite.spriteName = icon;
         }
-        
-        
-        /// <summary>
-         /// Adds a row header icon label at the current Y position.
-         /// </summary>
-         /// <param name="panel">UI panel</param>
-         /// <param name="text">Tooltip text</param>
-         /// <param name="icon">Icon name</param>
-        protected void RowHeaderIcon(UIPanel panel, string text, string icon, string atlas)
-        {
-            // Actual icon.
-            UISprite thumbSprite = panel.AddUIComponent<UISprite>();
-            thumbSprite.relativePosition = new Vector3(Margin, currentY - 2.5f);
-            thumbSprite.width = 35f;
-            thumbSprite.height = 35f;
-            thumbSprite.atlas = UIUtils.GetAtlas(atlas);
-            thumbSprite.spriteName = icon;
-
-            // Text label.
-            UILabel lineLabel = panel.AddUIComponent<UILabel>();
-            lineLabel.textScale = 1.0f;
-            lineLabel.text = text;
-            lineLabel.relativePosition = new Vector3(LeftTitle, currentY + 7);
-            lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
-
-            // Increment our current height.
-            currentY += 30f;
-        }
 
 
         /// <summary>

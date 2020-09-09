@@ -59,15 +59,15 @@ namespace RealisticPopulationRevisited
             AddHeadings(panel);
 
             // Create residential per-person area textfields and labels.
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[LowCom]), "ZoningCommercialLow", "Thumbnails");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[LowCom]), "ZoningCommercialLow", "Thumbnails");
             AddSubService(panel, true, LowCom);
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[HighCom]), "ZoningCommercialHigh", "Thumbnails");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[HighCom]), "ZoningCommercialHigh", "Thumbnails");
             AddSubService(panel, true, HighCom);
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[EcoCom]), "IconPolicyOrganic", "Ingame");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[EcoCom]), "IconPolicyOrganic", "Ingame");
             AddSubService(panel, false, EcoCom, label: Translations.Translate("RPR_CAT_ECO"));
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[Leisure]), "IconPolicyLeisure", "Ingame");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Leisure]), "IconPolicyLeisure", "Ingame");
             AddSubService(panel, false, Leisure, label: Translations.Translate(subServiceLables[Leisure]));
-            RowHeaderIcon(panel, Translations.Translate(subServiceLables[Tourist]), "IconPolicyTourist", "Ingame");
+            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Tourist]), "IconPolicyTourist", "Ingame");
             AddSubService(panel, false, Tourist, label: Translations.Translate(subServiceLables[Tourist]));
 
             // Populate initial values.

@@ -87,11 +87,16 @@ namespace RealisticPopulationRevisited
                 ModUtils.RICOReflection();
 
                 // Initialise volumetric datastores.
-                PopData.Setup();
                 EmploymentData.Setup();
 
-                // Load (volumetric) building settings file.
-                ConfigUtils.LoadSettings();
+                // Don't initialise PopData if we've already done it, but make sure we do it if we haven't already.
+                if (!PopData.ready)
+                {
+                    PopData.Setup();
+
+                    // Load (volumetric) building settings file.
+                    ConfigUtils.LoadSettings();
+                }
             }
         }
 

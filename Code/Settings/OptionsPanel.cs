@@ -103,8 +103,9 @@ namespace RealisticPopulationRevisited
                 // Add tabs and panels.
                 new ModOptionsPanel(tabStrip, 0);
                 new ConsumptionPanel(tabStrip, 1);
-                new EducationPanel(tabStrip, 2);
-                new CrimePanel(tabStrip, 3);
+                new CalculationsPanel(tabStrip, 2);
+                new EducationPanel(tabStrip, 3);
+                new CrimePanel(tabStrip, 4);
             }
             catch (Exception e)
             {
