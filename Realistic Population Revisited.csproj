@@ -117,6 +117,7 @@
     <Compile Include="Code\Settings\OptionsPanelTabs\ConsumptionPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CrimePanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\EditPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\EducationPanel.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationXML.cs" />

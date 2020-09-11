@@ -36,6 +36,37 @@ namespace RealisticPopulationRevisited
                         }
                         else
                         {
+                            // Deserialise calculation packs.
+                            foreach (CalcPackXML xmlPack in configFile.calcPacks)
+                            {
+                                // Convert to volumetric pack.
+                                VolumetricPack volPack = new VolumetricPack()
+                                {
+                                    name = xmlPack.name,
+                                    displayName = xmlPack.name,
+                                    service = xmlPack.service,
+                                    version = (int)DataVersion.customOne,
+                                    levels = new LevelData[xmlPack.serviceLevels.Count]
+                                };
+
+                                // Iterate through each level in the xml and add to our volumetric pack.
+                                foreach (ServiceLevelXML serviceLevel in xmlPack.serviceLevels)
+                                {
+                                    volPack.levels[serviceLevel.level] = new LevelData()
+                                    {
+                                        floorHeight = serviceLevel.floorHeight,
+                                        areaPer = serviceLevel.areaPer,
+                                        firstFloorMin = serviceLevel.firstMin,
+                                        firstFloorMax = serviceLevel.firstMax,
+                                        firstFloorEmpty = serviceLevel.firstEmpty,
+                                        multiFloorUnits = serviceLevel.multiLevel
+                                    };
+                                }
+
+                                // Add new pack to our dictionary.
+                                PopData.AddCalculationPack(volPack);
+                            }
+
                             // Deserialise service list into dictionary.
                             foreach (ServiceRecord serviceElement in configFile.services)
                             {
@@ -44,7 +75,7 @@ namespace RealisticPopulationRevisited
                                 if (calcPack?.name == null)
                                 {
                                     Debugging.Message("Couldn't find calculation pack " + serviceElement.pack + " for sub-service " + serviceElement.subService);
-                                    return;
+                                    continue;
                                 }
 
                                 // Add service to our dictionary.
@@ -58,7 +89,7 @@ namespace RealisticPopulationRevisited
                                 if (buildingElement.prefab.IsNullOrWhiteSpace() || buildingElement.pack.IsNullOrWhiteSpace())
                                 {
                                     Debugging.Message("Null element in configuration file");
-                                    return;
+                                    continue;
                                 }
 
                                 // Find target preset.
@@ -66,7 +97,7 @@ namespace RealisticPopulationRevisited
                                 if (calcPack?.name == null)
                                 {
                                     Debugging.Message("Couldn't find calculation pack " + buildingElement.pack + " for " + buildingElement.prefab);
-                                    return;
+                                    continue;
                                 }
 
                                 // Add building to our dictionary.
@@ -100,6 +131,49 @@ namespace RealisticPopulationRevisited
                 {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLConfigurationFile));
                     XMLConfigurationFile configFile = new XMLConfigurationFile();
+
+                    // Serialise custom packs.
+                    configFile.calcPacks = new List<CalcPackXML>();
+
+                    // Iterate through all calculation packs in our dictionary.
+                    foreach (CalcPack calcPack in PopData.calcPacks)
+                    {
+                        // Look for volumetric packs.
+                        if (calcPack is VolumetricPack volPack)
+                        {
+                            // Look for packs marked as custom.
+                            if (volPack.version == (int)DataVersion.customOne)
+                            {
+                                // Found one - serialise it.
+                                CalcPackXML xmlPack = new CalcPackXML()
+                                {
+                                    name = volPack.name,
+                                    service = volPack.service,
+                                    serviceLevels = new List<ServiceLevelXML>()
+                                };
+
+                                // Iterate through each level and add it to our serialisation.
+                                for (int i = 0; i < volPack.levels.Length; ++i)
+                                {
+                                    ServiceLevelXML xmlLevel = new ServiceLevelXML()
+                                    {
+                                        level = i,
+                                        floorHeight = volPack.levels[i].floorHeight,
+                                        areaPer = volPack.levels[i].areaPer,
+                                        firstMin = volPack.levels[i].firstFloorMin,
+                                        firstMax = volPack.levels[i].firstFloorMax,
+                                        firstEmpty = volPack.levels[i].firstFloorEmpty,
+                                        multiLevel = volPack.levels[i].multiFloorUnits
+                                    };
+
+                                    xmlPack.serviceLevels.Add(xmlLevel);
+                                }
+
+                                // Add to file.
+                                configFile.calcPacks.Add(xmlPack);
+                            }
+                        }
+                    }
 
                     // Serialise service dictionary.
                     configFile.services = new List<ServiceRecord>();

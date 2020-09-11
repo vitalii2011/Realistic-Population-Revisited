@@ -38,8 +38,8 @@ namespace RealisticPopulationRevisited
                 // Simple event hook to create/destroy GameObject based on appropriate visibility.
                 gameOptionsPanel.eventVisibilityChanged += (control, isVisible) =>
                 {
-                    // Create/destroy based on visible.
-                    if(isVisible)
+                    // Create/destroy based on whether or not we're now visible.
+                    if (isVisible)
                     {
                         Create();
                     }
@@ -104,8 +104,9 @@ namespace RealisticPopulationRevisited
                 new ModOptionsPanel(tabStrip, 0);
                 new ConsumptionPanel(tabStrip, 1);
                 new CalculationsPanel(tabStrip, 2);
-                new EducationPanel(tabStrip, 3);
-                new CrimePanel(tabStrip, 4);
+                new EditPanel(tabStrip, 3);
+                new EducationPanel(tabStrip, 4);
+                new CrimePanel(tabStrip, 5);
             }
             catch (Exception e)
             {

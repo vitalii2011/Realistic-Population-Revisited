@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 
 
 namespace RealisticPopulationRevisited
@@ -109,6 +108,10 @@ namespace RealisticPopulationRevisited
             "Ingame"
         };
 
+
+        // DropDown menus.
+        UIDropDown[] packMenus;
+
         // Available packs arrays.
         CalcPack[][] availablePacks;
 
@@ -137,74 +140,26 @@ namespace RealisticPopulationRevisited
                 ConfigUtils.LoadSettings();
             }
 
-            // Initialise array.
+            // Initialise arrays.
             availablePacks = new CalcPack[subServiceNames.Length][];
+            packMenus = new UIDropDown[subServiceNames.Length];
 
             for (int i = 0; i < subServiceNames.Length; ++i)
             {
                 // Preset dropdown.
-                UIDropDown packMenu = PanelUtils.AddDropDown(panel, 270f, currentY + 3f);
+                packMenus[i] = PanelUtils.AddDropDown(panel, 270f, currentY + 3f);
 
                 // Save current index in object user data.
-                packMenu.objectUserData = i;
-
-                // Get available packs for this building.
-                availablePacks[i] = PopData.GetPacks(services[i], subServices[i]);
-
-                // Get current and default packs for this item
-                CalcPack currentPack = PopData.CurrentDefaultPack(services[i], subServices[i]);
-                CalcPack defaultPack = PopData.BaseDefaultPack(services[i], subServices[i]);
-
-                // Build preset menu.
-                packMenu.items = new string[availablePacks[i].Length];
-
-                // Iterate through each item.
-                for (int j = 0; j < packMenu.items.Length; ++j)
-                {
-                    // Set menu item text.
-                    packMenu.items[j] = availablePacks[i][j].displayName;
-                    
-                    // Check for deefault name match.
-                    if (availablePacks[i][j].name.Equals(defaultPack.name))
-                    {
-                        // Match - add default postscript.
-                        packMenu.items[j] += Translations.Translate("RPR_PCK_DEF");
-                    }
-
-                    // Set menu selection to current pack if it matches.
-                    if (availablePacks[i][j].Equals(currentPack))
-                    {
-                        packMenu.selectedIndex = j;
-                    }
-                }
+                packMenus[i].objectUserData = i;
 
                 // Event handler.
-                packMenu.eventSelectedIndexChanged += (control, index) =>
+                packMenus[i].eventSelectedIndexChanged += (control, index) =>
                 {
                     // Retrieve stored index.
                     int serviceIndex = (int)control.objectUserData;
 
                     // Update service dictionary.
                     PopData.AddService(services[serviceIndex], subServices[serviceIndex], availablePacks[serviceIndex][index]);
-
-                    /*// Check for existing key in our services dictionary for this service.
-                    if (!PopData.serviceDict.ContainsKey(services[serviceIndex]))
-                    {
-                        // No existing entry - add one.
-                        PopData.serviceDict.Add(services[serviceIndex], new Dictionary<ItemClass.SubService, CalcPack>());
-                    }
-
-                    // Check for existing sub-service key.
-                    if (PopData.serviceDict[services[serviceIndex]].ContainsKey(subServices[serviceIndex]))
-                    {
-                        // Existing key found - update entry.
-                        PopData.serviceDict[services[serviceIndex]][subServices[serviceIndex]] = availablePacks[serviceIndex][index];
-                    }
-                    else
-                    {
-                        // No existing key found - add entry.
-                        PopData.serviceDict[services[serviceIndex]].Add(subServices[serviceIndex], availablePacks[serviceIndex][index]);
-                    }*/
 
                     // Save settings.
                     ConfigUtils.SaveSettings();
@@ -215,6 +170,52 @@ namespace RealisticPopulationRevisited
 
                 // Extra space.
                 currentY += 5f;
+            }
+
+            // Populate menus.
+            UpdateMenus();
+        }
+
+
+        /// <summary>
+        /// Updates pack selection menu items.
+        /// </summary>
+        internal void UpdateMenus()
+        {
+            for (int i = 0; i < subServiceNames.Length; ++i)
+            {
+                // Save current index in object user data.
+                packMenus[i].objectUserData = i;
+
+                // Get available packs for this service/subservice combination.
+                availablePacks[i] = PopData.GetPacks(services[i], subServices[i]);
+
+                // Get current and default packs for this item
+                CalcPack currentPack = PopData.CurrentDefaultPack(services[i], subServices[i]);
+                CalcPack defaultPack = PopData.BaseDefaultPack(services[i], subServices[i]);
+
+                // Build preset menu.
+                packMenus[i].items = new string[availablePacks[i].Length];
+
+                // Iterate through each item.
+                for (int j = 0; j < packMenus[i].items.Length; ++j)
+                {
+                    // Set menu item text.
+                    packMenus[i].items[j] = availablePacks[i][j].displayName;
+
+                    // Check for deefault name match.
+                    if (availablePacks[i][j].name.Equals(defaultPack.name))
+                    {
+                        // Match - add default postscript.
+                        packMenus[i].items[j] += Translations.Translate("RPR_PCK_DEF");
+                    }
+
+                    // Set menu selection to current pack if it matches.
+                    if (availablePacks[i][j].Equals(currentPack))
+                    {
+                        packMenus[i].selectedIndex = j;
+                    }
+                }
             }
         }
     }

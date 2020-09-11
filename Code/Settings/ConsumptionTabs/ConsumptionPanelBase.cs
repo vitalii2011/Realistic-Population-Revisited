@@ -95,8 +95,8 @@ namespace RealisticPopulationRevisited
             wealthLabel = Translations.Translate("RPR_OPT_WEA");
 
             // Headings.
-            ColumnLabel(panel, Column1, Column1Width, areaLabel, 1.0f);
-            ColumnLabel(panel, Column2, ColumnWidth, floorLabel, 1.0f);
+            PanelUtils.ColumnLabel(panel, Column1, TitleHeight, Column1Width + Margin, areaLabel, 1.0f);
+            PanelUtils.ColumnLabel(panel, Column2, TitleHeight, ColumnWidth + Margin, floorLabel, 1.0f);
             ColumnIcon(panel, Column4, ColumnWidth, powerLabel, "ToolbarIconElectricity");
             ColumnIcon(panel, Column5, ColumnWidth, waterLabel, "ToolbarIconWaterAndSewage");
             ColumnIcon(panel, Column6, ColumnWidth, sewageLabel, "ToolbarIconWaterAndSewageDisabled");
@@ -106,10 +106,10 @@ namespace RealisticPopulationRevisited
             // Bonus floors.
             if (notResidential)
             {
-                ColumnLabel(panel, Column3, ColumnWidth, extraFloorLabel, 0.8f);
+                PanelUtils.ColumnLabel(panel, Column3, TitleHeight, ColumnWidth + Margin, extraFloorLabel, 0.8f);
             }
 
-            // Consumption heading
+            // Consumption heading.
             UILabel headingLabel = panel.AddUIComponent<UILabel>();
             headingLabel.autoSize = false;
             headingLabel.autoHeight = true;
@@ -147,33 +147,6 @@ namespace RealisticPopulationRevisited
             saveButton.text = Translations.Translate("RPR_OPT_SAA");
             saveButton.relativePosition = new Vector3((Margin * 3) + 300, currentY);
             saveButton.eventClicked += (component, clickEvent) => ApplyFields();
-        }
-
-
-        /// <summary>
-        /// Adds a column header text label.
-        /// </summary>
-        /// <param name="panel">UI panel</param>
-        /// <param name="xPos">Reference X position</param>
-        /// <param name="width">Width of reference item (for centering)</param>
-        /// <param name="text">Label text</param>
-        /// <param name="scale">Label text size (default 0.8)</param>
-        protected void ColumnLabel(UIPanel panel, float xPos, float width, string text, float scale = 0.8f)
-        {
-            // Basic setup.
-            UILabel columnLabel = panel.AddUIComponent<UILabel>();
-            columnLabel.textScale = scale;
-            columnLabel.verticalAlignment = UIVerticalAlignment.Middle;
-            columnLabel.textAlignment = UIHorizontalAlignment.Center;
-            columnLabel.autoSize = false;
-            columnLabel.autoHeight = true;
-            columnLabel.wordWrap = true;
-            columnLabel.width = width + Margin;
-
-            columnLabel.text = text;
-
-            // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
-            columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), TitleHeight - columnLabel.height);
         }
 
 
@@ -245,22 +218,6 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Attempts to parse a string for an integer value; if the parse fails, simply does nothing (leaving the original value intact).
-        /// </summary>
-        /// <param name="intVar">Integer variable to store result (left unchanged if parse fails)</param>
-        /// <param name="text">Text to parse</param>
-        protected void ParseInt(ref int intVar, string text)
-        {
-            int result;
-
-            if (int.TryParse(text, out result))
-            {
-                intVar = result;
-            }
-        }
-
-
-        /// <summary>
         /// Populates the text fields for a given subservice with information from the DataStore.
         /// </summary>
         /// <param name="dataArray">DataStore data array for the SubService</param>
@@ -297,18 +254,18 @@ namespace RealisticPopulationRevisited
             // Iterate though each level, populating each row as we go.
             for (int i = 0; i < areaFields[subService].Length; ++i)
             {
-                ParseInt(ref dataArray[i][DataStore.PEOPLE], areaFields[subService][i].text);
-                ParseInt(ref dataArray[i][DataStore.LEVEL_HEIGHT], floorFields[subService][i].text);
-                ParseInt(ref dataArray[i][DataStore.POWER], powerFields[subService][i].text);
-                ParseInt(ref dataArray[i][DataStore.WATER], waterFields[subService][i].text);
-                ParseInt(ref dataArray[i][DataStore.SEWAGE], sewageFields[subService][i].text);
-                ParseInt(ref dataArray[i][DataStore.GARBAGE], garbageFields[subService][i].text);
-                ParseInt(ref dataArray[i][DataStore.INCOME], incomeFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.PEOPLE], areaFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.LEVEL_HEIGHT], floorFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.POWER], powerFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.WATER], waterFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.SEWAGE], sewageFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.GARBAGE], garbageFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.INCOME], incomeFields[subService][i].text);
 
                 // Extra floor field, if applicable.
                 if (!(this is ResidentialPanel))
                 {
-                    ParseInt(ref dataArray[i][DataStore.DENSIFICATION], extraFloorFields[subService][i].text);
+                    PanelUtils.ParseInt(ref dataArray[i][DataStore.DENSIFICATION], extraFloorFields[subService][i].text);
                 }
             }
         }
@@ -353,7 +310,7 @@ namespace RealisticPopulationRevisited
         {
             UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
             textField.relativePosition = new Vector3(posX, posY);
-            textField.eventTextChanged += (control, value) => TextFilter((UITextField)control, value);
+            textField.eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
 
             // Add tooltip.
             if (tooltip != null)
@@ -362,22 +319,6 @@ namespace RealisticPopulationRevisited
             }
 
             return textField;
-        }
-
-
-        /// <summary>
-        /// Event handler filter for text fields to ensure only integer values are entered.
-        /// </summary>
-        /// <param name="control">Relevant control</param>
-        /// <param name="value">Text value</param>
-        public void TextFilter(UITextField control, string value)
-        {
-            // If it's not blank and isn't an integer, remove the last character and set selection to end.
-            if (!value.IsNullOrWhiteSpace() && !int.TryParse(value, out int result))
-            {
-                control.text = value.Substring(0, value.Length - 1);
-                control.MoveSelectionPointRight();
-            }
         }
     }
 }

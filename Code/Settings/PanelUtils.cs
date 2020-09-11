@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using ICities;
+using ColossalFramework;
 using ColossalFramework.UI;
 
 
@@ -10,6 +11,70 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal static class PanelUtils
     {
+        /// <summary>
+        /// Event handler filter for text fields to ensure only integer values are entered.
+        /// </summary>
+        /// <param name="control">Relevant control</param>
+        /// <param name="value">Text value</param>
+        public static void IntTextFilter(UITextField control, string value)
+        {
+            // If it's not blank and isn't an integer, remove the last character and set selection to end.
+            if (!value.IsNullOrWhiteSpace() && !int.TryParse(value, out int result))
+            {
+                control.text = value.Substring(0, value.Length - 1);
+                control.MoveSelectionPointRight();
+            }
+        }
+
+
+        /// <summary>
+        /// Event handler filter for text fields to ensure only floating-point values are entered.
+        /// </summary>
+        /// <param name="control">Relevant control</param>
+        /// <param name="value">Text value</param>
+        public static void FloatTextFilter(UITextField control, string value)
+        {
+            // If it's not blank and isn't an integer, remove the last character and set selection to end.
+            if (!value.IsNullOrWhiteSpace() && !float.TryParse(value, out float result))
+            {
+                control.text = value.Substring(0, value.Length - 1);
+                control.MoveSelectionPointRight();
+            }
+        }
+
+
+        /// <summary>
+        /// Attempts to parse a string for an integer value; if the parse fails, simply does nothing (leaving the original value intact).
+        /// </summary>
+        /// <param name="intVar">Integer variable to store result (left unchanged if parse fails)</param>
+        /// <param name="text">Text to parse</param>
+        internal static void ParseInt(ref int intVar, string text)
+        {
+            int result;
+
+            if (int.TryParse(text, out result))
+            {
+                intVar = result;
+            }
+        }
+
+
+        /// <summary>
+        /// Attempts to parse a string for an floating-point value; if the parse fails, simply does nothing (leaving the original value intact).
+        /// </summary>
+        /// <param name="floatVer">Float variable to store result (left unchanged if parse fails)</param>
+        /// <param name="text">Text to parse</param>
+        internal static void ParseFloat(ref float floatVar, string text)
+        {
+            float result;
+
+            if (float.TryParse(text, out result))
+            {
+                floatVar = result;
+            }
+        }
+
+
         /// <summary>
         /// Adds a tab to a UI tabstrip.
         /// </summary>
@@ -87,21 +152,18 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Adds a plain text label to the specified UI panel.
         /// </summary>
-        /// <param name="panel">UI panel to add the label to</param>
+        /// <param name="parent">Parent component</param>
         /// <param name="text">Label text</param>
         /// <returns></returns>
-        internal static UILabel AddLabel(UIPanel panel, string text)
+        internal static UILabel AddLabel(UIComponent parent, string text)
         {
             // Add label.
-            UILabel label = (UILabel)panel.AddUIComponent<UILabel>();
+            UILabel label = (UILabel)parent.AddUIComponent<UILabel>();
             label.autoSize = false;
             label.autoHeight = true;
             label.wordWrap = true;
             label.width = 700;
             label.text = text;
-
-            // Increase panel height to compensate.
-            panel.height += label.height;
 
             return label;
         }
@@ -293,15 +355,30 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Returns a relative position below a specified UI component, suitable for placing an adjacent component.
+        /// Adds a column header text label.
         /// </summary>
-        /// <param name="uIComponent">Original (anchor) UI component</param>
-        /// <param name="margin">Margin between components (default 8)</param>
-        /// <param name="horizontalOffset">Horizontal offset from first to second component (default 0)</param>
-        /// <returns>Offset position (below original)</returns>
-        private static Vector3 PositionUnder(UIComponent uIComponent, float margin = 8f, float horizontalOffset = 0f)
+        /// <param name="panel">UI panel</param>
+        /// <param name="xPos">Reference X position</param>
+        /// <param name="baseY">Y position of base of label/param>
+        /// <param name="width">Width of reference item (for centering)</param>
+        /// <param name="text">Label text</param>
+        /// <param name="scale">Label text size (default 0.8)</param>
+        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, float scale = 0.8f)
         {
-            return new Vector3(uIComponent.relativePosition.x + horizontalOffset, uIComponent.relativePosition.y + uIComponent.height + margin);
+            // Basic setup.
+            UILabel columnLabel = panel.AddUIComponent<UILabel>();
+            columnLabel.textScale = scale;
+            columnLabel.verticalAlignment = UIVerticalAlignment.Middle;
+            columnLabel.textAlignment = UIHorizontalAlignment.Center;
+            columnLabel.autoSize = false;
+            columnLabel.autoHeight = true;
+            columnLabel.wordWrap = true;
+            columnLabel.width = width;
+
+            columnLabel.text = text;
+
+            // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
+            columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), baseY - columnLabel.height);
         }
 
 
@@ -333,5 +410,52 @@ namespace RealisticPopulationRevisited
 
             return checkBox;
         }
+
+
+        /// <summary>
+        /// Adds a checkbox.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="xPos">Relative x position (default 0)</param>
+        /// <param name="yPos">Relative y position (default 0)</param>
+        /// <returns>New UI checkbox with attached labels</returns>
+        internal static UICheckBox AddCheckBox(UIComponent parent, float xPos = 20f, float yPos = 0f)
+        {
+            UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
+
+            // Size and position.
+            checkBox.height = 16f;
+            checkBox.width = 16f;
+            checkBox.clipChildren = true;
+            checkBox.relativePosition = new Vector3(xPos, yPos);
+
+            // Sprites.
+            UISprite sprite = checkBox.AddUIComponent<UISprite>();
+            sprite.spriteName = "check-unchecked";
+            sprite.size = new Vector2(16f, 16f);
+            sprite.relativePosition = Vector3.zero;
+
+            checkBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
+            ((UISprite)checkBox.checkedBoxObject).spriteName = "check-checked";
+            checkBox.checkedBoxObject.size = new Vector2(16f, 16f);
+            checkBox.checkedBoxObject.relativePosition = Vector3.zero;
+
+            return checkBox;
+        }
+
+
+        /// <summary>
+        /// Returns a relative position below a specified UI component, suitable for placing an adjacent component.
+        /// </summary>
+        /// <param name="uIComponent">Original (anchor) UI component</param>
+        /// <param name="margin">Margin between components (default 8)</param>
+        /// <param name="horizontalOffset">Horizontal offset from first to second component (default 0)</param>
+        /// <returns>Offset position (below original)</returns>
+        private static Vector3 PositionUnder(UIComponent uIComponent, float margin = 8f, float horizontalOffset = 0f)
+        {
+            return new Vector3(uIComponent.relativePosition.x + horizontalOffset, uIComponent.relativePosition.y + uIComponent.height + margin);
+        }
+
+
     }
 }

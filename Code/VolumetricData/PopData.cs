@@ -563,6 +563,28 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Adds or updates a calculation pack entry to our list.
+        /// </summary>
+        /// <param name="calcPack">Calculation pack to add</param>
+        internal static void AddCalculationPack(CalcPack calcPack)
+        {
+            // Iterate through the list of packs, looking for a name match.
+            for (int i = 0; i < calcPacks.Count; ++i)
+            {
+                if (calcPacks[i].name.Equals(calcPack.name))
+                {
+                    // Found a match - replace with our new entry and return.
+                    calcPacks[i] = calcPack;
+                    return;
+                }
+            }
+
+            // If we got here, we didn't find a match; add this pack to the list.
+            calcPacks.Add(calcPack);
+        }
+
+
+        /// <summary>
         /// Updates our building setting dictionary for the selected building prefab to the indicated calculation pack.
         /// </summary>
         /// <param name="building">Building prefab to update</param>

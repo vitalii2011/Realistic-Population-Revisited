@@ -3,7 +3,8 @@
     public enum DataVersion
     {
         legacy = 0,
-        one
+        one,
+        customOne
     }
 
 

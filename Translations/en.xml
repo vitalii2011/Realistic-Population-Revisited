@@ -95,6 +95,7 @@
     <Translation ID="RPR_CAL_VOL_FMX" String="First floor height max" />
     <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
+    <Translation ID="RPR_CAL_VOL_MFU" String="Multi-&#x200B;floor units" />
     <Translation ID="RPR_CAL_VOL_HOU" String="homes" />
     <Translation ID="RPR_CAL_VOL_WOR" String="workers" />
     <Translation ID="RPR_CAL_VOL_STU" String="students" />
@@ -137,6 +138,11 @@
     <Translation ID="RPR_OPT_CRI" String="Crime" />
     <Translation ID="RPR_OPT_CML" String="Crime multiplier (percentage)" />
     <Translation ID="RPR_OPT_CAL" String="Calculations" />
+    <Translation ID="RPR_OPT_EDT" String="Custom" />
+    <Translation ID="RPR_OPT_EDT_NAM" String="Pack name" />
+    <Translation ID="RPR_OPT_SVC" String="Service" />
+    <Translation ID="RPR_OPT_CPK" String="Custom pack" />
+    <Translation ID="RPR_OPT_NEW" String="Add new" />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
   </Translations>

@@ -16,6 +16,10 @@ namespace RealisticPopulationRevisited
         [XmlElement("version")]
         public int NotificationVersion { get; set; }
 
+        [XmlArray("calcpacks")]
+        [XmlArrayItem("calcpack")]
+        public List<CalcPackXML> calcPacks { get; set; }
+
         [XmlArray("services")]
         [XmlArrayItem("service")]
         public List<ServiceRecord> services { get; set; }
@@ -59,5 +63,60 @@ namespace RealisticPopulationRevisited
         [XmlAttribute("pack")]
         [DefaultValue("")]
         public string pack;
+    }
+
+
+    /// <summary>
+    /// Custom calculation pack record.
+    /// </summary>
+    public class CalcPackXML
+    {
+        // Pack name.
+        [XmlAttribute("name")]
+        public string name;
+
+        // Service type.
+        [XmlAttribute("service")]
+        public ItemClass.Service service;
+
+        // Level records.
+        [XmlArray("levels")]
+        [XmlArrayItem("level")]
+        public List<ServiceLevelXML> serviceLevels { get; set; }
+    }
+
+
+    /// <summary>
+    /// Service level record.
+    /// </summary>
+    public class ServiceLevelXML
+    {
+        // Level ID.
+        [XmlAttribute("level")]
+        public int level;
+
+        // Floor height.
+        [XmlAttribute("floorheight")]
+        public float floorHeight;
+
+        // Area per unit.
+        [XmlAttribute("areaper")]
+        public int areaPer;
+
+        // Floor height.
+        [XmlAttribute("firstmin")]
+        public float firstMin;
+
+        // Floor height.
+        [XmlAttribute("firstmax")]
+        public float firstMax;
+
+        // First floor empty.
+        [XmlAttribute("firstempty")]
+        public bool firstEmpty;
+
+        // Multi-level units.
+        [XmlAttribute("multilevel")]
+        public bool multiLevel;
     }
 }
