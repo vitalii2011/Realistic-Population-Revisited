@@ -83,10 +83,11 @@ namespace RealisticPopulationRevisited
             };
 
             // Pack name textfield.
-            packNameField = UIUtils.CreateTextField(panel, 200f, 30f);
+            packNameField = UIUtils.CreateTextField(panel, 200f, 20f);
             UILabel packNameLabel = PanelUtils.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"));
             packNameLabel.relativePosition = new Vector3(-100f, 0f);
             packNameField.relativePosition = new Vector3(400f, Margin);
+            packNameField.isEnabled = false;
 
             // Headings.
             PanelUtils.ColumnLabel(panel, FloorHeightX, TitleHeight, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), 1.0f);
@@ -125,59 +126,15 @@ namespace RealisticPopulationRevisited
             currentY += RowHeight;
 
             // 'Add new' button.
-            /*UIButton addNewButton = UIUtils.CreateButton(panel, 200f);
+            UIButton addNewButton = UIUtils.CreateButton(panel, 200f);
             addNewButton.relativePosition = new Vector3(400f, 50f);
             addNewButton.text = Translations.Translate("RPR_OPT_NEW");
             addNewButton.eventClicked += (control, clickEvent) =>
             {
-                // Basic sanity checks - need a valid name and service to proceed.
-                if (packNameField.text != null && serviceDropDown.selectedIndex >= 0)
-                {
-                    // New pack to add.
-                    VolumetricPack newPack = new VolumetricPack();
-
-                    // Basic pack attributes.
-                    newPack.name = packNameField.text;
-                    newPack.displayName = packNameField.text;
-                    newPack.version = (int)DataVersion.customOne;
-                    newPack.service = services[serviceDropDown.selectedIndex];
-                    newPack.levels = new LevelData[maxLevels[serviceDropDown.selectedIndex]];
-
-                    // Iterate through each level, parsing input fields.
-                    for (int i = 0; i < maxLevels[serviceDropDown.selectedIndex]; ++i)
-                    {
-                        // Textfields.
-                        PanelUtils.ParseFloat(ref newPack.levels[i].floorHeight, floorHeightFields[i].text);
-                        PanelUtils.ParseInt(ref newPack.levels[i].areaPer, areaPerFields[i].text);
-                        PanelUtils.ParseFloat(ref newPack.levels[i].firstFloorMin, firstMinFields[i].text);
-                        PanelUtils.ParseFloat(ref newPack.levels[i].firstFloorMax, firstMaxFields[i].text);
-
-                        // Checkboxes.
-                        newPack.levels[i].firstFloorEmpty = firstEmptyCheck[i].isChecked;
-                        newPack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
-                    }
-
-                    // Add our new pack to our list of packs.
-                    PopData.AddCalculationPack(newPack);
-
-                    // Save configuration file.
-                    ConfigUtils.SaveSettings();
-
-                    // Update pack menu.
-                    packDropDown.items = CustomPacks();
-
-                    // Set pack selection by iterating through each pack in the menu and looking for a match.
-                    for (int i = 0; i < packDropDown.items.Length; ++i)
-                    {
-                        if (packDropDown.items[i].Equals(packNameField.text))
-                        {
-                            // Got a match; apply selected index and stop looping.
-                            packDropDown.selectedIndex = i;
-                            break;
-                        }
-                    }
-                }
-            };*/
+                // Set pack name field to a basic new name.
+                packNameField.isEnabled = true;
+                packNameField.text = "NewPack";
+            };
 
             // Save pack button.
             UIButton saveButton = UIUtils.CreateButton(panel, 200f);
@@ -214,8 +171,9 @@ namespace RealisticPopulationRevisited
                         newPack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
                     }
 
-                    // Add our new pack to our list of packs.
+                    // Add our new pack to our list of packs and update calculations panel menus.
                     PopData.AddCalculationPack(newPack);
+                    CalculationsPanel.instance.UpdateMenus();
 
                     // Save configuration file.
                     ConfigUtils.SaveSettings();
@@ -233,11 +191,24 @@ namespace RealisticPopulationRevisited
                             break;
                         }
                     }
+
+                    // Now that we've saved, disble name field.
+                    packNameField.isEnabled = false;
                 }
             };
 
-            // Hide all textfields to start.
-            TextfieldVisibility(0);
+            /*
+            // Delete pack button.
+            UIButton deleteButton = UIUtils.CreateButton(panel, 200f);
+            deleteButton.relativePosition = new Vector3(250f, currentY);
+            deleteButton.text = Translations.Translate("RPR_OPT_DEL");
+            deleteButton.eventClicked += (control, clickEvent) =>
+            {
+                
+            };*/
+
+            // Set service menu to initial state (residential), which will also update textfield visibility via event handler.
+            serviceDropDown.selectedIndex = 0;
         }
 
 
@@ -316,7 +287,6 @@ namespace RealisticPopulationRevisited
         private UICheckBox AddCheckBox(UIPanel panel, float posX, float posY, string tooltip = null)
         {
             UICheckBox checkBox = PanelUtils.AddCheckBox(panel, posX, posY);
-            //textField.eventTextChanged += (control, value) => TextFilter((UITextField)control, value);
 
             // Add tooltip.
             if (tooltip != null)

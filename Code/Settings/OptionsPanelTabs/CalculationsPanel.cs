@@ -115,6 +115,10 @@ namespace RealisticPopulationRevisited
         // Available packs arrays.
         CalcPack[][] availablePacks;
 
+        // Instance reference.
+        internal static CalculationsPanel instance;
+
+
         /// <summary>
         /// Adds calculation options tab to tabstrip.
         /// </summary>
@@ -174,6 +178,9 @@ namespace RealisticPopulationRevisited
 
             // Populate menus.
             UpdateMenus();
+
+            // Set instance.
+            instance = this;
         }
 
 

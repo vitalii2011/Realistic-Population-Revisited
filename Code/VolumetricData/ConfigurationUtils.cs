@@ -20,7 +20,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         internal static void LoadSettings()
         {
-            try
+            //try
             {
                 // Check to see if configuration file exists.
                 if (File.Exists(ConfigFileName))
@@ -111,10 +111,10 @@ namespace RealisticPopulationRevisited
                     Debugging.Message("no configuration file found");
                 }
             }
-            catch (Exception e)
+            //catch (Exception e)
             {
-                Debugging.Message("exception reading configuration file");
-                Debugging.LogException(e);
+            //    Debugging.Message("exception reading configuration file");
+            //    Debugging.LogException(e);
             }
         }
 
