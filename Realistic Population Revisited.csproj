@@ -122,6 +122,7 @@
     <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationXML.cs" />
     <Compile Include="Code\VolumetricData\CalcPacks.cs" />
+    <Compile Include="Code\VolumetricData\DataMapping.cs" />
     <Compile Include="Code\VolumetricData\EmploymentData.cs" />
     <Compile Include="Code\VolumetricData\PopData.cs" />
     <Compile Include="Code\GUI\UIEditPanel.cs" />

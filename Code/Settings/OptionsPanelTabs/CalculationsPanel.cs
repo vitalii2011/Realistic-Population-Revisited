@@ -135,15 +135,6 @@ namespace RealisticPopulationRevisited
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = false;
 
-            // Don't initialise PopData if we've already done it, but make sure we do it if we haven't already.
-            if (!PopData.ready)
-            {
-                PopData.Setup();
-
-                // Load (volumetric) building settings file.
-                ConfigUtils.LoadSettings();
-            }
-
             // Initialise arrays.
             availablePacks = new CalcPack[subServiceNames.Length][];
             packMenus = new UIDropDown[subServiceNames.Length];

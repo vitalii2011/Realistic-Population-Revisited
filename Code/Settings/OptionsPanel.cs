@@ -100,6 +100,15 @@ namespace RealisticPopulationRevisited
                 tabContainer.height = tabStrip.height;
                 tabStrip.tabPages = tabContainer;
 
+                // Don't initialise PopData if we've already done it, but make sure we do it if we haven't already.
+                if (!PopData.ready)
+                {
+                    PopData.Setup();
+
+                    // Load (volumetric) building settings file.
+                    ConfigUtils.LoadSettings();
+                }
+
                 // Add tabs and panels.
                 new ModOptionsPanel(tabStrip, 0);
                 new ConsumptionPanel(tabStrip, 1);

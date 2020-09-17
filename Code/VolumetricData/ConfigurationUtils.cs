@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 
 namespace RealisticPopulationRevisited
 {
+    /// <summary>
     /// XML serialization/deserialization utilities class.
     /// </summary>
     internal static class ConfigUtils
@@ -20,7 +21,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         internal static void LoadSettings()
         {
-            //try
+            try
             {
                 // Check to see if configuration file exists.
                 if (File.Exists(ConfigFileName))
@@ -46,20 +47,20 @@ namespace RealisticPopulationRevisited
                                     displayName = xmlPack.name,
                                     service = xmlPack.service,
                                     version = (int)DataVersion.customOne,
-                                    levels = new LevelData[xmlPack.serviceLevels.Count]
+                                    levels = new LevelData[xmlPack.calculationLevels.Count]
                                 };
 
                                 // Iterate through each level in the xml and add to our volumetric pack.
-                                foreach (ServiceLevelXML serviceLevel in xmlPack.serviceLevels)
+                                foreach (CalculationLevel calculationLevel in xmlPack.calculationLevels)
                                 {
-                                    volPack.levels[serviceLevel.level] = new LevelData()
+                                    volPack.levels[calculationLevel.level] = new LevelData()
                                     {
-                                        floorHeight = serviceLevel.floorHeight,
-                                        areaPer = serviceLevel.areaPer,
-                                        firstFloorMin = serviceLevel.firstMin,
-                                        firstFloorMax = serviceLevel.firstMax,
-                                        firstFloorEmpty = serviceLevel.firstEmpty,
-                                        multiFloorUnits = serviceLevel.multiLevel
+                                        floorHeight = calculationLevel.floorHeight,
+                                        areaPer = calculationLevel.areaPer,
+                                        firstFloorMin = calculationLevel.firstMin,
+                                        firstFloorMax = calculationLevel.firstMax,
+                                        firstFloorEmpty = calculationLevel.firstEmpty,
+                                        multiFloorUnits = calculationLevel.multiLevel
                                     };
                                 }
 
@@ -67,19 +68,42 @@ namespace RealisticPopulationRevisited
                                 PopData.AddCalculationPack(volPack);
                             }
 
-                            // Deserialise service list into dictionary.
-                            foreach (ServiceRecord serviceElement in configFile.services)
+                            // Deserialise consumption records.
+                            DataMapping mapper = new DataMapping();
+                            foreach (ConsumptionRecord consumptionRecord in configFile.consumption)
+                            {
+                                // Get relevant DataStore array for this record.
+                                int[][] dataArray = mapper.GetArray(consumptionRecord.service, consumptionRecord.subService);
+
+                                // Iterate through each consumption line and populate relevant DataStore fields.
+                                foreach(ConsumptionLine consumptionLine in consumptionRecord.levels)
+                                {
+                                    int level = (int)consumptionLine.level;
+                                    dataArray[level][DataStore.POWER] = consumptionLine.power;
+                                    dataArray[level][DataStore.WATER] = consumptionLine.water;
+                                    dataArray[level][DataStore.SEWAGE] = consumptionLine.sewage;
+                                    dataArray[level][DataStore.GARBAGE] = consumptionLine.garbage;
+                                    dataArray[level][DataStore.GROUND_POLLUTION] = consumptionLine.pollution;
+                                    dataArray[level][DataStore.NOISE_POLLUTION] = consumptionLine.noise;
+                                    dataArray[level][DataStore.MAIL] = consumptionLine.mail;
+                                    dataArray[level][DataStore.INCOME] = consumptionLine.income;
+                                    dataArray[level][DataStore.PRODUCTION] = consumptionLine.production;
+                                }
+                            }
+
+                            // Deserialise default pack list into dictionary.
+                            foreach (DefaultPack defaultPack in configFile.defaults)
                             {
                                 // Find target preset.
-                                CalcPack calcPack = PopData.calcPacks?.Find(pack => (pack?.name != null && pack.name.Equals(serviceElement.pack)));
+                                CalcPack calcPack = PopData.calcPacks?.Find(pack => (pack?.name != null && pack.name.Equals(defaultPack.pack)));
                                 if (calcPack?.name == null)
                                 {
-                                    Debugging.Message("Couldn't find calculation pack " + serviceElement.pack + " for sub-service " + serviceElement.subService);
+                                    Debugging.Message("Couldn't find calculation pack " + defaultPack.pack + " for sub-service " + defaultPack.subService);
                                     continue;
                                 }
 
                                 // Add service to our dictionary.
-                                PopData.AddService(serviceElement.service, serviceElement.subService, calcPack);
+                                PopData.AddService(defaultPack.service, defaultPack.subService, calcPack);
                             }
 
                             // Deserialise building list into dictionary.
@@ -111,10 +135,10 @@ namespace RealisticPopulationRevisited
                     Debugging.Message("no configuration file found");
                 }
             }
-            //catch (Exception e)
+            catch (Exception e)
             {
-            //    Debugging.Message("exception reading configuration file");
-            //    Debugging.LogException(e);
+                Debugging.Message("exception reading configuration file");
+                Debugging.LogException(e);
             }
         }
 
@@ -149,13 +173,13 @@ namespace RealisticPopulationRevisited
                                 {
                                     name = volPack.name,
                                     service = volPack.service,
-                                    serviceLevels = new List<ServiceLevelXML>()
+                                    calculationLevels = new List<CalculationLevel>()
                                 };
 
                                 // Iterate through each level and add it to our serialisation.
                                 for (int i = 0; i < volPack.levels.Length; ++i)
                                 {
-                                    ServiceLevelXML xmlLevel = new ServiceLevelXML()
+                                    CalculationLevel xmlLevel = new CalculationLevel()
                                     {
                                         level = i,
                                         floorHeight = volPack.levels[i].floorHeight,
@@ -166,7 +190,7 @@ namespace RealisticPopulationRevisited
                                         multiLevel = volPack.levels[i].multiFloorUnits
                                     };
 
-                                    xmlPack.serviceLevels.Add(xmlLevel);
+                                    xmlPack.calculationLevels.Add(xmlLevel);
                                 }
 
                                 // Add to file.
@@ -175,22 +199,25 @@ namespace RealisticPopulationRevisited
                         }
                     }
 
-                    // Serialise service dictionary.
-                    configFile.services = new List<ServiceRecord>();
+                    // Serialise consumption information.
+                    configFile.consumption = GetConsumptionRecords();
+
+                    // Serialise default packs dictionary.
+                    configFile.defaults = new List<DefaultPack>();
 
                     // Iterate through each key (ItemClass.Service) in our dictionary.
                     foreach (ItemClass.Service service in PopData.serviceDict.Keys)
                     {
-                        // Iterate through each key (ItemClass.SubService) in our sub-dictionary and serialise it into a ServiceRecord.
+                        // Iterate through each key (ItemClass.SubService) in our sub-dictionary and serialise it into a DefaultPack.
                         foreach (ItemClass.SubService subService in PopData.serviceDict[service].Keys)
                         {
-                            ServiceRecord newElement = new ServiceRecord();
-                            newElement.service = service;
-                            newElement.subService = subService;
-                            newElement.pack = PopData.serviceDict[service][subService].name;
+                            DefaultPack defaultPack = new DefaultPack();
+                            defaultPack.service = service;
+                            defaultPack.subService = subService;
+                            defaultPack.pack = PopData.serviceDict[service][subService].name;
 
                             // Add new building record to our config file.
-                            configFile.services.Add(newElement);
+                            configFile.defaults.Add(defaultPack);
                         }
                     }
 
@@ -217,6 +244,68 @@ namespace RealisticPopulationRevisited
                 Debugging.Message("exception saving configuration file");
                 Debugging.LogException(e);
             }
+        }
+
+
+        /// <summary>
+        /// Returns a list of serialised consumption records from available DataStore arrays.
+        /// </summary>
+        /// <returns>New list of consumption records</returns>
+        private static List<ConsumptionRecord> GetConsumptionRecords()
+        {
+            List<ConsumptionRecord> list = new List<ConsumptionRecord>(DataMapping.numData);
+            DataMapping mapper = new DataMapping();
+
+
+            // Iterate through each data structure.
+            for (int i = 0; i < DataMapping.numData; ++i)
+            {
+                // Create new consumption record with relevant data and add it to our list.
+                ConsumptionRecord newRecord = new ConsumptionRecord()
+                {
+                    service = mapper.services[i],
+                    subService = mapper.subServices[i],
+                    levels = SerializeConsumption(mapper.dataArrays[i])
+                };
+                list.Add(newRecord);
+            }
+
+            return list;
+        }
+
+
+        /// <summary>
+        /// Serialise consumption levels for provided service/subservice data.
+        /// </summary>
+        /// <param name="data">DataStore integer array to serialise</param>
+        /// <returns>New list of serialised consumption data level records</returns>
+        private static List<ConsumptionLine> SerializeConsumption(int[][] dataArray)
+        {
+            List<ConsumptionLine> lines = new List<ConsumptionLine>();
+
+            // Iterate through each row in the provided data array.
+            for (int i = 0; i < dataArray.Length; ++i)
+            {
+                // Create new consumption line record from data array row.
+                ConsumptionLine newLine = new ConsumptionLine()
+                {
+                    level = (ItemClass.Level)i,
+                    power = dataArray[i][DataStore.POWER],
+                    water = dataArray[i][DataStore.WATER],
+                    sewage = dataArray[i][DataStore.SEWAGE],
+                    garbage = dataArray[i][DataStore.GARBAGE],
+                    pollution = dataArray[i][DataStore.GROUND_POLLUTION],
+                    noise = dataArray[i][DataStore.NOISE_POLLUTION],
+                    mail = dataArray[i][DataStore.MAIL],
+                    income = dataArray[i][DataStore.INCOME],
+                    production = dataArray[i][DataStore.PRODUCTION]
+                };
+
+                // Add new record to the return list.
+                lines.Add(newLine);
+            }
+
+            return lines;
         }
     }
 }

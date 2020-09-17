@@ -20,9 +20,13 @@ namespace RealisticPopulationRevisited
         [XmlArrayItem("calcpack")]
         public List<CalcPackXML> calcPacks { get; set; }
 
-        [XmlArray("services")]
-        [XmlArrayItem("service")]
-        public List<ServiceRecord> services { get; set; }
+        [XmlArray("consumption")]
+        [XmlArrayItem("consumption")]
+        public List<ConsumptionRecord> consumption { get; set; }
+
+        [XmlArray("defaults")]
+        [XmlArrayItem("default")]
+        public List<DefaultPack> defaults { get; set; }
 
         [XmlArray("buildings")]
         [XmlArrayItem("building")]
@@ -31,9 +35,9 @@ namespace RealisticPopulationRevisited
 
 
     /// <summary>
-    /// Service setting dictionary record.
+    /// Default calculation pack dictionary record.
     /// </summary>
-    public class ServiceRecord
+    public class DefaultPack
     {
         // Service ID.
         [XmlAttribute("service")]
@@ -82,14 +86,14 @@ namespace RealisticPopulationRevisited
         // Level records.
         [XmlArray("levels")]
         [XmlArrayItem("level")]
-        public List<ServiceLevelXML> serviceLevels { get; set; }
+        public List<CalculationLevel> calculationLevels { get; set; }
     }
 
 
     /// <summary>
-    /// Service level record.
+    /// Custom calculation pack individual level line.
     /// </summary>
-    public class ServiceLevelXML
+    public class CalculationLevel
     {
         // Level ID.
         [XmlAttribute("level")]
@@ -118,5 +122,72 @@ namespace RealisticPopulationRevisited
         // Multi-level units.
         [XmlAttribute("multilevel")]
         public bool multiLevel;
+    }
+
+
+    /// <summary>
+    /// Service consumption record.
+    /// </summary>
+    public class ConsumptionRecord
+    {
+        // Service ID.
+        [XmlAttribute("service")]
+        public ItemClass.Service service;
+
+        // Sub-service ID.
+        [XmlAttribute("subservice")]
+        public ItemClass.SubService subService;
+
+        // Level records.
+        [XmlArray("levels")]
+        [XmlArrayItem("level")]
+        public List<ConsumptionLine> levels { get; set; }
+    }
+
+
+    /// <summary>
+    /// Consumption record individual level line.
+    /// </summary>
+    public class ConsumptionLine
+    {
+        // Level.
+        [XmlAttribute("level")]
+        public ItemClass.Level level;
+
+        // Power consumption.
+        [XmlAttribute("power")]
+        public int power;
+
+        // Water consumption.
+        [XmlAttribute("water")]
+        public int water;
+
+        // Sewage generation.
+        [XmlAttribute("sewage")]
+        public int sewage;
+
+        // Garbage generation.
+        [XmlAttribute("garbage")]
+        public int garbage;
+
+        // Pollution generation.
+        [XmlAttribute("pollution")]
+        public int pollution;
+
+        // Noise generation.
+        [XmlAttribute("noise")]
+        public int noise;
+
+        // Mail generation.
+        [XmlAttribute("mail")]
+        public int mail;
+
+        // Income generation.
+        [XmlAttribute("income")]
+        public int income;
+
+        // Production.
+        [XmlAttribute("production")]
+        public int production;
     }
 }
