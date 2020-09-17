@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting commercial calculation options.
     /// </summary>
-    internal class OfficePanel : ConsumptionPanelBase
+    internal class LegacyOfficePanel : LegacyPanelBase
     {
         // Array reference constants.
         private const int Office = 0;
@@ -27,7 +27,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public OfficePanel(UITabstrip tabStrip, int tabIndex)
+        public LegacyOfficePanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
             UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_OFF"), tabIndex);

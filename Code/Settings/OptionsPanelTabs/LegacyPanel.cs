@@ -7,17 +7,17 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting basic mod options.
     /// </summary>
-    internal class ConsumptionPanel
+    internal class LegacyPanel
     {
         /// <summary>
         /// Adds education options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal ConsumptionPanel(UITabstrip parentTabStrip, int tabIndex)
+        internal LegacyPanel(UITabstrip parentTabStrip, int tabIndex)
         {
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex);
+            UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_OPT_LEG"), tabIndex);
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = false;
 
@@ -33,10 +33,10 @@ namespace RealisticPopulationRevisited
             childTabStrip.tabPages = tabContainer;
 
             // Add child tabs.
-            new ResidentialPanel(childTabStrip, 0);
-            new IndustrialPanel(childTabStrip, 1);
-            new CommercialPanel(childTabStrip, 2);
-            new OfficePanel(childTabStrip, 3);
+            new LegacyResidentialPanel(childTabStrip, 0);
+            new LegacyIndustrialPanel(childTabStrip, 1);
+            new LegacyCommercialPanel(childTabStrip, 2);
+            new LegacyOfficePanel(childTabStrip, 3);
 
             // Change tab size and text scale (to differentiate from 'main' tabstrip).
             foreach (UIButton button in childTabStrip.components)

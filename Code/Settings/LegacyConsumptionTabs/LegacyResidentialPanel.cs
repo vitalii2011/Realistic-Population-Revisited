@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting residential calculation options.
     /// </summary>
-    internal class ResidentialPanel : ConsumptionPanelBase
+    internal class LegacyResidentialPanel : LegacyPanelBase
     {
         // Array reference constants.
         private const int LowRes = 0;
@@ -31,7 +31,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public ResidentialPanel(UITabstrip tabStrip, int tabIndex)
+        public LegacyResidentialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
             UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex);

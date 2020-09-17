@@ -111,7 +111,7 @@ namespace RealisticPopulationRevisited
 
                 // Add tabs and panels.
                 new ModOptionsPanel(tabStrip, 0);
-                new ConsumptionPanel(tabStrip, 1);
+                new LegacyPanel(tabStrip, 1);
                 new CalculationsPanel(tabStrip, 2);
                 new EditPanel(tabStrip, 3);
                 new EducationPanel(tabStrip, 4);

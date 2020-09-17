@@ -8,7 +8,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Base class of the options panels.
     /// </summary>
-    internal class ConsumptionPanelBase
+    internal class LegacyPanelBase
     {
         // UI layout constants.
         protected const float Margin = 5f;
@@ -236,7 +236,7 @@ namespace RealisticPopulationRevisited
                 incomeFields[subService][i].text = dataArray[i][DataStore.INCOME].ToString();
 
                 // Extra floor field, if applicable.
-                if (!(this is ResidentialPanel))
+                if (!(this is LegacyResidentialPanel))
                 {
                     extraFloorFields[subService][i].text = dataArray[i][DataStore.DENSIFICATION].ToString();
                 }
@@ -263,7 +263,7 @@ namespace RealisticPopulationRevisited
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.INCOME], incomeFields[subService][i].text);
 
                 // Extra floor field, if applicable.
-                if (!(this is ResidentialPanel))
+                if (!(this is LegacyResidentialPanel))
                 {
                     PanelUtils.ParseInt(ref dataArray[i][DataStore.DENSIFICATION], extraFloorFields[subService][i].text);
                 }

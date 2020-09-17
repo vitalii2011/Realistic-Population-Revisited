@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting industrial calculation options.
     /// </summary>
-    internal class IndustrialPanel : ConsumptionPanelBase
+    internal class LegacyIndustrialPanel : LegacyPanelBase
     {
         // Array reference constants.
         private const int Generic = 0;
@@ -33,7 +33,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public IndustrialPanel(UITabstrip tabStrip, int tabIndex)
+        public LegacyIndustrialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
             UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_IND"), tabIndex);
