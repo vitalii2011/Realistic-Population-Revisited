@@ -113,7 +113,14 @@
   <ItemGroup>
     <Compile Include="Code\AI_Files\AI_School.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\CommercialPanel.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\ConsumptionPanelBase.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\IndustrialPanel.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\OfficePanel.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\PanelBase.cs" />
+    <Compile Include="Code\Settings\ConsumptionTabs\ResidentialPanel.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\ConsumptionPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\LegacyPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CrimePanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />
@@ -174,7 +181,6 @@
   <ItemGroup>
     <Folder Include=".git\objects\info\" />
     <Folder Include=".git\refs\tags\" />
-    <Folder Include="Code\Settings\ConsumptionTabs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>

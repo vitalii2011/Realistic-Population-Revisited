@@ -130,6 +130,10 @@
     <Translation ID="RPR_OPT_WAT" String="Water" />
     <Translation ID="RPR_OPT_SEW" String="Sewage" />
     <Translation ID="RPR_OPT_GAR" String="Garbage" />
+    <Translation ID="RPR_OPT_POL" String="Pollution" />
+    <Translation ID="RPR_OPT_NOI" String="Noise" />
+    <Translation ID="RPR_OPT_MAI" String="Mail" />
+    <Translation ID="RPR_OPT_PRO" String="Production" />
     <Translation ID="RPR_OPT_WEA" String="Wealth" />
     <Translation ID="RPR_OPT_RTD" String="Reset to defaults" />
     <Translation ID="RPR_OPT_RTS" String="Revert to saved" />
