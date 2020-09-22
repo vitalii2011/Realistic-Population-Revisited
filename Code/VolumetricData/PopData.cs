@@ -22,21 +22,45 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Returns the population of the given building prefab and level.
-        /// </summary>
-        /// <param name="buildingPrefab">Building prefab record</param>
-        /// <param name="level">Building level</param>
-        /// <returns>Population</returns>
-        internal static int Population(BuildingInfo buildingPrefab, int level) => ActivePack(buildingPrefab).Population(buildingPrefab, level);
-
-
-        /// <summary>
         /// Returns the workplace breakdowns and visitor count for the given building prefab and level.
         /// </summary>
         /// <param name="prefab">Building prefab</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
         internal static PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level) => ActivePack(buildingPrefab).Workplaces(buildingPrefab, level);
+
+
+        /// <summary>
+        /// Returns the population of the given building prefab and level.
+        /// </summary>
+        /// <param name="buildingPrefab">Building prefab record</param>
+        /// <param name="level">Building level</param>
+        /// <returns>Population</returns>
+        internal static int Population(BuildingInfo buildingPrefab, int level)
+        {
+            // First, check for population override.
+            int population;
+
+            // Residential?
+            if (buildingPrefab.GetService() == ItemClass.Service.Residential)
+            {
+                // Residential - see if we have a household override for this prefab.
+                if (DataStore.householdCache.TryGetValue(buildingPrefab.name, out population))
+                {
+                    // Yes - return override.
+                    return population;
+                }
+            }
+            // Not residential - see if we have a workplace override for this prefab.
+            else if (DataStore.workerCache.TryGetValue(buildingPrefab.name, out population))
+            {
+                // Yes - return override.
+                return population;
+            }
+
+            // If we got here, there's no override; return pack default.
+            return ActivePack(buildingPrefab).Population(buildingPrefab, level);
+        }
 
 
         /// <summary>

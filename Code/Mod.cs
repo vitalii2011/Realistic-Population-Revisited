@@ -34,6 +34,8 @@ namespace RealisticPopulationRevisited
             SettingsUtils.LoadSettings();
 
             // Populate (legacy) Datastore from configuration file.
+            // Make sure this happens before loading the new configuration file, which will overwrite any settings here.
+            // This establishes the correct priority (new over legacy).
             XMLUtilsWG.ReadFromXML();
 
             // Check to see if UIView is ready.

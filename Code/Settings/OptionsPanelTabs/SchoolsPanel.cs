@@ -4,19 +4,19 @@
 namespace RealisticPopulationRevisited
 {
     /// <summary>
-    /// Options panel for setting basic mod options.
+    /// Options panel for setting school options.
     /// </summary>
     internal class EducationPanel
     {
         /// <summary>
-        /// Adds education options tab to tabstrip.
+        /// Adds school options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
         internal EducationPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_SCH_EDU"), tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_OPT_SCH"), tabIndex);
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = true;
 

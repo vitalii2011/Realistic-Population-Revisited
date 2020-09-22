@@ -31,6 +31,14 @@ namespace RealisticPopulationRevisited
         [XmlArray("buildings")]
         [XmlArrayItem("building")]
         public List<BuildingRecord> buildings { get; set; }
+
+        [XmlArray("override_households")]
+        [XmlArrayItem("households")]
+        public List<PopCountOverride> households { get; set; }
+
+        [XmlArray("override_workplaces")]
+        [XmlArrayItem("workplaces")]
+        public List<PopCountOverride> workplaces { get; set; }
     }
 
 
@@ -67,6 +75,22 @@ namespace RealisticPopulationRevisited
         [XmlAttribute("pack")]
         [DefaultValue("")]
         public string pack;
+    }
+
+
+    /// <summary>
+    /// Building population count override record.
+    /// </summary>
+    public class PopCountOverride
+    {
+        // Building prefab name.
+        [XmlAttribute("prefab")]
+        public string prefab;
+
+        //Household count.
+        [XmlAttribute("population")]
+        [DefaultValue(0)]
+        public int population;
     }
 
 

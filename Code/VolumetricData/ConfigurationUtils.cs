@@ -127,6 +127,10 @@ namespace RealisticPopulationRevisited
                                 // Add building to our dictionary.
                                 PopData.buildingDict.Add(buildingElement.prefab, calcPack);
                             }
+
+                            // Deserialise building population overrides.
+                            DeSerializePopOverrides(configFile.households, DataStore.householdCache);
+                            DeSerializePopOverrides(configFile.workplaces, DataStore.workerCache);
                         }
                     }
                 }
@@ -235,6 +239,10 @@ namespace RealisticPopulationRevisited
                         configFile.buildings.Add(newElement);
                     }
 
+                    // Serialise building population overrides.
+                    configFile.households = SerializePopOverrides(DataStore.householdCache);
+                    configFile.workplaces = SerializePopOverrides(DataStore.workerCache);
+
                     // Write to file.
                     xmlSerializer.Serialize(writer, configFile);
                 }
@@ -243,6 +251,57 @@ namespace RealisticPopulationRevisited
             {
                 Debugging.Message("exception saving configuration file");
                 Debugging.LogException(e);
+            }
+        }
+
+
+        /// <summary>
+        /// Serialise population overrides for individual building prefabs.
+        /// </summary>
+        /// <param name="overrideDict">Population dictionary to serialise</param>
+        /// <returns>New list of seralised overrides</returns>
+        private static List<PopCountOverride> SerializePopOverrides(Dictionary<string, int> overrideDict)
+        {
+            // Return list.
+            List<PopCountOverride> overrideList = new List<PopCountOverride>();
+
+            // Iterate through dictionary and serialise into new PopCountOverride element.
+            foreach (String buildingName in overrideDict.Keys)
+            {
+                PopCountOverride newElement = new PopCountOverride();
+                newElement.prefab = buildingName;
+                newElement.population = overrideDict[buildingName];
+
+                // Add new building record to return list.
+                overrideList.Add(newElement);
+            }
+
+            return overrideList;
+        }
+
+
+        /// <summary>
+        /// De-serialise population overrides for individual building prefabs.
+        /// </summary>
+        /// <param name="overrideList">Population dictionary to de-serialise</param>
+        /// <param name="overrideDict">Population dictionary to de-serialise into</param>
+        /// <returns>New list of seralised overrides</returns>
+        private static void DeSerializePopOverrides(List<PopCountOverride> overrideList, Dictionary<string, int> overrideDict)
+        {
+            // Iterate through list and add each entry to dictionary.
+            foreach(PopCountOverride overrideItem in overrideList)
+            {
+                // Check to see if we already have an override entry (probably from legacy file).
+                if (overrideDict.ContainsKey(overrideItem.prefab))
+                {
+                    // Yes - update existing entry.
+                    overrideDict[overrideItem.prefab] = overrideItem.population;
+                }
+                else
+                {
+                    // No - add new entry.
+                    overrideDict.Add(overrideItem.prefab, overrideItem.population);
+                }
             }
         }
 
