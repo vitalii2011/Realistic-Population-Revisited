@@ -4,7 +4,7 @@
 namespace RealisticPopulationRevisited
 {
     /// <summary>
-    /// Options panel for setting industrial calculation options.
+    /// Options panel (sub)-tab for industrial building consumption configuration.
     /// </summary>
     internal class IndustrialPanel : ConsumptionPanelBase
     {

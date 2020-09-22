@@ -4,6 +4,9 @@ using ColossalFramework.UI;
 
 namespace RealisticPopulationRevisited
 {
+    /// <summary>
+    /// Base class for options panel consumption settings (sub-)tabs.
+    /// </summary>
     internal class PanelBase
     {
         // Layout constants.

@@ -3,6 +3,9 @@
 
 namespace RealisticPopulationRevisited
 {
+    /// <summary>
+    /// Options panel (sub)-tab for commercial building consumption configuration.
+    /// </summary>
     class CommercialPanel : ConsumptionPanelBase
     {
         // Array reference constants.

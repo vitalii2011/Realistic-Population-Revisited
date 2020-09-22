@@ -16,12 +16,12 @@ namespace RealisticPopulationRevisited
         internal EducationPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_OPT_EDU"), tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_SCH_EDU"), tabIndex);
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = true;
 
             // Enable realistic schools checkbox.
-            UICheckBox enableEdCheck = PanelUtils.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_EDU_ENB"));
+            UICheckBox enableEdCheck = PanelUtils.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_SCH_ENB"));
             enableEdCheck.isChecked = ModSettings.enableSchools;
             enableEdCheck.eventCheckChanged += (control, isChecked) => ModSettings.enableSchools = isChecked;
         }

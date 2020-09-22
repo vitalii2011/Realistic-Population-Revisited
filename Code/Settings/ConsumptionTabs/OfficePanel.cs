@@ -4,7 +4,7 @@
 namespace RealisticPopulationRevisited
 {
     /// <summary>
-    /// Options panel for setting commercial calculation options.
+    /// Options panel (sub)-tab for office building consumption configuration.
     /// </summary>
     internal class OfficePanel : ConsumptionPanelBase
     {

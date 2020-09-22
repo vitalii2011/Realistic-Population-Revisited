@@ -6,7 +6,7 @@ using ColossalFramework.UI;
 namespace RealisticPopulationRevisited
 {
     /// <summary>
-    /// Base class of the options panels.
+    /// Base class for options panel consumption settings (sub-)tabs (legacy configuration).
     /// </summary>
     internal class LegacyPanelBase : PanelBase
     {

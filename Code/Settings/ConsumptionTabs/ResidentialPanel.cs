@@ -3,6 +3,9 @@
 
 namespace RealisticPopulationRevisited
 {
+    /// <summary>
+    /// Options panel (sub)-tab for residential building consumption configuration.
+    /// </summary>
     internal class ResidentialPanel : ConsumptionPanelBase
     {
         // Array reference constants.
