@@ -111,12 +111,12 @@ namespace RealisticPopulationRevisited
 
                 // Add tabs and panels.
                 new ModOptionsPanel(tabStrip, 0);
-                new ConsumptionPanel(tabStrip, 1);
-                new LegacyPanel(tabStrip, 2);
-                new CalculationsPanel(tabStrip, 3);
-                new EditPanel(tabStrip, 4);
-                new EducationPanel(tabStrip, 5);
-                new CrimePanel(tabStrip, 6);
+                new PopulationPanel(tabStrip, 1);
+                new ConsumptionPanel(tabStrip, 2);
+                new DefaultsPanel(tabStrip, 3);
+                new EducationPanel(tabStrip, 4);
+                new CrimePanel(tabStrip, 5);
+                new LegacyPanel(tabStrip, 6);
 
                 // Change tab size and text scale (to fit them all in...).
                 foreach (UIButton button in tabStrip.components)

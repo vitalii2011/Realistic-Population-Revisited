@@ -6,7 +6,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for setting default calculation packs.
     /// </summary>
-    internal class CalculationsPanel
+    internal class DefaultsPanel
     {
         string[] subServiceNames =
         {
@@ -116,7 +116,7 @@ namespace RealisticPopulationRevisited
         CalcPack[][] availablePacks;
 
         // Instance reference.
-        internal static CalculationsPanel instance;
+        internal static DefaultsPanel instance;
 
 
         /// <summary>
@@ -124,14 +124,14 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal CalculationsPanel(UITabstrip tabStrip, int tabIndex)
+        internal DefaultsPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Y position indicator.
             float currentY = 30f;
 
 
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_OPT_CAL"), tabIndex);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_OPT_DEF"), tabIndex);
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = false;
 

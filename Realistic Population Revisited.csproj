@@ -123,8 +123,8 @@
     <Compile Include="Code\Settings\OptionsPanelTabs\ConsumptionPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\LegacyPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CrimePanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\EditPanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\DefaultsPanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\PopulationPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationXML.cs" />

@@ -142,11 +142,11 @@
     <Translation ID="RPR_OPT_SCH_ENB" String="Enable realistic school capacities" />
     <Translation ID="RPR_OPT_CRI" String="Crime" />
     <Translation ID="RPR_OPT_CML" String="Crime multiplier (percentage)" />
-    <Translation ID="RPR_OPT_CAL" String="Calculations" />
-    <Translation ID="RPR_OPT_EDT" String="Custom" />
+    <Translation ID="RPR_OPT_POP" String="Population" />
+    <Translation ID="RPR_OPT_DEF" String="Defaults" />
     <Translation ID="RPR_OPT_EDT_NAM" String="Pack name" />
     <Translation ID="RPR_OPT_SVC" String="Service" />
-    <Translation ID="RPR_OPT_CPK" String="Custom pack" />
+    <Translation ID="RPR_OPT_CPK" String="Calculation pack" />
     <Translation ID="RPR_OPT_NEW" String="Add new" />
     <Translation ID="RPR_OPT_DEL" String="Delete pack" />
     <Translation ID="TRN_CHOICE" String="Set language" />
