@@ -4,6 +4,7 @@
 - New feature: adjust crime rate
 - Rearrange options panel layout and add sub-tabs as required
 - Add custom mouse button keybinding option
+- Upgrade to Harmony 2
 
 
 Version 1.4.3 -

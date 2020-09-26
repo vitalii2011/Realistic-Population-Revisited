@@ -1,5 +1,6 @@
 ﻿using ICities;
 using ColossalFramework.UI;
+using CitiesHarmony.API;
 
 
 namespace RealisticPopulationRevisited
@@ -26,10 +27,27 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Called by the game when the mod is disabled.
+        /// </summary>
+        public void OnDisabled()
+        {
+            // Unapply Harmony patches via Cities Harmony.
+            if (HarmonyHelper.IsHarmonyInstalled)
+            {
+                Patcher.UnpatchAll();
+            }
+        }
+
+
+        /// <summary>
         /// Adds the options panel event handler for the start screen (to enable/disable options panel based on visibility).
         /// </summary>
         public void OnEnabled()
         {
+            // Apply Harmony patches via Cities Harmony.
+            // Called here instead of OnCreated to allow the auto-downloader to do its work prior to launch.
+            HarmonyHelper.DoOnHarmonyReady(() => Patcher.PatchAll());
+
             // Load settings file.
             SettingsUtils.LoadSettings();
 

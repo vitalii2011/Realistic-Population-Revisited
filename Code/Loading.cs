@@ -6,16 +6,12 @@ using ICities;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
-using Harmony;
 
 
 namespace RealisticPopulationRevisited
 {
     public class Loading : LoadingExtensionBase
     {
-        const string HarmonyID = "com.github.algernon-A.csl.realisticpopulationrevisited";
-        private HarmonyInstance _harmony = HarmonyInstance.Create(HarmonyID);
-
         private static volatile bool isModEnabled = false;
         private static volatile bool isLevelLoaded = false;
 
@@ -49,11 +45,7 @@ namespace RealisticPopulationRevisited
             else if (!isModEnabled)
             {
                 isModEnabled = true;
-
-                // Harmony patches.
                 Debugging.Message("version v" + RealPopMod.Version + " loading");
-                _harmony.PatchAll(GetType().Assembly);
-                Debugging.Message("patching complete");
 
                 MergeDefaultBonus();
 
@@ -130,18 +122,6 @@ namespace RealisticPopulationRevisited
                         // Don't care
                     }
                 }
-            }
-        }
-
-        public override void OnReleased()
-        {
-            if (isModEnabled)
-            {
-                isModEnabled = false;
-
-                // Unapply Harmony patches.
-                _harmony.UnpatchAll(HarmonyID);
-                Debugging.Message("patches unapplied");
             }
         }
 
