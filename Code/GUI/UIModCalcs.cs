@@ -40,7 +40,7 @@ namespace RealisticPopulationRevisited
 
             // Volumetric calculations panel.
             volumetricPanel = this.AddUIComponent<UIVolumetricPanel>();
-            volumetricPanel.relativePosition = new Vector3(0, title.height + 80f);
+            volumetricPanel.relativePosition = new Vector3(0, title.height + 120f);
             volumetricPanel.height = this.height - title.height + 80f;
             volumetricPanel.width = this.width;
             volumetricPanel.Setup();
@@ -58,12 +58,32 @@ namespace RealisticPopulationRevisited
 
             // Preset description.
             packDescription = this.AddUIComponent<UILabel>();
-            packDescription.relativePosition = new Vector3(10f, packMenu.relativePosition.y + packMenu.height + 15f);
+            packDescription.relativePosition = new Vector2(10f, packMenu.relativePosition.y + packMenu.height + 15f);
             packDescription.autoSize = false;
             packDescription.autoHeight = true;
             packDescription.wordWrap = true;
             packDescription.textScale = 0.7f;
             packDescription.width = legacyPanel.width - 20f;
+
+            // Preset description.
+            packDescription = this.AddUIComponent<UILabel>();
+            packDescription.relativePosition = new Vector2(10f, packMenu.relativePosition.y + packMenu.height + 15f);
+            packDescription.autoSize = false;
+            packDescription.autoHeight = true;
+            packDescription.wordWrap = true;
+            packDescription.textScale = 0.7f;
+            packDescription.width = legacyPanel.width - 20f;
+
+            // Apply button.
+            UIButton applyButton = UIUtils.CreateButton(this, 200f);
+            applyButton.relativePosition = new Vector2(10f, title.height + 80f);
+            applyButton.text = Translations.Translate("RPR_OPT_SAA");
+            applyButton.eventClicked += (control, clickEvent) =>
+            {
+                // Update building setting and save.
+                PopData.UpdateBuildingPack(currentBuilding, currentPack);
+                ConfigUtils.SaveSettings();
+            };
 
             // Dropdown event handler.
             packMenu.eventSelectedIndexChanged += (component, index) => UpdatePackSelection(index);
@@ -81,10 +101,6 @@ namespace RealisticPopulationRevisited
 
             // Update description.
             packDescription.text = currentPack.description;
-
-            // Update building setting and save.
-            PopData.UpdateBuildingPack(currentBuilding, currentPack);
-            ConfigUtils.SaveSettings();
 
             // Check if we're using legacy or volumetric data.
             if (currentPack is VolumetricPack)

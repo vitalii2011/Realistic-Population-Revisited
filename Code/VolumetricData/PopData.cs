@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using ColossalFramework;
+using ColossalFramework.Math;
 
 
 namespace RealisticPopulationRevisited
@@ -647,6 +649,10 @@ namespace RealisticPopulationRevisited
             {
                 // Remove from household cache.
                 DataStore.prefabHouseHolds.Remove(building.gameObject.GetHashCode());
+
+                // Update household counts for existing instances of this building - only needed for residential buildings.
+                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
+                UpdateHouseholds(buildingName);
             }
             else
             {
@@ -801,6 +807,43 @@ namespace RealisticPopulationRevisited
             }
 
             return list.ToArray();
+        }
+
+
+
+
+        /// <summary>
+        /// Updates the household numbers of already existing (placed/grown) residential building instances to the current prefab value.
+        /// Called after updating a residential prefab's household count in order to apply changes to existing buildings.
+        /// </summary>
+        /// <param name="prefabName">The (raw BuildingInfo) name of the prefab</param>
+        internal static void UpdateHouseholds(string prefabName)
+        {
+            // Get building manager instance.
+            var instance = Singleton<BuildingManager>.instance;
+
+            // Iterate through each building in the scene.
+            for (ushort i = 0; i < instance.m_buildings.m_buffer.Length; i++)
+            {
+                // Get current building instance.
+                Building thisBuilding = instance.m_buildings.m_buffer[i];
+
+                // Only interested in residential buildings.
+                BuildingAI thisAI = thisBuilding.Info?.GetAI() as ResidentialBuildingAI;
+                if (thisAI != null)
+                {
+                    // Residential building; check for name match.
+                    if (thisBuilding.Info.name.Equals(prefabName))
+                    {
+                        // Got one!  Recalculate home and visit counts.
+                        int homeCount = ((ResidentialBuildingAI)thisAI).CalculateHomeCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
+                        int visitCount = ((ResidentialBuildingAI)thisAI).CalculateVisitplaceCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
+
+                        // Apply changes via direct call to EnsureCitizenUnits prefix patch from this mod.
+                        RealisticCitizenUnits.Prefix(ref thisAI, i, ref thisBuilding, homeCount, 0, visitCount, 0);
+                    }
+                }
+            }
         }
     }
 }
