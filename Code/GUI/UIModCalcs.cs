@@ -54,11 +54,11 @@ namespace RealisticPopulationRevisited
             legacyPanel.Hide();
 
             // Preset dropdown.
-            packMenu = PanelUtils.LabelledDropDown(this, Translations.Translate("RPR_PCK_NAM"), yPos: title.height);;
+            packMenu = PanelUtils.LabelledDropDown(this, Translations.Translate("RPR_PCK_NAM"), yPos: title.height + 5f);
 
             // Preset description.
             packDescription = this.AddUIComponent<UILabel>();
-            packDescription.relativePosition = new Vector3(legacyPanel.relativePosition.x + 10f, packMenu.parent.relativePosition.y + packMenu.parent.height + 15f);
+            packDescription.relativePosition = new Vector3(10f, packMenu.relativePosition.y + packMenu.height + 15f);
             packDescription.autoSize = false;
             packDescription.autoHeight = true;
             packDescription.wordWrap = true;

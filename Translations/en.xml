@@ -149,6 +149,7 @@
     <Translation ID="RPR_OPT_CPK" String="Calculation pack" />
     <Translation ID="RPR_OPT_NEW" String="Add new" />
     <Translation ID="RPR_OPT_DEL" String="Delete pack" />
+    <Translation ID="RPR_OPT_NPK" String="New pack" />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
   </Translations>

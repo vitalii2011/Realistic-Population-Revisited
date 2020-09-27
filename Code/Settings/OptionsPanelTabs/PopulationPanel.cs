@@ -127,8 +127,25 @@ namespace RealisticPopulationRevisited
             addNewButton.text = Translations.Translate("RPR_OPT_NEW");
             addNewButton.eventClicked += (control, clickEvent) =>
             {
-                // Set pack name field to a basic new name.
-                packNameField.text = "NewPack";
+                // Default new pack name.
+                string basePackName = Translations.Translate("RPR_OPT_NPK");
+                string newPackName = basePackName;
+
+                // Integer suffix for when the above name already exists (starts with 2).
+                int packNum = 2;
+
+                // Current service.
+                ItemClass.Service currentService = services[serviceDropDown.selectedIndex];
+
+                // Starting with our default new pack name, check to see if we already have a pack with this name for the currently selected service.
+                while (PopData.calcPacks.Find(pack => pack.service == currentService && pack.name.Equals(newPackName)) != null)
+                {
+                    // We already have a match for this name; append the current integer suffix to the base name and try again, incementing the integer suffix for the next attempt (if required).
+                    newPackName = "New pack " + packNum++;
+                }
+
+                // We now have a unique name; set the textfield.
+                packNameField.text = newPackName;
 
                 // New pack to add.
                 VolumetricPack newPack = new VolumetricPack();
@@ -140,11 +157,11 @@ namespace RealisticPopulationRevisited
                 PopData.AddCalculationPack(newPack);
                 DefaultsPanel.instance.UpdateMenus();
 
-                // Save configuration file.
+                // Save configuration file. 
                 ConfigUtils.SaveSettings();
 
                 // Update pack menu.
-                packDropDown.items = PackList(services[serviceDropDown.selectedIndex]);
+                packDropDown.items = PackList(currentService);
 
                 // Set pack selection by iterating through each pack in the menu and looking for a match.
                 for (int i = 0; i < packDropDown.items.Length; ++i)

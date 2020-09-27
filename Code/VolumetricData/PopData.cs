@@ -641,6 +641,18 @@ namespace RealisticPopulationRevisited
                 // No entry yet and the pack isn't the default - add a custom entry.
                 buildingDict.Add(buildingName, pack);
             }
+
+            // Clear out any cached calculations for households.workplaces (depending on whether or not this is residential).
+            if (building.GetService() == ItemClass.Service.Residential)
+            {
+                // Remove from household cache.
+                DataStore.prefabHouseHolds.Remove(building.gameObject.GetHashCode());
+            }
+            else
+            {
+                // Remove from workplace cache.
+                DataStore.prefabWorkerVisit.Remove(building.gameObject.GetHashCode());
+            }
         }
 
 
