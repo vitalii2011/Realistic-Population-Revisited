@@ -24,7 +24,7 @@ namespace RealisticPopulationRevisited
         private UILabel floorAreaLabel;
         private UILabel totalLabel;
         private UILabel firstMinLabel;
-        private UILabel firstMaxLabel;
+        private UILabel firstExtraLabel;
         private UILabel floorHeightLabel;
         private UILabel perLabel;
         // Checkbox.
@@ -58,7 +58,7 @@ namespace RealisticPopulationRevisited
             totalLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_UTS"), margin + (2f * 30f));
             floorHeightLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), margin + (3f * 30f));
             firstMinLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), margin + (4f * 30f));
-            firstMaxLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), margin + (5f * 30f));
+            firstExtraLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), margin + (5f * 30f));
             perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), margin + (6f * 30f));
 
             // Checkbox.
@@ -95,7 +95,7 @@ namespace RealisticPopulationRevisited
         {
             // Set textfield values.
             firstMinLabel.text = levelData.firstFloorMin.ToString();
-            firstMaxLabel.text = levelData.firstFloorMax.ToString();
+            firstExtraLabel.text = levelData.firstFloorExtra.ToString();
             floorHeightLabel.text = levelData.floorHeight.ToString();
             perLabel.text = levelData.areaPer.ToString();
 

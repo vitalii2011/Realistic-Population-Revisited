@@ -92,7 +92,7 @@
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />
     <Translation ID="RPR_CAL_VOL_FLH" String="Floor height" />
     <Translation ID="RPR_CAL_VOL_FMN" String="First floor height min" />
-    <Translation ID="RPR_CAL_VOL_FMX" String="First floor height max" />
+    <Translation ID="RPR_CAL_VOL_FMX" String="First floor extra height" />
     <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
     <Translation ID="RPR_CAL_VOL_MFU" String="Multi-&#x200B;floor units" />

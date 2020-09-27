@@ -30,7 +30,7 @@ namespace RealisticPopulationRevisited
         int[] maxLevels = { 5, 3, 3, 3 };
 
         // Textfield arrays.
-        protected UITextField[] floorHeightFields, areaPerFields, firstMinFields, firstMaxFields;
+        protected UITextField[] floorHeightFields, areaPerFields, firstMinFields, firstExtraFields;
         protected UICheckBox[] firstEmptyCheck, multiFloorCheck;
         protected UILabel[] rowLabels;
 
@@ -61,7 +61,7 @@ namespace RealisticPopulationRevisited
             floorHeightFields = new UITextField[5];
             areaPerFields = new UITextField[5];
             firstMinFields = new UITextField[5];
-            firstMaxFields = new UITextField[5];
+            firstExtraFields = new UITextField[5];
             firstEmptyCheck = new UICheckBox[5];
             multiFloorCheck = new UICheckBox[5];
             rowLabels = new UILabel[5];
@@ -97,8 +97,8 @@ namespace RealisticPopulationRevisited
                 firstMinFields[i] = AddTextField(panel, TextFieldWidth, FirstMinX + Margin, currentY);
                 firstMinFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-                firstMaxFields[i] = AddTextField(panel, TextFieldWidth, FirstMaxX + Margin, currentY);
-                firstMaxFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+                firstExtraFields[i] = AddTextField(panel, TextFieldWidth, FirstMaxX + Margin, currentY);
+                firstExtraFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
                 firstEmptyCheck[i] = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);
                 multiFloorCheck[i] = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);
@@ -285,7 +285,7 @@ namespace RealisticPopulationRevisited
                     floorHeightFields[i].Show();
                     areaPerFields[i].Show();
                     firstMinFields[i].Show();
-                    firstMaxFields[i].Show();
+                    firstExtraFields[i].Show();
                     firstEmptyCheck[i].Show();
                     multiFloorCheck[i].Show();
                 }
@@ -296,7 +296,7 @@ namespace RealisticPopulationRevisited
                     floorHeightFields[i].Hide();
                     areaPerFields[i].Hide();
                     firstMinFields[i].Hide();
-                    firstMaxFields[i].Hide();
+                    firstExtraFields[i].Hide();
                     firstEmptyCheck[i].Hide();
                     multiFloorCheck[i].Hide();
                 }
@@ -324,7 +324,7 @@ namespace RealisticPopulationRevisited
                 PanelUtils.ParseFloat(ref pack.levels[i].floorHeight, floorHeightFields[i].text);
                 PanelUtils.ParseInt(ref pack.levels[i].areaPer, areaPerFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].firstFloorMin, firstMinFields[i].text);
-                PanelUtils.ParseFloat(ref pack.levels[i].firstFloorMax, firstMaxFields[i].text);
+                PanelUtils.ParseFloat(ref pack.levels[i].firstFloorExtra, firstExtraFields[i].text);
 
                 // Checkboxes.
                 pack.levels[i].firstFloorEmpty = firstEmptyCheck[i].isChecked;
@@ -440,7 +440,7 @@ namespace RealisticPopulationRevisited
                 floorHeightFields[i].text = level.floorHeight.ToString();
                 areaPerFields[i].text = level.areaPer.ToString();
                 firstMinFields[i].text = level.firstFloorMin.ToString();
-                firstMaxFields[i].text = level.firstFloorMax.ToString();
+                firstExtraFields[i].text = level.firstFloorExtra.ToString();
                 firstEmptyCheck[i].isChecked = level.firstFloorEmpty;
                 multiFloorCheck[i].isChecked = level.multiFloorUnits;
             }

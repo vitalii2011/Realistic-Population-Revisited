@@ -136,8 +136,8 @@ namespace RealisticPopulationRevisited
         public float firstMin;
 
         // Floor height.
-        [XmlAttribute("firstmax")]
-        public float firstMax;
+        [XmlAttribute("firstextra")]
+        public float firstExtra;
 
         // First floor empty.
         [XmlAttribute("firstempty")]

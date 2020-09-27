@@ -58,7 +58,7 @@ namespace RealisticPopulationRevisited
                                         floorHeight = calculationLevel.floorHeight,
                                         areaPer = calculationLevel.areaPer,
                                         firstFloorMin = calculationLevel.firstMin,
-                                        firstFloorMax = calculationLevel.firstMax,
+                                        firstFloorExtra = calculationLevel.firstExtra,
                                         firstFloorEmpty = calculationLevel.firstEmpty,
                                         multiFloorUnits = calculationLevel.multiLevel
                                     };
@@ -189,7 +189,7 @@ namespace RealisticPopulationRevisited
                                         floorHeight = volPack.levels[i].floorHeight,
                                         areaPer = volPack.levels[i].areaPer,
                                         firstMin = volPack.levels[i].firstFloorMin,
-                                        firstMax = volPack.levels[i].firstFloorMax,
+                                        firstExtra = volPack.levels[i].firstFloorExtra,
                                         firstEmpty = volPack.levels[i].firstFloorEmpty,
                                         multiLevel = volPack.levels[i].multiFloorUnits
                                     };

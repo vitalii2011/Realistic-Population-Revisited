@@ -22,8 +22,8 @@
         // Height needs to be at least this high, in metres, for any floor to exist.
         public float firstFloorMin;
 
-        // Extend first floor height to this maximum, in metres.
-        public float firstFloorMax;
+        // Extend first floor height by this additional amount, in metres.
+        public float firstFloorExtra;
 
         // True if the first floor should be excluded from calculations (e.g. for foyers/lobbies).
         public bool firstFloorEmpty;
