@@ -74,7 +74,7 @@
     <Translation ID="RPR_CAT_SSH" String="Self-sufficient homes" />
     <Translation ID="RPR_CAT_ERL" String="Eco residential low" />
     <Translation ID="RPR_CAT_ERH" String="Eco residential high" />
-    <Translation ID="RPR_CAT_EDU" String="Education" />
+    <Translation ID="RPR_CAT_SCH" String="Schools" />
     <Translation ID="RPR_FIL_NAME" String="Name:" />
     <Translation ID="RPR_CUS_HAS" String="Has custom settings" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />

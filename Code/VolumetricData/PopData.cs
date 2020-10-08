@@ -130,10 +130,10 @@ namespace RealisticPopulationRevisited
                     for (int i = 0; i < floors.Count; ++i)
                     {
                         // Subtract any unallocated empty space.
-                        if (emptyArea != 0)
+                        if (emptyArea > 0)
                         {
-                            // Get the space to be allocated against this floor - maximum of remaining (unallocated) empty space and this floor size.
-                            float emptyAllocation = UnityEngine.Mathf.Max(emptyArea, floors[i]);
+                            // Get the space to be allocated against this floor - minimum of remaining (unallocated) empty space and this floor size.
+                            float emptyAllocation = UnityEngine.Mathf.Min(emptyArea, floors[i]);
 
                             // Subtract empty space to be allocated from both this floor area and our unallocated empty space (because it's now allocated).
                             floors[i] -= emptyAllocation;

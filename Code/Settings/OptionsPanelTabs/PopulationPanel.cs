@@ -26,9 +26,9 @@ namespace RealisticPopulationRevisited
         protected const float LeftItem = 75f;
         protected const float RowHeight = 23f;
 
-        string[] serviceNames = { Translations.Translate("RPR_CAT_RES"), Translations.Translate("RPR_CAT_IND"), Translations.Translate("RPR_CAT_COM"), Translations.Translate("RPR_CAT_OFF") };
-        ItemClass.Service[] services = { ItemClass.Service.Residential, ItemClass.Service.Industrial, ItemClass.Service.Commercial, ItemClass.Service.Office };
-        int[] maxLevels = { 5, 3, 3, 3 };
+        string[] serviceNames = { Translations.Translate("RPR_CAT_RES"), Translations.Translate("RPR_CAT_IND"), Translations.Translate("RPR_CAT_COM"), Translations.Translate("RPR_CAT_OFF"), Translations.Translate("RPR_CAT_SCH") };
+        ItemClass.Service[] services = { ItemClass.Service.Residential, ItemClass.Service.Industrial, ItemClass.Service.Commercial, ItemClass.Service.Office, ItemClass.Service.Education };
+        int[] maxLevels = { 5, 3, 3, 3, 2 };
 
         // Textfield arrays.
         protected UITextField[] floorHeightFields, emptyAreaFields, areaPerFields, firstMinFields, firstExtraFields;

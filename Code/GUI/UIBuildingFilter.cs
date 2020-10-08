@@ -111,7 +111,7 @@ namespace RealisticPopulationRevisited
             "RPR_CAT_LEI",
             "RPR_CAT_ORG",
             "RPR_CAT_SSH",
-            "RPR_CAT_EDU"
+            "RPR_CAT_SCH"
         };
     }
 
