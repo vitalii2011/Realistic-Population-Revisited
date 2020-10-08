@@ -127,6 +127,10 @@ namespace RealisticPopulationRevisited
         [XmlAttribute("floorheight")]
         public float floorHeight;
 
+        // Empty area.
+        [XmlAttribute("empty")]
+        public int emptyArea;
+
         // Area per unit.
         [XmlAttribute("areaper")]
         public int areaPer;

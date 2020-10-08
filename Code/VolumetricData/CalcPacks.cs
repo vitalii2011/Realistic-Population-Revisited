@@ -16,6 +16,9 @@
         // Height per floor in metres.
         public float floorHeight;
 
+        // Empty area (if any) to be subtracted from building before any calculations are made.
+        public int emptyArea;
+
         // Area per unit (household/worker), in square metres.
         public int areaPer;
 

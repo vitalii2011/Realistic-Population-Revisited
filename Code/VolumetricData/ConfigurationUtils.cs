@@ -56,6 +56,7 @@ namespace RealisticPopulationRevisited
                                     volPack.levels[calculationLevel.level] = new LevelData()
                                     {
                                         floorHeight = calculationLevel.floorHeight,
+                                        emptyArea = calculationLevel.emptyArea,
                                         areaPer = calculationLevel.areaPer,
                                         firstFloorMin = calculationLevel.firstMin,
                                         firstFloorExtra = calculationLevel.firstExtra,
@@ -187,6 +188,7 @@ namespace RealisticPopulationRevisited
                                     {
                                         level = i,
                                         floorHeight = volPack.levels[i].floorHeight,
+                                        emptyArea = volPack.levels[i].emptyArea,
                                         areaPer = volPack.levels[i].areaPer,
                                         firstMin = volPack.levels[i].firstFloorMin,
                                         firstExtra = volPack.levels[i].firstFloorExtra,

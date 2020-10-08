@@ -26,6 +26,7 @@ namespace RealisticPopulationRevisited
         private UILabel firstMinLabel;
         private UILabel firstExtraLabel;
         private UILabel floorHeightLabel;
+        private UILabel emptyAreaLabel;
         private UILabel perLabel;
         // Checkbox.
         private UICheckBox ignoreFirstCheckBox;
@@ -59,10 +60,11 @@ namespace RealisticPopulationRevisited
             floorHeightLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), margin + (3f * 30f));
             firstMinLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), margin + (4f * 30f));
             firstExtraLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), margin + (5f * 30f));
-            perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), margin + (6f * 30f));
+            emptyAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), margin + (6f * 30f));
+            perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), margin + (7f * 30f));
 
             // Checkbox.
-            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), margin + (7f * 30f));
+            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), margin + (8f * 30f));
             ignoreFirstCheckBox.enabled = false;
 
             // Floor panel.
@@ -97,6 +99,7 @@ namespace RealisticPopulationRevisited
             firstMinLabel.text = levelData.firstFloorMin.ToString();
             firstExtraLabel.text = levelData.firstFloorExtra.ToString();
             floorHeightLabel.text = levelData.floorHeight.ToString();
+            emptyAreaLabel.text = levelData.emptyArea.ToString();
             perLabel.text = levelData.areaPer.ToString();
 
             // Set checkbox.
