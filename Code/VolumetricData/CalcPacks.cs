@@ -17,10 +17,10 @@
         public float floorHeight;
 
         // Empty area (if any) to be subtracted from building before any calculations are made.
-        public int emptyArea;
+        public float emptyArea;
 
         // Area per unit (household/worker), in square metres.
-        public int areaPer;
+        public float areaPer;
 
         // Height needs to be at least this high, in metres, for any floor to exist.
         public float firstFloorMin;

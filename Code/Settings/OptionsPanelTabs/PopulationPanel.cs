@@ -330,8 +330,8 @@ namespace RealisticPopulationRevisited
             {
                 // Textfields.
                 PanelUtils.ParseFloat(ref pack.levels[i].floorHeight, floorHeightFields[i].text);
-                PanelUtils.ParseInt(ref pack.levels[i].emptyArea, emptyAreaFields[i].text);
-                PanelUtils.ParseInt(ref pack.levels[i].areaPer, areaPerFields[i].text);
+                PanelUtils.ParseFloat(ref pack.levels[i].emptyArea, emptyAreaFields[i].text);
+                PanelUtils.ParseFloat(ref pack.levels[i].areaPer, areaPerFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].firstFloorMin, firstMinFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].firstFloorExtra, firstExtraFields[i].text);
 
