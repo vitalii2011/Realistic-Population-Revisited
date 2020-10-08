@@ -587,9 +587,23 @@ namespace RealisticPopulationRevisited
             mnHigh.service = ItemClass.Service.Education;
             mnHigh.subServices = null;
             mnHigh.levels = new LevelData[2];
-            mnHigh.levels[0] = new LevelData { floorHeight = 4, emptyArea = 0f, areaPer = 9f, firstFloorMin = 3f, firstFloorExtra = 1f, firstFloorEmpty = false, multiFloorUnits = false };
-            mnHigh.levels[1] = new LevelData { floorHeight = 4, emptyArea = 0f, areaPer = 14f, firstFloorMin = 3f, firstFloorExtra = 1f, firstFloorEmpty = false, multiFloorUnits = false };
+            mnHigh.levels[0] = new LevelData { floorHeight = 4f, emptyArea = 0f, areaPer = 9f, firstFloorMin = 3f, firstFloorExtra = 1f, firstFloorEmpty = false, multiFloorUnits = false };
+            mnHigh.levels[1] = new LevelData { floorHeight = 4f, emptyArea = 0f, areaPer = 14f, firstFloorMin = 3f, firstFloorExtra = 1f, firstFloorEmpty = false, multiFloorUnits = false };
             calcPacks.Add(mnHigh);
+
+            // UK schools.
+            // Figures are from Planning Statement - Warwickshire County Council.
+            VolumetricPack ukHigh = new VolumetricPack();
+            ukHigh.name = "schoolmnhigh";
+            ukHigh.displayName = Translations.Translate("RPR_PCK_SUK_NAM");
+            ukHigh.description = Translations.Translate("RPR_PCK_SUK_DES");
+            ukHigh.version = (int)DataVersion.one;
+            ukHigh.service = ItemClass.Service.Education;
+            ukHigh.subServices = null;
+            ukHigh.levels = new LevelData[2];
+            ukHigh.levels[0] = new LevelData { floorHeight = 3.5f, emptyArea = 350f, areaPer = 4.1f, firstFloorMin = 3f, firstFloorExtra = 0.5f, firstFloorEmpty = false, multiFloorUnits = true };
+            ukHigh.levels[1] = new LevelData { floorHeight = 3.5f, emptyArea = 1400f, areaPer = 6.3f, firstFloorMin = 3f, firstFloorExtra = 0.5f, firstFloorEmpty = false, multiFloorUnits = true };
+            calcPacks.Add(ukHigh);
 
             // Initialise building and service dictionaries.
             serviceDict = new Dictionary<ItemClass.Service, Dictionary<ItemClass.SubService, CalcPack>>();

@@ -46,6 +46,8 @@
     <Translation ID="RPR_PCK_SMM_DES" String="Minnesota Dept of Education guide - medium density" />
     <Translation ID="RPR_PCK_SMH_NAM" String="MN high" />
     <Translation ID="RPR_PCK_SMH_DES" String="Minnesota Dept of Education guide - highest density" />
+    <Translation ID="RPR_PCK_SUK_NAM" String="UK standard" />
+    <Translation ID="RPR_PCK_SUK_DES" String="Standard planning densities for the UK." />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
     <Translation ID="RPR_CAT_RHI" String="Residential high" />

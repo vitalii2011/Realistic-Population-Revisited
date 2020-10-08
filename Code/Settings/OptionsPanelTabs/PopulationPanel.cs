@@ -95,10 +95,10 @@ namespace RealisticPopulationRevisited
                 floorHeightFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
                 emptyAreaFields[i] = AddTextField(panel, TextFieldWidth, EmptyAreaX + Margin, currentY);
-                emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
+                emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
                 areaPerFields[i] = AddTextField(panel, TextFieldWidth, AreaPerX + Margin, currentY);
-                areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
+                areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
                 firstMinFields[i] = AddTextField(panel, TextFieldWidth, FirstMinX + Margin, currentY);
                 firstMinFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
