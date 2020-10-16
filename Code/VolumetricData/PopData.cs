@@ -594,7 +594,7 @@ namespace RealisticPopulationRevisited
             // UK schools.
             // Figures are from Planning Statement - Warwickshire County Council.
             VolumetricPack ukHigh = new VolumetricPack();
-            ukHigh.name = "schoolmnhigh";
+            ukHigh.name = "schoolukhigh";
             ukHigh.displayName = Translations.Translate("RPR_PCK_SUK_NAM");
             ukHigh.description = Translations.Translate("RPR_PCK_SUK_DES");
             ukHigh.version = (int)DataVersion.one;
