@@ -25,7 +25,8 @@ namespace RealisticPopulationRevisited
             Translations.Translate("RPR_CAT_FAR"),
             Translations.Translate("RPR_CAT_FOR"),
             Translations.Translate("RPR_CAT_OIL"),
-            Translations.Translate("RPR_CAT_ORE")
+            Translations.Translate("RPR_CAT_ORE"),
+            Translations.Translate("RPR_CAT_SCH")
         };
 
         ItemClass.Service[] services =
@@ -45,7 +46,8 @@ namespace RealisticPopulationRevisited
             ItemClass.Service.Industrial,
             ItemClass.Service.Industrial,
             ItemClass.Service.Industrial,
-            ItemClass.Service.Industrial
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Education
         };
 
         ItemClass.SubService[] subServices =
@@ -65,7 +67,8 @@ namespace RealisticPopulationRevisited
             ItemClass.SubService.IndustrialFarming,
             ItemClass.SubService.IndustrialForestry,
             ItemClass.SubService.IndustrialOil,
-            ItemClass.SubService.IndustrialOre
+            ItemClass.SubService.IndustrialOre,
+            ItemClass.SubService.None
         };
 
         string[] iconNames =
@@ -85,7 +88,8 @@ namespace RealisticPopulationRevisited
             "IconPolicyFarming",
             "IconPolicyForest",
             "IconPolicyOil",
-            "IconPolicyOre"
+            "IconPolicyOre",
+            "ToolbarIconEducation"
         };
 
         string[] atlasNames =
@@ -102,6 +106,7 @@ namespace RealisticPopulationRevisited
             "Thumbnails",
             "Ingame",
             "Thumbnails",
+            "Ingame",
             "Ingame",
             "Ingame",
             "Ingame",

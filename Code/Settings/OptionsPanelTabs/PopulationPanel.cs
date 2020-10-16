@@ -38,6 +38,7 @@ namespace RealisticPopulationRevisited
         // Panel components.
         protected UIDropDown packDropDown, serviceDropDown;
         protected UITextField packNameField;
+        protected UIButton saveButton, deleteButton;
 
         // List of packs.
         List<VolumetricPack> packList;
@@ -182,7 +183,7 @@ namespace RealisticPopulationRevisited
             };
 
             // Save pack button.
-            UIButton saveButton = UIUtils.CreateButton(panel, 200f);
+            saveButton = UIUtils.CreateButton(panel, 200f);
             saveButton.relativePosition = new Vector3(250f, currentY);
             saveButton.text = Translations.Translate("RPR_OPT_SAA");
 
@@ -204,7 +205,7 @@ namespace RealisticPopulationRevisited
             };
             
             // Delete pack button.
-            UIButton deleteButton = UIUtils.CreateButton(panel, 200f);
+            deleteButton = UIUtils.CreateButton(panel, 200f);
             deleteButton.relativePosition = new Vector3(480f, currentY);
             deleteButton.text = Translations.Translate("RPR_OPT_DEL");
             deleteButton.eventClicked += (control, clickEvent) =>
@@ -241,19 +242,8 @@ namespace RealisticPopulationRevisited
                     }
                 }
 
-                // Enable save and delete buttons and name textfield if this is a custom pack, otherwise disable.
-                if (packList[index].version == (int)DataVersion.customOne)
-                {
-                    packNameField.Enable();
-                    saveButton.Enable();
-                    deleteButton.Enable();
-                }
-                else
-                {
-                    packNameField.Disable();
-                    saveButton.Disable();
-                    deleteButton.Disable();
-                }
+                // Update button states.
+                ButtonStates(index);
             };
 
             // Service drop down event handler
@@ -265,14 +255,15 @@ namespace RealisticPopulationRevisited
                 // Reset pack menu items.
                 packDropDown.items = PackList(services[index]);
 
-                // Reset pack selection.  Pack drop down event handler will deal with button states.
+                // Reset pack selection and force update of fields and button states.
                 packDropDown.selectedIndex = 0;
+                PopulateTextFields(0);
+                ButtonStates(0);
             };
 
             // Set service menu to initial state (residential), which will also update textfield visibility via event handler.
             serviceDropDown.selectedIndex = 0;
         }
-
 
 
         /// <summary>
@@ -308,6 +299,28 @@ namespace RealisticPopulationRevisited
                     firstEmptyCheck[i].Hide();
                     multiFloorCheck[i].Hide();
                 }
+            }
+        }
+
+        
+        /// <summary>
+        /// Sets button and textfield enabled/disabled states.
+        /// </summary>
+        /// <param name="index">Selected pack list index</param>
+        private void ButtonStates(int index)
+        {
+            // Enable save and delete buttons and name textfield if this is a custom pack, otherwise disable.
+            if (packList[index].version == (int)DataVersion.customOne)
+            {
+                packNameField.Enable();
+                saveButton.Enable();
+                deleteButton.Enable();
+            }
+            else
+            {
+                packNameField.Disable();
+                saveButton.Disable();
+                deleteButton.Disable();
             }
         }
 

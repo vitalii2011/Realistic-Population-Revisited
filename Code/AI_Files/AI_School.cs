@@ -17,8 +17,8 @@ namespace RealisticPopulationRevisited
         /// <returns></returns>
         public static bool Prefix(SchoolAI __instance, ref int __result)
         {
-            // Check to see if we're using realistic school populations.
-            if (ModSettings.enableSchools)
+            // Check to see if we're using realistic school populations, and school level is elementary or high school.
+            if (ModSettings.enableSchools && __instance.m_info.GetClassLevel() <= ItemClass.Level.Level2)
             {
                 // We are - set the result to our realistic population lookup.
                 __result = PopData.Population(__instance.m_info, (int)__instance.m_info.GetClassLevel());
