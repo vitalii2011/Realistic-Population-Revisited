@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
+using UnityEngine;
 
 
 namespace RealisticPopulationRevisited
@@ -14,9 +14,12 @@ namespace RealisticPopulationRevisited
         private UISprite noPreviewSprite;
         private UIPreviewRenderer previewRender;
         private UILabel buildingName;
+        private UILabel buildingLevel;
+        private UILabel buildingSize;
 
         // Currently selected building and its pre-rendered (by game) equivalent for rendering.
         private BuildingInfo currentSelection;
+        private BuildingInfo renderPrefab;
 
 
         /// <summary>
@@ -27,19 +30,17 @@ namespace RealisticPopulationRevisited
         {
             // Update current selection to the new building.
             currentSelection = building;
+            renderPrefab = (currentSelection == null || currentSelection.name == null) ? null : (PrefabCollection<BuildingInfo>.FindLoaded(currentSelection.name));
 
             // Generate render if there's a selection with a mesh.
-            if (currentSelection != null && currentSelection.m_mesh != null)
+            if (renderPrefab != null && renderPrefab.m_mesh != null)
             {
                 // Set default values.
-                previewRender.CameraRotation = 210f; //30f;
+                previewRender.CameraRotation = 210f;
                 previewRender.Zoom = 4f;
 
                 // Set mesh and material for render.
-                //previewRender.SetTarget(currentSelection);
-                // OLD STUFF BELOW
-                previewRender.Mesh = currentSelection.m_mesh;
-                previewRender.material = currentSelection.m_material;
+                previewRender.SetTarget(renderPrefab);
 
                 // Set background.
                 previewSprite.texture = previewRender.Texture;
@@ -60,6 +61,8 @@ namespace RealisticPopulationRevisited
             if (building == null)
             {
                 buildingName.isVisible = false;
+                buildingLevel.isVisible = false;
+                buildingSize.isVisible = false;
             }
             else
             {
@@ -68,7 +71,19 @@ namespace RealisticPopulationRevisited
                 buildingName.text = UIBuildingDetails.GetDisplayName(currentSelection.name);
                 UIUtils.TruncateLabel(buildingName, width - 45);
                 buildingName.autoHeight = true;
-           }
+
+                // Set and show building level.
+                buildingLevel.isVisible = true;
+                buildingLevel.text = Translations.Translate("RPR_OPT_LVL") + " " + Mathf.Min((int)currentSelection.GetClassLevel() + 1, MaxLevelOf(currentSelection.GetSubService()));
+                UIUtils.TruncateLabel(buildingLevel, width - 45);
+                buildingLevel.autoHeight = true;
+
+                // Set and show building size.
+                buildingSize.isVisible = true;
+                buildingSize.text = currentSelection.GetWidth() + "x" + currentSelection.GetLength();
+                UIUtils.TruncateLabel(buildingSize, width - 45);
+                buildingSize.autoHeight = true;
+            }
         }
 
 
@@ -78,18 +93,18 @@ namespace RealisticPopulationRevisited
         private void RenderPreview()
         {
             // Don't do anything if there's no prefab to render.
-            if (currentSelection == null)
+            if (renderPrefab == null)
             {
                 return;
             }
 
             // If the selected building has colour variations, temporarily set the colour to the default for rendering.
-            if (currentSelection.m_useColorVariations)
+            if (renderPrefab.m_useColorVariations)
             {
-                Color originalColor = currentSelection.m_material.color;
-                currentSelection.m_material.color = currentSelection.m_color0;
+                Color originalColor = renderPrefab.m_material.color;
+                renderPrefab.m_material.color = renderPrefab.m_color0;
                 previewRender.Render();
-                currentSelection.m_material.color = originalColor;
+                renderPrefab.m_material.color = originalColor;
             }
             else
             {
@@ -148,6 +163,26 @@ namespace RealisticPopulationRevisited
             buildingName.text = "Name";
             buildingName.isVisible = false;
             buildingName.relativePosition = new Vector3(5, 10);
+
+            // Display building level.
+            buildingLevel = AddUIComponent<UILabel>();
+            buildingLevel.textScale = 0.9f;
+            buildingLevel.useDropShadow = true;
+            buildingLevel.dropShadowColor = new Color32(80, 80, 80, 255);
+            buildingLevel.dropShadowOffset = new Vector2(2, -2);
+            buildingLevel.text = "Level";
+            buildingLevel.isVisible = false;
+            buildingLevel.relativePosition = new Vector3(5, height - 20);
+
+            // Display building size.
+            buildingSize = AddUIComponent<UILabel>();
+            buildingSize.textScale = 0.9f;
+            buildingSize.useDropShadow = true;
+            buildingSize.dropShadowColor = new Color32(80, 80, 80, 255);
+            buildingSize.dropShadowOffset = new Vector2(2, -2);
+            buildingSize.text = "Size";
+            buildingSize.isVisible = false;
+            buildingSize.relativePosition = new Vector3(width - 50, height - 20);
         }
 
 
@@ -163,6 +198,32 @@ namespace RealisticPopulationRevisited
 
             // Render updated image.
             RenderPreview();
+        }
+
+
+        /// <summary>
+        /// Returns the maximum level permitted for each subservice.
+        /// </summary>
+        /// <param name="subService">SubService to check</param>
+        /// <returns>Maximum permitted building level for the given SubService</returns>
+        private int MaxLevelOf(ItemClass.SubService subService)
+        {
+            switch (subService)
+            {
+                case ItemClass.SubService.ResidentialLow:
+                case ItemClass.SubService.ResidentialHigh:
+                case ItemClass.SubService.ResidentialLowEco:
+                case ItemClass.SubService.ResidentialHighEco:
+                    return 5;
+                case ItemClass.SubService.CommercialLow:
+                case ItemClass.SubService.CommercialHigh:
+                case ItemClass.SubService.OfficeGeneric:
+                case ItemClass.SubService.IndustrialGeneric:
+                    return 3;
+                default:
+                    return 1;
+
+            }
         }
     }
 }
