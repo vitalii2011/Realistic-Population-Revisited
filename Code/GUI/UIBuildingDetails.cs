@@ -100,14 +100,15 @@ namespace RealisticPopulationRevisited
     public class UIBuildingDetails : UIPanel
     {
         // Constants.
-        private const float LeftWidth = 400;
-        private const float MiddleWidth = 250;
-        private const float RightWidth = 350;
-        private const float FilterHeight = 40;
+        private const float LeftWidth = 400f;
+        private const float MiddleWidth = 250f;
+        private const float RightWidth = 350f;
+        private const float FilterHeight = 40f;
         private const float PanelHeight = 550;
-        private const float BottomMargin = 10;
-        private const float Spacing = 5;
-        internal const float TitleHeight = 40;
+        private const float BottomMargin = 10f;
+        private const float Spacing = 5f;
+        internal const float TitleHeight = 40f;
+        private const float CheckFilterHeight = 30f;
 
         // Panel components.
         private UITitleBar titleBar;
@@ -163,8 +164,8 @@ namespace RealisticPopulationRevisited
                 // Left panel - list of buildings.
                 UIPanel leftPanel = AddUIComponent<UIPanel>();
                 leftPanel.width = LeftWidth;
-                leftPanel.height = PanelHeight;
-                leftPanel.relativePosition = new Vector3(Spacing, TitleHeight + FilterHeight + Spacing);
+                leftPanel.height = PanelHeight - CheckFilterHeight;
+                leftPanel.relativePosition = new Vector3(Spacing, TitleHeight + FilterHeight + CheckFilterHeight + Spacing);
 
                 // Middle panel - building preview and edit panels.
                 UIPanel middlePanel = AddUIComponent<UIPanel>();
@@ -340,6 +341,9 @@ namespace RealisticPopulationRevisited
                 {
                     continue;
                 }
+
+                // Filter by settings.
+                if (filterBar.SettingsFilter.isChecked && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0) continue;
 
                 // Finally!  We've got an item that's passed all filters; add it to the list.
                 filteredList.Add(item);

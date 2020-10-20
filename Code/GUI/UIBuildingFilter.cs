@@ -122,12 +122,16 @@ namespace RealisticPopulationRevisited
     public class UIBuildingFilter : UIPanel
     {
         // Panel components.
-        public UICheckBox[] categoryToggles;
-        public UIButton allCategories;
-        public UITextField nameFilter;
+        internal UICheckBox[] categoryToggles;
+        private UICheckBox settingsFilter;
+        internal UIButton allCategories;
+        internal UITextField nameFilter;
 
         // Basic event handler for filtering changes.
         public event PropertyChangedEventHandler<int> eventFilteringChanged;
+
+
+        internal UICheckBox SettingsFilter => settingsFilter;
 
 
         /// <summary>
@@ -199,6 +203,38 @@ namespace RealisticPopulationRevisited
             // Name filter event handling - update on any change.
             nameFilter.eventTextChanged += (c, s) => eventFilteringChanged(this, 5);
             nameFilter.eventTextSubmitted += (c, s) => eventFilteringChanged(this, 5);
+
+            // Create settings filters.
+            UILabel filterLabel = this.AddUIComponent<UILabel>();
+            filterLabel.textScale = 0.8f;
+            filterLabel.text = Translations.Translate("RPR_FIL_SET");
+            filterLabel.relativePosition = new Vector3(10, 40, 0);
+            filterLabel.autoSize = false;
+            filterLabel.height = 30f;
+            filterLabel.width = 280f;
+            filterLabel.wordWrap = true;
+            filterLabel.verticalAlignment = UIVerticalAlignment.Middle;
+
+            // Setting filter checkbox.
+            settingsFilter = this.AddUIComponent<UICheckBox>();
+            settingsFilter.width = 20f;
+            settingsFilter.height = 20f;
+            settingsFilter.clipChildren = true;
+            settingsFilter.relativePosition = new Vector3(340f, 45f);
+
+            // Checkbox sprites.
+            UISprite sprite = settingsFilter.AddUIComponent<UISprite>();
+            sprite.spriteName = "ToggleBase";
+            sprite.size = new Vector2(20f, 20f);
+            sprite.relativePosition = Vector3.zero;
+
+            settingsFilter.checkedBoxObject = sprite.AddUIComponent<UISprite>();
+            ((UISprite)settingsFilter.checkedBoxObject).spriteName = "ToggleBaseFocused";
+            settingsFilter.checkedBoxObject.size = new Vector2(20f, 20f);
+            settingsFilter.checkedBoxObject.relativePosition = Vector3.zero;
+
+            // Trigger filtering changed event if any checkbox is changed.
+            settingsFilter.eventCheckChanged += (control, isChecked) => { eventFilteringChanged(this, 0); };
         }
 
 

@@ -78,6 +78,7 @@
     <Translation ID="RPR_CAT_ERH" String="Eco residential high" />
     <Translation ID="RPR_CAT_SCH" String="Schools" />
     <Translation ID="RPR_FIL_NAME" String="Name:" />
+    <Translation ID="RPR_FIL_SET" String="Filter by custom settings" />
     <Translation ID="RPR_CUS_HAS" String="Has custom settings" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />
     <Translation ID="RPR_CUS_ADD" String="Add custom settings" />
