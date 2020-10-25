@@ -19,6 +19,9 @@
         // Empty area (if any) to be subtracted from building before any calculations are made.
         public float emptyArea;
 
+        // Empty area (if any) as a percentage to to be subtracted from each floor area AFTER fixed empty area (above) is subtracted.
+        public int emptyPercent;
+
         // Area per unit (household/worker), in square metres.
         public float areaPer;
 

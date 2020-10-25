@@ -117,11 +117,14 @@ namespace RealisticPopulationRevisited
                     floors = VolumetricFloors(buildingInfoGen, levelData, out floorArea);
                 }
 
+                // Determine area percentage to use for calculations (inverse of empty area percentage).
+                float areaPercent = 1 - (levelData.emptyPercent / 100f);
+
                 // See if we're calculating based on total building floor area, not per floor.
                 if (levelData.multiFloorUnits)
                 {
                     // Units base on total floor area: calculate number of units in total building (always rounded down), after subtracting exmpty space.
-                    totalUnits = (int)((floorArea - emptyArea) / levelData.areaPer);
+                    totalUnits = (int)(((floorArea - emptyArea) * areaPercent) / levelData.areaPer);
                 }
                 else
                 {
@@ -141,7 +144,7 @@ namespace RealisticPopulationRevisited
                         }
 
                         // Number of units on this floor - always rounded down.
-                        int floorUnits = (int)(floors[i] / levelData.areaPer);
+                        int floorUnits = (int)((floors[i] * areaPercent) / levelData.areaPer);
                         totalUnits += floorUnits;
                     }
                 }

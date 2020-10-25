@@ -27,6 +27,7 @@ namespace RealisticPopulationRevisited
         private UILabel firstExtraLabel;
         private UILabel floorHeightLabel;
         private UILabel emptyAreaLabel;
+        private UILabel emptyPercentLabel;
         private UILabel perLabel;
         // Checkbox.
         private UICheckBox ignoreFirstCheckBox;
@@ -61,7 +62,8 @@ namespace RealisticPopulationRevisited
             firstMinLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), margin + (4f * 30f));
             firstExtraLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), margin + (5f * 30f));
             emptyAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), margin + (6f * 30f));
-            perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), margin + (7f * 30f));
+            emptyPercentLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), margin + (7f * 30f));
+            perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), margin + (8f * 30f));
 
             // Checkbox.
             ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), margin + (8f * 30f));
@@ -100,6 +102,7 @@ namespace RealisticPopulationRevisited
             firstExtraLabel.text = levelData.firstFloorExtra.ToString();
             floorHeightLabel.text = levelData.floorHeight.ToString();
             emptyAreaLabel.text = levelData.emptyArea.ToString();
+            emptyPercentLabel.text = levelData.emptyPercent.ToString();
             perLabel.text = levelData.areaPer.ToString();
 
             // Set checkbox.
@@ -153,6 +156,9 @@ namespace RealisticPopulationRevisited
             // See if we're using area calculations for numbers of units, i.e. areaPer is at least one.
             if (levelData.areaPer > 0)
             {
+                // Determine area percentage to use for calculations (inverse of empty area percentage).
+                float areaPercent = 1 - (levelData.emptyPercent / 100f);
+
                 // Create new floor area labels by iterating through each floor.
                 for (int i = 0; i < floors.Count; ++i)
                 {
@@ -168,7 +174,7 @@ namespace RealisticPopulationRevisited
                     if (!levelData.multiFloorUnits)
                     {
                         // Number of units on this floor - always rounded down.
-                        int floorUnits = (int)(floors[i] / levelData.areaPer);
+                        int floorUnits = (int)((floors[i] * areaPercent) / levelData.areaPer);
 
                         // Add extra info to label.
                         floorString.Append(" (");

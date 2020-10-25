@@ -14,9 +14,10 @@ namespace RealisticPopulationRevisited
         protected const float Margin = 10f;
         protected const float TextFieldWidth = 60f;
         protected const float ColumnWidth = TextFieldWidth + (Margin * 2);
-        protected const float FloorHeightX = 200f;
+        protected const float FloorHeightX = 120f;
         protected const float EmptyAreaX = FloorHeightX + ColumnWidth;
-        protected const float AreaPerX = EmptyAreaX + ColumnWidth;
+        protected const float EmptyPercentX = EmptyAreaX + ColumnWidth;
+        protected const float AreaPerX = EmptyPercentX + ColumnWidth;
         protected const float FirstMinX = AreaPerX + ColumnWidth;
         protected const float FirstMaxX = FirstMinX + ColumnWidth;
         protected const float FirstEmptyX = FirstMaxX + ColumnWidth;
@@ -31,7 +32,7 @@ namespace RealisticPopulationRevisited
         int[] maxLevels = { 5, 3, 3, 3, 2 };
 
         // Textfield arrays.
-        protected UITextField[] floorHeightFields, emptyAreaFields, areaPerFields, firstMinFields, firstExtraFields;
+        protected UITextField[] floorHeightFields, emptyAreaFields, emptyPercentFields, areaPerFields, firstMinFields, firstExtraFields;
         protected UICheckBox[] firstEmptyCheck, multiFloorCheck;
         protected UILabel[] rowLabels;
 
@@ -62,6 +63,7 @@ namespace RealisticPopulationRevisited
             // Initialise arrays
             floorHeightFields = new UITextField[5];
             emptyAreaFields = new UITextField[5];
+            emptyPercentFields = new UITextField[5];
             areaPerFields = new UITextField[5];
             firstMinFields = new UITextField[5];
             firstExtraFields = new UITextField[5];
@@ -80,6 +82,7 @@ namespace RealisticPopulationRevisited
             // Headings.
             PanelUtils.ColumnLabel(panel, FloorHeightX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), 1.0f);
             PanelUtils.ColumnLabel(panel, EmptyAreaX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_EMP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, EmptyPercentX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_EPC"), 1.0f);
             PanelUtils.ColumnLabel(panel, AreaPerX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_APU"), 1.0f);
             PanelUtils.ColumnLabel(panel, FirstMinX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), 1.0f);
             PanelUtils.ColumnLabel(panel, FirstMaxX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), 1.0f);
@@ -97,6 +100,9 @@ namespace RealisticPopulationRevisited
 
                 emptyAreaFields[i] = AddTextField(panel, TextFieldWidth, EmptyAreaX + Margin, currentY);
                 emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+
+                emptyPercentFields[i] = AddTextField(panel, TextFieldWidth, EmptyPercentX + Margin, currentY);
+                emptyPercentFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
 
                 areaPerFields[i] = AddTextField(panel, TextFieldWidth, AreaPerX + Margin, currentY);
                 areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
@@ -281,6 +287,7 @@ namespace RealisticPopulationRevisited
                     rowLabels[i].Show();
                     floorHeightFields[i].Show();
                     emptyAreaFields[i].Show();
+                    emptyPercentFields[i].Show();
                     areaPerFields[i].Show();
                     firstMinFields[i].Show();
                     firstExtraFields[i].Show();
@@ -293,6 +300,7 @@ namespace RealisticPopulationRevisited
                     rowLabels[i].Hide();
                     floorHeightFields[i].Hide();
                     emptyAreaFields[i].Hide();
+                    emptyPercentFields[i].Hide();
                     areaPerFields[i].Hide();
                     firstMinFields[i].Hide();
                     firstExtraFields[i].Hide();
@@ -344,6 +352,7 @@ namespace RealisticPopulationRevisited
                 // Textfields.
                 PanelUtils.ParseFloat(ref pack.levels[i].floorHeight, floorHeightFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].emptyArea, emptyAreaFields[i].text);
+                PanelUtils.ParseInt(ref pack.levels[i].emptyPercent, emptyPercentFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].areaPer, areaPerFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].firstFloorMin, firstMinFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].firstFloorExtra, firstExtraFields[i].text);
@@ -461,6 +470,7 @@ namespace RealisticPopulationRevisited
                 // Populate controls.
                 floorHeightFields[i].text = level.floorHeight.ToString();
                 emptyAreaFields[i].text = level.emptyArea.ToString();
+                emptyPercentFields[i].text = level.emptyPercent.ToString();
                 areaPerFields[i].text = level.areaPer.ToString();
                 firstMinFields[i].text = level.firstFloorMin.ToString();
                 firstExtraFields[i].text = level.firstFloorExtra.ToString();
