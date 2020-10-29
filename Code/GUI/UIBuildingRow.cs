@@ -16,7 +16,7 @@ namespace RealisticPopulationRevisited
         private UIPanel panelBackground;
         private UILabel buildingName;
         private BuildingInfo thisBuilding;
-        private UISprite hasCustom;
+        private UISprite hasCustom, hasNonDefault;
 
 
         // Background for each list item.
@@ -87,8 +87,14 @@ namespace RealisticPopulationRevisited
                 // Checkbox to indicate which items have custom settings.
                 hasCustom = AddUIComponent<UISprite>();
                 hasCustom.size = new Vector2(20, 20);
-                hasCustom.relativePosition = new Vector3(340, 10);
+                hasCustom.relativePosition = new Vector3(310f, 10f);
                 hasCustom.tooltip = Translations.Translate("RPR_CUS_HAS");
+
+                // Checkbox to indicate which items have default overrides.
+                hasNonDefault = AddUIComponent<UISprite>();
+                hasNonDefault.size = new Vector2(20, 20);
+                hasNonDefault.relativePosition = new Vector3(340f, 10f);
+                hasNonDefault.tooltip = Translations.Translate("RPR_CUS_NDF");
             }
 
             // Set selected building.
@@ -105,6 +111,18 @@ namespace RealisticPopulationRevisited
             {
                 // No custom value.
                 hasCustom.spriteName = "AchievementCheckedFalse";
+            }
+
+            // Update default overrider checkbox to correct state.
+            if (PopData.HasPackOverride(thisBuilding) != null)
+            {
+                // Custom value found.
+                hasNonDefault.spriteName = "AchievementCheckedTrue";
+            }
+            else
+            {
+                // No custom value.
+                hasNonDefault.spriteName = "AchievementCheckedFalse";
             }
 
             // Set initial background as deselected state.

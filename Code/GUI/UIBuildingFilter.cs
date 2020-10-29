@@ -123,7 +123,7 @@ namespace RealisticPopulationRevisited
     {
         // Panel components.
         internal UICheckBox[] categoryToggles;
-        private UICheckBox settingsFilter;
+        private UICheckBox settingsFilter, defaultFilter, anyFilter;
         internal UIButton allCategories;
         internal UITextField nameFilter;
 
@@ -132,6 +132,8 @@ namespace RealisticPopulationRevisited
 
 
         internal UICheckBox SettingsFilter => settingsFilter;
+        internal UICheckBox DefaultFilter => defaultFilter;
+        internal UICheckBox AnyFilter => anyFilter;
 
 
         /// <summary>
@@ -205,36 +207,13 @@ namespace RealisticPopulationRevisited
             nameFilter.eventTextSubmitted += (c, s) => eventFilteringChanged(this, 5);
 
             // Create settings filters.
-            UILabel filterLabel = this.AddUIComponent<UILabel>();
-            filterLabel.textScale = 0.8f;
-            filterLabel.text = Translations.Translate("RPR_FIL_SET");
-            filterLabel.relativePosition = new Vector3(10, 40, 0);
-            filterLabel.autoSize = false;
-            filterLabel.height = 30f;
-            filterLabel.width = 280f;
-            filterLabel.wordWrap = true;
-            filterLabel.verticalAlignment = UIVerticalAlignment.Middle;
+            UILabel filterLabel = SettingsFilterLabel(34f, Translations.Translate("RPR_FIL_SET"));
+            UILabel subLabel = SettingsFilterLabel(48f, Translations.Translate("RPR_FIL_SES"));
 
-            // Setting filter checkbox.
-            settingsFilter = this.AddUIComponent<UICheckBox>();
-            settingsFilter.width = 20f;
-            settingsFilter.height = 20f;
-            settingsFilter.clipChildren = true;
-            settingsFilter.relativePosition = new Vector3(340f, 45f);
-
-            // Checkbox sprites.
-            UISprite sprite = settingsFilter.AddUIComponent<UISprite>();
-            sprite.spriteName = "ToggleBase";
-            sprite.size = new Vector2(20f, 20f);
-            sprite.relativePosition = Vector3.zero;
-
-            settingsFilter.checkedBoxObject = sprite.AddUIComponent<UISprite>();
-            ((UISprite)settingsFilter.checkedBoxObject).spriteName = "ToggleBaseFocused";
-            settingsFilter.checkedBoxObject.size = new Vector2(20f, 20f);
-            settingsFilter.checkedBoxObject.relativePosition = Vector3.zero;
-
-            // Trigger filtering changed event if any checkbox is changed.
-            settingsFilter.eventCheckChanged += (control, isChecked) => { eventFilteringChanged(this, 0); };
+            // Settings filter checkboxes.
+            settingsFilter = AddFilterCheckbox(310f, Translations.Translate("RPR_CUS_HAS"));
+            defaultFilter = AddFilterCheckbox(340f, Translations.Translate("RPR_CUS_NDF"));
+            anyFilter = AddFilterCheckbox(370f, Translations.Translate("RPR_CUS_ANY"));
         }
 
 
@@ -263,6 +242,67 @@ namespace RealisticPopulationRevisited
                     categoryToggles[i].isChecked = false;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Adds a filter label.
+        /// </summary>
+        /// <param name="yPos">Relative Y position of label</param>
+        /// <param name="text">Label text</param>
+        /// <returns>New label</returns>
+        private UILabel SettingsFilterLabel(float yPos, string text)
+        {
+            // Basic setup.
+            UILabel newLabel = this.AddUIComponent<UILabel>();
+            newLabel.textScale = 0.8f;
+            newLabel.relativePosition = new Vector3(10f, yPos, 0);
+            newLabel.autoSize = false;
+            newLabel.height = 30f;
+            newLabel.width = 280f;
+            newLabel.wordWrap = false;
+            newLabel.verticalAlignment = UIVerticalAlignment.Middle;
+
+            // Assign text.
+            newLabel.text = text;
+
+            return newLabel;
+        }
+
+
+        /// <summary>
+        /// Adds a filter checkbox.
+        /// </summary>
+        /// <param name="xPos">Relative X position of checkbox</param>
+        /// <param name="tooltip">Checkbox tooltip</param>
+        /// <returns>New filter checkbox</returns>
+        private UICheckBox AddFilterCheckbox(float xPos, string tooltip)
+        {
+            // Basic setup.
+            UICheckBox newCheckBox = this.AddUIComponent<UICheckBox>();
+            newCheckBox.width = 20f;
+            newCheckBox.height = 20f;
+            newCheckBox.clipChildren = true;
+            newCheckBox.relativePosition = new Vector3(xPos, 45f);
+
+            // Sprite.
+            UISprite sprite = newCheckBox.AddUIComponent<UISprite>();
+            sprite.spriteName = "ToggleBase";
+            sprite.size = new Vector2(20f, 20f);
+            sprite.relativePosition = Vector3.zero;
+
+            newCheckBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
+            ((UISprite)newCheckBox.checkedBoxObject).spriteName = "ToggleBaseFocused";
+            newCheckBox.checkedBoxObject.size = new Vector2(20f, 20f);
+            newCheckBox.checkedBoxObject.relativePosition = Vector3.zero;
+
+            // Tooltip.
+            newCheckBox.tooltip = tooltip;
+
+            // Trigger filtering changed event if any checkbox is changed.
+            newCheckBox.eventCheckChanged += (control, isChecked) => { eventFilteringChanged(this, 0); };
+
+            return newCheckBox;
         }
     }
 }

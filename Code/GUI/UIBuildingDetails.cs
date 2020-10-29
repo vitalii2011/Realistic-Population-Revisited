@@ -344,6 +344,8 @@ namespace RealisticPopulationRevisited
 
                 // Filter by settings.
                 if (filterBar.SettingsFilter.isChecked && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0) continue;
+                if (filterBar.DefaultFilter.isChecked && PopData.HasPackOverride(item) == null) continue;
+                if (filterBar.AnyFilter.isChecked && (PopData.HasPackOverride(item) == null && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0)) continue;
 
                 // Finally!  We've got an item that's passed all filters; add it to the list.
                 filteredList.Add(item);

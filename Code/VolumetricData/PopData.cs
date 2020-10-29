@@ -70,7 +70,15 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="building">Selected prefab</param>
         /// <returns>Currently active size pack</returns>
-        internal static CalcPack ActivePack(BuildingInfo building)
+        internal static CalcPack ActivePack(BuildingInfo building) => HasPackOverride(building) ?? CurrentDefaultPack(building);
+
+
+        /// <summary>
+        /// Returns the currently active calculation data pack record for the given prefab if an override is in place, or null if none (using the default).
+        /// </summary>
+        /// <param name="building">Selected prefab</param>
+        /// <returns>Currently active calculation pack override for the building if one exists, otherwise null.</returns>
+        internal static CalcPack HasPackOverride(BuildingInfo building)
         {
             // Local reference.
             string buildingName = building.name;
@@ -84,7 +92,7 @@ namespace RealisticPopulationRevisited
             else
             {
                 // Use default selection.
-                return CurrentDefaultPack(building);
+                return null;
             }
         }
 
@@ -885,8 +893,6 @@ namespace RealisticPopulationRevisited
 
             return list.ToArray();
         }
-
-
 
 
         /// <summary>

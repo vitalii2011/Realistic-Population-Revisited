@@ -5,7 +5,7 @@
 - Rearrange options panel layout and add sub-tabs as required
 - Add custom mouse button keybinding option
 - Upgrade to Harmony 2
-- Add settings filter to building details panel
+- Add settings filters to building details panel
 - Backport building preview renderer improvements from Ploppable RICO Revisited
 
 
