@@ -331,11 +331,11 @@ namespace RealisticPopulationRevisited
             resMed.service = ItemClass.Service.Residential;
             resMed.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialLow, ItemClass.SubService.ResidentialLowEco, ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
             resMed.levels = new LevelData[5];
-            resMed.levels[0] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 140f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
-            resMed.levels[1] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 145f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMed.levels[0] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 120f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMed.levels[1] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 135f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
             resMed.levels[2] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 150f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
-            resMed.levels[3] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 160f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
-            resMed.levels[4] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 170f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMed.levels[3] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 165f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMed.levels[4] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 180f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
             calcPacks.Add(resMed);
 
             // High-density residential.
@@ -347,28 +347,44 @@ namespace RealisticPopulationRevisited
             resHigh.service = ItemClass.Service.Residential;
             resHigh.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
             resHigh.levels = new LevelData[5];
-            resHigh.levels[0] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 140f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
-            resHigh.levels[1] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 145f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
-            resHigh.levels[2] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 150f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
-            resHigh.levels[3] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 160f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
+            resHigh.levels[0] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 110f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
+            resHigh.levels[1] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 125f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
+            resHigh.levels[2] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 140f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
+            resHigh.levels[3] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 155f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
             resHigh.levels[4] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 170f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = true, multiFloorUnits = false };
             calcPacks.Add(resHigh);
 
-            // uropean apartments.
+            // European apartments (medium-density).
             VolumetricPack resMedEU = new VolumetricPack();
-            resMedEU.name = "reshMedEU";
+            resMedEU.name = "resMedEU";
             resMedEU.displayName = Translations.Translate("RPR_PCK_REM_NAM");
             resMedEU.description = Translations.Translate("RPR_PCK_REM_DES");
             resMedEU.version = (int)DataVersion.one;
             resMedEU.service = ItemClass.Service.Residential;
             resMedEU.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
             resMedEU.levels = new LevelData[5];
-            resMedEU.levels[0] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 75f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
-            resMedEU.levels[1] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 1, areaPer = 80f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
-            resMedEU.levels[2] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 2, areaPer = 85f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
-            resMedEU.levels[3] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 3, areaPer = 90f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
-            resMedEU.levels[4] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 4, areaPer = 95f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMedEU.levels[0] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 10, areaPer = 85f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMedEU.levels[1] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 12, areaPer = 90f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMedEU.levels[2] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 14, areaPer = 95f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMedEU.levels[3] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 16, areaPer = 100f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resMedEU.levels[4] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 18, areaPer = 105f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
             calcPacks.Add(resMedEU);
+
+            // European apartments (high-density).
+            VolumetricPack resHighEU = new VolumetricPack();
+            resHighEU.name = "resHighEU";
+            resHighEU.displayName = Translations.Translate("RPR_PCK_REH_NAM");
+            resHighEU.description = Translations.Translate("RPR_PCK_REH_DES");
+            resHighEU.version = (int)DataVersion.one;
+            resHighEU.service = ItemClass.Service.Residential;
+            resHighEU.subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco };
+            resHighEU.levels = new LevelData[5];
+            resHighEU.levels[0] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 0, areaPer = 75f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resHighEU.levels[1] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 1, areaPer = 80f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resHighEU.levels[2] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 2, areaPer = 85f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resHighEU.levels[3] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 3, areaPer = 90f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            resHighEU.levels[4] = new LevelData { floorHeight = 3f, emptyArea = 0f, emptyPercent = 4, areaPer = 95f, firstFloorMin = 3f, firstFloorExtra = 0f, firstFloorEmpty = false, multiFloorUnits = false };
+            calcPacks.Add(resHighEU);
 
             // High-density residential US - empty percentages from AssetInsights.net, areas from 2018 RentCafe.
             VolumetricPack resHighUS = new VolumetricPack();
