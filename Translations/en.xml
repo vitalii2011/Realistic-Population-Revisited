@@ -15,7 +15,7 @@
     <Translation ID="RPR_PCK_RHR_NAM" String="Highrise" />
     <Translation ID="RPR_PCK_RHR_DES" String="High-rise apartment buildings with lobbies." />
     <Translation ID="RPR_PCK_RUH_NAM" String="US highrise" />
-    <Translation ID="RPR_PCK_RHR_DES" String="Average US apartments and condos." />
+    <Translation ID="RPR_PCK_RUH_DES" String="Average US apartments and condos." />
     <Translation ID="RPR_PCK_REM_NAM" String="European apartments (modern)" />
     <Translation ID="RPR_PCK_REM_DES" String="European mid-rise and wall-to-wall apartments (medium density; modern buildings)." />
     <Translation ID="RPR_PCK_REH_NAM" String="European apartments (older)" />
