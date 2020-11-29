@@ -114,7 +114,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Update default overrider checkbox to correct state.
-            if (PopData.HasPackOverride(thisBuilding) != null)
+            if (PopData.instance.HasPackOverride(thisBuilding) != null)
             {
                 // Custom value found.
                 hasNonDefault.spriteName = "AchievementCheckedTrue";

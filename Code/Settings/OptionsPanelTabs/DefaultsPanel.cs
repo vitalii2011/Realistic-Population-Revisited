@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using UnityEngine;
+using ColossalFramework.UI;
 
 
 namespace RealisticPopulationRevisited
@@ -115,10 +116,11 @@ namespace RealisticPopulationRevisited
 
 
         // DropDown menus.
-        UIDropDown[] packMenus;
+        UIDropDown[] popMenus, floorMenus;
 
         // Available packs arrays.
-        CalcPack[][] availablePacks;
+        PopDataPack[][] availablePopPacks;
+        DataPack[] availableFloorPacks;
 
         // Instance reference.
         internal static DefaultsPanel instance;
@@ -131,6 +133,11 @@ namespace RealisticPopulationRevisited
         /// <param name="tabIndex">Index number of tab</param>
         internal DefaultsPanel(UITabstrip tabStrip, int tabIndex)
         {
+            // Layout constants.
+            const float LeftColumn = 270f;
+            const float RightCoiumn = 510f;
+
+
             // Y position indicator.
             float currentY = 30f;
 
@@ -141,25 +148,53 @@ namespace RealisticPopulationRevisited
             panel.autoLayout = false;
 
             // Initialise arrays.
-            availablePacks = new CalcPack[subServiceNames.Length][];
-            packMenus = new UIDropDown[subServiceNames.Length];
+            availablePopPacks = new PopDataPack[subServiceNames.Length][];
+            availableFloorPacks = FloorData.instance.GetPacks();
+            popMenus = new UIDropDown[subServiceNames.Length];
+            floorMenus = new UIDropDown[subServiceNames.Length];
+
+
+            // Add titles.
+            UILabel popLabel = PanelUtils.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, 5f, 220f);
+            UILabel floorLabel = PanelUtils.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightCoiumn, 5f, 220f);
+            popLabel.textAlignment = UIHorizontalAlignment.Center;
+            floorLabel.textAlignment = UIHorizontalAlignment.Center;
 
             for (int i = 0; i < subServiceNames.Length; ++i)
             {
-                // Preset dropdown.
-                packMenus[i] = PanelUtils.AddDropDown(panel, 270f, currentY + 3f);
+                // Pop pack dropdown.
+                popMenus[i] = PanelUtils.AddDropDown(panel, LeftColumn, currentY + 3f);
 
                 // Save current index in object user data.
-                packMenus[i].objectUserData = i;
+                popMenus[i].objectUserData = i;
 
                 // Event handler.
-                packMenus[i].eventSelectedIndexChanged += (control, index) =>
+                popMenus[i].eventSelectedIndexChanged += (control, index) =>
                 {
                     // Retrieve stored index.
                     int serviceIndex = (int)control.objectUserData;
 
                     // Update service dictionary.
-                    PopData.AddService(services[serviceIndex], subServices[serviceIndex], availablePacks[serviceIndex][index]);
+                    PopData.instance.ChangeDefault(services[serviceIndex], subServices[serviceIndex], availablePopPacks[serviceIndex][index]);
+
+                    // Save settings.
+                    ConfigUtils.SaveSettings();
+                };
+
+                // Floor pack dropdown.
+                floorMenus[i] = PanelUtils.AddDropDown(panel, RightCoiumn, currentY + 3f);
+
+                // Save current index in object user data.
+                floorMenus[i].objectUserData = i;
+
+                // Event handler.
+                floorMenus[i].eventSelectedIndexChanged += (control, index) =>
+                {
+                    // Retrieve stored index.
+                    int serviceIndex = (int)control.objectUserData;
+
+                    // Update service dictionary.
+                    FloorData.instance.ChangeDefault(services[serviceIndex], subServices[serviceIndex], availableFloorPacks[index]);
 
                     // Save settings.
                     ConfigUtils.SaveSettings();
@@ -188,35 +223,59 @@ namespace RealisticPopulationRevisited
             for (int i = 0; i < subServiceNames.Length; ++i)
             {
                 // Save current index in object user data.
-                packMenus[i].objectUserData = i;
+                popMenus[i].objectUserData = i;
+                floorMenus[i].objectUserData = i;
 
                 // Get available packs for this service/subservice combination.
-                availablePacks[i] = PopData.GetPacks(services[i], subServices[i]);
+                availablePopPacks[i] = PopData.instance.GetPacks(services[i], subServices[i]);
 
                 // Get current and default packs for this item
-                CalcPack currentPack = PopData.CurrentDefaultPack(services[i], subServices[i]);
-                CalcPack defaultPack = PopData.BaseDefaultPack(services[i], subServices[i]);
+                DataPack currentPopPack = PopData.instance.CurrentDefaultPack(services[i], subServices[i]);
+                DataPack defaultPopPack = PopData.instance.BaseDefaultPack(services[i], subServices[i]);
+                DataPack currentFloorPack = FloorData.instance.CurrentDefaultPack(services[i], subServices[i]);
+                DataPack defaultFloorPack = FloorData.instance.BaseDefaultPack(services[i], subServices[i]);
 
-                // Build preset menu.
-                packMenus[i].items = new string[availablePacks[i].Length];
+                // Build preset menus.
+                popMenus[i].items = new string[availablePopPacks[i].Length];
+                floorMenus[i].items = new string[availableFloorPacks.Length];
 
-                // Iterate through each item.
-                for (int j = 0; j < packMenus[i].items.Length; ++j)
+                // Iterate through each item in pop menu.
+                for (int j = 0; j < popMenus[i].items.Length; ++j)
                 {
                     // Set menu item text.
-                    packMenus[i].items[j] = availablePacks[i][j].displayName;
+                    popMenus[i].items[j] = availablePopPacks[i][j].displayName;
 
                     // Check for deefault name match.
-                    if (availablePacks[i][j].name.Equals(defaultPack.name))
+                    if (availablePopPacks[i][j].name.Equals(defaultPopPack.name))
                     {
                         // Match - add default postscript.
-                        packMenus[i].items[j] += Translations.Translate("RPR_PCK_DEF");
+                        popMenus[i].items[j] += Translations.Translate("RPR_PCK_DEF");
                     }
 
                     // Set menu selection to current pack if it matches.
-                    if (availablePacks[i][j].Equals(currentPack))
+                    if (availablePopPacks[i][j].Equals(currentPopPack))
                     {
-                        packMenus[i].selectedIndex = j;
+                        popMenus[i].selectedIndex = j;
+                    }
+                }
+
+                // Iterate throiugh each item in floor menu.
+                for (int j = 0; j < floorMenus[i].items.Length; ++j)
+                {
+                    // Set menu item text.
+                    floorMenus[i].items[j] = availableFloorPacks[j].displayName;
+
+                    // Check for deefault name match.
+                    if (availableFloorPacks[j].name.Equals(defaultFloorPack.name))
+                    {
+                        // Match - add default postscript.
+                        floorMenus[i].items[j] += Translations.Translate("RPR_PCK_DEF");
+                    }
+
+                    // Set menu selection to current pack if it matches.
+                    if (availableFloorPacks[j].Equals(currentFloorPack))
+                    {
+                        floorMenus[i].selectedIndex = j;
                     }
                 }
             }

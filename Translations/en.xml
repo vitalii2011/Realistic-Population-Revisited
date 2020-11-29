@@ -54,6 +54,20 @@
     <Translation ID="RPR_PCK_SMH_DES" String="Minnesota Dept of Education guide - highest density" />
     <Translation ID="RPR_PCK_SUK_NAM" String="UK standard" />
     <Translation ID="RPR_PCK_SUK_DES" String="Standard planning densities for the UK." />
+    <Translation ID="RPR_PCK_FDF_NAM" String="Default" />
+    <Translation ID="RPR_PCK_FDF_DES" String="Standard 3m floor height." />
+    <Translation ID="RPR_PCK_FHO_NAM" String="Standalone houses" />
+    <Translation ID="RPR_PCK_FHO_DES" String="Detached residential dwellings." />
+    <Translation ID="RPR_PCK_FDL_NAM" String="Lobbies" />
+    <Translation ID="RPR_PCK_FDL_DES" String="Buildings with lobbies and/or elevated first floors." />
+    <Translation ID="RPR_PCK_FCM_NAM" String="Commercial" />
+    <Translation ID="RPR_PCK_FCM_DES" String="Commercial, office, educational and industrial buildings with higher floor heights." />
+    <Translation ID="RPR_PCK_FWH_NAM" String="Warehouse" />
+    <Translation ID="RPR_PCK_FWH_DES" String="Retail, commercial and industrial warehouses." />
+    <Translation ID="RPR_PCK_FHB_NAM" String="High-bay warehouse" />
+    <Translation ID="RPR_PCK_FHB_DES" String="High-bay industrial and commercial warehouses." />
+    <Translation ID="RPR_PCK_FEX_NAM" String="Primary industry" />
+    <Translation ID="RPR_PCK_FEX_DES" String="Industrial extractors and processors" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
     <Translation ID="RPR_CAT_RHI" String="Residential high" />
@@ -99,6 +113,11 @@
     <Translation ID="RPR_ERR_INV" String="ERROR: invalid value" />
     <Translation ID="RPR_LBL_HOM" String="Homes:" />
     <Translation ID="RPR_LBL_JOB" String="Jobs:" />
+    <Translation ID="RPR_LBL_FLR" String="Floors:" />
+    <Translation ID="RPR_LBL_PFL" String="Units per floor:" />
+    <Translation ID="RPR_CAL_MOD" String="Mod calculations" />
+    <Translation ID="RPR_CAL_DEN" String="Population density" />
+    <Translation ID="RPR_CAL_BFL" String="Building floors" />
     <Translation ID="RPR_CAL_VOL_FLR" String="Floors" />
     <Translation ID="RPR_CAL_VOL_TFA" String="Total floor area" />
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />

@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using ColossalFramework.UI;
-using ColossalFramework;
-using ColossalFramework.Math;
 
 
 namespace RealisticPopulationRevisited
@@ -11,8 +9,13 @@ namespace RealisticPopulationRevisited
     /// </summary>
     public class UIEditPanel : UIPanel
     {
+        // Layout constants.
+        const float MarginPadding = 10f;
+        const float LabelWidth = 150f;
+
+
         // Panel components
-        private UITextField homeJobsCount;
+        private UITextField homeJobsCount, floorCount, perFloorCount;
         private UILabel homeJobLabel;
         private UIButton saveButton;
         private UIButton deleteButton;
@@ -27,7 +30,6 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void Setup()
         {
-            const int marginPadding = 10;
 
             // Generic setup.
             isVisible = true;
@@ -51,26 +53,26 @@ namespace RealisticPopulationRevisited
             title.width = this.width;
             title.height = 30;
 
-            // Text field label.
-            homeJobLabel = this.AddUIComponent<UILabel>();
-            homeJobLabel.relativePosition = new Vector3(marginPadding, 40);
-            homeJobLabel.textAlignment = UIHorizontalAlignment.Left;
-            homeJobLabel.text = Translations.Translate("RPR_LBL_HOM");
+            // Text field labels.
+            homeJobLabel = AddLabel(40f, "RPR_LBL_HOM");
+            AddLabel(80f, "RPR_LBL_FLR");
+            AddLabel(120f, "RPR_LBL_PFL");
 
-            // Home or jobs count text field.
-            homeJobsCount = UIUtils.CreateTextField(this, this.width - (marginPadding * 3) - homeJobLabel.width, 20);
-            homeJobsCount.relativePosition = new Vector3(marginPadding + homeJobLabel.width + marginPadding, 40);
+            // Text fields.
+            homeJobsCount = AddEditField(40f);
+            floorCount = AddEditField(80f);
+            perFloorCount = AddEditField(120f);
 
             // Save button.
             saveButton = UIUtils.CreateButton(this, 200);
-            saveButton.relativePosition = new Vector3(marginPadding, 70);
+            saveButton.relativePosition = new Vector3(MarginPadding, 150);
             saveButton.text = Translations.Translate("RPR_CUS_ADD");
             saveButton.tooltip = Translations.Translate("RPR_CUS_ADD_TIP");
             saveButton.Disable();
 
             // Delete button.
             deleteButton = UIUtils.CreateButton(this, 200);
-            deleteButton.relativePosition = new Vector3(marginPadding, 110);
+            deleteButton.relativePosition = new Vector3(MarginPadding, 190);
             deleteButton.text = Translations.Translate("RPR_CUS_DEL");
             deleteButton.tooltip = Translations.Translate("RPR_CUS_DEL_TIP");
             deleteButton.Disable();
@@ -108,7 +110,7 @@ namespace RealisticPopulationRevisited
 
                             // Update household counts for existing instances of this building - only needed for residential buildings.
                             // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                            PopData.UpdateHouseholds(currentSelection.name);
+                            PopData.instance.UpdateHouseholds(currentSelection.name);
                         }
                         else
                         {
@@ -152,7 +154,7 @@ namespace RealisticPopulationRevisited
 
                     // Update household counts for existing instances of this building - only needed for residential buildings.
                     // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                    PopData.UpdateHouseholds(currentSelection.name);
+                    PopData.instance.UpdateHouseholds(currentSelection.name);
                 }
                 else
                 {
@@ -167,12 +169,12 @@ namespace RealisticPopulationRevisited
 
             // Message label (initially hidden).
             messageLabel = this.AddUIComponent<UILabel>();
-            messageLabel.relativePosition = new Vector3(marginPadding, 160);
+            messageLabel.relativePosition = new Vector3(MarginPadding, 160);
             messageLabel.textAlignment = UIHorizontalAlignment.Left;
             messageLabel.autoSize = false;
             messageLabel.autoHeight = true;
             messageLabel.wordWrap = true;
-            messageLabel.width = this.width - (marginPadding * 2);
+            messageLabel.width = this.width - (MarginPadding * 2);
             messageLabel.isVisible = false;
             messageLabel.text = "No message to display";
         }
@@ -231,6 +233,37 @@ namespace RealisticPopulationRevisited
 
             // We've got a valid building, so enable the save button.
             saveButton.Enable();
+        }
+
+        
+        /// <summary>
+        /// Adds a textfield.
+        /// </summary>
+        /// <param name="yPos">Relative y-position of textfield</param>
+        /// <returns>New textfield</returns>
+        private UITextField AddEditField(float yPos)
+        {
+            UITextField newField = UIUtils.CreateTextField(this, this.width - (MarginPadding * 3) - LabelWidth, 20);
+            newField.relativePosition = new Vector3(MarginPadding + LabelWidth + MarginPadding, yPos);
+
+            return newField;
+        }
+
+
+        /// <summary>
+        /// Adds a label to left of a textfield.
+        /// </summary>
+        /// <param name="yPos">Relative y-position of textfield</param>
+        /// <param name="key">Translation key for label</param>
+        /// <returns></returns>
+        private UILabel AddLabel(float yPos, string key)
+        {
+            UILabel newLabel = this.AddUIComponent<UILabel>();
+            newLabel.relativePosition = new Vector3(MarginPadding, yPos);
+            newLabel.textAlignment = UIHorizontalAlignment.Left;
+            newLabel.text = Translations.Translate(key);
+
+            return newLabel;
         }
     }
 }

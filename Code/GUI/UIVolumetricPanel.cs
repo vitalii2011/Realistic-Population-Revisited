@@ -9,17 +9,29 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Panel to display volumetric calculations.
     /// </summary>
-    public class UIVolumetricPanel : UIScrollablePanel
+    public class UIVolumetricPanel : UIPanel
     {
         // Layout constants.
-        private const float margin = 10f;
-        private const float leftPadding = 10f;
-        private const float columnBreak = 190f;
+        private const float Margin = 5f;
+        private const float ColumnWidth = 300f;
+        private const float LabelOffset = 190f;
+        private const float LeftColumn = LabelOffset;
+        private const float RightColumn = ColumnWidth + LabelOffset;
+        private const float RowTopMargin = Margin;
+        private const float RowHeight = 25f;
+        private const float Row1 = RowTopMargin;
+        private const float Row2 = Row1 + RowHeight;
+        private const float Row3 = Row2 + RowHeight;
+        private const float Row4 = Row3 + RowHeight;
+        private const float Row5 = Row4 + RowHeight;
+        private const float Row6 = Row5 + RowHeight;
+        private const float Row7 = Row6 + RowHeight;
+        private const float Row8 = Row7 + RowHeight;
+
 
         // Panel components.
-        private UIPanel floorsPanel;
+        private UIScrollablePanel floorsPanel;
         private UIFastList floorsList;
-        // Labels.
         private UILabel numFloorsLabel;
         private UILabel floorAreaLabel;
         private UILabel totalLabel;
@@ -29,7 +41,6 @@ namespace RealisticPopulationRevisited
         private UILabel emptyAreaLabel;
         private UILabel emptyPercentLabel;
         private UILabel perLabel;
-        // Checkbox.
         private UICheckBox ignoreFirstCheckBox;
 
 
@@ -44,38 +55,36 @@ namespace RealisticPopulationRevisited
             isInteractive = true;
             backgroundSprite = "UnlockingPanel";
             autoLayout = false;
+            autoSize = false;
             width = parent.width;
-            autoSize = true;
-            autoLayoutPadding.top = 5;
-            autoLayoutPadding.right = 5;
+            height = 395f;
             builtinKeyNavigation = true;
             clipChildren = true;
 
-            // Scrolling.
-            scrollWheelDirection = UIOrientation.Vertical;
-
             // Labels.
-            numFloorsLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLR"), margin + (0f * 30f));
-            floorAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_TFA"), margin + (1f * 30f));
-            totalLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_UTS"), margin + (2f * 30f));
-            floorHeightLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), margin + (3f * 30f));
-            firstMinLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), margin + (4f * 30f));
-            firstExtraLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), margin + (5f * 30f));
-            emptyAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), margin + (6f * 30f));
-            emptyPercentLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), margin + (7f * 30f));
-            perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), margin + (8f * 30f));
+            numFloorsLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLR"), RightColumn, Row1);
+            floorAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_TFA"), RightColumn, Row2);
+            totalLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_UTS"), RightColumn, Row3);
+            floorHeightLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), RightColumn, Row4);
+            firstMinLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), RightColumn, Row5);
+            firstExtraLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), RightColumn, Row6);
+            emptyAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row1);
+            emptyPercentLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row2);
+            perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row3);
 
             // Checkbox.
-            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), margin + (8f * 30f));
-            ignoreFirstCheckBox.enabled = false;
+            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), RightColumn, Row7);
+            ignoreFirstCheckBox.isInteractive = false;
+            ignoreFirstCheckBox.Disable();
 
             // Floor panel.
-            floorsPanel = this.AddUIComponent<UIPanel>();
-            floorsPanel.relativePosition = new Vector3(0, margin + margin + (9f * 30f));
+            floorsPanel = this.AddUIComponent<UIScrollablePanel>();
+            floorsPanel.relativePosition = new Vector3(0, Row8);
             floorsPanel.autoSize = false;
             floorsPanel.width = this.width;
             floorsPanel.height = this.height - floorsPanel.relativePosition.y;
             floorsPanel.autoLayout = false;
+            floorsPanel.scrollWheelDirection = UIOrientation.Vertical;
 
             // Building selection list.
             floorsList = UIFastList.Create<UIFloorRow>(floorsPanel);
@@ -83,6 +92,7 @@ namespace RealisticPopulationRevisited
             floorsList.relativePosition = Vector3.zero;
             floorsList.width = floorsPanel.width;
             floorsList.height = floorsPanel.height;
+            floorsList.isInteractive = true;
             floorsList.canSelect = true;
             floorsList.rowHeight = 20;
             floorsList.autoHideScrollbar = true;
@@ -92,21 +102,31 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Updates the summary text labels with data from the current floor.
+        /// Updates the population summary text labels with data from the current level.
         /// </summary>
         /// <param name="levelData">LevelData record to summarise</param>
-        internal void UpdateText(LevelData levelData)
+        internal void UpdatePopText(LevelData levelData)
         {
             // Set textfield values.
-            firstMinLabel.text = levelData.firstFloorMin.ToString();
-            firstExtraLabel.text = levelData.firstFloorExtra.ToString();
-            floorHeightLabel.text = levelData.floorHeight.ToString();
             emptyAreaLabel.text = levelData.emptyArea.ToString();
             emptyPercentLabel.text = levelData.emptyPercent.ToString();
             perLabel.text = levelData.areaPer.ToString();
+        }
+
+
+        /// <summary>
+        /// Updates the floor summary text labels with data from the current floor.
+        /// </summary>
+        /// <param name="floorData">FloorData record to summarise</param>
+        internal void UpdateFloorText(FloorDataPack floorData)
+        {
+            // Set textfield values.
+            firstMinLabel.text = floorData.firstFloorMin.ToString();
+            firstExtraLabel.text = floorData.firstFloorExtra.ToString();
+            floorHeightLabel.text = floorData.floorHeight.ToString();
 
             // Set checkbox.
-            ignoreFirstCheckBox.isChecked = levelData.firstFloorEmpty;
+            ignoreFirstCheckBox.isChecked = floorData.firstFloorEmpty;
         }
 
 
@@ -115,7 +135,8 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="building">Selected building prefab</param>
         /// <param name="levelData">Level calculation data to apply to calculations</param>
-        internal void CalculateVolumetric(BuildingInfo building, LevelData levelData)
+        /// <param name="floorData">Floor calculation data to apply to calculations</param>
+        internal void CalculateVolumetric(BuildingInfo building, LevelData levelData, FloorDataPack floorData)
         {
             // Safety first!
             if (building == null)
@@ -125,12 +146,12 @@ namespace RealisticPopulationRevisited
 
             // Perform calculations.
             // Get floors and allocate area an number of floor labels.
-            SortedList<int, float> floors = PopData.VolumetricFloors(building.m_generatedInfo, levelData, out float totalArea);
+            SortedList<int, float> floors = PopData.instance.VolumetricFloors(building.m_generatedInfo, levelData, floorData, out float totalArea);
             floorAreaLabel.text = totalArea.ToString();
             numFloorsLabel.text = floors.Count.ToString();
 
             // Get total units.
-            int totalUnits = PopData.VolumetricPopulation(building.m_generatedInfo, levelData, floors, totalArea);
+            int totalUnits = PopData.instance.VolumetricPopulation(building.m_generatedInfo, levelData, floorData, floors, totalArea);
 
             // Floor labels list.
             List<string> floorLabels = new List<string>();
@@ -204,14 +225,15 @@ namespace RealisticPopulationRevisited
         /// Adds a text label to the specified UIComponent.
         /// </summary>
         /// <param name="parent">Parent component</param>
+        /// <param name="yPos">Relative X position</param>
         /// <param name="yPos">Relative Y position</param>
         /// <param name="text">Label text</param>
         /// <returns>New UILabel</returns>
-        private UILabel AddLabel(UIComponent parent, string text, float yPos)
+        private UILabel AddLabel(UIComponent parent, string text, float xPos, float yPos)
         {
             // Create new label.
             UILabel newLabel = parent.AddUIComponent<UILabel>();
-            newLabel.relativePosition = new Vector3(columnBreak, yPos);
+            newLabel.relativePosition = new Vector3(xPos, yPos);
             newLabel.textAlignment = UIHorizontalAlignment.Left;
             newLabel.textScale = 0.9f;
             newLabel.text = "Blank";
@@ -228,17 +250,18 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="parent">Parent component</param>
         /// <param name="text">Label text</param>s
+        /// <param name="yPos">Relative X position</param>
         /// <param name="yPos">Relative Y position</param>
         /// <returns>New checkbox with attached label to left</returns>
-        private UICheckBox AddCheckBox(UIComponent parent, string text, float yPos)
+        private UICheckBox AddCheckBox(UIComponent parent, string text, float xPos, float yPos)
         {
             // Create checkbox.
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
 
             // Size and position.
-            checkBox.width = parent.width - columnBreak;
+            checkBox.width = parent.width - xPos;
             checkBox.height = 20f;
-            checkBox.relativePosition = new Vector3(columnBreak, yPos + 6);
+            checkBox.relativePosition = new Vector3(xPos, yPos);
 
             // Unselected sprite.
             UISprite sprite = checkBox.AddUIComponent<UISprite>();
@@ -267,9 +290,9 @@ namespace RealisticPopulationRevisited
         private void AddLabelToComponent(UIComponent parent, string text)
         {
             UILabel label = parent.AddUIComponent<UILabel>();
-            label.relativePosition = new Vector3(-(columnBreak - leftPadding), 3);
+            label.relativePosition = new Vector3(-(LabelOffset - Margin), 3);
             label.autoSize = false;
-            label.width = columnBreak - (leftPadding * 2);
+            label.width = LabelOffset - (Margin * 2);
             label.textScale = 0.8f;
             label.autoHeight = true;
             label.wordWrap = true;

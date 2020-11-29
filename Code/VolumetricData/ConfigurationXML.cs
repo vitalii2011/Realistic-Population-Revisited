@@ -24,9 +24,13 @@ namespace RealisticPopulationRevisited
         [XmlArrayItem("consumption")]
         public List<ConsumptionRecord> consumption { get; set; }
 
-        [XmlArray("defaults")]
+        [XmlArray("default-pop")]
         [XmlArrayItem("default")]
-        public List<DefaultPack> defaults { get; set; }
+        public List<DefaultPack> popDefaults { get; set; }
+
+        [XmlArray("default-floor")]
+        [XmlArrayItem("default")]
+        public List<DefaultPack> floorDefaults { get; set; }
 
         [XmlArray("buildings")]
         [XmlArrayItem("building")]
@@ -72,9 +76,14 @@ namespace RealisticPopulationRevisited
         public string prefab;
 
         // Calculation pack.
-        [XmlAttribute("pack")]
+        [XmlAttribute("pop")]
         [DefaultValue("")]
-        public string pack;
+        public string popPack;
+
+        // Calculation pack.
+        [XmlAttribute("floor")]
+        [DefaultValue("")]
+        public string floorPack;
     }
 
 

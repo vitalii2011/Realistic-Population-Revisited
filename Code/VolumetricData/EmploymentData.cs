@@ -23,7 +23,7 @@ namespace RealisticPopulationRevisited
             PrefabEmployStruct employStruct;
 
             // Get total jobs and distribution.
-            int totalJobs = PopData.Population(prefab, level);
+            int totalJobs = PopData.instance.Population(prefab, level);
             int[] distribution = WorkplaceDistribution(prefab.GetService(), prefab.GetSubService(), (ItemClass.Level)level);
 
             // Allocate jobs according to distribution (percentages).  Division after multiplication to reduce intermediate rounding errors.

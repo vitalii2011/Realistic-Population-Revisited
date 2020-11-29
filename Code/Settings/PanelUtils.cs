@@ -154,16 +154,20 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="parent">Parent component</param>
         /// <param name="text">Label text</param>
+        /// <param name="xPos">Relative x position)</param>
+        /// <param name="yPos">Relative y position</param>
+        /// <param name="width">Label width (default 700)</param>
         /// <returns></returns>
-        internal static UILabel AddLabel(UIComponent parent, string text)
+        internal static UILabel AddLabel(UIComponent parent, string text, float xPos, float yPos, float width = 700f)
         {
             // Add label.
             UILabel label = (UILabel)parent.AddUIComponent<UILabel>();
             label.autoSize = false;
             label.autoHeight = true;
             label.wordWrap = true;
-            label.width = 700;
+            label.width = width;
             label.text = text;
+            label.relativePosition = new Vector2(xPos, yPos);
 
             return label;
         }
@@ -206,10 +210,9 @@ namespace RealisticPopulationRevisited
         /// <param name="xPos">Relative x position (default 20)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
         /// <returns></returns>
-        internal static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos)
+        internal static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f)
         {
             // Constants.
-            const float Width = 220f;
             const float Height = 25f;
             const int ItemHeight = 20;
 
@@ -234,8 +237,8 @@ namespace RealisticPopulationRevisited
             dropDown.relativePosition = new Vector3(xPos, yPos);
 
             // Dropdown size parameters.
-            dropDown.size = new Vector2(Width, Height);
-            dropDown.listWidth = (int)Width;
+            dropDown.size = new Vector2(width, Height);
+            dropDown.listWidth = (int)width;
             dropDown.listHeight = 500;
             dropDown.itemHeight = ItemHeight;
             dropDown.textScale = 0.7f;

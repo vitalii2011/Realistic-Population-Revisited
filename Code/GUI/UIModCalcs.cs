@@ -6,19 +6,32 @@ namespace RealisticPopulationRevisited
 {
     public class UIModCalcs : UIPanel
     {
+        // Layout constants.
+        const float Margin = 5f;
+        const float ColumnWidth = 300f;
+        const float ComponentWidth = ColumnWidth - (Margin * 2f);
+        const float RightColumnX = ColumnWidth + Margin;
+        const float ColumnLabelY = 30f;
+        const float MenuY = ColumnLabelY + 20f;
+        const float DescriptionY = MenuY + 30f;
+        const float SaveY = DescriptionY + 40f;
+        const float CalcY = SaveY + 35f;
+
         // Panel components.
         private UILabel title;
         private UILegacyCalcs legacyPanel;
         private UIVolumetricPanel volumetricPanel;
-        private UIDropDown packMenu;
-        private UILabel packDescription;
+        private UIDropDown popMenu, floorMenu;
+        private UILabel popDescription, floorDescription;
 
         // Data.
-        private CalcPack[] availablePacks;
+        private PopDataPack[] popPacks;
+        private DataPack[] floorPacks;
 
         // Current selections.
         private BuildingInfo currentBuilding;
-        private CalcPack currentPack;
+        private PopDataPack currentPopPack;
+        private FloorDataPack currentFloorPack;
 
 
         /// <summary>
@@ -33,14 +46,18 @@ namespace RealisticPopulationRevisited
             title = this.AddUIComponent<UILabel>();
             title.relativePosition = new Vector3(0, 0);
             title.textAlignment = UIHorizontalAlignment.Center;
-            title.text = "Mod calculations";
+            title.text = Translations.Translate("RPR_CAL_MOD");
             title.textScale = 1.2f;
             title.autoSize = false;
             title.width = this.width;
 
+            // Column titles.
+            UILabel densityTitle = ColumnLabel(Translations.Translate("RPR_CAL_DEN"), Margin);
+            UILabel floorTitle = ColumnLabel(Translations.Translate("RPR_CAL_BFL"), RightColumnX);
+
             // Volumetric calculations panel.
             volumetricPanel = this.AddUIComponent<UIVolumetricPanel>();
-            volumetricPanel.relativePosition = new Vector3(0, title.height + 120f);
+            volumetricPanel.relativePosition = new Vector2(0f, CalcY);
             volumetricPanel.height = this.height - title.height + 80f;
             volumetricPanel.width = this.width;
             volumetricPanel.Setup();
@@ -53,74 +70,83 @@ namespace RealisticPopulationRevisited
             legacyPanel.Setup();
             legacyPanel.Hide();
 
-            // Preset dropdown.
-            packMenu = PanelUtils.LabelledDropDown(this, Translations.Translate("RPR_PCK_NAM"), yPos: title.height + 5f);
+            // Pack dropdowns.
+            popMenu = PanelUtils.AddDropDown(this, Margin, MenuY, ComponentWidth);
+            floorMenu = PanelUtils.AddDropDown(this, RightColumnX, MenuY, ComponentWidth);
 
-            // Preset description.
-            packDescription = this.AddUIComponent<UILabel>();
-            packDescription.relativePosition = new Vector2(10f, packMenu.relativePosition.y + packMenu.height + 15f);
-            packDescription.autoSize = false;
-            packDescription.autoHeight = true;
-            packDescription.wordWrap = true;
-            packDescription.textScale = 0.7f;
-            packDescription.width = legacyPanel.width - 20f;
-
-            // Preset description.
-            packDescription = this.AddUIComponent<UILabel>();
-            packDescription.relativePosition = new Vector2(10f, packMenu.relativePosition.y + packMenu.height + 15f);
-            packDescription.autoSize = false;
-            packDescription.autoHeight = true;
-            packDescription.wordWrap = true;
-            packDescription.textScale = 0.7f;
-            packDescription.width = legacyPanel.width - 20f;
+            // Pack descriptions.
+            popDescription = Description(Margin);
+            floorDescription = Description(RightColumnX);
 
             // Apply button.
             UIButton applyButton = UIUtils.CreateButton(this, 200f);
-            applyButton.relativePosition = new Vector2(10f, title.height + 80f);
+            applyButton.relativePosition = new Vector2(ColumnWidth - (200f / 2), SaveY);
             applyButton.text = Translations.Translate("RPR_OPT_SAA");
             applyButton.eventClicked += (control, clickEvent) =>
             {
                 // Update building setting and save.
-                PopData.UpdateBuildingPack(currentBuilding, currentPack);
+                PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
+                FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
                 ConfigUtils.SaveSettings();
             };
 
-            // Dropdown event handler.
-            packMenu.eventSelectedIndexChanged += (component, index) => UpdatePackSelection(index);
+            // Dropdown event handlers.
+            popMenu.eventSelectedIndexChanged += (component, index) => UpdatePopSelection(index);
+            floorMenu.eventSelectedIndexChanged += (component, index) => UpdateFloorSelection(index);
         }
 
 
         /// <summary>
-        /// Updates the selection to the selected calculation pack.
+        /// Updates the population calculation pack selection to the selected calculation pack.
         /// </summary>
         /// <param name="index">Index number (from menu) of selection pack</param>
-        public void UpdatePackSelection(int index)
+        public void UpdatePopSelection(int index)
         {
             // Update selected pack.
-            currentPack = availablePacks[index];
+            currentPopPack = popPacks[index];
 
             // Update description.
-            packDescription.text = currentPack.description;
+            popDescription.text = currentPopPack.description;
 
             // Check if we're using legacy or volumetric data.
-            if (currentPack is VolumetricPack)
+            if (currentPopPack is VolumetricPopPack)
             {
                 // Volumetric pack.
                 // Update panel with new calculations.
                 LevelData thisLevel = GetFloorData();
-                volumetricPanel.UpdateText(thisLevel);
-                volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel);
+                volumetricPanel.UpdatePopText(thisLevel);
+                volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack);
 
                 // Set visibility.
                 legacyPanel.Hide();
                 volumetricPanel.Show();
+                floorMenu.Show();
             }
             else
             {
                 // Set visibility.
                 volumetricPanel.Hide();
+                floorMenu.Hide();
                 legacyPanel.Show();
             }
+        }
+
+
+        /// <summary>
+        /// Updates the floor calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        public void UpdateFloorSelection(int index)
+        {
+            // Update selected pack.
+            currentFloorPack = (FloorDataPack)floorPacks[index];
+
+            // Update description.
+            floorDescription.text = currentFloorPack.description;
+
+            // Update panel with new calculations.
+            volumetricPanel.UpdateFloorText(currentFloorPack);
+            volumetricPanel.CalculateVolumetric(currentBuilding, GetFloorData(), currentFloorPack);
         }
 
 
@@ -128,7 +154,7 @@ namespace RealisticPopulationRevisited
         /// Returns the level data record from the current floor pack that's relevant to the selected building's level.
         /// </summary>
         /// <returns>Floordata instance for building</returns>
-        private LevelData GetFloorData() => ((VolumetricPack)currentPack).levels[(int)currentBuilding.GetClassLevel()];
+        private LevelData GetFloorData() => ((VolumetricPopPack)currentPopPack).levels[(int)currentBuilding.GetClassLevel()];
 
 
         /// <summary>
@@ -143,32 +169,57 @@ namespace RealisticPopulationRevisited
             // Safety first!
             if (currentBuilding != null)
             {
-                // Get available packs for this building.
-                availablePacks = PopData.GetPacks(building);
+                // Get available calculation packs for this building.
+                popPacks = PopData.instance.GetPacks(building);
+                floorPacks = FloorData.instance.GetPacks();
 
                 // Get current and default packs for this item
-                CalcPack currentPack = PopData.ActivePack(building);
-                CalcPack defaultPack = PopData.CurrentDefaultPack(building);
+                currentPopPack = (PopDataPack)PopData.instance.ActivePack(building);
+                currentFloorPack = (FloorDataPack)FloorData.instance.ActivePack(building);
+                PopDataPack defaultPopPack = (PopDataPack)PopData.instance.CurrentDefaultPack(building);
+                FloorDataPack defaultFloorPack = (FloorDataPack)FloorData.instance.CurrentDefaultPack(building);
 
-                // Build preset menu.
-                packMenu.items = new string[availablePacks.Length];
-                for (int i = 0; i < packMenu.items.Length; ++i)
+                // Build pop pack menu.
+                popMenu.items = new string[popPacks.Length];
+                for (int i = 0; i < popMenu.items.Length; ++i)
                 {
-                    packMenu.items[i] = availablePacks[i].displayName;
+                    popMenu.items[i] = popPacks[i].displayName;
 
                     // Check for deefault name match,
-                    if (availablePacks[i].name.Equals(defaultPack.name))
+                    if (popPacks[i].name.Equals(defaultPopPack.name))
                     {
-                        packMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                        popMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
                     }
 
                     // Set menu selection to current pack if it matches.
-                    if (availablePacks[i].Equals(currentPack))
+                    if (popPacks[i].Equals(currentPopPack))
                     {
-                        packMenu.selectedIndex = i;
+                        popMenu.selectedIndex = i;
 
                         // Force pack selection update.
-                        UpdatePackSelection(i);
+                        UpdatePopSelection(i);
+                    }
+                }
+
+                // Build floor pack menu.
+                floorMenu.items = new string[floorPacks.Length];
+                for (int i = 0; i < floorMenu.items.Length; ++i)
+                {
+                    floorMenu.items[i] = floorPacks[i].displayName;
+
+                    // Check for deefault name match,
+                    if (floorPacks[i].name.Equals(defaultFloorPack.name))
+                    {
+                        floorMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                    }
+
+                    // Set menu selection to current pack if it matches.
+                    if (floorPacks[i].Equals(currentFloorPack))
+                    {
+                        floorMenu.selectedIndex = i;
+
+                        // Force pack selection update.
+                        UpdateFloorSelection(i);
                     }
                 }
 
@@ -178,6 +229,45 @@ namespace RealisticPopulationRevisited
                     legacyPanel.SelectionChanged(building);
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Adds a column header label.
+        /// </summary>
+        /// <param name="text">Label text</param>
+        /// <param name="xPos">Label x-position</param>
+        /// <returns>New column label</returns>
+        private UILabel ColumnLabel(string text, float xPos)
+        {
+            UILabel newLabel = this.AddUIComponent<UILabel>();
+            newLabel.relativePosition = new Vector3(xPos, ColumnLabelY);
+            newLabel.textAlignment = UIHorizontalAlignment.Center;
+            newLabel.text = text;
+            newLabel.textScale = 1f;
+            newLabel.autoSize = false;
+            newLabel.width = ComponentWidth;
+
+            return newLabel;
+        }
+
+
+        /// <summary>
+        /// Adds a pack description text label.
+        /// </summary>
+        /// <param name="xPos">Label x-position</param>
+        /// <returns></returns>
+        private UILabel Description(float xPos)
+        {
+            UILabel newLabel = this.AddUIComponent<UILabel>();
+            newLabel.relativePosition = new Vector2(xPos, DescriptionY);
+            newLabel.autoSize = false;
+            newLabel.autoHeight = true;
+            newLabel.wordWrap = true;
+            newLabel.textScale = 0.7f;
+            newLabel.width = ComponentWidth;
+
+            return newLabel;
         }
     }
 }

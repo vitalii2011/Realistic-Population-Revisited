@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using ColossalFramework;
 using System.Xml.Serialization;
 
 
@@ -14,6 +13,10 @@ namespace RealisticPopulationRevisited
     {
         // Configuration file name.
         internal static readonly string ConfigFileName = "RealisticPopulationConfig.xml";
+
+
+        // Read flag.
+        internal static bool configRead = false;
 
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace RealisticPopulationRevisited
                             foreach (CalcPackXML xmlPack in configFile.calcPacks)
                             {
                                 // Convert to volumetric pack.
-                                VolumetricPack volPack = new VolumetricPack()
+                                VolumetricPopPack volPack = new VolumetricPopPack()
                                 {
                                     name = xmlPack.name,
                                     displayName = xmlPack.name,
@@ -55,19 +58,20 @@ namespace RealisticPopulationRevisited
                                 {
                                     volPack.levels[calculationLevel.level] = new LevelData()
                                     {
-                                        floorHeight = calculationLevel.floorHeight,
+                                        // TODO: floor packs
+                                        //floorHeight = calculationLevel.floorHeight,
                                         emptyArea = calculationLevel.emptyArea,
                                         emptyPercent = calculationLevel.emptyPercent,
                                         areaPer = calculationLevel.areaPer,
-                                        firstFloorMin = calculationLevel.firstMin,
-                                        firstFloorExtra = calculationLevel.firstExtra,
-                                        firstFloorEmpty = calculationLevel.firstEmpty,
+                                        //firstFloorMin = calculationLevel.firstMin,
+                                        //firstFloorExtra = calculationLevel.firstExtra,
+                                        //firstFloorEmpty = calculationLevel.firstEmpty,
                                         multiFloorUnits = calculationLevel.multiLevel
                                     };
                                 }
 
                                 // Add new pack to our dictionary.
-                                PopData.AddCalculationPack(volPack);
+                                PopData.instance.AddCalculationPack(volPack);
                             }
 
                             // Deserialise consumption records.
@@ -93,42 +97,13 @@ namespace RealisticPopulationRevisited
                                 }
                             }
 
-                            // Deserialise default pack list into dictionary.
-                            foreach (DefaultPack defaultPack in configFile.defaults)
-                            {
-                                // Find target preset.
-                                CalcPack calcPack = PopData.calcPacks?.Find(pack => (pack?.name != null && pack.name.Equals(defaultPack.pack)));
-                                if (calcPack?.name == null)
-                                {
-                                    Debugging.Message("Couldn't find calculation pack " + defaultPack.pack + " for sub-service " + defaultPack.subService);
-                                    continue;
-                                }
+                            // Deserialise default pack lists.
+                            PopData.instance.DeserializeDefaults(configFile.popDefaults);
+                            FloorData.instance.DeserializeDefaults(configFile.floorDefaults);
 
-                                // Add service to our dictionary.
-                                PopData.AddService(defaultPack.service, defaultPack.subService, calcPack);
-                            }
-
-                            // Deserialise building list into dictionary.
-                            foreach (BuildingRecord buildingElement in configFile.buildings)
-                            {
-                                // Safety first!
-                                if (buildingElement.prefab.IsNullOrWhiteSpace() || buildingElement.pack.IsNullOrWhiteSpace())
-                                {
-                                    Debugging.Message("Null element in configuration file");
-                                    continue;
-                                }
-
-                                // Find target preset.
-                                CalcPack calcPack = PopData.calcPacks?.Find(pack => (pack?.name != null && pack.name.Equals(buildingElement.pack)));
-                                if (calcPack?.name == null)
-                                {
-                                    Debugging.Message("Couldn't find calculation pack " + buildingElement.pack + " for " + buildingElement.prefab);
-                                    continue;
-                                }
-
-                                // Add building to our dictionary.
-                                PopData.buildingDict.Add(buildingElement.prefab, calcPack);
-                            }
+                            // Deserialise building pack lists.
+                            PopData.instance.DeserializeBuildings(configFile.buildings);
+                            FloorData.instance.DeserializeBuildings(configFile.buildings);
 
                             // Deserialise building population overrides.
                             DeSerializePopOverrides(configFile.households, DataStore.householdCache);
@@ -140,6 +115,9 @@ namespace RealisticPopulationRevisited
                 {
                     Debugging.Message("no configuration file found");
                 }
+
+                // Set status flag.
+                configRead = true;
             }
             catch (Exception e)
             {
@@ -166,10 +144,10 @@ namespace RealisticPopulationRevisited
                     configFile.calcPacks = new List<CalcPackXML>();
 
                     // Iterate through all calculation packs in our dictionary.
-                    foreach (CalcPack calcPack in PopData.calcPacks)
+                    foreach (PopDataPack calcPack in PopData.instance.calcPacks)
                     {
                         // Look for volumetric packs.
-                        if (calcPack is VolumetricPack volPack)
+                        if (calcPack is VolumetricPopPack volPack)
                         {
                             // Look for packs marked as custom.
                             if (volPack.version == (int)DataVersion.customOne)
@@ -187,14 +165,15 @@ namespace RealisticPopulationRevisited
                                 {
                                     CalculationLevel xmlLevel = new CalculationLevel()
                                     {
+                                        // TODO: Floor packs
                                         level = i,
-                                        floorHeight = volPack.levels[i].floorHeight,
+                                        //floorHeight = volPack.levels[i].floorHeight,
                                         emptyArea = volPack.levels[i].emptyArea,
                                         emptyPercent = volPack.levels[i].emptyPercent,
                                         areaPer = volPack.levels[i].areaPer,
-                                        firstMin = volPack.levels[i].firstFloorMin,
-                                        firstExtra = volPack.levels[i].firstFloorExtra,
-                                        firstEmpty = volPack.levels[i].firstFloorEmpty,
+                                        //firstMin = volPack.levels[i].firstFloorMin,
+                                        //firstExtra = volPack.levels[i].firstFloorExtra,
+                                        //firstEmpty = volPack.levels[i].firstFloorEmpty,
                                         multiLevel = volPack.levels[i].multiFloorUnits
                                     };
 
@@ -210,38 +189,12 @@ namespace RealisticPopulationRevisited
                     // Serialise consumption information.
                     configFile.consumption = GetConsumptionRecords();
 
-                    // Serialise default packs dictionary.
-                    configFile.defaults = new List<DefaultPack>();
+                    // Serialise default dictionaries.
+                    configFile.popDefaults = PopData.instance.SerializeDefaults();
+                    configFile.floorDefaults = FloorData.instance.SerializeDefaults();
 
-                    // Iterate through each key (ItemClass.Service) in our dictionary.
-                    foreach (ItemClass.Service service in PopData.serviceDict.Keys)
-                    {
-                        // Iterate through each key (ItemClass.SubService) in our sub-dictionary and serialise it into a DefaultPack.
-                        foreach (ItemClass.SubService subService in PopData.serviceDict[service].Keys)
-                        {
-                            DefaultPack defaultPack = new DefaultPack();
-                            defaultPack.service = service;
-                            defaultPack.subService = subService;
-                            defaultPack.pack = PopData.serviceDict[service][subService].name;
-
-                            // Add new building record to our config file.
-                            configFile.defaults.Add(defaultPack);
-                        }
-                    }
-
-                    // Serialise building dictionary.
-                    configFile.buildings = new List<BuildingRecord>();
-
-                    // Iterate through each key (BuildingInfo) in our dictionary and serialise it into a BuildingRecord.
-                    foreach (string prefabName in PopData.buildingDict.Keys)
-                    {
-                        BuildingRecord newElement = new BuildingRecord();
-                        newElement.prefab = prefabName;
-                        newElement.pack = PopData.buildingDict[prefabName].name;
-
-                        // Add new building record to our config file.
-                        configFile.buildings.Add(newElement);
-                    }
+                    // Serialise building pack dictionaries.
+                    configFile.buildings = FloorData.instance.SerializeBuildings(PopData.instance.SerializeBuildings());
 
                     // Serialise building population overrides.
                     configFile.households = SerializePopOverrides(DataStore.householdCache);

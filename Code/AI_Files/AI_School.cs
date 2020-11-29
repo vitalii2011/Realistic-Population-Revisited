@@ -21,7 +21,7 @@ namespace RealisticPopulationRevisited
             if (ModSettings.enableSchools && __instance.m_info.GetClassLevel() <= ItemClass.Level.Level2)
             {
                 // We are - set the result to our realistic population lookup.
-                __result = PopData.Population(__instance.m_info, (int)__instance.m_info.GetClassLevel());
+                __result = PopData.instance.Population(__instance.m_info, (int)__instance.m_info.GetClassLevel());
 
                 // Don't continue on to original method.
                 return false;

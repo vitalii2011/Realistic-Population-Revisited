@@ -102,7 +102,7 @@ namespace RealisticPopulationRevisited
         // Constants.
         private const float LeftWidth = 400f;
         private const float MiddleWidth = 250f;
-        private const float RightWidth = 350f;
+        private const float RightWidth = 600f;
         private const float FilterHeight = 40f;
         private const float PanelHeight = 550;
         private const float BottomMargin = 10f;
@@ -344,8 +344,8 @@ namespace RealisticPopulationRevisited
 
                 // Filter by settings.
                 if (filterBar.SettingsFilter.isChecked && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0) continue;
-                if (filterBar.DefaultFilter.isChecked && PopData.HasPackOverride(item) == null) continue;
-                if (filterBar.AnyFilter.isChecked && (PopData.HasPackOverride(item) == null && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0)) continue;
+                if (filterBar.DefaultFilter.isChecked && PopData.instance.HasPackOverride(item) == null) continue;
+                if (filterBar.AnyFilter.isChecked && (PopData.instance.HasPackOverride(item) == null && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0)) continue;
 
                 // Finally!  We've got an item that's passed all filters; add it to the list.
                 filteredList.Add(item);

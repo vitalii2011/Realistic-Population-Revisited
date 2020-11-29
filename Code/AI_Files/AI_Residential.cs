@@ -18,7 +18,7 @@ namespace RealisticPopulationRevisited
 
             if (!DataStore.prefabHouseHolds.TryGetValue(item.gameObject.GetHashCode(), out returnValue))
             {
-                returnValue = PopData.Population(item, (int)level);
+                returnValue = PopData.instance.Population(item, (int)level);
 
                 // Store values in cache.
                 DataStore.prefabHouseHolds.Add(item.gameObject.GetHashCode(), returnValue);

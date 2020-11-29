@@ -67,7 +67,7 @@ namespace RealisticPopulationRevisited
                     try
                     {
                         Randomizer number = new Randomizer(i);
-                        DataStore.seedToId.Add(number.seed, (ushort) i);
+                        DataStore.seedToId.Add(number.seed, (ushort)i);
                     }
                     catch (Exception)
                     {
@@ -81,14 +81,8 @@ namespace RealisticPopulationRevisited
                 // Initialise volumetric datastores.
                 EmploymentData.Setup();
 
-                // Don't initialise PopData if we've already done it, but make sure we do it if we haven't already.
-                if (!PopData.ready)
-                {
-                    PopData.Setup();
-
-                    // Load (volumetric) building settings file.
-                    ConfigUtils.LoadSettings();
-                }
+                // Initialize data.
+                DataUtils.Setup();
             }
         }
 

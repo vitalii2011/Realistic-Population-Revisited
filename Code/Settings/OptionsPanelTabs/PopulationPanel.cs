@@ -42,7 +42,7 @@ namespace RealisticPopulationRevisited
         protected UIButton saveButton, deleteButton;
 
         // List of packs.
-        List<VolumetricPack> packList;
+        List<VolumetricPopPack> packList;
 
 
         /// <summary>
@@ -125,8 +125,7 @@ namespace RealisticPopulationRevisited
 
             // Pack name textfield.
             packNameField = UIUtils.CreateTextField(panel, 200f, 30f);
-            UILabel packNameLabel = PanelUtils.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"));
-            packNameLabel.relativePosition = new Vector3(-100f, (packNameField.height - packNameLabel.height) / 2);
+            UILabel packNameLabel = PanelUtils.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"), -100f, (packNameField.height - 18f) / 2);
             packNameField.relativePosition = new Vector3(140f, currentY);
             packNameField.padding = new RectOffset(6, 6, 6, 6);
             packNameField.isEnabled = false;
@@ -151,7 +150,7 @@ namespace RealisticPopulationRevisited
                 ItemClass.Service currentService = services[serviceDropDown.selectedIndex];
 
                 // Starting with our default new pack name, check to see if we already have a pack with this name for the currently selected service.
-                while (PopData.calcPacks.Find(pack => pack.service == currentService && pack.name.Equals(newPackName)) != null)
+                while (PopData.instance.calcPacks.Find(pack => ((PopDataPack)pack).service == currentService && pack.name.Equals(newPackName)) != null)
                 {
                     // We already have a match for this name; append the current integer suffix to the base name and try again, incementing the integer suffix for the next attempt (if required).
                     newPackName = "New pack " + packNum++;
@@ -161,13 +160,13 @@ namespace RealisticPopulationRevisited
                 packNameField.text = newPackName;
 
                 // New pack to add.
-                VolumetricPack newPack = new VolumetricPack();
+                VolumetricPopPack newPack = new VolumetricPopPack();
 
                 // Update pack with information from the panel.
                 UpdatePack(newPack);
 
                 // Add our new pack to our list of packs and update defaults panel menus.
-                PopData.AddCalculationPack(newPack);
+                PopData.instance.AddCalculationPack(newPack);
                 DefaultsPanel.instance.UpdateMenus();
 
                 // Save configuration file. 
@@ -220,7 +219,7 @@ namespace RealisticPopulationRevisited
                 if (packList[packDropDown.selectedIndex].version == (int)DataVersion.customOne)
                 {
                     // Remove from list of packs.
-                    PopData.calcPacks.Remove(packList[packDropDown.selectedIndex]);
+                    PopData.instance.calcPacks.Remove(packList[packDropDown.selectedIndex]);
 
                     // Regenerate pack menu.
                     packDropDown.items = PackList(services[serviceDropDown.selectedIndex]);
@@ -337,7 +336,7 @@ namespace RealisticPopulationRevisited
         /// Updates the given calculation pack with data from the panel.
         /// </summary>
         /// <param name="pack">Pack to update</param>
-        private void UpdatePack(VolumetricPack pack)
+        private void UpdatePack(VolumetricPopPack pack)
         {
             // Basic pack attributes.
             pack.name = packNameField.text;
@@ -350,16 +349,17 @@ namespace RealisticPopulationRevisited
             for (int i = 0; i < maxLevels[serviceDropDown.selectedIndex]; ++i)
             {
                 // Textfields.
-                PanelUtils.ParseFloat(ref pack.levels[i].floorHeight, floorHeightFields[i].text);
+                // TODO: New floor pack.
+                //PanelUtils.ParseFloat(ref pack.levels[i].floorHeight, floorHeightFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].emptyArea, emptyAreaFields[i].text);
                 PanelUtils.ParseInt(ref pack.levels[i].emptyPercent, emptyPercentFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].areaPer, areaPerFields[i].text);
-                PanelUtils.ParseFloat(ref pack.levels[i].firstFloorMin, firstMinFields[i].text);
-                PanelUtils.ParseFloat(ref pack.levels[i].firstFloorExtra, firstExtraFields[i].text);
+                //PanelUtils.ParseFloat(ref pack.levels[i].firstFloorMin, firstMinFields[i].text);
+                //PanelUtils.ParseFloat(ref pack.levels[i].firstFloorExtra, firstExtraFields[i].text);
 
                 // Checkboxes.
-                pack.levels[i].firstFloorEmpty = firstEmptyCheck[i].isChecked;
-                pack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
+                //pack.levels[i].firstFloorEmpty = firstEmptyCheck[i].isChecked;
+                //pack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
             }
         }
 
@@ -444,7 +444,7 @@ namespace RealisticPopulationRevisited
         private void PopulateTextFields(int index)
         {
             // Get local reference.
-            VolumetricPack volPack = packList[index];
+            VolumetricPopPack volPack = packList[index];
 
             // Set name field.
             packNameField.text = volPack.displayName ?? volPack.name;
@@ -468,13 +468,14 @@ namespace RealisticPopulationRevisited
                 LevelData level = volPack.levels[i];
 
                 // Populate controls.
-                floorHeightFields[i].text = level.floorHeight.ToString();
+                // TODO: Floor pack
+                //floorHeightFields[i].text = level.floorHeight.ToString();
                 emptyAreaFields[i].text = level.emptyArea.ToString();
                 emptyPercentFields[i].text = level.emptyPercent.ToString();
                 areaPerFields[i].text = level.areaPer.ToString();
-                firstMinFields[i].text = level.firstFloorMin.ToString();
-                firstExtraFields[i].text = level.firstFloorExtra.ToString();
-                firstEmptyCheck[i].isChecked = level.firstFloorEmpty;
+                //firstMinFields[i].text = level.firstFloorMin.ToString();
+                //firstExtraFields[i].text = level.firstFloorExtra.ToString();
+                //firstEmptyCheck[i].isChecked = level.firstFloorEmpty;
                 multiFloorCheck[i].isChecked = level.multiFloorUnits;
             }
         }
@@ -488,14 +489,14 @@ namespace RealisticPopulationRevisited
         private string[] PackList(ItemClass.Service service)
         {
             // Re-initialise pack list.
-            packList = new List<VolumetricPack>();
+            packList = new List<VolumetricPopPack>();
             List<string> packNames = new List<string>();
 
             // Iterate through all available packs.
-            foreach (CalcPack calcPack in PopData.calcPacks)
+            foreach (PopDataPack calcPack in PopData.instance.calcPacks)
             {
                 // Check for custom packs.
-                if (calcPack is VolumetricPack volPack && volPack.service == service)
+                if (calcPack is VolumetricPopPack volPack && volPack.service == service)
                 {
                     // Found onw - add to our lists.
                     packList.Add(volPack);

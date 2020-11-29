@@ -9,21 +9,24 @@
 
 
     /// <summary>
-    /// Struct holding data for volumetric calculations for a given building level.
+    /// Calculation data pack - provides parameters for calculating building populations for given services and (optional) subservices.
     /// </summary>
-    public struct LevelData
+    public class DataPack
+    {
+        public int version;
+        public string name;
+        public string displayName;
+        public string description;
+    }
+
+
+    /// <summary>
+    /// Floor calculation data pack - provides parameters for calculating building floors.
+    /// </summary>
+    public class FloorDataPack : DataPack
     {
         // Height per floor in metres.
         public float floorHeight;
-
-        // Empty area (if any) to be subtracted from building before any calculations are made.
-        public float emptyArea;
-
-        // Empty area (if any) as a percentage to to be subtracted from each floor area AFTER fixed empty area (above) is subtracted.
-        public int emptyPercent;
-
-        // Area per unit (household/worker), in square metres.
-        public float areaPer;
 
         // Height needs to be at least this high, in metres, for any floor to exist.
         public float firstFloorMin;
@@ -42,14 +45,11 @@
 
 
     /// <summary>
-    /// Calculation data pack - provides parameters for calculating building populations for given services and (optional) subservices.
+    /// Population clculation data pack - provides parameters for calculating building populations.
     /// </summary>
-    public class CalcPack
+    public class PopDataPack : DataPack
     {
-        public int version;
-        public string name;
-        public string displayName;
-        public string description;
+        // Service/subservice restrictions.
         public ItemClass.Service service;
         public ItemClass.SubService[] subServices;
 
@@ -73,10 +73,32 @@
     }
 
 
+
+    /// <summary>
+    /// Struct holding data for volumetric calculations for a given building level.
+    /// </summary>
+    public struct LevelData
+    {
+        // Empty area (if any) to be subtracted from building before any calculations are made.
+        public float emptyArea;
+
+        // Empty area (if any) as a percentage to to be subtracted from each floor area AFTER fixed empty area (above) is subtracted.
+        public int emptyPercent;
+
+        // Area per unit (household/worker), in square metres.
+        public float areaPer;
+
+        // True if unit areas should be calculated as though they extend through all levels (ground to roof - e.g. detached housing, rowhouses, etc.),
+        // false if units should only be treated as single-floor entities (e.g. apartment blocks).
+        // Generally speaking, true for low-density, false for high-density.
+        public bool multiFloorUnits;
+    }
+
+
     /// <summary>
     /// Volumetric calculation data pack.
     /// </summary>
-    public class VolumetricPack : CalcPack
+    public class VolumetricPopPack : PopDataPack
     {
         // Building level records.
         public LevelData[] levels;
@@ -87,10 +109,7 @@
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
         /// <returns>Population</returns>
-        public override int Population(BuildingInfo buildingPrefab, int level)// => PopData.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level]);
-        {
-            return PopData.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level]);
-        }
+        public override int Population(BuildingInfo buildingPrefab, int level) => PopData.instance.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level], (FloorDataPack)FloorData.instance.ActivePack(buildingPrefab));
 
 
         /// <summary>
@@ -106,7 +125,7 @@
     /// <summary>
     /// Legacy WG residential calculation pack.
     /// </summary>
-    public class LegacyResPack : CalcPack
+    public class LegacyResPack : PopDataPack
     {
         /// <summary>
         /// Returns the volumetric population of the given building prefab and level.
@@ -125,7 +144,7 @@
     /// <summary>
     /// Legacy WG commercial calculation pack.
     /// </summary>
-    public class LegacyComPack : CalcPack
+    public class LegacyComPack : PopDataPack
     {
         /// <summary>
         /// Returns the workplace breakdowns and visitor count for the given building prefab and level.
@@ -148,7 +167,7 @@
     /// <summary>
     /// Legacy WG industrial calculation pack.
     /// </summary>
-    public class LegacyIndPack : CalcPack
+    public class LegacyIndPack : PopDataPack
     {
         /// <summary>
         /// Returns the workplace breakdowns and visitor count for the given building prefab and level.
@@ -187,7 +206,7 @@
     /// <summary>
     /// Legacy WG office calculation pack.
     /// </summary>
-    public class LegacyOffPack : CalcPack
+    public class LegacyOffPack : PopDataPack
     {
         /// <summary>
         /// Returns the workplace breakdowns and visitor count for the given building prefab and level.
