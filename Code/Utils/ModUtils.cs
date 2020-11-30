@@ -10,8 +10,9 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal static class ModUtils
     {
-        // RICO installed and enabled flag.
+        // RICO methods.
         internal static MethodInfo ricoPopManaged;
+        internal static MethodInfo ricoClearWorkplace;
 
 
         /// <summary>
@@ -73,13 +74,11 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Uses reflection to find the IsRICOPopManaged method of Ploppable RICO Revisited.
-        /// If successful, sets ricoPopManaged to 
+        /// Uses reflection to find the IsRICOPopManaged and ClearWorkplaceCache methods of Ploppable RICO Revisited.
+        /// If successful, sets ricoPopManaged and ricoClearWorkplace fields.
         /// </summary>
         internal static void RICOReflection()
         {
-            string methodName = "IsRICOPopManaged";
-
             // Iterate through each loaded plugin assembly.
             foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
             {
@@ -87,26 +86,38 @@ namespace RealisticPopulationRevisited
                 {
                     if (assembly.GetName().Name.Equals("ploppablerico") && plugin.isEnabled)
                     {
+                        Debugging.Message("Found Ploppable RICO Revisited");
+
                         // Found ploppablerico.dll that's part of an enabled plugin; try to get its ModUtils class.
                         Type ricoModUtils = assembly.GetType("PloppableRICO.Interfaces");
 
                         if (ricoModUtils != null)
                         {
                             // Try to get IsRICOPopManaged method.
-                            ricoPopManaged = ricoModUtils.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+                            ricoPopManaged = ricoModUtils.GetMethod("IsRICOPopManaged", BindingFlags.Public | BindingFlags.Static);
                             if (ricoPopManaged != null)
                             {
-                                // Success!  We're done here.
-                                Debugging.Message("found " + methodName);
-                                return;
+                                // Success!
+                                Debugging.Message("found IsRICOPopManaged");
+                            }
+
+                            // Try to get ClearWorkplaceCache method.
+                            ricoClearWorkplace = ricoModUtils.GetMethod("ClearWorkplaceCache", BindingFlags.Public | BindingFlags.Static);
+                            if (ricoClearWorkplace != null)
+                            {
+                                // Success!
+                                Debugging.Message("found RICO ClearWorkplaceCache");
                             }
                         }
+
+                        // At this point, we're done; return.
+                        return;
                     }
                 }
             }
 
             // If we got here, we were unsuccessful.
-            Debugging.Message("didn't find " + methodName);
+            Debugging.Message("Ploppable RICO Revisited not found");
         }
     }
 }

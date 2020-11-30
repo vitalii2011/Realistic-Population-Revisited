@@ -76,13 +76,13 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="building">Building prefab to update</param>
         /// <param name="pack">New data pack to apply</param>
-        internal void UpdateBuildingPack(BuildingInfo building, DataPack pack)
+        internal void UpdateBuildingPack(BuildingInfo prefab, DataPack pack)
         {
             // Local reference.
-            string buildingName = building.name;
+            string buildingName = prefab.name;
 
             // Check to see if this pack matches the default.
-            bool isDefault = pack == CurrentDefaultPack(building);
+            bool isDefault = pack == CurrentDefaultPack(prefab);
 
             // Check to see if this building already has an entry.
             if (buildingDict.ContainsKey(buildingName))
@@ -106,10 +106,10 @@ namespace RealisticPopulationRevisited
             }
 
             // Clear out any cached calculations for households.workplaces (depending on whether or not this is residential).
-            if (building.GetService() == ItemClass.Service.Residential)
+            if (prefab.GetService() == ItemClass.Service.Residential)
             {
                 // Remove from household cache.
-                DataStore.prefabHouseHolds.Remove(building.gameObject.GetHashCode());
+                DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
 
                 // Update household counts for existing instances of this building - only needed for residential buildings.
                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
@@ -118,7 +118,13 @@ namespace RealisticPopulationRevisited
             else
             {
                 // Remove from workplace cache.
-                DataStore.prefabWorkerVisit.Remove(building.gameObject.GetHashCode());
+                DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
+
+                // Force RICO refresh.
+                if (ModUtils.ricoClearWorkplace != null)
+                {
+                    ModUtils.ricoClearWorkplace.Invoke(null, new object[] { prefab });
+                }
             }
         }
 
