@@ -638,28 +638,6 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Adds or updates a calculation pack entry to our list.
-        /// </summary>
-        /// <param name="calcPack">Calculation pack to add</param>
-        internal void AddCalculationPack(PopDataPack calcPack)
-        {
-            // Iterate through the list of packs, looking for a name match.
-            for (int i = 0; i < calcPacks.Count; ++i)
-            {
-                if (calcPacks[i].name.Equals(calcPack.name))
-                {
-                    // Found a match - replace with our new entry and return.
-                    calcPacks[i] = calcPack;
-                    return;
-                }
-            }
-
-            // If we got here, we didn't find a match; add this pack to the list.
-            calcPacks.Add(calcPack);
-        }
-
-
-        /// <summary>
         /// Returns the inbuilt default calculation pack for the given service/subservice combination.
         /// </summary>
         /// <param name="service">Service</param>

@@ -105,27 +105,8 @@ namespace RealisticPopulationRevisited
                 buildingDict.Add(buildingName, pack);
             }
 
-            // Clear out any cached calculations for households.workplaces (depending on whether or not this is residential).
-            if (prefab.GetService() == ItemClass.Service.Residential)
-            {
-                // Remove from household cache.
-                DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
-
-                // Update household counts for existing instances of this building - only needed for residential buildings.
-                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                UpdateHouseholds(buildingName);
-            }
-            else
-            {
-                // Remove from workplace cache.
-                DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
-
-                // Force RICO refresh.
-                if (ModUtils.ricoClearWorkplace != null)
-                {
-                    ModUtils.ricoClearWorkplace.Invoke(null, new object[] { prefab });
-                }
-            }
+            // Refresh the prefab's population settings to reflect changes.
+            RefreshPrefab(prefab);
         }
 
 
@@ -372,6 +353,79 @@ namespace RealisticPopulationRevisited
             }
 
             return defaultList;
+        }
+
+
+        /// <summary>
+        /// Adds or updates a calculation pack entry to our list.
+        /// </summary>
+        /// <param name="calcPack">Calculation pack to add</param>
+        internal void AddCalculationPack(DataPack calcPack)
+        {
+            // Iterate through the list of packs, looking for a name match.
+            for (int i = 0; i < calcPacks.Count; ++i)
+            {
+                if (calcPacks[i].name.Equals(calcPack.name))
+                {
+                    // Found a match - replace with our new entry and return.
+                    calcPacks[i] = calcPack;
+                    return;
+                }
+            }
+
+            // If we got here, we didn't find a match; add this pack to the list.
+            calcPacks.Add(calcPack);
+        }
+
+
+        /// <summary>
+        /// Triggers recalculation of buildings in-game when the pack changes.
+        /// </summary>
+        /// <param name="calcPack">Pack that's been changed</param>
+        internal void CalcPackChanged(DataPack calcPack)
+        {
+            // Iterate through each loaded BuildingInfo.
+            for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); ++i)
+            {
+                BuildingInfo prefab = PrefabCollection<BuildingInfo>.GetLoaded(i);
+
+                // Check to see if the currently active pack for the prefab is the one that's been changed.
+                if (ActivePack(prefab) == calcPack)
+                {
+                    // If so, refresh the prefab's population settings to reflect changes.
+                    RefreshPrefab(prefab);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Refreshes a prefab's population settings to reflect changes.
+        /// </summary>
+        /// <param name="prefab">Prefab to refresh</param>
+        private void RefreshPrefab(BuildingInfo prefab)
+        {
+            // Clear out any cached calculations for households.workplaces (depending on whether or not this is residential).
+            if (prefab.GetService() == ItemClass.Service.Residential)
+            {
+                // Remove from household cache.
+                DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
+
+                // Update household counts for existing instances of this building - only needed for residential buildings.
+                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
+                UpdateHouseholds(prefab.name);
+            }
+            else
+            {
+                // Remove from workplace cache.
+                DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
+
+                // Force RICO refresh, if we're using Ploppable RICO Revisited.
+                if (ModUtils.ricoClearWorkplace != null)
+                {
+                    ModUtils.ricoClearWorkplace.Invoke(null, new object[] { prefab });
+                }
+            }
         }
     }
 }

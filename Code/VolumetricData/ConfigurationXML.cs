@@ -16,9 +16,13 @@ namespace RealisticPopulationRevisited
         [XmlElement("version")]
         public int NotificationVersion { get; set; }
 
-        [XmlArray("calcpacks")]
-        [XmlArrayItem("calcpack")]
-        public List<CalcPackXML> calcPacks { get; set; }
+        [XmlArray("pop_packs")]
+        [XmlArrayItem("pop_pack")]
+        public List<PopPackXML> popPacks { get; set; }
+
+        [XmlArray("floor_packs")]
+        [XmlArrayItem("floor_pack")]
+        public List<FloorPackXML> floorPacks { get; set; }
 
         [XmlArray("consumption")]
         [XmlArrayItem("consumption")]
@@ -104,9 +108,9 @@ namespace RealisticPopulationRevisited
 
 
     /// <summary>
-    /// Custom calculation pack record.
+    /// Custom population calculation pack record.
     /// </summary>
-    public class CalcPackXML
+    public class PopPackXML
     {
         // Pack name.
         [XmlAttribute("name")]
@@ -119,22 +123,18 @@ namespace RealisticPopulationRevisited
         // Level records.
         [XmlArray("levels")]
         [XmlArrayItem("level")]
-        public List<CalculationLevel> calculationLevels { get; set; }
+        public List<PopLevel> calculationLevels { get; set; }
     }
 
 
     /// <summary>
     /// Custom calculation pack individual level line.
     /// </summary>
-    public class CalculationLevel
+    public class PopLevel
     {
         // Level ID.
         [XmlAttribute("level")]
         public int level;
-
-        // Floor height.
-        [XmlAttribute("floorheight")]
-        public float floorHeight;
 
         // Empty area, fixed.
         [XmlAttribute("empty")]
@@ -148,11 +148,30 @@ namespace RealisticPopulationRevisited
         [XmlAttribute("areaper")]
         public float areaPer;
 
+        // Multi-level units.
+        [XmlAttribute("multilevel")]
+        public bool multiLevel;
+    }
+
+
+    /// <summary>
+    /// Custom floor calculation pack record.
+    /// </summary>
+    public class FloorPackXML
+    {
+        // Pack name.
+        [XmlAttribute("name")]
+        public string name;
+
         // Floor height.
+        [XmlAttribute("floorheight")]
+        public float floorHeight;
+
+        // First floor minimum floor height.
         [XmlAttribute("firstmin")]
         public float firstMin;
 
-        // Floor height.
+        // First floor additional floor height.
         [XmlAttribute("firstextra")]
         public float firstExtra;
 

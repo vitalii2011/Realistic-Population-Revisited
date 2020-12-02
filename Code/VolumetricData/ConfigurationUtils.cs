@@ -40,8 +40,8 @@ namespace RealisticPopulationRevisited
                         }
                         else
                         {
-                            // Deserialise calculation packs.
-                            foreach (CalcPackXML xmlPack in configFile.calcPacks)
+                            // Deserialise population calculation packs.
+                            foreach (PopPackXML xmlPack in configFile.popPacks)
                             {
                                 // Convert to volumetric pack.
                                 VolumetricPopPack volPack = new VolumetricPopPack()
@@ -54,18 +54,14 @@ namespace RealisticPopulationRevisited
                                 };
 
                                 // Iterate through each level in the xml and add to our volumetric pack.
-                                foreach (CalculationLevel calculationLevel in xmlPack.calculationLevels)
+                                foreach (PopLevel calculationLevel in xmlPack.calculationLevels)
                                 {
                                     volPack.levels[calculationLevel.level] = new LevelData()
                                     {
-                                        // TODO: floor packs
                                         //floorHeight = calculationLevel.floorHeight,
                                         emptyArea = calculationLevel.emptyArea,
                                         emptyPercent = calculationLevel.emptyPercent,
                                         areaPer = calculationLevel.areaPer,
-                                        //firstFloorMin = calculationLevel.firstMin,
-                                        //firstFloorExtra = calculationLevel.firstExtra,
-                                        //firstFloorEmpty = calculationLevel.firstEmpty,
                                         multiFloorUnits = calculationLevel.multiLevel
                                     };
                                 }
@@ -73,6 +69,27 @@ namespace RealisticPopulationRevisited
                                 // Add new pack to our dictionary.
                                 PopData.instance.AddCalculationPack(volPack);
                             }
+
+                            // Deserialise floor calculation packs.
+                            foreach (FloorPackXML xmlPack in configFile.floorPacks)
+                            {
+                                // Convert to volumetric pack.
+                                FloorDataPack floorPack = new FloorDataPack()
+                                {
+                                    name = xmlPack.name,
+                                    displayName = xmlPack.name,
+                                    version = (int)DataVersion.customOne,
+                                    floorHeight = xmlPack.floorHeight,
+                                    firstFloorMin = xmlPack.firstMin,
+                                    firstFloorExtra = xmlPack.firstExtra,
+                                    firstFloorEmpty = xmlPack.firstEmpty,
+                                    multiFloorUnits = xmlPack.multiLevel
+                                };
+
+                                // Add new pack to our dictionary.
+                                FloorData.instance.AddCalculationPack(floorPack);
+                            }
+
 
                             // Deserialise consumption records.
                             DataMapping mapper = new DataMapping();
@@ -141,7 +158,7 @@ namespace RealisticPopulationRevisited
                     XMLConfigurationFile configFile = new XMLConfigurationFile();
 
                     // Serialise custom packs.
-                    configFile.calcPacks = new List<CalcPackXML>();
+                    configFile.popPacks = new List<PopPackXML>();
 
                     // Iterate through all calculation packs in our dictionary.
                     foreach (PopDataPack calcPack in PopData.instance.calcPacks)
@@ -153,17 +170,17 @@ namespace RealisticPopulationRevisited
                             if (volPack.version == (int)DataVersion.customOne)
                             {
                                 // Found one - serialise it.
-                                CalcPackXML xmlPack = new CalcPackXML()
+                                PopPackXML xmlPack = new PopPackXML()
                                 {
                                     name = volPack.name,
                                     service = volPack.service,
-                                    calculationLevels = new List<CalculationLevel>()
+                                    calculationLevels = new List<PopLevel>()
                                 };
 
                                 // Iterate through each level and add it to our serialisation.
                                 for (int i = 0; i < volPack.levels.Length; ++i)
                                 {
-                                    CalculationLevel xmlLevel = new CalculationLevel()
+                                    PopLevel xmlLevel = new PopLevel()
                                     {
                                         // TODO: Floor packs
                                         level = i,
@@ -181,7 +198,37 @@ namespace RealisticPopulationRevisited
                                 }
 
                                 // Add to file.
-                                configFile.calcPacks.Add(xmlPack);
+                                configFile.popPacks.Add(xmlPack);
+                            }
+                        }
+                    }
+
+                    // Serialise custom packs.
+                    // TODO method with above
+                    configFile.floorPacks = new List<FloorPackXML>();
+
+                    // Iterate through all calculation packs in our dictionary.
+                    foreach (DataPack calcPack in FloorData.instance.calcPacks)
+                    {
+                        // Look for volumetric packs.
+                        if (calcPack is FloorDataPack floorPack)
+                        {
+                            // Look for packs marked as custom.
+                            if (floorPack.version == (int)DataVersion.customOne)
+                            {
+                                // Found one - serialise it.
+                                FloorPackXML xmlPack = new FloorPackXML()
+                                {
+                                    name = floorPack.name,
+                                    floorHeight = floorPack.floorHeight,
+                                    firstMin = floorPack.firstFloorMin,
+                                    firstExtra = floorPack.firstFloorExtra,
+                                    firstEmpty = floorPack.firstFloorEmpty,
+                                    multiLevel = floorPack.multiFloorUnits
+                                };
+
+                                // Add to file.
+                                configFile.floorPacks.Add(xmlPack);
                             }
                         }
                     }

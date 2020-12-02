@@ -8,41 +8,27 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Options panel for creating and editing calculation packs.
     /// </summary>
-    internal class PopulationPanel
+    internal class PopulationPanel : CalculationPanelBase
     {
         // Constants.
-        protected const float Margin = 10f;
-        protected const float TextFieldWidth = 60f;
-        protected const float ColumnWidth = TextFieldWidth + (Margin * 2);
-        protected const float FloorHeightX = 120f;
-        protected const float EmptyAreaX = FloorHeightX + ColumnWidth;
+        protected const float EmptyAreaX = FirstItem;
         protected const float EmptyPercentX = EmptyAreaX + ColumnWidth;
         protected const float AreaPerX = EmptyPercentX + ColumnWidth;
-        protected const float FirstMinX = AreaPerX + ColumnWidth;
-        protected const float FirstMaxX = FirstMinX + ColumnWidth;
-        protected const float FirstEmptyX = FirstMaxX + ColumnWidth;
-        protected const float MultiFloorX = FirstEmptyX + ColumnWidth;
+        protected const float MultiFloorX = AreaPerX + ColumnWidth;
         protected const float PackMenuY = 90f;
         protected const float DetailY = PackMenuY + 140f;
-        protected const float LeftItem = 75f;
-        protected const float RowHeight = 23f;
 
         string[] serviceNames = { Translations.Translate("RPR_CAT_RES"), Translations.Translate("RPR_CAT_IND"), Translations.Translate("RPR_CAT_COM"), Translations.Translate("RPR_CAT_OFF"), Translations.Translate("RPR_CAT_SCH") };
         ItemClass.Service[] services = { ItemClass.Service.Residential, ItemClass.Service.Industrial, ItemClass.Service.Commercial, ItemClass.Service.Office, ItemClass.Service.Education };
         int[] maxLevels = { 5, 3, 3, 3, 2 };
 
         // Textfield arrays.
-        protected UITextField[] floorHeightFields, emptyAreaFields, emptyPercentFields, areaPerFields, firstMinFields, firstExtraFields;
-        protected UICheckBox[] firstEmptyCheck, multiFloorCheck;
+        protected UITextField[] emptyAreaFields, emptyPercentFields, areaPerFields;
+        protected UICheckBox[] multiFloorCheck;
         protected UILabel[] rowLabels;
 
         // Panel components.
-        protected UIDropDown packDropDown, serviceDropDown;
-        protected UITextField packNameField;
-        protected UIButton saveButton, deleteButton;
-
-        // List of packs.
-        List<VolumetricPopPack> packList;
+        protected UIDropDown serviceDropDown;
 
 
         /// <summary>
@@ -61,13 +47,9 @@ namespace RealisticPopulationRevisited
             panel.autoLayout = false;
 
             // Initialise arrays
-            floorHeightFields = new UITextField[5];
             emptyAreaFields = new UITextField[5];
             emptyPercentFields = new UITextField[5];
             areaPerFields = new UITextField[5];
-            firstMinFields = new UITextField[5];
-            firstExtraFields = new UITextField[5];
-            firstEmptyCheck = new UICheckBox[5];
             multiFloorCheck = new UICheckBox[5];
             rowLabels = new UILabel[5];
 
@@ -80,13 +62,9 @@ namespace RealisticPopulationRevisited
             packDropDown.parent.relativePosition = new Vector3(20f, PackMenuY);
 
             // Headings.
-            PanelUtils.ColumnLabel(panel, FloorHeightX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), 1.0f);
             PanelUtils.ColumnLabel(panel, EmptyAreaX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_EMP"), 1.0f);
             PanelUtils.ColumnLabel(panel, EmptyPercentX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_EPC"), 1.0f);
             PanelUtils.ColumnLabel(panel, AreaPerX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_APU"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMinX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMaxX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), 1.0f);
             PanelUtils.ColumnLabel(panel, MultiFloorX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_MFU"), 1.0f);
 
             // Add level textfields.
@@ -94,9 +72,6 @@ namespace RealisticPopulationRevisited
             {
                 // Row label.
                 rowLabels[i] = RowLabel(panel, currentY, Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString());
-
-                floorHeightFields[i] = AddTextField(panel, TextFieldWidth, FloorHeightX + Margin, currentY);
-                floorHeightFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
                 emptyAreaFields[i] = AddTextField(panel, TextFieldWidth, EmptyAreaX + Margin, currentY);
                 emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
@@ -107,13 +82,6 @@ namespace RealisticPopulationRevisited
                 areaPerFields[i] = AddTextField(panel, TextFieldWidth, AreaPerX + Margin, currentY);
                 areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-                firstMinFields[i] = AddTextField(panel, TextFieldWidth, FirstMinX + Margin, currentY);
-                firstMinFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-
-                firstExtraFields[i] = AddTextField(panel, TextFieldWidth, FirstMaxX + Margin, currentY);
-                firstExtraFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-
-                firstEmptyCheck[i] = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);
                 multiFloorCheck[i] = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);
 
                 // Move to next row.
@@ -199,13 +167,16 @@ namespace RealisticPopulationRevisited
                 if (packNameField.text != null && serviceDropDown.selectedIndex >= 0)
                 {
                     // Update currently selected pack with information from the panel.
-                    UpdatePack(packList[packDropDown.selectedIndex]);
+                    UpdatePack((VolumetricPopPack)packList[packDropDown.selectedIndex]);
 
                     // Update selected menu item in case the name has changed.
                     packDropDown.items[packDropDown.selectedIndex] = packList[packDropDown.selectedIndex].displayName ?? packList[packDropDown.selectedIndex].name;
 
                     // Save configuration file.
                     ConfigUtils.SaveSettings();
+
+                    // Apply update.
+                    PopData.instance.CalcPackChanged(packList[packDropDown.selectedIndex]);
                 }
             };
             
@@ -226,7 +197,6 @@ namespace RealisticPopulationRevisited
 
                     // Reset pack menu index.
                     packDropDown.selectedIndex = 0;
-
                 }
             };
 
@@ -239,7 +209,7 @@ namespace RealisticPopulationRevisited
                 // Set service menu by iterating through list of services looking for a match.
                 for (int i = 0; i < services.Length; ++i)
                 {
-                    if (services[i] == packList[index].service)
+                    if (services[i] == ((VolumetricPopPack)packList[index]).service)
                     {
                         // Found a service match; select it and stop looping.
                         serviceDropDown.selectedIndex = i;
@@ -284,52 +254,23 @@ namespace RealisticPopulationRevisited
                 if (i < maxLevel)
                 {
                     rowLabels[i].Show();
-                    floorHeightFields[i].Show();
                     emptyAreaFields[i].Show();
                     emptyPercentFields[i].Show();
                     areaPerFields[i].Show();
-                    firstMinFields[i].Show();
-                    firstExtraFields[i].Show();
-                    firstEmptyCheck[i].Show();
                     multiFloorCheck[i].Show();
                 }
                 else
                 {
                     // Otherwise, hide.
                     rowLabels[i].Hide();
-                    floorHeightFields[i].Hide();
                     emptyAreaFields[i].Hide();
                     emptyPercentFields[i].Hide();
                     areaPerFields[i].Hide();
-                    firstMinFields[i].Hide();
-                    firstExtraFields[i].Hide();
-                    firstEmptyCheck[i].Hide();
                     multiFloorCheck[i].Hide();
                 }
             }
         }
 
-        
-        /// <summary>
-        /// Sets button and textfield enabled/disabled states.
-        /// </summary>
-        /// <param name="index">Selected pack list index</param>
-        private void ButtonStates(int index)
-        {
-            // Enable save and delete buttons and name textfield if this is a custom pack, otherwise disable.
-            if (packList[index].version == (int)DataVersion.customOne)
-            {
-                packNameField.Enable();
-                saveButton.Enable();
-                deleteButton.Enable();
-            }
-            else
-            {
-                packNameField.Disable();
-                saveButton.Disable();
-                deleteButton.Disable();
-            }
-        }
 
 
         /// <summary>
@@ -349,91 +290,13 @@ namespace RealisticPopulationRevisited
             for (int i = 0; i < maxLevels[serviceDropDown.selectedIndex]; ++i)
             {
                 // Textfields.
-                // TODO: New floor pack.
-                //PanelUtils.ParseFloat(ref pack.levels[i].floorHeight, floorHeightFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].emptyArea, emptyAreaFields[i].text);
                 PanelUtils.ParseInt(ref pack.levels[i].emptyPercent, emptyPercentFields[i].text);
                 PanelUtils.ParseFloat(ref pack.levels[i].areaPer, areaPerFields[i].text);
-                //PanelUtils.ParseFloat(ref pack.levels[i].firstFloorMin, firstMinFields[i].text);
-                //PanelUtils.ParseFloat(ref pack.levels[i].firstFloorExtra, firstExtraFields[i].text);
 
                 // Checkboxes.
-                //pack.levels[i].firstFloorEmpty = firstEmptyCheck[i].isChecked;
-                //pack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
+                pack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
             }
-        }
-
-
-        /// <summary>
-        /// Adds a row text label.
-        /// </summary>
-        /// <param name="panel">UI panel instance</param>
-        /// <param name="yPos">Reference Y position</param>
-        /// <param name="text">Label text</param>
-        private UILabel RowLabel(UIPanel panel, float yPos, string text)
-        {
-            // Text label.
-            UILabel lineLabel = panel.AddUIComponent<UILabel>();
-            lineLabel.textScale = 0.9f;
-            lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
-            lineLabel.text = text;
-
-            // X position: by default it's LeftItem, but we move it further left if the label is too long to fit (e.g. long translation strings).
-            float xPos = Mathf.Min(LeftItem, (FloorHeightX - Margin) - lineLabel.width);
-            // But never further left than the edge of the screen.
-            if (xPos < 0)
-            {
-                xPos = LeftItem;
-                // Too long to fit in the given space, so we'll let this wrap across and just move the textfields down an extra line.
-            }
-            lineLabel.relativePosition = new Vector3(xPos, yPos + 2);
-
-            return lineLabel;
-        }
-
-
-        /// <summary>
-        /// Adds checkbox at the specified coordinates.
-        /// </summary>
-        /// <param name="textField">Textfield object</param>
-        /// <param name="panel">panel to add to</param>
-        /// <param name="posX">Relative X postion</param>
-        /// <param name="posY">Relative Y position</param>
-        /// <param name="tooltip">Tooltip, if any</param>
-        private UICheckBox AddCheckBox(UIPanel panel, float posX, float posY, string tooltip = null)
-        {
-            UICheckBox checkBox = PanelUtils.AddCheckBox(panel, posX, posY);
-
-            // Add tooltip.
-            if (tooltip != null)
-            {
-                checkBox.tooltip = tooltip;
-            }
-
-            return checkBox;
-        }
-
-
-        /// <summary>
-        /// Adds an input text field at the specified coordinates.
-        /// </summary>
-        /// <param name="textField">Textfield object</param>
-        /// <param name="panel">panel to add to</param>
-        /// <param name="posX">Relative X postion</param>
-        /// <param name="posY">Relative Y position</param>
-        /// <param name="tooltip">Tooltip, if any</param>
-        private UITextField AddTextField(UIPanel panel, float width, float posX, float posY, string tooltip = null)
-        {
-            UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
-            textField.relativePosition = new Vector3(posX, posY);
-
-            // Add tooltip.
-            if (tooltip != null)
-            {
-                textField.tooltip = tooltip;
-            }
-
-            return textField;
         }
 
 
@@ -444,7 +307,7 @@ namespace RealisticPopulationRevisited
         private void PopulateTextFields(int index)
         {
             // Get local reference.
-            VolumetricPopPack volPack = packList[index];
+            VolumetricPopPack volPack = (VolumetricPopPack)packList[index];
 
             // Set name field.
             packNameField.text = volPack.displayName ?? volPack.name;
@@ -468,14 +331,9 @@ namespace RealisticPopulationRevisited
                 LevelData level = volPack.levels[i];
 
                 // Populate controls.
-                // TODO: Floor pack
-                //floorHeightFields[i].text = level.floorHeight.ToString();
                 emptyAreaFields[i].text = level.emptyArea.ToString();
                 emptyPercentFields[i].text = level.emptyPercent.ToString();
                 areaPerFields[i].text = level.areaPer.ToString();
-                //firstMinFields[i].text = level.firstFloorMin.ToString();
-                //firstExtraFields[i].text = level.firstFloorExtra.ToString();
-                //firstEmptyCheck[i].isChecked = level.firstFloorEmpty;
                 multiFloorCheck[i].isChecked = level.multiFloorUnits;
             }
         }
@@ -489,7 +347,7 @@ namespace RealisticPopulationRevisited
         private string[] PackList(ItemClass.Service service)
         {
             // Re-initialise pack list.
-            packList = new List<VolumetricPopPack>();
+            packList = new List<DataPack>();
             List<string> packNames = new List<string>();
 
             // Iterate through all available packs.
@@ -498,7 +356,7 @@ namespace RealisticPopulationRevisited
                 // Check for custom packs.
                 if (calcPack is VolumetricPopPack volPack && volPack.service == service)
                 {
-                    // Found onw - add to our lists.
+                    // Found one - add to our lists.
                     packList.Add(volPack);
                     packNames.Add(volPack.displayName ?? volPack.name);
                 }
