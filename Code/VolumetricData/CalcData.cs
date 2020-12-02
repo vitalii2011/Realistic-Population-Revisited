@@ -306,7 +306,6 @@ namespace RealisticPopulationRevisited
                 // Safety first!
                 if (buildingRecord.prefab.IsNullOrWhiteSpace() || packName.IsNullOrWhiteSpace())
                 {
-                    Debugging.Message("Null element in configuration file");
                     continue;
                 }
 
