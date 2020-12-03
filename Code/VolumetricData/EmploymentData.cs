@@ -164,7 +164,7 @@ namespace RealisticPopulationRevisited
 
             commercialLeisure = new int[] { 15, 40, 35, 10, 250, 100 };
 
-            officeHightech = new int[] { 1, 2, 3, 94, 0 };
+            officeHightech = new int[] { 1, 2, 3, 94, 0, 0 };
         }
     }
 }
