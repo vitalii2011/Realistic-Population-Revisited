@@ -155,15 +155,15 @@ namespace RealisticPopulationRevisited
 
 
             // Add titles.
-            UILabel popLabel = PanelUtils.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, 5f, 220f);
-            UILabel floorLabel = PanelUtils.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightCoiumn, 5f, 220f);
+            UILabel popLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, 5f, 220f);
+            UILabel floorLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightCoiumn, 5f, 220f);
             popLabel.textAlignment = UIHorizontalAlignment.Center;
             floorLabel.textAlignment = UIHorizontalAlignment.Center;
 
             for (int i = 0; i < subServiceNames.Length; ++i)
             {
                 // Pop pack dropdown.
-                popMenus[i] = PanelUtils.AddDropDown(panel, LeftColumn, currentY + 3f);
+                popMenus[i] = UIControls.AddDropDown(panel, LeftColumn, currentY + 3f);
 
                 // Save current index in object user data.
                 popMenus[i].objectUserData = i;
@@ -182,7 +182,7 @@ namespace RealisticPopulationRevisited
                 };
 
                 // Floor pack dropdown.
-                floorMenus[i] = PanelUtils.AddDropDown(panel, RightCoiumn, currentY + 3f);
+                floorMenus[i] = UIControls.AddDropDown(panel, RightCoiumn, currentY + 3f);
 
                 // Save current index in object user data.
                 floorMenus[i].objectUserData = i;

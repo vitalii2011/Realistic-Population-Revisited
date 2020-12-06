@@ -71,8 +71,8 @@ namespace RealisticPopulationRevisited
             legacyPanel.Hide();
 
             // Pack dropdowns.
-            popMenu = PanelUtils.AddDropDown(this, Margin, MenuY, ComponentWidth);
-            floorMenu = PanelUtils.AddDropDown(this, RightColumnX, MenuY, ComponentWidth);
+            popMenu = UIControls.AddDropDown(this, Margin, MenuY, ComponentWidth);
+            floorMenu = UIControls.AddDropDown(this, RightColumnX, MenuY, ComponentWidth);
 
             // Pack descriptions.
             popDescription = Description(Margin);

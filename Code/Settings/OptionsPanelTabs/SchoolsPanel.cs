@@ -21,7 +21,7 @@ namespace RealisticPopulationRevisited
             panel.autoLayout = true;
 
             // Enable realistic schools checkbox.
-            UICheckBox enableEdCheck = PanelUtils.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_SCH_ENB"));
+            UICheckBox enableEdCheck = UIControls.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_SCH_ENB"));
             enableEdCheck.isChecked = ModSettings.enableSchools;
             enableEdCheck.eventCheckChanged += (control, isChecked) => ModSettings.enableSchools = isChecked;
         }

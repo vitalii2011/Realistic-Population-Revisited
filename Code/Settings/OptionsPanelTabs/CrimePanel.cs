@@ -21,7 +21,7 @@ namespace RealisticPopulationRevisited
             panel.autoLayout = true;
 
             // Crime multiplier.  Simple integer.
-            UISlider lifeMult = PanelUtils.AddSliderWithValue(panel, Translations.Translate("RPR_OPT_CML"), 1f, 200f, 1f, ModSettings.crimeMultiplier, (value) => { ModSettings.crimeMultiplier = value; });
+            UISlider lifeMult = UIControls.AddSliderWithValue(panel, Translations.Translate("RPR_OPT_CML"), 1f, 200f, 1f, ModSettings.crimeMultiplier, (value) => { ModSettings.crimeMultiplier = value; });
         }
     }
 }

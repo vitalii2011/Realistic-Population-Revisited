@@ -21,7 +21,7 @@ namespace RealisticPopulationRevisited
             panel.autoLayout = true;
 
             // Language dropdown.
-            UIDropDown languageDrop = PanelUtils.AddPlainDropDown(panel, Translations.Translate("TRN_CHOICE"), Translations.LanguageList, Translations.Index);
+            UIDropDown languageDrop = UIControls.AddPlainDropDown(panel, Translations.Translate("TRN_CHOICE"), Translations.LanguageList, Translations.Index);
             languageDrop.eventSelectedIndexChanged += (control, index) =>
             {
                 Translations.Index = index;

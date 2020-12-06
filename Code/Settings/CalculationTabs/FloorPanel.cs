@@ -48,7 +48,7 @@ namespace RealisticPopulationRevisited
 
 
             // Pack selection dropdown.
-            packDropDown = PanelUtils.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
+            packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
             packDropDown.parent.relativePosition = new Vector3(20f, PackMenuY);
 
             // Headings.
@@ -79,7 +79,7 @@ namespace RealisticPopulationRevisited
 
             // Pack name textfield.
             packNameField = UIUtils.CreateTextField(panel, 200f, 30f);
-            UILabel packNameLabel = PanelUtils.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"), -100f, (packNameField.height - 18f) / 2);
+            UILabel packNameLabel = UIControls.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"), -100f, (packNameField.height - 18f) / 2);
             packNameField.relativePosition = new Vector3(140f, currentY);
             packNameField.padding = new RectOffset(6, 6, 6, 6);
             packNameField.isEnabled = false;

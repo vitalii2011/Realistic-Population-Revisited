@@ -86,7 +86,7 @@ namespace RealisticPopulationRevisited
         /// <param name="tooltip">Tooltip, if any</param>
         protected UICheckBox AddCheckBox(UIPanel panel, float posX, float posY, string tooltip = null)
         {
-            UICheckBox checkBox = PanelUtils.AddCheckBox(panel, posX, posY);
+            UICheckBox checkBox = UIControls.AddCheckBox(panel, posX, posY);
 
             // Add tooltip.
             if (tooltip != null)
