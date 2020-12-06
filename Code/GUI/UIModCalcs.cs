@@ -147,6 +147,9 @@ namespace RealisticPopulationRevisited
             // Update panel with new calculations.
             volumetricPanel.UpdateFloorText(currentFloorPack);
             volumetricPanel.CalculateVolumetric(currentBuilding, GetFloorData(), currentFloorPack);
+
+            // Communicate change with to rest of panel.
+            BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
         }
 
 

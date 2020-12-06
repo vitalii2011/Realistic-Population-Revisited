@@ -55,13 +55,13 @@ namespace RealisticPopulationRevisited
 
             // Text field labels.
             homeJobLabel = AddLabel(40f, "RPR_LBL_HOM");
-            AddLabel(80f, "RPR_LBL_FLR");
-            AddLabel(120f, "RPR_LBL_PFL");
+            //AddLabel(80f, "RPR_LBL_FLR");
+            //AddLabel(120f, "RPR_LBL_PFL");
 
             // Text fields.
             homeJobsCount = AddEditField(40f);
-            floorCount = AddEditField(80f);
-            perFloorCount = AddEditField(120f);
+            //floorCount = AddEditField(80f);
+            //perFloorCount = AddEditField(120f);
 
             // Save button.
             saveButton = UIUtils.CreateButton(this, 200);

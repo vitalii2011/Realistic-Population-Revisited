@@ -115,6 +115,7 @@
     <Translation ID="RPR_LBL_JOB" String="Jobs:" />
     <Translation ID="RPR_LBL_FLR" String="Floors:" />
     <Translation ID="RPR_LBL_PFL" String="Units per floor:" />
+    <Translation ID="RPR_PRV_SFL" String="Show calculated floors" />
     <Translation ID="RPR_CAL_MOD" String="Mod calculations" />
     <Translation ID="RPR_CAL_DEN" String="Population density" />
     <Translation ID="RPR_CAL_BFL" String="Building floors" />

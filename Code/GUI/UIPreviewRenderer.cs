@@ -10,15 +10,20 @@ namespace RealisticPopulationRevisited
     /// </summary>
     public class UIPreviewRenderer : MonoBehaviour
     {
+        // Rendering settings.
         private Camera renderCamera;
         private Mesh currentMesh;
         private Bounds currentBounds;
         private float currentRotation;
         private float currentZoom;
         private Material _material;
-
+        
+        // Rendering sub-components.
         private List<BuildingInfo.MeshInfo> subMeshes;
         private List<BuildingInfo.SubInfo> subBuildings;
+
+        // Floor preview rendering.
+        private Texture2D floorTexture;
 
 
         /// <summary>
@@ -45,6 +50,21 @@ namespace RealisticPopulationRevisited
             renderCamera.fieldOfView = 30f;
             renderCamera.nearClipPlane = 1f;
             renderCamera.farClipPlane = 1000f;
+
+            // Create foor preview texture.
+
+            // Create a new 2x2 texture ARGB32 (32 bit with alpha) and no mipmaps
+            floorTexture = new Texture2D(2, 2, TextureFormat.ARGB32, false);
+
+            // Set individual pixel colours.
+            Color32 newColor = new Color32(255, 0, 255, 127);
+            floorTexture.SetPixel(0, 0, newColor);
+            floorTexture.SetPixel(1, 0, newColor);
+            floorTexture.SetPixel(0, 1, newColor);
+            floorTexture.SetPixel(1, 1, newColor);
+
+            // Apply all SetPixel calls
+            floorTexture.Apply();
         }
 
 
@@ -170,7 +190,9 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Render the current mesh.
         /// </summary>
-        public void Render()
+        /// <param name="renderFloors">True to render floor previews, false otherwise</param>
+        /// <param name="floorPack">Floor data to render (ignored if renderFloors is false)</param>
+        public void Render(bool renderFloors, FloorDataPack floorDataPack)
         {
             // Check to see if we have submeshes or sub-buildings.
             bool hasSubMeshes = subMeshes != null && subMeshes.Count > 0;
@@ -181,6 +203,8 @@ namespace RealisticPopulationRevisited
             {
                 return;
             }
+
+            int vertexCount = currentMesh.vertices.Length;
 
             // Use skybox background.
             renderCamera.clearFlags = CameraClearFlags.Skybox;
@@ -231,6 +255,10 @@ namespace RealisticPopulationRevisited
                 // Use separate verticies instance instead of accessing Mesh.vertices each time (which is slow).
                 // >10x measured performance improvement by doing things this way instead.
                 vertices = currentMesh.vertices;
+
+                // Initialize minimum and maximum coordinate markers for floor previewing.
+                float maxX = 0, maxZ = 0, minX = 0, minZ = 0;
+
                 for (int i = 0; i < vertices.Length; i++)
                 {
                     // Exclude vertices with large negative Y values (underground) from our bounds (e.g. SoCal Laguna houses), otherwise the result doesn't look very good.
@@ -238,6 +266,16 @@ namespace RealisticPopulationRevisited
                     {
                         currentBounds.Encapsulate(vertices[i]);
                     }
+
+                    // Shift minimum and maxmimum coordinates, if and as appropriate.
+                    if (vertices[i].x > maxX)
+                        maxX = vertices[i].x;
+                    if (vertices[i].x < minX)
+                        minX = vertices[i].x;
+                    if (vertices[i].z > maxZ)
+                        maxZ = vertices[i].z;
+                    if (vertices[i].z < minZ)
+                        minZ = vertices[i].z;
                 }
 
                 // Adjust model position so it's dead centre.
@@ -245,7 +283,49 @@ namespace RealisticPopulationRevisited
 
                 // Calculate rendering matrix and add mesh to scene.
                 Matrix4x4 matrix = Matrix4x4.TRS(modelPosition, modelRotation, Vector3.one);
+
+                // Floor preview rendering, if set to do so and we have a valid floor calculation pack set.
+                if (renderFloors && floorDataPack != null)
+                {
+                    // Create new material using building shader.
+                    Material testMaterial = new Material(_material.shader);
+                    testMaterial.mainTexture = floorTexture;
+
+                    // Coordinates using current bounds.
+                    float left = minX - 1.5f;
+                    float right = maxX + 1.5f;
+                    float back = minZ - 1.5f;
+                    float front = maxZ + 1.5f;
+
+                    // Lists.
+                    List<Vector3> vectorList = new List<Vector3>();
+                    List<int> triList = new List<int>();
+                    List<Vector2> uvList = new List<Vector2>();
+;
+                    // Draw ground floor.
+                    AddFloor(left, right, front, back, 0f, vectorList, triList, uvList);
+
+                    // Draw top of first floor, using transformation matrix to position floor.
+                    float floorHeight = floorDataPack.firstFloorMin + floorDataPack.firstFloorExtra;
+                    //AddFloor(left, right, front, back, floorHeight, vectorList, triList, uvList);
+
+                    // Draw addtional floors, incrementing transformation matrix, until we reach the top of the building.  Increment height once at start to avoid fencepost error.
+                    while (floorHeight <= currentBounds.max.y - floorDataPack.floorHeight)
+                    {
+                        AddFloor(left, right, front, back, floorHeight, vectorList, triList, uvList);
+                        floorHeight += floorDataPack.floorHeight;
+                    }
+
+                    // Create mesh and add to scene.
+                    Mesh floorMesh = new Mesh();
+                    floorMesh.Clear();
+                    floorMesh.SetVertices(vectorList);
+                    floorMesh.uv = uvList.ToArray();
+                    floorMesh.triangles = triList.ToArray();
+                    Graphics.DrawMesh(floorMesh, matrix, testMaterial, 0, renderCamera, 0, null, false, false);
+                }
                 Graphics.DrawMesh(currentMesh, matrix, _material, 0, renderCamera, 0, null, true, true);
+
             }
 
             // Render submeshes, if any.
@@ -374,6 +454,77 @@ namespace RealisticPopulationRevisited
             // Restore game InfoManager mode.
             infoManager.SetCurrentMode(currentMode, currentSubMode);
             infoManager.UpdateInfoMode();
+        }
+
+
+        /// <summary>
+        /// Adds a dynamically-generated floor preview to the specified vector, triangle and UV lists.
+        /// </summary>
+        /// <param name="left">Minimum X coordinate of floor preview</param>
+        /// <param name="right">Maximum X coordinate of floor preview</param>
+        /// <param name="front">Minimum Z coordinate of floor preview</param>
+        /// <param name="back">Maximum Z coordinate of floor preview</param>
+        /// <param name="top">Y coordinate of floor (top of preview)</param>
+        /// <param name="vectorList">List of vectors to add to</param>
+        /// <param name="triList">List of tris to add to</param>
+        /// <param name="uvList">List of UV coordinates to add to</param>
+        private void AddFloor(float left, float right, float front, float back, float top, List<Vector3> vectorList, List<int> triList, List<Vector2> uvList)
+        {
+            // Bottom of rendered floor.
+            float bottom = top - 0.5f;
+
+            // Vectors from coordinates.
+            Vector3 frontLeftBottom = new Vector3(left, bottom, front);
+            Vector3 frontRightBottom = new Vector3(right, bottom, front);
+            Vector3 rearLeftBottom = new Vector3(left, bottom, back);
+            Vector3 rearRightBottom = new Vector3(right, bottom, back);
+            Vector3 frontLeftTop = new Vector3(left, top, front);
+            Vector3 frontRightTop = new Vector3(right, top, front);
+            Vector3 rearLeftTop = new Vector3(left, top, back);
+            Vector3 rearRightTop = new Vector3(right, top, back);
+
+            // Add tris to create shape.
+            AddTri(frontLeftTop, frontRightTop, rearRightTop, vectorList, triList, uvList);
+            AddTri(rearLeftTop, frontLeftTop, rearRightTop, vectorList, triList, uvList);
+            AddTri(frontLeftTop, frontLeftBottom, frontRightTop, vectorList, triList, uvList);
+            AddTri(frontRightBottom, frontRightTop, frontLeftBottom, vectorList, triList, uvList);
+            AddTri(rearLeftTop, rearRightTop, rearLeftBottom, vectorList, triList, uvList);
+            AddTri(rearRightBottom, rearLeftBottom, rearRightTop, vectorList, triList, uvList);
+            AddTri(rearLeftTop, rearLeftBottom, frontLeftBottom, vectorList, triList, uvList);
+            AddTri(frontLeftBottom, frontLeftTop, rearLeftTop, vectorList, triList, uvList);
+            AddTri(rearRightTop, frontRightBottom, rearRightBottom, vectorList, triList, uvList);
+            AddTri(frontRightBottom, rearRightTop, frontRightTop, vectorList, triList, uvList);
+        }
+
+
+        /// <summary>
+        /// Adds a triangle with the specified vertices to the provided lists of vectors, tris and UV coordinates.
+        /// </summary>
+        /// <param name="vert1">First vertice</param>
+        /// <param name="vert2">Second vertice</param>
+        /// <param name="vert3">Third vertice</param>
+        /// <param name="vectorList">List of vectors to add to</param>
+        /// <param name="triList">List of tris to add to</param>
+        /// <param name="uvList">List of UV coordinates to add to</param>
+        private void AddTri(Vector3 vert1, Vector3 vert2, Vector3 vert3, List<Vector3> vectors, List<int> tris, List<Vector2> uv)
+        {
+            // Base triangle count, for triangle mapping.
+            int vectorCount = vectors.Count;
+
+            // First vertex.
+            vectors.Add(vert1);
+            tris.Add(vectorCount++);
+            uv.Add(new Vector2(0, 0));
+
+            // Second vertex.
+            vectors.Add(vert2);
+            tris.Add(vectorCount++);
+            uv.Add(new Vector2(1, 0));
+
+            // Third vertex.
+            vectors.Add(vert3);
+            tris.Add(vectorCount);
+            uv.Add(new Vector2(0, 1));
         }
     }
 }

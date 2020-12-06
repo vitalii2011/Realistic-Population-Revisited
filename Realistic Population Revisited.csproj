@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="Code\AI_Files\AI_School.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
+    <Compile Include="Code\GUI\UIPreviewPanel.cs" />
     <Compile Include="Code\Patcher.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\CommercialPanel.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Code\Settings\CalculationTabs\DefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\PopulationPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
+    <Compile Include="Code\Utils\UIControls.cs" />
     <Compile Include="Code\VolumetricData\CalcData.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationXML.cs" />
@@ -146,7 +148,7 @@
     <Compile Include="Code\GUI\UIBuildingDetails.cs" />
     <Compile Include="Code\GUI\UIBuildingFilter.cs" />
     <Compile Include="Code\GUI\UIBuildingRow.cs" />
-    <Compile Include="Code\GUI\UIPreviewPanel.cs" />
+    <Compile Include="Code\GUI\UIPreview.cs" />
     <Compile Include="Code\GUI\UIPreviewRenderer.cs" />
     <Compile Include="Code\GUI\UITitleBar.cs" />
     <Compile Include="Code\GUI\UIFastList.cs" />

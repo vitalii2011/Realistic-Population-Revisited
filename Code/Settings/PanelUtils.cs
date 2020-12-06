@@ -421,7 +421,7 @@ namespace RealisticPopulationRevisited
         /// <param name="parent">Parent component</param>
         /// <param name="xPos">Relative x position (default 0)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
-        /// <returns>New UI checkbox with attached labels</returns>
+        /// <returns>New UI checkbox *without* attached labels</returns>
         internal static UICheckBox AddCheckBox(UIComponent parent, float xPos = 20f, float yPos = 0f)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();

@@ -118,8 +118,47 @@ namespace RealisticPopulationRevisited
         private UIEditPanel editPanel;
         private UIModCalcs calcsPanel;
 
-        // General vars.
+        // Current selections.
         private BuildingInfo currentSelection;
+
+
+        /// <summary>
+        /// Communicates floor calculation pack changes to previewer.
+        /// </summary>
+        internal FloorDataPack FloorDataPack { set => previewPanel.FloorPack = value; }
+
+
+        /// <summary>
+        /// Called when the building selection changes to update other panels.
+        /// </summary>
+        /// <param name="building">Newly selected building</param>
+        public void UpdateSelectedBuilding(BuildingInfo building)
+        {
+            if (building != null)
+            {
+                // Update building preview.
+                currentSelection = building;
+                previewPanel.Show(currentSelection);
+            }
+
+            // Update mod calculations and edit panels.
+            calcsPanel.SelectionChanged(building);
+            editPanel.SelectionChanged(building);
+        }
+
+
+        /// <summary>
+        /// Refreshes the building selection list.
+        /// Used to update custom settings checkboxes.
+        /// </summary>
+        public void Refresh()
+        {
+            // Refresh the building list.
+            buildingSelection.Refresh();
+
+            // Update mod calculations and edit panels.
+            UpdateSelectedBuilding(currentSelection);
+        }
 
 
         /// <summary>
@@ -214,39 +253,6 @@ namespace RealisticPopulationRevisited
             {
                 Debugging.LogException(e);
             }
-        }
-
-
-        /// <summary>
-        /// Called when the building selection changes to update other panels.
-        /// </summary>
-        /// <param name="building">Newly selected building</param>
-        public void UpdateSelectedBuilding(BuildingInfo building)
-        {
-            if (building != null)
-            {
-                // Update building preview.
-                currentSelection = building;
-                previewPanel.Show(currentSelection);
-            }
-
-            // Update mod calculations and edit panels.
-            calcsPanel.SelectionChanged(building);
-            editPanel.SelectionChanged(building);
-        }
-
-
-        /// <summary>
-        /// Refreshes the building selection list.
-        /// Used to update custom settings checkboxes.
-        /// </summary>
-        public void Refresh()
-        {
-            // Refresh the building list.
-            buildingSelection.Refresh();
-
-            // Update mod calculations and edit panels.
-            UpdateSelectedBuilding(currentSelection);
         }
 
 
