@@ -131,14 +131,14 @@ namespace RealisticPopulationRevisited
             resetButton.relativePosition = new Vector3(Margin, currentY);
             resetButton.eventClicked += (component, clickEvent) => ResetToDefaults();
 
+            // Revert button.
             UIButton revertToSaveButton = UIUtils.CreateButton(panel, 150);
             revertToSaveButton.text = Translations.Translate("RPR_OPT_RTS");
             revertToSaveButton.relativePosition = new Vector3((Margin * 2) + 150, currentY);
 
-
-            // TODO: this is the only unique line heere.
             revertToSaveButton.eventClicked += (component, clickEvent) => { ConfigUtils.LoadSettings(); PopulateFields(); };
 
+            // Save button.
             UIButton saveButton = UIUtils.CreateButton(panel, 150);
             saveButton.text = Translations.Translate("RPR_OPT_SAA");
             saveButton.relativePosition = new Vector3((Margin * 3) + 300, currentY);

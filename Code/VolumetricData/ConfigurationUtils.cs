@@ -182,15 +182,10 @@ namespace RealisticPopulationRevisited
                                 {
                                     PopLevel xmlLevel = new PopLevel()
                                     {
-                                        // TODO: Floor packs
                                         level = i,
-                                        //floorHeight = volPack.levels[i].floorHeight,
                                         emptyArea = volPack.levels[i].emptyArea,
                                         emptyPercent = volPack.levels[i].emptyPercent,
                                         areaPer = volPack.levels[i].areaPer,
-                                        //firstMin = volPack.levels[i].firstFloorMin,
-                                        //firstExtra = volPack.levels[i].firstFloorExtra,
-                                        //firstEmpty = volPack.levels[i].firstFloorEmpty,
                                         multiLevel = volPack.levels[i].multiFloorUnits
                                     };
 
