@@ -258,10 +258,10 @@ namespace RealisticPopulationRevisited
             newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -1f, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
-            // European apartments (medium-density).
+            // European apartments (modern).
             newPack = new VolumetricPopPack
             {
-                name = "resMedEU",
+                name = "resEUmod",
                 displayName = Translations.Translate("RPR_PCK_REM_NAM"),
                 description = Translations.Translate("RPR_PCK_REM_DES"),
                 version = (int)DataVersion.one,
@@ -275,12 +275,12 @@ namespace RealisticPopulationRevisited
             newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 18, areaPer = 105f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
-            // European apartments (high-density).
+            // European apartments (older).
             newPack = new VolumetricPopPack()
             {
-                name = "resHighEU",
-                displayName = Translations.Translate("RPR_PCK_REH_NAM"),
-                description = Translations.Translate("RPR_PCK_REH_DES"),
+                name = "resEUold",
+                displayName = Translations.Translate("RPR_PCK_REO_NAM"),
+                description = Translations.Translate("RPR_PCK_REO_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Residential,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco },
@@ -320,7 +320,7 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_CUS_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
+                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 37, multiFloorUnits = true };
@@ -338,7 +338,7 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_CUK_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
+                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 20f, multiFloorUnits = false };
@@ -680,7 +680,7 @@ namespace RealisticPopulationRevisited
                             defaultName = "reshighUS";
                             break;
                         case ItemClass.SubService.ResidentialHighEco:
-                            defaultName = "reshighEU";
+                            defaultName = "resEUmod";
                             break;
                         default:
                             defaultName = "reslow";
