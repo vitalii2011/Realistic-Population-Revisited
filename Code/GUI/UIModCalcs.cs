@@ -121,12 +121,14 @@ namespace RealisticPopulationRevisited
                 legacyPanel.Hide();
                 volumetricPanel.Show();
                 floorMenu.Show();
+                floorDescription.Show();
             }
             else
             {
                 // Set visibility.
                 volumetricPanel.Hide();
                 floorMenu.Hide();
+                floorDescription.Hide();
                 legacyPanel.Show();
             }
         }
