@@ -32,16 +32,9 @@ namespace RealisticPopulationRevisited
         // Panel components.
         private UIScrollablePanel floorsPanel;
         private UIFastList floorsList;
-        private UILabel numFloorsLabel;
-        private UILabel floorAreaLabel;
-        private UILabel totalLabel;
-        private UILabel firstMinLabel;
-        private UILabel firstExtraLabel;
-        private UILabel floorHeightLabel;
-        private UILabel emptyAreaLabel;
-        private UILabel emptyPercentLabel;
-        private UILabel perLabel;
-        private UICheckBox ignoreFirstCheckBox;
+        private UILabel numFloorsLabel, floorAreaLabel, totalLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
+        private UILabel emptyAreaLabel, emptyPercentLabel, perLabel;
+        private UICheckBox multiFloorCheckBox, ignoreFirstCheckBox;
 
 
         /// <summary>
@@ -72,7 +65,12 @@ namespace RealisticPopulationRevisited
             emptyPercentLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row2);
             perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row3);
 
-            // Checkbox.
+            // Multi-floor units checkbox.
+            multiFloorCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_MFU"), LeftColumn, Row4);
+            multiFloorCheckBox.isInteractive = false;
+            multiFloorCheckBox.Disable();
+
+            // Ignore first floor checkbox.
             ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), RightColumn, Row7);
             ignoreFirstCheckBox.isInteractive = false;
             ignoreFirstCheckBox.Disable();
@@ -111,6 +109,9 @@ namespace RealisticPopulationRevisited
             emptyAreaLabel.text = levelData.emptyArea.ToString();
             emptyPercentLabel.text = levelData.emptyPercent.ToString();
             perLabel.text = levelData.areaPer.ToString();
+
+            // Set checkbox.
+            multiFloorCheckBox.isChecked = levelData.multiFloorUnits;
         }
 
 

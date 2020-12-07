@@ -131,7 +131,7 @@
     <Translation ID="RPR_CAL_VOL_FMX" String="First floor extra height" />
     <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
-    <Translation ID="RPR_CAL_VOL_MFU" String="Multi-&#x200B;floor units" />
+    <Translation ID="RPR_CAL_VOL_MFU" String="Multi-floor units" />
     <Translation ID="RPR_CAL_VOL_HOU" String="homes" />
     <Translation ID="RPR_CAL_VOL_WOR" String="workers" />
     <Translation ID="RPR_CAL_VOL_STU" String="students" />

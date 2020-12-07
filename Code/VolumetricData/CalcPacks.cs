@@ -36,11 +36,6 @@
 
         // True if the first floor should be excluded from calculations (e.g. for foyers/lobbies).
         public bool firstFloorEmpty;
-
-        // True if unit areas should be calculated as though they extend through all levels (ground to roof - e.g. detached housing, rowhouses, etc.),
-        // false if units should only be treated as single-floor entities (e.g. apartment blocks).
-        // Generally speaking, true for low-density, false for high-density.
-        public bool multiFloorUnits;
     }
 
 

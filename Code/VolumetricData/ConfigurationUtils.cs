@@ -73,7 +73,7 @@ namespace RealisticPopulationRevisited
                             // Deserialise floor calculation packs.
                             foreach (FloorPackXML xmlPack in configFile.floorPacks)
                             {
-                                // Convert to volumetric pack.
+                                // Convert to floor pack.
                                 FloorDataPack floorPack = new FloorDataPack()
                                 {
                                     name = xmlPack.name,
@@ -82,8 +82,7 @@ namespace RealisticPopulationRevisited
                                     floorHeight = xmlPack.floorHeight,
                                     firstFloorMin = xmlPack.firstMin,
                                     firstFloorExtra = xmlPack.firstExtra,
-                                    firstFloorEmpty = xmlPack.firstEmpty,
-                                    multiFloorUnits = xmlPack.multiLevel
+                                    firstFloorEmpty = xmlPack.firstEmpty
                                 };
 
                                 // Add new pack to our dictionary.
@@ -218,8 +217,7 @@ namespace RealisticPopulationRevisited
                                     floorHeight = floorPack.floorHeight,
                                     firstMin = floorPack.firstFloorMin,
                                     firstExtra = floorPack.firstFloorExtra,
-                                    firstEmpty = floorPack.firstFloorEmpty,
-                                    multiLevel = floorPack.multiFloorUnits
+                                    firstEmpty = floorPack.firstFloorEmpty
                                 };
 
                                 // Add to file.

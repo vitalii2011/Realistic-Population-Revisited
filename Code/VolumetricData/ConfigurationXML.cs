@@ -178,10 +178,6 @@ namespace RealisticPopulationRevisited
         // First floor empty.
         [XmlAttribute("firstempty")]
         public bool firstEmpty;
-
-        // Multi-level units.
-        [XmlAttribute("multilevel")]
-        public bool multiLevel;
     }
 
 

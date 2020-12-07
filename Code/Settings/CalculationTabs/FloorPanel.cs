@@ -21,7 +21,7 @@ namespace RealisticPopulationRevisited
 
         // Textfield arrays.
         protected UITextField floorHeightField, firstMinField, firstExtraField;
-        protected UICheckBox firstEmptyCheck, multiFloorCheck;
+        protected UICheckBox firstEmptyCheck;
 
 
         /// <summary>
@@ -44,7 +44,6 @@ namespace RealisticPopulationRevisited
             firstMinField = new UITextField();
             firstExtraField = new UITextField();
             firstEmptyCheck = new UICheckBox();
-            multiFloorCheck = new UICheckBox();
 
 
             // Pack selection dropdown.
@@ -56,7 +55,6 @@ namespace RealisticPopulationRevisited
             PanelUtils.ColumnLabel(panel, FirstMinX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), 1.0f);
             PanelUtils.ColumnLabel(panel, FirstMaxX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), 1.0f);
             PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), 1.0f);
-            PanelUtils.ColumnLabel(panel, MultiFloorX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_MFU"), 1.0f);
 
             // Add level textfields.
             floorHeightField = AddTextField(panel, TextFieldWidth, FloorHeightX + Margin, currentY);
@@ -69,7 +67,6 @@ namespace RealisticPopulationRevisited
             firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
             firstEmptyCheck = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);
-            multiFloorCheck = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);
 
             // Move to next row.
             currentY += RowHeight;
@@ -214,7 +211,6 @@ namespace RealisticPopulationRevisited
 
             // Checkboxes.
             pack.firstFloorEmpty = firstEmptyCheck.isChecked;
-            pack.multiFloorUnits = multiFloorCheck.isChecked;
         }
 
 
@@ -235,7 +231,6 @@ namespace RealisticPopulationRevisited
             firstMinField.text = floorPack.firstFloorMin.ToString();
             firstExtraField.text = floorPack.firstFloorExtra.ToString();
             firstEmptyCheck.isChecked = floorPack.firstFloorEmpty;
-            multiFloorCheck.isChecked = floorPack.multiFloorUnits;
         }
 
 

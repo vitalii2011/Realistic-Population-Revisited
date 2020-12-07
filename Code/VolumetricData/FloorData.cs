@@ -35,8 +35,7 @@ namespace RealisticPopulationRevisited
                 floorHeight = 3f,
                 firstFloorMin = 3f,
                 firstFloorExtra = 0f,
-                firstFloorEmpty = false,
-                multiFloorUnits = false
+                firstFloorEmpty = false
             };
             calcPacks.Add(newPack);
 
@@ -50,8 +49,7 @@ namespace RealisticPopulationRevisited
                 floorHeight = 3f,
                 firstFloorMin = 3f,
                 firstFloorExtra = 0f,
-                firstFloorEmpty = false,
-                multiFloorUnits = true
+                firstFloorEmpty = false
             };
             calcPacks.Add(newPack);
 
@@ -65,8 +63,7 @@ namespace RealisticPopulationRevisited
                 floorHeight = 3f,
                 firstFloorMin = 3f,
                 firstFloorExtra = 1f,
-                firstFloorEmpty = true,
-                multiFloorUnits = false
+                firstFloorEmpty = true
             };
             calcPacks.Add(newPack);
 
@@ -80,8 +77,7 @@ namespace RealisticPopulationRevisited
                 floorHeight = 4f,
                 firstFloorMin = 3f,
                 firstFloorExtra = 3f,
-                firstFloorEmpty = false,
-                multiFloorUnits = true
+                firstFloorEmpty = false
             };
             calcPacks.Add(newPack);
 
@@ -95,8 +91,7 @@ namespace RealisticPopulationRevisited
                 floorHeight = 9f,
                 firstFloorMin = 3f,
                 firstFloorExtra = 6f,
-                firstFloorEmpty = false,
-                multiFloorUnits = false
+                firstFloorEmpty = false
             };
             calcPacks.Add(newPack);
 
@@ -110,8 +105,7 @@ namespace RealisticPopulationRevisited
                 floorHeight = 12f,
                 firstFloorMin = 3f,
                 firstFloorExtra = 9f,
-                firstFloorEmpty = false,
-                multiFloorUnits = false
+                firstFloorEmpty = false
             };
             calcPacks.Add(newPack);
 
@@ -125,8 +119,7 @@ namespace RealisticPopulationRevisited
                 floorHeight = 99f,
                 firstFloorMin = 3f,
                 firstFloorExtra = 9f,
-                firstFloorEmpty = false,
-                multiFloorUnits = true
+                firstFloorEmpty = false
             };
             calcPacks.Add(newPack);
         }
