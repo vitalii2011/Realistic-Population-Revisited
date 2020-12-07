@@ -258,42 +258,6 @@ namespace RealisticPopulationRevisited
             newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -1f, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
-            // Medium-density residential.
-            newPack = new VolumetricPopPack
-            {
-                name = "resmed",
-                displayName = Translations.Translate("RPR_PCK_RMD_NAM"),
-                description = Translations.Translate("RPR_PCK_RMD_DES"),
-                version = (int)DataVersion.one,
-                service = ItemClass.Service.Residential,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialLow, ItemClass.SubService.ResidentialLowEco, ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco },
-                levels = new LevelData[5]
-            };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 120f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 135f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 150f, multiFloorUnits = false };
-            newPack.levels[3] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 165f, multiFloorUnits = false };
-            newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 180f, multiFloorUnits = false };
-            calcPacks.Add(newPack);
-
-            // High-density residential.
-            newPack = new VolumetricPopPack
-            {
-                name = "reshigh",
-                displayName = Translations.Translate("RPR_PCK_RHR_NAM"),
-                description = Translations.Translate("RPR_PCK_RHR_DES"),
-                version = (int)DataVersion.one,
-                service = ItemClass.Service.Residential,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco },
-                levels = new LevelData[5]
-            };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 110f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 125f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 140f, multiFloorUnits = false };
-            newPack.levels[3] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 155f, multiFloorUnits = false };
-            newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 170f, multiFloorUnits = false };
-            calcPacks.Add(newPack);
-
             // European apartments (medium-density).
             newPack = new VolumetricPopPack
             {
@@ -347,57 +311,57 @@ namespace RealisticPopulationRevisited
             newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 40, areaPer = 102f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
-            // Low-density commercial.
+            // US commmercial.
             // Figures are from Montgomery County round 7.0.
             newPack = new VolumetricPopPack()
             {
-                name = "comlow",
-                displayName = Translations.Translate("RPR_PCK_CLS_NAM"),
-                description = Translations.Translate("RPR_PCK_CLS_DES"),
+                name = "comUS",
+                displayName = Translations.Translate("RPR_PCK_CUS_NAM"),
+                description = Translations.Translate("RPR_PCK_CUS_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 40, multiFloorUnits = true };
-            newPack.levels[1] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 40, multiFloorUnits = true };
-            newPack.levels[2] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 40, multiFloorUnits = true };
+            newPack.levels[0] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 37, multiFloorUnits = true };
+            newPack.levels[1] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 37, multiFloorUnits = true };
+            newPack.levels[2] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 37, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
-            // High-density commercial.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
-            // 20% gross-up for conversion from NIA to GIA.
+            // UK commercial.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to NIA.
             newPack = new VolumetricPopPack()
             {
-                name = "comhigh",
-                displayName = Translations.Translate("RPR_PCK_CHC_NAM"),
-                description = Translations.Translate("RPR_PCK_CHC_DES"),
+                name = "comUK",
+                displayName = Translations.Translate("RPR_PCK_CUK_NAM"),
+                description = Translations.Translate("RPR_PCK_CUK_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialHigh, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
+                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 23f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 23f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 23f, multiFloorUnits = false };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 20f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 17.5f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 15f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
             // Retail warehouses.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
-            // 20% gross-up for conversion from NIA to GIA.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to NIA.
             newPack = new VolumetricPopPack()
             {
                 name = "retailware",
-                displayName = Translations.Translate("RPR_PCK_CLW_NAM"),
-                description = Translations.Translate("RPR_PCK_CLW_DES"),
+                displayName = Translations.Translate("RPR_PCK_CRW_NAM"),
+                description = Translations.Translate("RPR_PCK_CRW_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 108f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 108f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 108f, multiFloorUnits = false };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 90f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 90f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 90f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
             // Hotels.
@@ -412,14 +376,14 @@ namespace RealisticPopulationRevisited
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 130f, multiFloorUnits = true };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 130f, multiFloorUnits = true };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 130f, multiFloorUnits = true };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 120f, multiFloorUnits = true };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 120f, multiFloorUnits = true };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 120f, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
             // Restaurants and cafes.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
-            // 20% gross-up for conversion from NIA to GIA.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to NIA.
             newPack = new VolumetricPopPack()
             {
                 name = "restaurant",
@@ -427,17 +391,17 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_LFD_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure },
+                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialEco },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 22f, multiFloorUnits = true };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 22f, multiFloorUnits = true };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 22f, multiFloorUnits = true };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 20f, multiFloorUnits = true };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 17.5f, multiFloorUnits = true };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 15, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
             // Entertainment centres.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
-            // 20% gross-up for conversion from NIA to GIA.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to NIA.
             newPack = new VolumetricPopPack()
             {
                 name = "entertainment",
@@ -448,13 +412,32 @@ namespace RealisticPopulationRevisited
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 108f, multiFloorUnits = true };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 108f, multiFloorUnits = true };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 108f, multiFloorUnits = true };
+            newPack.levels[0] = new LevelData { emptyArea = 20f, emptyPercent = 20, areaPer = 70f, multiFloorUnits = true };
+            newPack.levels[1] = new LevelData { emptyArea = 20f, emptyPercent = 20, areaPer = 65f, multiFloorUnits = true };
+            newPack.levels[2] = new LevelData { emptyArea = 20f, emptyPercent = 20, areaPer = 60f, multiFloorUnits = true };
+            calcPacks.Add(newPack);
+
+            // Cinemas.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GIA to NIA.
+            newPack = new VolumetricPopPack()
+            {
+                name = "cinema",
+                displayName = Translations.Translate("RPR_PCK_LCN_NAM"),
+                description = Translations.Translate("RPR_PCK_LCN_DES"),
+                version = (int)DataVersion.one,
+                service = ItemClass.Service.Commercial,
+                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure },
+                levels = new LevelData[3]
+            };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 200f, multiFloorUnits = true };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 200f, multiFloorUnits = true };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 200f, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
             // Light industry.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to NIA.
             newPack = new VolumetricPopPack()
             {
                 name = "lightind",
@@ -465,35 +448,36 @@ namespace RealisticPopulationRevisited
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 47f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 47f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 47f, multiFloorUnits = false };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 47f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 47f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 47f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
-            // Industry factory.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
+            // Manufacturing.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to GIA.
             newPack = new VolumetricPopPack()
             {
                 name = "factory",
-                displayName = Translations.Translate("RPR_PCK_IFC_NAM"),
-                description = Translations.Translate("RPR_PCK_IFC_DES"),
+                displayName = Translations.Translate("RPR_PCK_IMN_NAM"),
+                description = Translations.Translate("RPR_PCK_IMN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Industrial,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 36f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 36f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 36f, multiFloorUnits = false };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 36f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 36f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 36f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
-            // Industry warehouse.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
+            // Industry warehouses (local distribution).
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
             newPack = new VolumetricPopPack()
             {
-                name = "warehouse",
-                displayName = Translations.Translate("RPR_PCK_IGW_NAM"),
-                description = Translations.Translate("RPR_PCK_IGW_DES"),
+                name = "localware",
+                displayName = Translations.Translate("RPR_PCK_IWL_NAM"),
+                description = Translations.Translate("RPR_PCK_IWL_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Industrial,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
@@ -504,54 +488,93 @@ namespace RealisticPopulationRevisited
             newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 70f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
-            // Industry high-bay warehouse.
-            // Densities from 2010 OffPAT/Homes & Communities Agency/Drivers Jonas Deloitte 'Employment Densities Guide' 2nd Edition.
+            // Industry warehouses (national distribution).
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
             newPack = new VolumetricPopPack()
             {
-                name = "highbay",
-                displayName = Translations.Translate("RPR_PCK_IHB_NAM"),
-                description = Translations.Translate("RPR_PCK_IHB_DES"),
+                name = "natware",
+                displayName = Translations.Translate("RPR_PCK_IWN_NAM"),
+                description = Translations.Translate("RPR_PCK_IWN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Industrial,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 80f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 80f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 80f, multiFloorUnits = false };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 95f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 95f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 95f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
-            // Low-density office.
+            // Corporate offices.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to GIA.
             newPack = new VolumetricPopPack()
             {
-                name = "offlow",
-                displayName = Translations.Translate("RPR_PCK_OLD_NAM"),
-                description = Translations.Translate("RPR_PCK_OLD_DES"),
+                name = "offcorp",
+                displayName = Translations.Translate("RPR_PCK_OCP_NAM"),
+                description = Translations.Translate("RPR_PCK_OCP_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Office,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 34f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 36f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 38f, multiFloorUnits = false };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 13f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 13f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 13f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
-            // High-density office.
-            // Figures are from Montgomery County round 7.0.
+            // Financial offices.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to GIA.
             newPack = new VolumetricPopPack()
             {
-                name = "offhigh",
-                displayName = Translations.Translate("RPR_PCK_OHD_NAM"),
-                description = Translations.Translate("RPR_PCK_OHD_DES"),
+                name = "offfin",
+                displayName = Translations.Translate("RPR_PCK_OFN_NAM"),
+                description = Translations.Translate("RPR_PCK_OFN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Office,
                 subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
                 levels = new LevelData[3]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 25f, multiFloorUnits = false };
-            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 25f, multiFloorUnits = false };
-            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 25f, multiFloorUnits = false };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 17, areaPer = 10f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 17, areaPer = 10f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 17, areaPer = 10f, multiFloorUnits = false };
+            calcPacks.Add(newPack);
+
+            // Call centres.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to GIA.
+            newPack = new VolumetricPopPack()
+            {
+                name = "offcall",
+                displayName = Translations.Translate("RPR_PCK_OCS_NAM"),
+                description = Translations.Translate("RPR_PCK_OCS_DES"),
+                version = (int)DataVersion.one,
+                service = ItemClass.Service.Office,
+                subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
+                levels = new LevelData[3]
+            };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 8f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 8f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 8f, multiFloorUnits = false };
+            calcPacks.Add(newPack);
+
+            // Data centres.
+            // Densities from 2015 Homes & Communities Agenct 'Employment Densities Guide' 3rd Edition.
+            // Empty percent is markdown from GEA to GIA.
+            newPack = new VolumetricPopPack()
+            {
+                name = "datacent",
+                displayName = Translations.Translate("RPR_PCK_ODT_NAM"),
+                description = Translations.Translate("RPR_PCK_ODT_DES"),
+                version = (int)DataVersion.one,
+                service = ItemClass.Service.Office,
+                subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
+                levels = new LevelData[3]
+            };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 200f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 200f, multiFloorUnits = false };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 200f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
             // Suburban schools.
@@ -654,10 +677,10 @@ namespace RealisticPopulationRevisited
                     switch (subService)
                     {
                         case ItemClass.SubService.ResidentialHigh:
-                            defaultName = "reshigh";
+                            defaultName = "reshighUS";
                             break;
                         case ItemClass.SubService.ResidentialHighEco:
-                            defaultName = "reshigh";
+                            defaultName = "reshighEU";
                             break;
                         default:
                             defaultName = "reslow";
@@ -668,7 +691,7 @@ namespace RealisticPopulationRevisited
                     defaultName = "factory";
                     break;
                 case ItemClass.Service.Office:
-                    defaultName = "offlow";
+                    defaultName = "offcorp";
                     break;
                 case ItemClass.Service.Education:
                     defaultName = "schoolsub";
@@ -678,7 +701,7 @@ namespace RealisticPopulationRevisited
                     switch (subService)
                     {
                         case ItemClass.SubService.CommercialHigh:
-                            defaultName = "comhigh";
+                            defaultName = "comUK";
                             break;
                         case ItemClass.SubService.CommercialTourist:
                             defaultName = "hotel";
@@ -688,7 +711,7 @@ namespace RealisticPopulationRevisited
                             break;
                         default:
                             // Default is low-density commercial.
-                            defaultName = "comlow";
+                            defaultName = "comUS";
                             break;
                     }
                     break;

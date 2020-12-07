@@ -10,40 +10,42 @@
     <Translation ID="RPR_PCK_LEG_DES" String="Old calculations used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod." />
     <Translation ID="RPR_PCK_RLS_NAM" String="Single dwellings" />
     <Translation ID="RPR_PCK_RLS_DES" String="One household per building." />
-    <Translation ID="RPR_PCK_RMD_NAM" String="Medium density" />
-    <Translation ID="RPR_PCK_RMD_DES" String="Medium-density residential buildings - townhouse blocks and low-rise apartments." />
-    <Translation ID="RPR_PCK_RHR_NAM" String="Highrise" />
-    <Translation ID="RPR_PCK_RHR_DES" String="High-rise apartment buildings with lobbies." />
     <Translation ID="RPR_PCK_RUH_NAM" String="US highrise" />
     <Translation ID="RPR_PCK_RUH_DES" String="Average US apartments and condos." />
     <Translation ID="RPR_PCK_REM_NAM" String="European apartments (modern)" />
     <Translation ID="RPR_PCK_REM_DES" String="European mid-rise and wall-to-wall apartments (medium density; modern buildings)." />
     <Translation ID="RPR_PCK_REH_NAM" String="European apartments (older)" />
     <Translation ID="RPR_PCK_REH_DES" String="European mid-rise and wall-to-wall apartments (high density; older buildings)." />
-    <Translation ID="RPR_PCK_CLS_NAM" String="Standalone shops" />
-    <Translation ID="RPR_PCK_CLS_DES" String="Low-density commercial services." />
-    <Translation ID="RPR_PCK_CHC_NAM" String="Shopping malls" />
-    <Translation ID="RPR_PCK_CHC_DES" String="High-density retail (shopping malls and high streets)." />
-    <Translation ID="RPR_PCK_CLW_NAM" String="Superstores" />
-    <Translation ID="RPR_PCK_CLW_DES" String="Non-food superstores and retail warehouses." />
+    <Translation ID="RPR_PCK_CUS_NAM" String="US retail" />
+    <Translation ID="RPR_PCK_CUS_DES" String="General commercial retail density typical of USA." />
+    <Translation ID="RPR_PCK_CUK_NAM" String="UK retail" />
+    <Translation ID="RPR_PCK_CUK_DES" String="General commercial retail density typical of UK." />
+    <Translation ID="RPR_PCK_CRW_NAM" String="Superstores" />
+    <Translation ID="RPR_PCK_CRW_DES" String="Non-food superstores and retail warehouses." />
     <Translation ID="RPR_PCK_THT_NAM" String="Hotels" />
     <Translation ID="RPR_PCK_THT_DES" String="Hotels and motels." />
     <Translation ID="RPR_PCK_LFD_NAM" String="Food service" />
     <Translation ID="RPR_PCK_LFD_DES" String="Restaurants and cafes." />
     <Translation ID="RPR_PCK_LEN_NAM" String="Entertainment" />
-    <Translation ID="RPR_PCK_LEN_DES" String="Cinemas, amusements, and entertainment centers." />
+    <Translation ID="RPR_PCK_LEN_DES" String="Amusement, fitness, and entertainment centers." />
+    <Translation ID="RPR_PCK_LCN_NAM" String="Cinemas" />
+    <Translation ID="RPR_PCK_LCN_DES" String="Cinemas and theaters." />
     <Translation ID="RPR_PCK_ILG_NAM" String="Light industry" />
     <Translation ID="RPR_PCK_ILG_DES" String="Light industries and business parks." />
-    <Translation ID="RPR_PCK_IFC_NAM" String="Factories" />
-    <Translation ID="RPR_PCK_IFC_DES" String="Industrial factories." />
-    <Translation ID="RPR_PCK_IGW_NAM" String="General warehousing" />
-    <Translation ID="RPR_PCK_IGW_DES" String="Industrial warehouses - lots of storage and low employment density." />
-    <Translation ID="RPR_PCK_IHB_NAM" String="Large warehouses" />
-    <Translation ID="RPR_PCK_IHB_DES" String="Large-scale and high-bay warehouses - lots of storage and very low employment density." />
-    <Translation ID="RPR_PCK_OLD_NAM" String="Small offices" />
-    <Translation ID="RPR_PCK_OLD_DES" String="Smaller office buildings." />
-    <Translation ID="RPR_PCK_OHD_NAM" String="Large offices" />
-    <Translation ID="RPR_PCK_OHD_DES" String="Large office buildings." />
+    <Translation ID="RPR_PCK_IMN_NAM" String="Manufacturing" />
+    <Translation ID="RPR_PCK_IMN_DES" String="Industrial manufacturing." />
+    <Translation ID="RPR_PCK_IWL_NAM" String="Small warehouses" />
+    <Translation ID="RPR_PCK_IWL_DES" String="Warehouses for local distribution - lots of storage and low employment density." />
+    <Translation ID="RPR_PCK_IWN_NAM" String="Large warehouses" />
+    <Translation ID="RPR_PCK_IWN_DES" String="Warehouses for national distribution - lots of storage and very low employment density." />
+    <Translation ID="RPR_PCK_OCP_NAM" String="Corporate offices" />
+    <Translation ID="RPR_PCK_OCP_DES" String="Corporate, professional services, and public sector offices." />
+    <Translation ID="RPR_PCK_OFN_NAM" String="Finance offices" />
+    <Translation ID="RPR_PCK_OFN_DES" String="Financial offices; higher density than typical corporte offices" />
+    <Translation ID="RPR_PCK_OCS_NAM" String="Call centers" />
+    <Translation ID="RPR_PCK_OCS_DES" String="Call centers and other tightly-packed offices" />
+    <Translation ID="RPR_PCK_ODT_NAM" String="Datacenters" />
+    <Translation ID="RPR_PCK_ODT_DES" String="Datacenters with co-location facilities" />
     <Translation ID="RPR_PCK_SSB_NAM" String="Surburban school" />
     <Translation ID="RPR_PCK_SSB_DES" String="Suburban schools" />
     <Translation ID="RPR_PCK_SML_NAM" String="MN low" />
