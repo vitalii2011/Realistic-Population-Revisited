@@ -248,7 +248,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_RLS_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Residential,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialLow, ItemClass.SubService.ResidentialLowEco },
                 levels = new LevelData[5]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -1f, multiFloorUnits = true };
@@ -266,7 +265,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_REM_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Residential,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco },
                 levels = new LevelData[5]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 10, areaPer = 85f, multiFloorUnits = false };
@@ -283,7 +281,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_REO_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Residential,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco },
                 levels = new LevelData[5],
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 75f, multiFloorUnits = false };
@@ -301,7 +298,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_RUH_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Residential,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.ResidentialHigh, ItemClass.SubService.ResidentialHighEco },
                 levels = new LevelData[5]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 36, areaPer = 70f, multiFloorUnits = false };
@@ -320,7 +316,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_CUS_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0, emptyPercent = 0, areaPer = 37, multiFloorUnits = true };
@@ -338,7 +333,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_CUK_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh, ItemClass.SubService.CommercialEco, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 20f, multiFloorUnits = false };
@@ -356,7 +350,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_CRW_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialHigh },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 90f, multiFloorUnits = false };
@@ -373,7 +366,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_THT_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialTourist },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 120f, multiFloorUnits = true };
@@ -391,7 +383,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_LFD_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure, ItemClass.SubService.CommercialEco },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 20f, multiFloorUnits = true };
@@ -409,7 +400,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_LEN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 20f, emptyPercent = 20, areaPer = 70f, multiFloorUnits = true };
@@ -427,7 +417,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_LCN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Commercial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.CommercialLow, ItemClass.SubService.CommercialLeisure },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 200f, multiFloorUnits = true };
@@ -445,7 +434,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_ILG_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Industrial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 47f, multiFloorUnits = false };
@@ -463,7 +451,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_IMN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Industrial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 5, areaPer = 36f, multiFloorUnits = false };
@@ -480,7 +467,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_IWL_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Industrial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 70f, multiFloorUnits = false };
@@ -497,7 +483,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_IWN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Industrial,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.IndustrialGeneric, ItemClass.SubService.IndustrialFarming, ItemClass.SubService.IndustrialForestry, ItemClass.SubService.IndustrialOil, ItemClass.SubService.IndustrialOre },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 95f, multiFloorUnits = false };
@@ -515,7 +500,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_OCP_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Office,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 20, areaPer = 13f, multiFloorUnits = false };
@@ -533,7 +517,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_OFN_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Office,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 17, areaPer = 10f, multiFloorUnits = false };
@@ -551,7 +534,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_OCS_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Office,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 15, areaPer = 8f, multiFloorUnits = false };
@@ -569,7 +551,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_ODT_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Office,
-                subServices = new ItemClass.SubService[] { ItemClass.SubService.OfficeGeneric, ItemClass.SubService.OfficeHightech },
                 levels = new LevelData[3]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 200f, multiFloorUnits = false };
@@ -587,7 +568,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_SSB_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Education,
-                subServices = null,
                 levels = new LevelData[2]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 8f, multiFloorUnits = false };
@@ -603,7 +583,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_SML_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Education,
-                subServices = null,
                 levels = new LevelData[2]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 14f, multiFloorUnits = false };
@@ -619,7 +598,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_SMM_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Education,
-                subServices = null,
                 levels = new LevelData[2]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 12f, multiFloorUnits = false };
@@ -635,7 +613,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_SMH_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Education,
-                subServices = null,
                 levels = new LevelData[2]
             };
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = 9f, multiFloorUnits = false };
@@ -651,7 +628,6 @@ namespace RealisticPopulationRevisited
                 description = Translations.Translate("RPR_PCK_SUK_DES"),
                 version = (int)DataVersion.one,
                 service = ItemClass.Service.Education,
-                subServices = null,
                 levels = new LevelData[2]
             };
             newPack.levels[0] = new LevelData { emptyArea = 350f, emptyPercent = 0, areaPer = 4.1f, multiFloorUnits = true };
@@ -747,27 +723,8 @@ namespace RealisticPopulationRevisited
                 // Check for matching service.
                 if (pack.service == service)
                 {
-                    // Service matches; check subservices.
-                    // If no subservices are listed, then this applies to all subservice types for this service.
-                    if (pack.subServices == null)
-                    {
-                        list.Add(pack);
-                    }
-                    // Otherwise, iterate through subservices to see if there's a match.
-                    else
-                    {
-                        foreach (ItemClass.SubService packSubService in pack.subServices)
-                        {
-                            if (packSubService == subService)
-                            {
-                                // Got a match; add this pack to our return list.
-                                list.Add(pack);
-
-                                // Already matched this pack; no point in continuing.
-                                break;
-                            }
-                        }
-                    }
+                    // Service matches; add pack.
+                    list.Add(pack);
                 }
             }
 

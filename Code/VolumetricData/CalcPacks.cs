@@ -46,7 +46,6 @@
     {
         // Service/subservice restrictions.
         public ItemClass.Service service;
-        public ItemClass.SubService[] subServices;
 
 
         /// <summary>
