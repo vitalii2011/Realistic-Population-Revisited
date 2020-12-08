@@ -28,7 +28,7 @@ namespace RealisticPopulationRevisited
             // Default; standard 3m stories.
             FloorDataPack newPack = new FloorDataPack
             {
-                name = "default",
+                name = "generic",
                 displayName = Translations.Translate("RPR_PCK_FDF_NAM"),
                 description = Translations.Translate("RPR_PCK_FDF_DES"),
                 version = (int)DataVersion.one,
@@ -143,7 +143,7 @@ namespace RealisticPopulationRevisited
                     {
                         case ItemClass.SubService.ResidentialHigh:
                         case ItemClass.SubService.ResidentialHighEco:
-                            defaultName = "default";
+                            defaultName = "generic";
                             break;
                         default:
                             defaultName = "house";
