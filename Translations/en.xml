@@ -56,7 +56,7 @@
     <Translation ID="RPR_PCK_SMH_DES" String="Minnesota Dept of Education guide - highest density" />
     <Translation ID="RPR_PCK_SUK_NAM" String="UK standard" />
     <Translation ID="RPR_PCK_SUK_DES" String="Standard planning densities for the UK." />
-    <Translation ID="RPR_PCK_FDF_NAM" String="Default" />
+    <Translation ID="RPR_PCK_FDF_NAM" String="Generic" />
     <Translation ID="RPR_PCK_FDF_DES" String="Standard 3m floor height." />
     <Translation ID="RPR_PCK_FHO_NAM" String="Standalone houses" />
     <Translation ID="RPR_PCK_FHO_DES" String="Detached residential dwellings." />
