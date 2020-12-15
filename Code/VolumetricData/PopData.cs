@@ -270,7 +270,8 @@ namespace RealisticPopulationRevisited
             newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 10, areaPer = 85f, multiFloorUnits = false };
             newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 12, areaPer = 90f, multiFloorUnits = false };
             newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 16, areaPer = 100f, multiFloorUnits = false };
-            newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 18, areaPer = 105f, multiFloorUnits = false };
+            newPack.levels[3] = new LevelData { emptyArea = 0f, emptyPercent = 18, areaPer = 105f, multiFloorUnits = false };
+            newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 18, areaPer = 110f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
             // European apartments (older).

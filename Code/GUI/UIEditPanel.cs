@@ -10,12 +10,22 @@ namespace RealisticPopulationRevisited
     public class UIEditPanel : UIPanel
     {
         // Layout constants.
-        const float MarginPadding = 10f;
-        const float LabelWidth = 150f;
+        private const float MarginPadding = 10f;
+        private const float LabelWidth = 150f;
+        private const float TitleY = 5f;
+        private const float PopCheckY = TitleY + 30f;
+        private const float HomeJobY = PopCheckY + 25f;
+        private const float FloorCheckY = HomeJobY + 25f;
+        private const float FirstFloorY = FloorCheckY + 25f;
+        private const float FloorHeightY = FirstFloorY + 25f;
+        private const float SaveY = FloorHeightY + 35f;
+        private const float DeleteY = SaveY + 35f;
+        private const float MessageY = DeleteY + 35f;
 
 
         // Panel components
-        private UITextField homeJobsCount, floorCount, perFloorCount;
+        private UILabelledTextfield homeJobsCount, firstFloorField, floorHeightField;
+        //private UICheckBox popCheck, floorCheck;
         private UILabel homeJobLabel;
         private UIButton saveButton;
         private UIButton deleteButton;
@@ -30,7 +40,6 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void Setup()
         {
-
             // Generic setup.
             isVisible = true;
             canFocus = true;
@@ -45,7 +54,7 @@ namespace RealisticPopulationRevisited
 
             // Panel title.
             UILabel title = this.AddUIComponent<UILabel>();
-            title.relativePosition = new Vector3(0, 5);
+            title.relativePosition = new Vector3(0, TitleY);
             title.textAlignment = UIHorizontalAlignment.Center;
             title.text = Translations.Translate("RPR_CUS_TITLE");
             title.textScale = 1.2f;
@@ -53,29 +62,72 @@ namespace RealisticPopulationRevisited
             title.width = this.width;
             title.height = 30;
 
-            // Text field labels.
-            homeJobLabel = AddLabel(40f, "RPR_LBL_HOM");
-            //AddLabel(80f, "RPR_LBL_FLR");
-            //AddLabel(120f, "RPR_LBL_PFL");
+            // Checkboxes.
+            //popCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_POP"), yPos: PopCheckY, textScale: 1.0f);
+            //floorCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_FLR"), yPos: FloorCheckY, textScale: 1.0f);
 
             // Text fields.
-            homeJobsCount = AddEditField(40f);
-            //floorCount = AddEditField(80f);
-            //perFloorCount = AddEditField(120f);
+            homeJobsCount = AddLabelledTextfield(HomeJobY, "RPR_LBL_HOM");
+            //firstFloorField = AddLabelledTextfield(FirstFloorY,"RPR_LBL_OFF");
+            //floorHeightField = AddLabelledTextfield(FloorHeightY, "RPR_LBL_OFH");
+            homeJobLabel = homeJobsCount.label;
 
             // Save button.
             saveButton = UIUtils.CreateButton(this, 200);
-            saveButton.relativePosition = new Vector3(MarginPadding, 150);
+            saveButton.relativePosition = new Vector3(MarginPadding, SaveY);
             saveButton.text = Translations.Translate("RPR_CUS_ADD");
             saveButton.tooltip = Translations.Translate("RPR_CUS_ADD_TIP");
             saveButton.Disable();
 
             // Delete button.
             deleteButton = UIUtils.CreateButton(this, 200);
-            deleteButton.relativePosition = new Vector3(MarginPadding, 190);
+            deleteButton.relativePosition = new Vector3(MarginPadding, DeleteY);
             deleteButton.text = Translations.Translate("RPR_CUS_DEL");
             deleteButton.tooltip = Translations.Translate("RPR_CUS_DEL_TIP");
             deleteButton.Disable();
+
+            // Message label (initially hidden).
+            messageLabel = this.AddUIComponent<UILabel>();
+            messageLabel.relativePosition = new Vector3(MarginPadding, MessageY);
+            messageLabel.textAlignment = UIHorizontalAlignment.Left;
+            messageLabel.autoSize = false;
+            messageLabel.autoHeight = true;
+            messageLabel.wordWrap = true;
+            messageLabel.width = this.width - (MarginPadding * 2);
+            messageLabel.isVisible = false;
+            messageLabel.text = "No message to display";
+
+            /*
+            // Checkbox event handlers.
+            popCheck.eventCheckChanged += (component, isChecked) =>
+            {
+                // If this is now selected and floorCheck is also selected, deselect floorCheck.
+                if (isChecked && floorCheck.isChecked)
+                {
+                    floorCheck.isChecked = false;
+                }
+            };
+            floorCheck.eventCheckChanged += (component, isChecked) =>
+            {
+                // If this is now selected and popCheck is also selected, deselect popCheck.
+                if (isChecked && popCheck.isChecked)
+                {
+                    popCheck.isChecked = false;
+                }
+                
+                // If this is now checked, try to parse the floors.
+                if (isChecked)
+                {
+                    FloorDataPack overridePack = TryParseFloors();
+                    BuildingDetailsPanel.Panel.OverridePack = overridePack;
+                    BuildingDetailsPanel.Panel.FloorDataPack = overridePack;
+                }
+                else
+                {
+                    // If not checked, set override pack to null.
+                    BuildingDetailsPanel.Panel.OverridePack = null;
+                }
+            };*/
 
             // Save button event handler.
             saveButton.eventClick += (component, clickEvent) =>
@@ -89,47 +141,79 @@ namespace RealisticPopulationRevisited
                     return;
                 }
 
-                // Read textfield if possible.
-                if (int.TryParse(homeJobsCount.text, out int homesJobs))
+                // Are we doing population overrides?
+                //if (popCheck.isChecked)
                 {
-                    // Minimum value of 1.
-                    if (homesJobs < 1)
+                    // Read total floor count textfield if possible; ignore zero values
+                    if (int.TryParse(homeJobsCount.textField.text, out int homesJobs) && homesJobs != 0)
                     {
-                        // Print warning message in red.
-                        messageLabel.textColor = new Color32(255, 0, 0, 255);
-                        messageLabel.text = Translations.Translate("RPR_ERR_ZERO");
-                        messageLabel.isVisible = true;
-                    }
-                    else
-                    {
-                        // Homes or jobs?
-                        if (currentSelection.GetService() == ItemClass.Service.Residential)
+                        // Minimum value of 1.
+                        if (homesJobs < 1)
                         {
-                            // Residential building.
-                            ExternalCalls.SetResidential(currentSelection, homesJobs);
-
-                            // Update household counts for existing instances of this building - only needed for residential buildings.
-                            // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                            PopData.instance.UpdateHouseholds(currentSelection.name);
+                            // Print warning message in red.
+                            messageLabel.textColor = new Color32(255, 0, 0, 255);
+                            messageLabel.text = Translations.Translate("RPR_ERR_ZERO");
+                            messageLabel.isVisible = true;
                         }
                         else
                         {
-                            // Employment building.
-                            ExternalCalls.SetWorker(currentSelection, homesJobs);
-                        }
+                            // Homes or jobs?
+                            if (currentSelection.GetService() == ItemClass.Service.Residential)
+                            {
+                                // Residential building.
+                                ExternalCalls.SetResidential(currentSelection, homesJobs);
 
-                        // Refresh the display so that all panels reflect the updated settings.
-                        BuildingDetailsPanel.Panel.UpdateSelectedBuilding(currentSelection);
-                        BuildingDetailsPanel.Panel.Refresh();
+                                // Update household counts for existing instances of this building - only needed for residential buildings.
+                                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
+                                PopData.instance.UpdateHouseholds(currentSelection.name);
+                            }
+                            else
+                            {
+                                // Employment building.
+                                ExternalCalls.SetWorker(currentSelection, homesJobs);
+                            }
+
+                            // Repopulate field with parsed value.
+                            homeJobLabel.text = homesJobs.ToString();
+
+                            // Refresh the display so that all panels reflect the updated settings.
+                            BuildingDetailsPanel.Panel.Refresh();
+                        }
+                    }
+                    else
+                    {
+                        // TryParse couldn't parse any data; print warning message in red.
+                        messageLabel.textColor = new Color32(255, 0, 0, 255);
+                        messageLabel.text = Translations.Translate("RPR_ERR_INV");
+                        messageLabel.isVisible = true;
                     }
                 }
-                else
+                /*else if (floorCheck.isChecked)
                 {
-                    // TryParse couldn't parse the data; print warning message in red.
-                    messageLabel.textColor = new Color32(255, 0, 0, 255);
-                    messageLabel.text = Translations.Translate("RPR_ERR_INV");
-                    messageLabel.isVisible = true;
-                }
+                    // Attempt to parse values into override floor pack.
+                    FloorDataPack overridePack = TryParseFloors();
+
+                    // Were we successful?.
+                    if (overridePack != null)
+                    {
+                        // Successful parsing - add override.
+                        FloorData.instance.AddOverride(currentSelection, overridePack);
+
+                        // Repopulate fields with parsed values.
+                        firstFloorField.textField.text = overridePack.firstFloorMin.ToString();
+                        floorHeightField.textField.text = overridePack.floorHeight.ToString();
+
+                        // Refresh the display so that all panels reflect the updated settings.
+                        BuildingDetailsPanel.Panel.Refresh();
+                    }
+                    else
+                    {
+                        // Couldn't parse values; print warning message in red.
+                        messageLabel.textColor = new Color32(255, 0, 0, 255);
+                        messageLabel.text = Translations.Translate("RPR_ERR_INV");
+                        messageLabel.isVisible = true;
+                    }
+                }*/
             };
 
             // Delete button event handler.
@@ -162,21 +246,13 @@ namespace RealisticPopulationRevisited
                     ExternalCalls.RemoveWorker(currentSelection);
                 }
 
+                // Remove any floor override.
+                FloorData.instance.DeleteOverride(currentSelection);
+
                 // Refresh the display so that all panels reflect the updated settings.
                 BuildingDetailsPanel.Panel.Refresh();
-                homeJobsCount.text = string.Empty;
+                homeJobsCount.textField.text = string.Empty;
             };
-
-            // Message label (initially hidden).
-            messageLabel = this.AddUIComponent<UILabel>();
-            messageLabel.relativePosition = new Vector3(MarginPadding, 160);
-            messageLabel.textAlignment = UIHorizontalAlignment.Left;
-            messageLabel.autoSize = false;
-            messageLabel.autoHeight = true;
-            messageLabel.wordWrap = true;
-            messageLabel.width = this.width - (MarginPadding * 2);
-            messageLabel.isVisible = false;
-            messageLabel.text = "No message to display";
         }
 
 
@@ -195,7 +271,7 @@ namespace RealisticPopulationRevisited
             // Set text field to blank and disable buttons if no valid building is selected.
             if (building == null || building.name == null)
             {
-                homeJobsCount.text = string.Empty;
+                homeJobsCount.textField.text = string.Empty;
                 saveButton.Disable();
                 deleteButton.Disable();
                 return;
@@ -216,17 +292,17 @@ namespace RealisticPopulationRevisited
                 homeJobLabel.text = Translations.Translate("RPR_LBL_JOB");
             }
 
-            // If no custom settings have been found (return value was zero), then blank the text field, rename the save button, and disable the delete button.
-            if (homesJobs == 0)
+            // If no custom settings have been found (return value was zero) and theres' no floor override, then blank the text field, rename the save button, and disable the delete button.
+            if (homesJobs == 0 && FloorData.instance.HasOverride(building) == null)
             {
-                homeJobsCount.text = string.Empty;
+                homeJobsCount.textField.text = string.Empty;
                 saveButton.text = Translations.Translate("RPR_CUS_ADD");
                 deleteButton.Disable();
             }
             else
             {
                 // Valid custom settings found; display the result, rename the save button, and enable the delete button.
-                homeJobsCount.text = homesJobs.ToString();
+                homeJobsCount.textField.text = homesJobs.ToString();
                 saveButton.text = Translations.Translate("RPR_CUS_UPD");
                 deleteButton.Enable();
             }
@@ -235,35 +311,57 @@ namespace RealisticPopulationRevisited
             saveButton.Enable();
         }
 
-        
+        /*
         /// <summary>
-        /// Adds a textfield.
+        /// Attempts to parse floor data fields into a valid override floor pack.
         /// </summary>
-        /// <param name="yPos">Relative y-position of textfield</param>
-        /// <returns>New textfield</returns>
-        private UITextField AddEditField(float yPos)
+        /// <returns></returns>
+        private FloorDataPack TryParseFloors()
         {
-            UITextField newField = UIUtils.CreateTextField(this, this.width - (MarginPadding * 3) - LabelWidth, 20);
-            newField.relativePosition = new Vector3(MarginPadding + LabelWidth + MarginPadding, yPos);
+            Debugging.Message("try floor parse");
 
-            return newField;
-        }
+            // Attempt to parse fields.
+            if (float.TryParse(firstFloorField.textField.text, out float firstFloor) && float.TryParse(floorHeightField.textField.text, out float floorHeight))
+            {
+                Debugging.Message("success!");
+
+                // Success - create new override floor pack with parsed data.
+                return new FloorDataPack
+                {
+                    version = (int)DataVersion.overrideOne,
+                    firstFloorMin = firstFloor,
+                    floorHeight = floorHeight
+                };
+            }
+
+            // If we got here, we didn't get a valid parse; return null.
+            return null;
+        }*/
 
 
         /// <summary>
-        /// Adds a label to left of a textfield.
+        /// Adds a textfield with a label to the left.
         /// </summary>
         /// <param name="yPos">Relative y-position of textfield</param>
         /// <param name="key">Translation key for label</param>
         /// <returns></returns>
-        private UILabel AddLabel(float yPos, string key)
+        private UILabelledTextfield AddLabelledTextfield(float yPos, string key)
         {
-            UILabel newLabel = this.AddUIComponent<UILabel>();
-            newLabel.relativePosition = new Vector3(MarginPadding, yPos);
-            newLabel.textAlignment = UIHorizontalAlignment.Left;
-            newLabel.text = Translations.Translate(key);
+            // Create textfield.
+            UILabelledTextfield newField = new UILabelledTextfield();
+            newField.textField = UIUtils.CreateTextField(this, this.width - (MarginPadding * 3) - LabelWidth, 20);
+            newField.textField.relativePosition = new Vector3(MarginPadding + LabelWidth + MarginPadding, yPos);
+            newField.textField.clipChildren = false;
 
-            return newLabel;
+            // Label.
+            newField.label = newField.textField.AddUIComponent<UILabel>();
+            newField.label.anchor = UIAnchorStyle.Right | UIAnchorStyle.CenterVertical;
+            newField.label.relativePosition = new Vector2(-MarginPadding * 2f, newField.textField.height / 2);
+            newField.label.textAlignment = UIHorizontalAlignment.Right;
+            newField.label.textScale = 0.7f;
+            newField.label.text = Translations.Translate(key);
+
+            return newField;
         }
     }
 }

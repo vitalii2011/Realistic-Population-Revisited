@@ -70,6 +70,8 @@
     <Translation ID="RPR_PCK_FHB_DES" String="High-bay industrial and commercial warehouses." />
     <Translation ID="RPR_PCK_FEX_NAM" String="Primary industry" />
     <Translation ID="RPR_PCK_FEX_DES" String="Industrial extractors and processors" />
+    <Translation ID="RPR_PCK_OVR_NAM" String="Override" />
+    <Translation ID="RPR_PCK_OVR_DES" String="Manual override" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
     <Translation ID="RPR_CAT_RHI" String="Residential high" />
@@ -102,6 +104,8 @@
     <Translation ID="RPR_FIL_NAME" String="Name:" />
     <Translation ID="RPR_FIL_SET" String="Filter by settings" />
     <Translation ID="RPR_FIL_SES" String="(custom/calculation pack/any)" />
+    <Translation ID="RPR_EDT_POP" String="Override population" />
+    <Translation ID="RPR_EDT_FLR" String="Override floors" />
     <Translation ID="RPR_CUS_HAS" String="Has custom settings" />
     <Translation ID="RPR_CUS_NDF" String="Has non-default calculation pack" />
     <Translation ID="RPR_CUS_ANY" String="Has custom settings or non-default calculation pack" />
@@ -115,8 +119,8 @@
     <Translation ID="RPR_ERR_INV" String="ERROR: invalid value" />
     <Translation ID="RPR_LBL_HOM" String="Homes:" />
     <Translation ID="RPR_LBL_JOB" String="Jobs:" />
-    <Translation ID="RPR_LBL_FLR" String="Floors:" />
-    <Translation ID="RPR_LBL_PFL" String="Units per floor:" />
+    <Translation ID="RPR_LBL_OFF" String="First floor height" />
+    <Translation ID="RPR_LBL_OFH" String="Other floor height" />
     <Translation ID="RPR_PRV_SFL" String="Show calculated floors" />
     <Translation ID="RPR_CAL_MOD" String="Mod calculations" />
     <Translation ID="RPR_CAL_DEN" String="Population density" />

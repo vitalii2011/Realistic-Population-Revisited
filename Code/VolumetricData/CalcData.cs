@@ -39,7 +39,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// Centralised store and management of floor calculation data.
     /// </summary>
-    public class CalcData
+    public abstract class CalcData
     {
         // List of data definition packs.
         internal List<DataPack> calcPacks;
@@ -51,9 +51,9 @@ namespace RealisticPopulationRevisited
         private Dictionary<ItemClass.Service, Dictionary<ItemClass.SubService, DataPack>> defaultsDict;
 
 
-        // Virtual methods to override.
-        internal virtual DataPack BaseDefaultPack(ItemClass.Service service, ItemClass.SubService subService) => null;
-        protected virtual string BuildingPack(BuildingRecord buildingRecord) => null;
+        // Abstract methods.
+        internal abstract DataPack BaseDefaultPack(ItemClass.Service service, ItemClass.SubService subService);
+        protected abstract string BuildingPack(BuildingRecord buildingRecord);
 
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="building">Selected prefab</param>
         /// <returns>Currently active size pack</returns>
-        internal DataPack ActivePack(BuildingInfo building) => HasPackOverride(building) ?? CurrentDefaultPack(building);
+        internal virtual DataPack ActivePack(BuildingInfo building) => HasPackOverride(building) ?? CurrentDefaultPack(building);
 
 
         /// <summary>

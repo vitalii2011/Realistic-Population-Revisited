@@ -149,7 +149,7 @@ namespace RealisticPopulationRevisited
 
             // Initialise arrays.
             availablePopPacks = new PopDataPack[subServiceNames.Length][];
-            availableFloorPacks = FloorData.instance.GetPacks();
+            availableFloorPacks = FloorData.instance.Packs;
             popMenus = new UIDropDown[subServiceNames.Length];
             floorMenus = new UIDropDown[subServiceNames.Length];
 

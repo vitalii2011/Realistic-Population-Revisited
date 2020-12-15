@@ -7,18 +7,19 @@ namespace RealisticPopulationRevisited
     public class UIModCalcs : UIPanel
     {
         // Layout constants.
-        const float Margin = 5f;
-        const float ColumnWidth = 300f;
-        const float ComponentWidth = ColumnWidth - (Margin * 2f);
-        const float RightColumnX = ColumnWidth + Margin;
-        const float ColumnLabelY = 30f;
-        const float MenuY = ColumnLabelY + 20f;
-        const float DescriptionY = MenuY + 30f;
-        const float SaveY = DescriptionY + 40f;
-        const float CalcY = SaveY + 35f;
+        private const float Margin = 5f;
+        private const float ColumnWidth = 300f;
+        private const float ComponentWidth = ColumnWidth - (Margin * 2f);
+        private const float RightColumnX = ColumnWidth + Margin;
+        private const float ColumnLabelY = 30f;
+        private const float MenuY = ColumnLabelY + 20f;
+        private const float DescriptionY = MenuY + 30f;
+        private const float SaveY = DescriptionY + 40f;
+        private const float CalcY = SaveY + 35f;
 
         // Panel components.
         private UILabel title;
+        private UIPanel floorPanel;
         private UILegacyCalcs legacyPanel;
         private UIVolumetricPanel volumetricPanel;
         private UIDropDown popMenu, floorMenu;
@@ -35,9 +36,16 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Returns the level data record from the current floor pack that's relevant to the selected building's level.
+        /// </summary>
+        /// <returns>Floordata instance for building</returns>
+        private LevelData CurrentFloorData => ((VolumetricPopPack)currentPopPack).levels[(int)currentBuilding.GetClassLevel()];
+
+
+        /// <summary>
         /// Create the mod calcs panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
-        public void Setup()
+        internal void Setup()
         {
             // Basic setup.
             clipChildren = true;
@@ -70,13 +78,21 @@ namespace RealisticPopulationRevisited
             legacyPanel.Setup();
             legacyPanel.Hide();
 
+            // Floor dropdown panel.
+            floorPanel = this.AddUIComponent<UIPanel>();
+            floorPanel.relativePosition = new Vector2(RightColumnX, MenuY);
+            floorPanel.autoSize = true;
+            floorPanel.autoLayout = false;
+            floorPanel.clipChildren = false;
+            floorPanel.Show();
+
             // Pack dropdowns.
             popMenu = UIControls.AddDropDown(this, Margin, MenuY, ComponentWidth);
-            floorMenu = UIControls.AddDropDown(this, RightColumnX, MenuY, ComponentWidth);
+            floorMenu = UIControls.AddDropDown(floorPanel, 0f, 0f, ComponentWidth);
 
             // Pack descriptions.
-            popDescription = Description(Margin);
-            floorDescription = Description(RightColumnX);
+            popDescription = Description(this, Margin, DescriptionY);
+            floorDescription = Description(floorPanel, 0f, DescriptionY - MenuY);
 
             // Apply button.
             UIButton applyButton = UIUtils.CreateButton(this, 200f);
@@ -100,7 +116,7 @@ namespace RealisticPopulationRevisited
         /// Updates the population calculation pack selection to the selected calculation pack.
         /// </summary>
         /// <param name="index">Index number (from menu) of selection pack</param>
-        public void UpdatePopSelection(int index)
+        internal void UpdatePopSelection(int index)
         {
             // Update selected pack.
             currentPopPack = popPacks[index];
@@ -113,7 +129,7 @@ namespace RealisticPopulationRevisited
             {
                 // Volumetric pack.
                 // Update panel with new calculations.
-                LevelData thisLevel = GetFloorData();
+                LevelData thisLevel = CurrentFloorData;
                 volumetricPanel.UpdatePopText(thisLevel);
                 volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack);
 
@@ -138,7 +154,7 @@ namespace RealisticPopulationRevisited
         /// Updates the floor calculation pack selection to the selected calculation pack.
         /// </summary>
         /// <param name="index">Index number (from menu) of selection pack</param>
-        public void UpdateFloorSelection(int index)
+        internal void UpdateFloorSelection(int index)
         {
             // Update selected pack.
             currentFloorPack = (FloorDataPack)floorPacks[index];
@@ -148,7 +164,7 @@ namespace RealisticPopulationRevisited
 
             // Update panel with new calculations.
             volumetricPanel.UpdateFloorText(currentFloorPack);
-            volumetricPanel.CalculateVolumetric(currentBuilding, GetFloorData(), currentFloorPack);
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentFloorData, currentFloorPack);
 
             // Communicate change with to rest of panel.
             BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
@@ -156,17 +172,10 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Returns the level data record from the current floor pack that's relevant to the selected building's level.
-        /// </summary>
-        /// <returns>Floordata instance for building</returns>
-        private LevelData GetFloorData() => ((VolumetricPopPack)currentPopPack).levels[(int)currentBuilding.GetClassLevel()];
-
-
-        /// <summary>
         /// Called whenever the currently selected building is changed to update the panel display.
         /// </summary>
         /// <param name="building">Newly selected building</param>
-        public void SelectionChanged(BuildingInfo building)
+        internal void SelectionChanged(BuildingInfo building)
         {
             // Set current building.
             currentBuilding = building;
@@ -176,7 +185,7 @@ namespace RealisticPopulationRevisited
             {
                 // Get available calculation packs for this building.
                 popPacks = PopData.instance.GetPacks(building);
-                floorPacks = FloorData.instance.GetPacks();
+                floorPacks = FloorData.instance.Packs;
 
                 // Get current and default packs for this item
                 currentPopPack = (PopDataPack)PopData.instance.ActivePack(building);
@@ -208,7 +217,7 @@ namespace RealisticPopulationRevisited
 
                 // Build floor pack menu.
                 floorMenu.items = new string[floorPacks.Length];
-                for (int i = 0; i < floorMenu.items.Length; ++i)
+                for (int i = 0; i < floorPacks.Length; ++i)
                 {
                     floorMenu.items[i] = floorPacks[i].displayName;
 
@@ -260,12 +269,14 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Adds a pack description text label.
         /// </summary>
+        /// <param name="parent">Parent component</param>
         /// <param name="xPos">Label x-position</param>
+        /// <param name="xPos">Label y-position</param>
         /// <returns></returns>
-        private UILabel Description(float xPos)
+        private UILabel Description(UIComponent parent, float xPos, float yPos)
         {
-            UILabel newLabel = this.AddUIComponent<UILabel>();
-            newLabel.relativePosition = new Vector2(xPos, DescriptionY);
+            UILabel newLabel = parent.AddUIComponent<UILabel>();
+            newLabel.relativePosition = new Vector2(xPos, yPos);
             newLabel.autoSize = false;
             newLabel.autoHeight = true;
             newLabel.wordWrap = true;
