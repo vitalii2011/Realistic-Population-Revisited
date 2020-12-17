@@ -47,6 +47,10 @@ namespace RealisticPopulationRevisited
         [XmlArray("override_workplaces")]
         [XmlArrayItem("workplaces")]
         public List<PopCountOverride> workplaces { get; set; }
+
+        [XmlArray("override_floors")]
+        [XmlArrayItem("floors")]
+        public List<FloorCalcOverride> floors { get; set; }
     }
 
 
@@ -104,6 +108,25 @@ namespace RealisticPopulationRevisited
         [XmlAttribute("population")]
         [DefaultValue(0)]
         public int population;
+    }
+
+
+    /// <summary>
+    /// Building floor calculation override record.
+    /// </summary>
+    public class FloorCalcOverride
+    {
+        // Building prefab name.
+        [XmlAttribute("prefab")]
+        public string prefab;
+
+        // First floor height.
+        [XmlAttribute("height_first")]
+        public float firstHeight;
+
+        // Other floor height.
+        [XmlAttribute("height_other")]
+        public float floorHeight;
     }
 
 

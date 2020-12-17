@@ -70,8 +70,6 @@
     <Translation ID="RPR_PCK_FHB_DES" String="High-bay industrial and commercial warehouses." />
     <Translation ID="RPR_PCK_FEX_NAM" String="Primary industry" />
     <Translation ID="RPR_PCK_FEX_DES" String="Industrial extractors and processors" />
-    <Translation ID="RPR_PCK_OVR_NAM" String="Override" />
-    <Translation ID="RPR_PCK_OVR_DES" String="Manual override" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
     <Translation ID="RPR_CAT_RHI" String="Residential high" />
@@ -125,6 +123,8 @@
     <Translation ID="RPR_CAL_MOD" String="Mod calculations" />
     <Translation ID="RPR_CAL_DEN" String="Population density" />
     <Translation ID="RPR_CAL_BFL" String="Building floors" />
+    <Translation ID="RPR_CAL_FOV" String="Using custom override" />
+    <Translation ID="RPR_CAL_FLG" String="Floor calculation selection is not available when using legacy calculations" />
     <Translation ID="RPR_CAL_VOL_FLR" String="Floors" />
     <Translation ID="RPR_CAL_VOL_TFA" String="Total floor area" />
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />

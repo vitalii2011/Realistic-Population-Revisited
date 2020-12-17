@@ -25,7 +25,7 @@ namespace RealisticPopulationRevisited
 
         // Panel components
         private UILabelledTextfield homeJobsCount, firstFloorField, floorHeightField;
-        //private UICheckBox popCheck, floorCheck;
+        private UICheckBox popCheck, floorCheck;
         private UILabel homeJobLabel;
         private UIButton saveButton;
         private UIButton deleteButton;
@@ -63,13 +63,13 @@ namespace RealisticPopulationRevisited
             title.height = 30;
 
             // Checkboxes.
-            //popCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_POP"), yPos: PopCheckY, textScale: 1.0f);
-            //floorCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_FLR"), yPos: FloorCheckY, textScale: 1.0f);
+            popCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_POP"), yPos: PopCheckY, textScale: 1.0f);
+            floorCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_FLR"), yPos: FloorCheckY, textScale: 1.0f);
 
             // Text fields.
             homeJobsCount = AddLabelledTextfield(HomeJobY, "RPR_LBL_HOM");
-            //firstFloorField = AddLabelledTextfield(FirstFloorY,"RPR_LBL_OFF");
-            //floorHeightField = AddLabelledTextfield(FloorHeightY, "RPR_LBL_OFH");
+            firstFloorField = AddLabelledTextfield(FirstFloorY,"RPR_LBL_OFF");
+            floorHeightField = AddLabelledTextfield(FloorHeightY, "RPR_LBL_OFH");
             homeJobLabel = homeJobsCount.label;
 
             // Save button.
@@ -97,7 +97,7 @@ namespace RealisticPopulationRevisited
             messageLabel.isVisible = false;
             messageLabel.text = "No message to display";
 
-            /*
+            
             // Checkbox event handlers.
             popCheck.eventCheckChanged += (component, isChecked) =>
             {
@@ -118,16 +118,15 @@ namespace RealisticPopulationRevisited
                 // If this is now checked, try to parse the floors.
                 if (isChecked)
                 {
-                    FloorDataPack overridePack = TryParseFloors();
-                    BuildingDetailsPanel.Panel.OverridePack = overridePack;
-                    BuildingDetailsPanel.Panel.FloorDataPack = overridePack;
+                    FloorDataPack overrideFloors = TryParseFloors();
+                    BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
                 }
                 else
                 {
                     // If not checked, set override pack to null.
-                    BuildingDetailsPanel.Panel.OverridePack = null;
+                    BuildingDetailsPanel.Panel.OverrideFloors = null;
                 }
-            };*/
+            };
 
             // Save button event handler.
             saveButton.eventClick += (component, clickEvent) =>
@@ -142,7 +141,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Are we doing population overrides?
-                //if (popCheck.isChecked)
+                if (popCheck.isChecked)
                 {
                     // Read total floor count textfield if possible; ignore zero values
                     if (int.TryParse(homeJobsCount.textField.text, out int homesJobs) && homesJobs != 0)
@@ -188,20 +187,26 @@ namespace RealisticPopulationRevisited
                         messageLabel.isVisible = true;
                     }
                 }
-                /*else if (floorCheck.isChecked)
+                else if (floorCheck.isChecked)
                 {
                     // Attempt to parse values into override floor pack.
-                    FloorDataPack overridePack = TryParseFloors();
+                    FloorDataPack overrideFloors = TryParseFloors();
 
                     // Were we successful?.
-                    if (overridePack != null)
+                    if (overrideFloors != null)
                     {
                         // Successful parsing - add override.
-                        FloorData.instance.AddOverride(currentSelection, overridePack);
+                        FloorData.instance.AddOverride(currentSelection, overrideFloors);
+
+                        // Save configuration.
+                        ConfigUtils.SaveSettings();
+
+                        // Update panel override.
+                        BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
 
                         // Repopulate fields with parsed values.
-                        firstFloorField.textField.text = overridePack.firstFloorMin.ToString();
-                        floorHeightField.textField.text = overridePack.floorHeight.ToString();
+                        firstFloorField.textField.text = overrideFloors.firstFloorMin.ToString();
+                        floorHeightField.textField.text = overrideFloors.floorHeight.ToString();
 
                         // Refresh the display so that all panels reflect the updated settings.
                         BuildingDetailsPanel.Panel.Refresh();
@@ -213,7 +218,7 @@ namespace RealisticPopulationRevisited
                         messageLabel.text = Translations.Translate("RPR_ERR_INV");
                         messageLabel.isVisible = true;
                     }
-                }*/
+                }
             };
 
             // Delete button event handler.
@@ -249,10 +254,17 @@ namespace RealisticPopulationRevisited
                 // Remove any floor override.
                 FloorData.instance.DeleteOverride(currentSelection);
 
+                // Update panel override.
+                BuildingDetailsPanel.Panel.OverrideFloors = null;
+
                 // Refresh the display so that all panels reflect the updated settings.
                 BuildingDetailsPanel.Panel.Refresh();
                 homeJobsCount.textField.text = string.Empty;
             };
+
+            // Floor textfield event handlers.
+            firstFloorField.textField.eventTextChanged += (control, text) => FloorTextFieldChanged();
+            floorHeightField.textField.eventTextChanged += (control, text) => FloorTextFieldChanged();
         }
 
 
@@ -292,39 +304,90 @@ namespace RealisticPopulationRevisited
                 homeJobLabel.text = Translations.Translate("RPR_LBL_JOB");
             }
 
-            // If no custom settings have been found (return value was zero) and theres' no floor override, then blank the text field, rename the save button, and disable the delete button.
-            if (homesJobs == 0 && FloorData.instance.HasOverride(building) == null)
-            {
-                homeJobsCount.textField.text = string.Empty;
-                saveButton.text = Translations.Translate("RPR_CUS_ADD");
-                deleteButton.Disable();
-            }
-            else
+            // Blank all textfields to start with.
+            homeJobsCount.textField.text = string.Empty;
+            firstFloorField.textField.text = string.Empty;
+            floorHeightField.textField.text = string.Empty;
+
+            // If custom settings were found (return value was non-zero), then display the result, rename the save button, and enable the delete button.
+            if (homesJobs != 0)
             {
                 // Valid custom settings found; display the result, rename the save button, and enable the delete button.
                 homeJobsCount.textField.text = homesJobs.ToString();
                 saveButton.text = Translations.Translate("RPR_CUS_UPD");
                 deleteButton.Enable();
+
+                // Select the 'has population override' check.
+                popCheck.isChecked = true;
+            }
+            else
+            {
+                // No population override - check for custom floor override.
+                FloorDataPack overridePack = FloorData.instance.HasPackOverride(building) as FloorDataPack;
+                if (overridePack != null)
+                {
+                    // Valid custom settings found; display the result, rename the save button, and enable the delete button.
+                    firstFloorField.textField.text = overridePack.firstFloorMin.ToString();
+                    floorHeightField.textField.text = overridePack.floorHeight.ToString();
+                    saveButton.text = Translations.Translate("RPR_CUS_UPD");
+                    deleteButton.Enable();
+
+                    // Select the 'has floor override' check.
+                    floorCheck.isChecked = true;
+                }
+                else
+                {
+                    // No population or floor overrides - blank the floor text fields.
+
+                    //  Rename the save button, and disable the delete button.
+                    saveButton.text = Translations.Translate("RPR_CUS_ADD");
+                    deleteButton.Disable();
+                }
             }
 
-            // We've got a valid building, so enable the save button.
+            // We've at least got a valid building, so enable the save button.
             saveButton.Enable();
         }
 
-        /*
+
+        /// <summary>
+        /// Checks to see if valid floor override entries are parseable from floor text fields; called when one of the fields has its text changed.
+        /// </summary>
+        public void FloorTextFieldChanged()
+        {
+            // Don't do anything if the floor override check isn't set.
+            if (floorCheck.isChecked)
+            {
+                // Check if we have a valid pack.
+                FloorDataPack overrideFloors = TryParseFloors();
+                if (overrideFloors != null)
+                {
+                    // Valid parsing
+                    // Update panel override.
+                    BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
+
+                    // Refresh the display so that all panels reflect the updated settings.
+                    BuildingDetailsPanel.Panel.Refresh();
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Clears the override checkbox (for when the user subsequently selects a floor pack override or legacy calcs).
+        /// </summary>
+        internal void ClearOverride() => floorCheck.isChecked = false;
+
+
         /// <summary>
         /// Attempts to parse floor data fields into a valid override floor pack.
         /// </summary>
         /// <returns></returns>
         private FloorDataPack TryParseFloors()
         {
-            Debugging.Message("try floor parse");
-
             // Attempt to parse fields.
             if (float.TryParse(firstFloorField.textField.text, out float firstFloor) && float.TryParse(floorHeightField.textField.text, out float floorHeight))
             {
-                Debugging.Message("success!");
-
                 // Success - create new override floor pack with parsed data.
                 return new FloorDataPack
                 {
@@ -336,7 +399,7 @@ namespace RealisticPopulationRevisited
 
             // If we got here, we didn't get a valid parse; return null.
             return null;
-        }*/
+        }
 
 
         /// <summary>

@@ -124,6 +124,26 @@ namespace RealisticPopulationRevisited
                             // Deserialise building population overrides.
                             DeSerializePopOverrides(configFile.households, DataStore.householdCache);
                             DeSerializePopOverrides(configFile.workplaces, DataStore.workerCache);
+
+                            // Deserialize floor overrides.
+                            foreach (FloorCalcOverride floorOverride in configFile.floors)
+                            {
+                                // Find building.
+                                BuildingInfo building = PrefabCollection<BuildingInfo>.FindLoaded(floorOverride.prefab);
+
+                                if (building == null)
+                                {
+                                    Debugging.Message("Floor override: building " + floorOverride.prefab + " not found");
+                                }
+                                else
+                                {
+                                    FloorData.instance.AddOverride(building, new FloorDataPack
+                                    {
+                                        firstFloorMin = floorOverride.firstHeight,
+                                        floorHeight = floorOverride.floorHeight
+                                    });
+                                }
+                            }
                         }
                     }
                 }
@@ -239,6 +259,18 @@ namespace RealisticPopulationRevisited
                     // Serialise building population overrides.
                     configFile.households = SerializePopOverrides(DataStore.householdCache);
                     configFile.workplaces = SerializePopOverrides(DataStore.workerCache);
+
+                    // Serialise floor overrides.
+                    configFile.floors = new List<FloorCalcOverride>();
+                    foreach (KeyValuePair<BuildingInfo, FloorDataPack> floorOverride in FloorData.instance.overrides)
+                    {
+                        configFile.floors.Add(new FloorCalcOverride
+                        {
+                            prefab = floorOverride.Key.name,
+                            firstHeight = floorOverride.Value.firstFloorMin,
+                            floorHeight = floorOverride.Value.floorHeight
+                        });
+                    }
 
                     // Write to file.
                     xmlSerializer.Serialize(writer, configFile);

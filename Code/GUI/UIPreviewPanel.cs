@@ -20,7 +20,19 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Handles changes to selected floor data pack (for previewing).
         /// </summary>
-        internal FloorDataPack FloorPack { set => preview.FloorPack = value;  }
+        internal FloorDataPack FloorPack { set => preview.FloorPack = value; }
+
+
+        /// <summary>
+        /// Suppresses floor preview rendering (e.g. when legacy calculations have been selected).
+        /// </summary>
+        internal bool HideFloors { set => preview.HideFloors = value; }
+
+
+        /// <summary>
+        /// Handles changes to selected floor data override pack (for previewing).
+        /// </summary>
+        internal FloorDataPack OverrideFloors { set => preview.OverrideFloors = value; }
 
 
         /// <summary>

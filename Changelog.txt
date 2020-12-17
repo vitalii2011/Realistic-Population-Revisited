@@ -1,5 +1,5 @@
 - Major overhaul: new volumetric population calculations
-- Major overhaul: separate calculation presets for builidng physical size and populaton
+- Major overhaul: separate calculation presets for builidng physical size and populaton, along with optional manual overrides
 - Major new feature: selectable configuration presets for each service type
 - Major new feature: optional realistic student capacity calculations for elementary and high schools
 - Major new feature: adjust crime rate

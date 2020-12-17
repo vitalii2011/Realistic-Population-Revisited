@@ -23,23 +23,71 @@ namespace RealisticPopulationRevisited
         private UILegacyCalcs legacyPanel;
         private UIVolumetricPanel volumetricPanel;
         private UIDropDown popMenu, floorMenu;
-        private UILabel popDescription, floorDescription;
+        private UILabel popDescription, floorDescription, floorOverrideLabel;
 
-        // Data.
+        // Data arrays.
         private PopDataPack[] popPacks;
         private DataPack[] floorPacks;
 
         // Current selections.
         private BuildingInfo currentBuilding;
         private PopDataPack currentPopPack;
-        private FloorDataPack currentFloorPack;
+        private FloorDataPack currentFloorPack, currentFloorOverride;
+
+        // Flags.
+        private bool usingLegacy;
 
 
         /// <summary>
-        /// Returns the level data record from the current floor pack that's relevant to the selected building's level.
+        /// Sets the a floor data manual override for previewing.
         /// </summary>
-        /// <returns>Floordata instance for building</returns>
-        private LevelData CurrentFloorData => ((VolumetricPopPack)currentPopPack).levels[(int)currentBuilding.GetClassLevel()];
+        internal FloorDataPack OverrideFloors
+        {
+            set
+            {
+                // Store override.
+                currentFloorOverride = value;
+
+                // Don't do anything else if we're using legacy calculations.
+                if (usingLegacy)
+                {
+                    return;
+                }
+
+                // Floor data pack to display.
+                FloorDataPack displayPack;
+
+                // If value is null (no override), show floor panel and display current floor pack data; otherwise, hide the floor panel and show the provided override data.
+                if (value == null)
+                {
+                    displayPack = currentFloorPack;
+                    floorOverrideLabel.Hide();
+                    floorPanel.Show();
+                }
+                else
+                {
+                    // Valid override - hide floor panel.
+                    floorPanel.Hide();
+
+                    // Set override text label and show it.
+                    floorOverrideLabel.text = Translations.Translate("RPR_CAL_FOV");
+                    floorOverrideLabel.Show();
+
+                    // Display figures for override, not current floor pack.
+                    displayPack = value;
+                }
+
+                // Update panel with new calculations.
+                volumetricPanel.UpdateFloorText(displayPack);
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack);
+            }
+        }
+        
+
+        /// <summary>
+        /// /// Returns the level data record from the current floor pack that's relevant to the selected building's level.
+        /// /// </summary>
+        private LevelData CurrentLevelData => ((VolumetricPopPack)currentPopPack).levels[(int)currentBuilding.GetClassLevel()];
 
 
         /// <summary>
@@ -86,6 +134,11 @@ namespace RealisticPopulationRevisited
             floorPanel.clipChildren = false;
             floorPanel.Show();
 
+            // Floor override label (for when floor dropdown menu is hidden).
+            floorOverrideLabel = UIControls.AddLabel(this, Translations.Translate("RPR_CAL_FOV"), RightColumnX, MenuY, this.width - RightColumnX);
+            floorOverrideLabel.textScale = 0.7f;
+            floorOverrideLabel.Hide();
+
             // Pack dropdowns.
             popMenu = UIControls.AddDropDown(this, Margin, MenuY, ComponentWidth);
             floorMenu = UIControls.AddDropDown(floorPanel, 0f, 0f, ComponentWidth);
@@ -127,25 +180,52 @@ namespace RealisticPopulationRevisited
             // Check if we're using legacy or volumetric data.
             if (currentPopPack is VolumetricPopPack)
             {
-                // Volumetric pack.
-                // Update panel with new calculations.
-                LevelData thisLevel = CurrentFloorData;
-                volumetricPanel.UpdatePopText(thisLevel);
-                volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack);
+                // Volumetric pack.  Are we coming from a legacy setting?
+                if (usingLegacy)
+                {
+                    // Reset flag.
+                    usingLegacy = false;
 
-                // Set visibility.
-                legacyPanel.Hide();
-                volumetricPanel.Show();
-                floorMenu.Show();
-                floorDescription.Show();
+                    // Restore floor rendering.
+                    BuildingDetailsPanel.Panel.HideFloors = false;
+
+                    // Update override label text.
+                    floorOverrideLabel.text = Translations.Translate("RPR_CAL_FOV");
+
+                    // Set visibility.
+                    legacyPanel.Hide();
+                    volumetricPanel.Show();
+                }
+
+                // Is there an override in place?
+                if (currentFloorOverride == null)
+                {
+                    // No override - update panel with new calculations.
+                    LevelData thisLevel = CurrentLevelData;
+                    volumetricPanel.UpdatePopText(thisLevel);
+                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack);
+
+                    // Set visibility.
+                    floorOverrideLabel.Hide();
+                    floorPanel.Show();
+                }
             }
             else
             {
+                // Using legacy calcs = set flag.
+                usingLegacy = true;
+
                 // Set visibility.
                 volumetricPanel.Hide();
-                floorMenu.Hide();
-                floorDescription.Hide();
+                floorPanel.Hide();
                 legacyPanel.Show();
+
+                // Set override label and show.
+                floorOverrideLabel.text = Translations.Translate("RPR_CAL_FLG");
+                floorOverrideLabel.Show();
+
+                // Cancel any floor rendering.
+                BuildingDetailsPanel.Panel.HideFloors = true;
             }
         }
 
@@ -164,7 +244,7 @@ namespace RealisticPopulationRevisited
 
             // Update panel with new calculations.
             volumetricPanel.UpdateFloorText(currentFloorPack);
-            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentFloorData, currentFloorPack);
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack);
 
             // Communicate change with to rest of panel.
             BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;

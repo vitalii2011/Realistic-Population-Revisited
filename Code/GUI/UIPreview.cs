@@ -19,8 +19,22 @@ namespace RealisticPopulationRevisited
 
         // Currently selected building and floor calculation pack.
         private BuildingInfo currentSelection;
-        private FloorDataPack floorPack;
-        private bool renderFloors;
+        private FloorDataPack floorPack, overrideFloors;
+        private bool renderFloors, hideFloors;
+
+
+        /// <summary>
+        /// Suppresses floor preview rendering (e.g. when legacy calculations have been selected).
+        /// </summary>
+        internal bool HideFloors
+        {
+            set
+            {
+                hideFloors = value;
+                RenderPreview();
+            }
+        }
+
 
         /// <summary>
         /// Updates the floor calculation pack to preview.
@@ -30,6 +44,18 @@ namespace RealisticPopulationRevisited
             set
             {
                 floorPack = value;
+                RenderPreview();
+            }
+        }
+
+        /// <summary>
+        /// Updates the floor override pack to preview.
+        /// </summary>
+        internal FloorDataPack OverrideFloors
+        {
+            set
+            {
+                overrideFloors = value;
                 RenderPreview();
             }
         }
@@ -236,18 +262,24 @@ namespace RealisticPopulationRevisited
                 return;
             }
 
+            // Select pack to render; override if there is one, otherwise the selected floor pack.
+            FloorDataPack renderFloorPack = overrideFloors ?? floorPack;
+
+            // Are we going to render floors?
+            bool doFloors = renderFloors && !hideFloors;
+
             // If the selected building has colour variations, temporarily set the colour to the default for rendering.
             if (currentSelection.m_useColorVariations)
             {
                 Color originalColor = currentSelection.m_material.color;
                 currentSelection.m_material.color = currentSelection.m_color0;
-                previewRender.Render(renderFloors, floorPack);
+                previewRender.Render(doFloors, renderFloorPack);
                 currentSelection.m_material.color = originalColor;
             }
             else
             {
                 // No temporary colour change needed.
-                previewRender.Render(renderFloors, floorPack);
+                previewRender.Render(doFloors, renderFloorPack);
             }
         }
     }
