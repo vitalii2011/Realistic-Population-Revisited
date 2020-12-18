@@ -34,6 +34,9 @@ namespace RealisticPopulationRevisited
         // Currently selected building.
         private BuildingInfo currentSelection;
 
+        // Flag.
+        private bool suspendTextEvents;
+
 
         /// <summary>
         /// Create the panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
@@ -97,7 +100,6 @@ namespace RealisticPopulationRevisited
             messageLabel.isVisible = false;
             messageLabel.text = "No message to display";
 
-            
             // Checkbox event handlers.
             popCheck.eventCheckChanged += (component, isChecked) =>
             {
@@ -205,8 +207,7 @@ namespace RealisticPopulationRevisited
                         BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
 
                         // Repopulate fields with parsed values.
-                        firstFloorField.textField.text = overrideFloors.firstFloorMin.ToString();
-                        floorHeightField.textField.text = overrideFloors.floorHeight.ToString();
+                        UpdateFloorTextFields(overrideFloors.firstFloorMin.ToString(), overrideFloors.floorHeight.ToString());
 
                         // Refresh the display so that all panels reflect the updated settings.
                         BuildingDetailsPanel.Panel.Refresh();
@@ -280,10 +281,15 @@ namespace RealisticPopulationRevisited
             // Set current selecion.
             currentSelection = building;
 
-            // Set text field to blank and disable buttons if no valid building is selected.
+            // Blank all textfields and deselect checkboxes to start with.
+            homeJobsCount.textField.text = string.Empty;
+            UpdateFloorTextFields(string.Empty, string.Empty);
+            popCheck.isChecked = false;
+            floorCheck.isChecked = false;
+
+            // Disable buttons and exit if no valid building is selected.
             if (building == null || building.name == null)
             {
-                homeJobsCount.textField.text = string.Empty;
                 saveButton.Disable();
                 deleteButton.Disable();
                 return;
@@ -303,12 +309,6 @@ namespace RealisticPopulationRevisited
                 homesJobs = ExternalCalls.GetWorker(building);
                 homeJobLabel.text = Translations.Translate("RPR_LBL_JOB");
             }
-
-            // Blank all textfields to start with.
-            homeJobsCount.textField.text = string.Empty;
-            firstFloorField.textField.text = string.Empty;
-            floorHeightField.textField.text = string.Empty;
-
             // If custom settings were found (return value was non-zero), then display the result, rename the save button, and enable the delete button.
             if (homesJobs != 0)
             {
@@ -323,12 +323,11 @@ namespace RealisticPopulationRevisited
             else
             {
                 // No population override - check for custom floor override.
-                FloorDataPack overridePack = FloorData.instance.HasPackOverride(building) as FloorDataPack;
+                FloorDataPack overridePack = FloorData.instance.HasOverride(building);
                 if (overridePack != null)
                 {
                     // Valid custom settings found; display the result, rename the save button, and enable the delete button.
-                    firstFloorField.textField.text = overridePack.firstFloorMin.ToString();
-                    floorHeightField.textField.text = overridePack.floorHeight.ToString();
+                    UpdateFloorTextFields(overridePack.firstFloorMin.ToString(), overridePack.floorHeight.ToString());
                     saveButton.text = Translations.Translate("RPR_CUS_UPD");
                     deleteButton.Enable();
 
@@ -337,9 +336,7 @@ namespace RealisticPopulationRevisited
                 }
                 else
                 {
-                    // No population or floor overrides - blank the floor text fields.
-
-                    //  Rename the save button, and disable the delete button.
+                    //  No valid selection - rename the save button, and disable the delete button.
                     saveButton.text = Translations.Translate("RPR_CUS_ADD");
                     deleteButton.Disable();
                 }
@@ -355,8 +352,8 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public void FloorTextFieldChanged()
         {
-            // Don't do anything if the floor override check isn't set.
-            if (floorCheck.isChecked)
+            // Don't do anything if the floor override check isn't set, or if text field events are currently suspended.
+            if (floorCheck.isChecked && !suspendTextEvents)
             {
                 // Check if we have a valid pack.
                 FloorDataPack overrideFloors = TryParseFloors();
@@ -365,9 +362,6 @@ namespace RealisticPopulationRevisited
                     // Valid parsing
                     // Update panel override.
                     BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
-
-                    // Refresh the display so that all panels reflect the updated settings.
-                    BuildingDetailsPanel.Panel.Refresh();
                 }
             }
         }
@@ -386,7 +380,7 @@ namespace RealisticPopulationRevisited
         private FloorDataPack TryParseFloors()
         {
             // Attempt to parse fields.
-            if (float.TryParse(firstFloorField.textField.text, out float firstFloor) && float.TryParse(floorHeightField.textField.text, out float floorHeight))
+            if (!string.IsNullOrEmpty(firstFloorField.textField.text) && !string.IsNullOrEmpty(floorHeightField.textField.text) && float.TryParse(firstFloorField.textField.text, out float firstFloor) && float.TryParse(floorHeightField.textField.text, out float floorHeight))
             {
                 // Success - create new override floor pack with parsed data.
                 return new FloorDataPack
@@ -425,6 +419,25 @@ namespace RealisticPopulationRevisited
             newField.label.text = Translations.Translate(key);
 
             return newField;
+        }
+
+
+        /// <summary>
+        /// Updates floor override textfield values without triggering event handler.
+        /// </summary>
+        /// <param name="firstFloorText">Text for first floor height field</param>
+        /// <param name="floorText">Text for other floor height field</param>
+        private void UpdateFloorTextFields(string firstFloorText, string floorText)
+        {
+            // Suspend text events.
+            suspendTextEvents = true;
+
+            // Populate fields.
+            firstFloorField.textField.text = firstFloorText;
+            floorHeightField.textField.text = floorText;
+
+            // Resume text events.
+            suspendTextEvents = false;
         }
     }
 }

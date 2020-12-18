@@ -12,6 +12,7 @@ namespace RealisticPopulationRevisited
         // UI components.
         private UIPreview preview;
         private UICheckBox showFloorsCheck;
+        private static bool lastFloorCheckState;
 
         // References.
         private BuildingInfo currentBuilding;
@@ -63,7 +64,10 @@ namespace RealisticPopulationRevisited
             showFloorsCheck.eventCheckChanged += (control, isChecked) =>
             {
                 preview.RenderFloors = isChecked;
+                lastFloorCheckState = isChecked;
             };
+
+            showFloorsCheck.isChecked = lastFloorCheckState;
         }
     }
 }
