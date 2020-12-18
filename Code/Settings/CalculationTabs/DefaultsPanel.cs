@@ -253,7 +253,7 @@ namespace RealisticPopulationRevisited
                     }
 
                     // Set menu selection to current pack if it matches.
-                    if (availablePopPacks[i][j].Equals(currentPopPack))
+                    if (availablePopPacks[i][j].name.Equals(currentPopPack.name))
                     {
                         popMenus[i].selectedIndex = j;
                     }
@@ -273,7 +273,7 @@ namespace RealisticPopulationRevisited
                     }
 
                     // Set menu selection to current pack if it matches.
-                    if (availableFloorPacks[j].Equals(currentFloorPack))
+                    if (availableFloorPacks[j].name.Equals(currentFloorPack.name))
                     {
                         floorMenus[i].selectedIndex = j;
                     }

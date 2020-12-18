@@ -221,7 +221,7 @@ namespace RealisticPopulationRevisited
             DataPack baseDefault = BaseDefaultPack(service, subService);
 
             // If base default pack is the same as the new pack, simply delete any existing record (if one exists).
-            if (calcPack.Equals(baseDefault))
+            if (calcPack.name.Equals(baseDefault.name))
             {
                 // Check for matching service.
                 if (defaultsDict.ContainsKey(service))
