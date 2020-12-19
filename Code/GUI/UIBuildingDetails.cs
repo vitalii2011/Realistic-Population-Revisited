@@ -100,7 +100,7 @@ namespace RealisticPopulationRevisited
     public class UIBuildingDetails : UIPanel
     {
         // Constants.
-        private const float LeftWidth = 400f;
+        private const float LeftWidth = 430f;
         private const float MiddleWidth = 250f;
         private const float RightWidth = 600f;
         private const float FilterHeight = 40f;
@@ -368,12 +368,15 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Filter by settings.
-                if (filterBar.SettingsFilter.isChecked && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0) continue;
-                if (filterBar.DefaultFilter.isChecked && PopData.instance.HasPackOverride(item) == null) continue;
-                if (filterBar.AnyFilter.isChecked && (PopData.instance.HasPackOverride(item) == null && ExternalCalls.GetResidential(item) == 0 && ExternalCalls.GetWorker(item) == 0)) continue;
-
-                // Finally!  We've got an item that's passed all filters; add it to the list.
-                filteredList.Add(item);
+                if (!(filterBar.PopOverrideFilter.isChecked || filterBar.FloorOverrideFilter.isChecked || filterBar.DefaultPopFilter.isChecked || filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked) ||
+                    ((filterBar.PopOverrideFilter.isChecked || filterBar.AnyFilter.isChecked) && (ExternalCalls.GetResidential(item) != 0 || ExternalCalls.GetWorker(item) != 0)) ||
+                    ((filterBar.FloorOverrideFilter.isChecked || filterBar.AnyFilter.isChecked) && FloorData.instance.HasOverride(item) != null) ||
+                    ((filterBar.DefaultPopFilter.isChecked || filterBar.AnyFilter.isChecked) && PopData.instance.HasPackOverride(item) != null) ||
+                    ((filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked) && FloorData.instance.HasPackOverride(item) != null))
+                {
+                    // Finally!  We've got an item that's passed all filters; add it to the list.
+                    filteredList.Add(item);
+                }
             }
 
             // Create return list with our filtered list, sorted alphabetically.

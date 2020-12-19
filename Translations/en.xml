@@ -101,11 +101,13 @@
     <Translation ID="RPR_CAT_SCH" String="Schools" />
     <Translation ID="RPR_FIL_NAME" String="Name:" />
     <Translation ID="RPR_FIL_SET" String="Filter by settings" />
-    <Translation ID="RPR_FIL_SES" String="(custom/calculation pack/any)" />
+    <Translation ID="RPR_FIL_SES" String="(population/floors/calculation pack/any)" />
     <Translation ID="RPR_EDT_POP" String="Override population" />
     <Translation ID="RPR_EDT_FLR" String="Override floors" />
-    <Translation ID="RPR_CUS_HAS" String="Has custom settings" />
-    <Translation ID="RPR_CUS_NDF" String="Has non-default calculation pack" />
+    <Translation ID="RPR_CUS_POP" String="Has custom population settings" />
+    <Translation ID="RPR_CUS_FLR" String="Has custom floor settings" />
+    <Translation ID="RPR_CUS_NDP" String="Has non-default population pack" />
+    <Translation ID="RPR_CUS_NDF" String="Has non-default floor pack" />
     <Translation ID="RPR_CUS_ANY" String="Has custom settings or non-default calculation pack" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />
     <Translation ID="RPR_CUS_ADD" String="Add custom settings" />

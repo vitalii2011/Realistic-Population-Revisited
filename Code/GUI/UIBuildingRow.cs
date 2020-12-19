@@ -16,7 +16,7 @@ namespace RealisticPopulationRevisited
         private UIPanel panelBackground;
         private UILabel buildingName;
         private BuildingInfo thisBuilding;
-        private UISprite hasCustom, hasNonDefault;
+        private UISprite hasPop, hasFloor, hasNonDefaultPop, hasNonDefaultFloor;
 
 
         // Background for each list item.
@@ -84,17 +84,11 @@ namespace RealisticPopulationRevisited
                 buildingName = AddUIComponent<UILabel>();
                 buildingName.width = 200;
 
-                // Checkbox to indicate which items have custom settings.
-                hasCustom = AddUIComponent<UISprite>();
-                hasCustom.size = new Vector2(20, 20);
-                hasCustom.relativePosition = new Vector3(310f, 10f);
-                hasCustom.tooltip = Translations.Translate("RPR_CUS_HAS");
-
-                // Checkbox to indicate which items have default overrides.
-                hasNonDefault = AddUIComponent<UISprite>();
-                hasNonDefault.size = new Vector2(20, 20);
-                hasNonDefault.relativePosition = new Vector3(340f, 10f);
-                hasNonDefault.tooltip = Translations.Translate("RPR_CUS_NDF");
+                // Checkboxes to indicate which items have custom settings.
+                hasPop = AddSettingsCheck(UIBuildingFilter.popOverrideX, "RPR_CUS_POP");
+                hasFloor = AddSettingsCheck(UIBuildingFilter.floorOverrideX, "RPR_CUS_FLR");
+                hasNonDefaultPop = AddSettingsCheck(UIBuildingFilter.defaultPopOverrideX, "RPR_CUS_NDP");
+                hasNonDefaultFloor = AddSettingsCheck(UIBuildingFilter.defaultFloorOverrideX, "RPR_CUS_NDF");
             }
 
             // Set selected building.
@@ -104,25 +98,49 @@ namespace RealisticPopulationRevisited
             // Update custom settings checkbox to correct state.
             if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0)
             {
-                // Custom value found.
-                hasCustom.spriteName = "AchievementCheckedTrue";
+                // Custom population value found.
+                hasPop.spriteName = "AchievementCheckedTrue";
             }
             else
             {
-                // No custom value.
-                hasCustom.spriteName = "AchievementCheckedFalse";
+                // No custom population value.
+                hasPop.spriteName = "AchievementCheckedFalse";
             }
 
-            // Update default overrider checkbox to correct state.
+            // Update custom floor settings checkbox to correct state.
+            if (FloorData.instance.HasOverride(thisBuilding) != null)
+            {
+                // Custom floor override value found.
+                hasFloor.spriteName = "AchievementCheckedTrue";
+            }
+            else
+            {
+                // No floor override.
+                hasFloor.spriteName = "AchievementCheckedFalse";
+            }
+
+            // Update default pop override checkbox to correct state.
             if (PopData.instance.HasPackOverride(thisBuilding) != null)
             {
                 // Custom value found.
-                hasNonDefault.spriteName = "AchievementCheckedTrue";
+                hasNonDefaultPop.spriteName = "AchievementCheckedTrue";
             }
             else
             {
                 // No custom value.
-                hasNonDefault.spriteName = "AchievementCheckedFalse";
+                hasNonDefaultPop.spriteName = "AchievementCheckedFalse";
+            }
+
+            // Update default floor override checkbox to correct state.
+            if (FloorData.instance.HasPackOverride(thisBuilding) != null)
+            {
+                // Custom value found.
+                hasNonDefaultFloor.spriteName = "AchievementCheckedTrue";
+            }
+            else
+            {
+                // No custom value.
+                hasNonDefaultFloor.spriteName = "AchievementCheckedFalse";
             }
 
             // Set initial background as deselected state.
@@ -158,6 +176,23 @@ namespace RealisticPopulationRevisited
                 // Darker background for even rows.
                 Background.backgroundSprite = null;
             }
+        }
+
+
+        /// <summary>
+        /// Adds a settings check to the current row.
+        /// </summary>
+        /// <param name="xPos">Check relative x-position</param>
+        /// <param name="translationKey">Tooltip translation key</param>
+        /// <returns></returns>
+        private UISprite AddSettingsCheck(float xPos, string translationKey)
+        {
+            UISprite newSprite = AddUIComponent<UISprite>();
+            newSprite.size = new Vector2(20, 20);
+            newSprite.relativePosition = new Vector3(xPos, 10f);
+            newSprite.tooltip = Translations.Translate(translationKey);
+
+            return newSprite;
         }
     }
 }

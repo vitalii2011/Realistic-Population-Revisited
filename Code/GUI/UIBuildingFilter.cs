@@ -121,9 +121,16 @@ namespace RealisticPopulationRevisited
     /// </summary>
     public class UIBuildingFilter : UIPanel
     {
+        // Layout constants.
+        internal const float popOverrideX = 290f;
+        internal const float floorOverrideX = popOverrideX + 30f;
+        internal const float defaultPopOverrideX = floorOverrideX + 30f;
+        internal const float defaultFloorOverrideX = defaultPopOverrideX + 30f;
+        internal const float anyX = defaultFloorOverrideX + 30f;
+
         // Panel components.
         internal UICheckBox[] categoryToggles;
-        private UICheckBox settingsFilter, defaultFilter, anyFilter;
+        private UICheckBox popOverrideFilter, floorOverrideFilter, defaultPopFilter, defaultFloorFilter, anyFilter;
         internal UIButton allCategories;
         internal UITextField nameFilter;
 
@@ -131,8 +138,10 @@ namespace RealisticPopulationRevisited
         public event PropertyChangedEventHandler<int> eventFilteringChanged;
 
 
-        internal UICheckBox SettingsFilter => settingsFilter;
-        internal UICheckBox DefaultFilter => defaultFilter;
+        internal UICheckBox PopOverrideFilter => popOverrideFilter;
+        internal UICheckBox FloorOverrideFilter => floorOverrideFilter;
+        internal UICheckBox DefaultPopFilter => defaultPopFilter;
+        internal UICheckBox DefaultFloorFilter => defaultFloorFilter;
         internal UICheckBox AnyFilter => anyFilter;
 
 
@@ -211,9 +220,28 @@ namespace RealisticPopulationRevisited
             UILabel subLabel = SettingsFilterLabel(48f, Translations.Translate("RPR_FIL_SES"));
 
             // Settings filter checkboxes.
-            settingsFilter = AddFilterCheckbox(310f, Translations.Translate("RPR_CUS_HAS"));
-            defaultFilter = AddFilterCheckbox(340f, Translations.Translate("RPR_CUS_NDF"));
-            anyFilter = AddFilterCheckbox(370f, Translations.Translate("RPR_CUS_ANY"));
+            popOverrideFilter = AddFilterCheckbox(popOverrideX, Translations.Translate("RPR_CUS_POP"));
+            floorOverrideFilter = AddFilterCheckbox(floorOverrideX, Translations.Translate("RPR_CUS_FLR"));
+            defaultPopFilter = AddFilterCheckbox(defaultPopOverrideX, Translations.Translate("RPR_CUS_NDP"));
+            defaultFloorFilter = AddFilterCheckbox(defaultFloorOverrideX, Translations.Translate("RPR_CUS_NDF"));
+            anyFilter = AddFilterCheckbox(anyX, Translations.Translate("RPR_CUS_ANY"));
+
+            // Settings filter checkbox handlers - 'any' checkbox clears others, other checkboxes clear 'any'.
+
+            popOverrideFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
+            floorOverrideFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
+            defaultPopFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
+            defaultFloorFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
+            anyFilter.eventCheckChanged += (control, isChecked) =>
+            {
+                if (isChecked)
+                {
+                    popOverrideFilter.isChecked = false;
+                    floorOverrideFilter.isChecked = false;
+                    defaultPopFilter.isChecked = false;
+                    defaultFloorFilter.isChecked = false;
+                }
+            };
         }
 
 
