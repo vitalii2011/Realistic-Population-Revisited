@@ -256,7 +256,7 @@ namespace RealisticPopulationRevisited
                 buildingSelection.width = leftPanel.width;
                 buildingSelection.height = leftPanel.height;
                 buildingSelection.canSelect = true;
-                buildingSelection.rowHeight = 40;
+                buildingSelection.rowHeight = 30f;
                 buildingSelection.autoHideScrollbar = true;
                 buildingSelection.relativePosition = Vector3.zero;
                 buildingSelection.rowsData = new FastList<object>();

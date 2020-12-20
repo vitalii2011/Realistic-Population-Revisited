@@ -10,7 +10,7 @@ namespace RealisticPopulationRevisited
     public class UIBuildingRow : UIPanel, UIFastListRow
     {
         // Height of each row.
-        private const int rowHeight = 40;
+        private const float rowHeight = 30f;
 
         // Panel components.
         private UIPanel panelBackground;
@@ -49,7 +49,7 @@ namespace RealisticPopulationRevisited
             if (buildingName != null)
             {
                 Background.width = width;
-                buildingName.relativePosition = new Vector3(10f, 5f);
+                buildingName.relativePosition = new Vector2(rowHeight / 2f, 5f);
             }
         }
 
@@ -79,9 +79,11 @@ namespace RealisticPopulationRevisited
                 canFocus = true;
                 isInteractive = true;
                 width = parent.width;
-                height = 40;
+                height = rowHeight;
 
                 buildingName = AddUIComponent<UILabel>();
+                buildingName.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
+                buildingName.relativePosition = new Vector2(rowHeight / 2f, 5f);
                 buildingName.width = 200;
 
                 // Checkboxes to indicate which items have custom settings.
@@ -190,7 +192,7 @@ namespace RealisticPopulationRevisited
         {
             UISprite newSprite = AddUIComponent<UISprite>();
             newSprite.size = new Vector2(20, 20);
-            newSprite.relativePosition = new Vector3(xPos, 10f);
+            newSprite.relativePosition = new Vector3(xPos, 5f);
             newSprite.tooltip = Translations.Translate(translationKey);
 
             return newSprite;

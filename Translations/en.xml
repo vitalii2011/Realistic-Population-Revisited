@@ -100,8 +100,7 @@
     <Translation ID="RPR_CAT_ERH" String="Eco residential high" />
     <Translation ID="RPR_CAT_SCH" String="Schools" />
     <Translation ID="RPR_FIL_NAME" String="Name:" />
-    <Translation ID="RPR_FIL_SET" String="Filter by settings" />
-    <Translation ID="RPR_FIL_SES" String="(population/floors/calculation pack/any)" />
+    <Translation ID="RPR_FIL_SET" String="Filter by settings (see tooltips)" />
     <Translation ID="RPR_EDT_POP" String="Override population" />
     <Translation ID="RPR_EDT_FLR" String="Override floors" />
     <Translation ID="RPR_CUS_POP" String="Has custom population settings" />

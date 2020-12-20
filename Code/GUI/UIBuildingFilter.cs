@@ -122,11 +122,11 @@ namespace RealisticPopulationRevisited
     public class UIBuildingFilter : UIPanel
     {
         // Layout constants.
-        internal const float popOverrideX = 290f;
-        internal const float floorOverrideX = popOverrideX + 30f;
-        internal const float defaultPopOverrideX = floorOverrideX + 30f;
-        internal const float defaultFloorOverrideX = defaultPopOverrideX + 30f;
-        internal const float anyX = defaultFloorOverrideX + 30f;
+        internal const float anyX = 285f;
+        internal const float popOverrideX = anyX + 25f;
+        internal const float floorOverrideX = popOverrideX + 25f;
+        internal const float defaultPopOverrideX = floorOverrideX + 25f;
+        internal const float defaultFloorOverrideX = defaultPopOverrideX + 25f;
 
         // Panel components.
         internal UICheckBox[] categoryToggles;
@@ -212,12 +212,11 @@ namespace RealisticPopulationRevisited
             nameFilter.relativePosition = new Vector3(width - nameFilter.width, 0);
 
             // Name filter event handling - update on any change.
-            nameFilter.eventTextChanged += (c, s) => eventFilteringChanged(this, 5);
-            nameFilter.eventTextSubmitted += (c, s) => eventFilteringChanged(this, 5);
+            nameFilter.eventTextChanged += (control, text) => eventFilteringChanged(this, 5);
+            nameFilter.eventTextSubmitted += (control, text) => eventFilteringChanged(this, 5);
 
-            // Create settings filters.
-            UILabel filterLabel = SettingsFilterLabel(34f, Translations.Translate("RPR_FIL_SET"));
-            UILabel subLabel = SettingsFilterLabel(48f, Translations.Translate("RPR_FIL_SES"));
+            // Settings filter label.
+            UILabel filterLabel = SettingsFilterLabel(55f, Translations.Translate("RPR_FIL_SET"));
 
             // Settings filter checkboxes.
             popOverrideFilter = AddFilterCheckbox(popOverrideX, Translations.Translate("RPR_CUS_POP"));
@@ -227,7 +226,6 @@ namespace RealisticPopulationRevisited
             anyFilter = AddFilterCheckbox(anyX, Translations.Translate("RPR_CUS_ANY"));
 
             // Settings filter checkbox handlers - 'any' checkbox clears others, other checkboxes clear 'any'.
-
             popOverrideFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
             floorOverrideFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
             defaultPopFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
@@ -276,7 +274,7 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Adds a filter label.
         /// </summary>
-        /// <param name="yPos">Relative Y position of label</param>
+        /// <param name="yPos">Relative centre Y position of label</param>
         /// <param name="text">Label text</param>
         /// <returns>New label</returns>
         private UILabel SettingsFilterLabel(float yPos, string text)
@@ -284,15 +282,14 @@ namespace RealisticPopulationRevisited
             // Basic setup.
             UILabel newLabel = this.AddUIComponent<UILabel>();
             newLabel.textScale = 0.8f;
-            newLabel.relativePosition = new Vector3(10f, yPos, 0);
-            newLabel.autoSize = false;
-            newLabel.height = 30f;
-            newLabel.width = 280f;
+            newLabel.autoSize = true;
             newLabel.wordWrap = false;
-            newLabel.verticalAlignment = UIVerticalAlignment.Middle;
 
             // Assign text.
             newLabel.text = text;
+
+            // Set relative position.
+            newLabel.relativePosition = new Vector3(10f, yPos - (newLabel.height / 2f), 0);
 
             return newLabel;
         }
