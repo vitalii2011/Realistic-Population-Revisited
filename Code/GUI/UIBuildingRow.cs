@@ -93,7 +93,8 @@ namespace RealisticPopulationRevisited
 
             // Set selected building.
             thisBuilding = data as BuildingInfo;
-            buildingName.text = UIBuildingDetails.GetDisplayName(thisBuilding.name);
+            string thisBuildingName = thisBuilding.name;
+            buildingName.text = UIBuildingDetails.GetDisplayName(thisBuildingName);
 
             // Update custom settings checkbox to correct state.
             if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0)
@@ -108,7 +109,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Update custom floor settings checkbox to correct state.
-            if (FloorData.instance.HasOverride(thisBuilding) != null)
+            if (FloorData.instance.HasOverride(thisBuildingName) != null)
             {
                 // Custom floor override value found.
                 hasFloor.spriteName = "AchievementCheckedTrue";
@@ -120,7 +121,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Update default pop override checkbox to correct state.
-            if (PopData.instance.HasPackOverride(thisBuilding) != null)
+            if (PopData.instance.HasPackOverride(thisBuildingName) != null)
             {
                 // Custom value found.
                 hasNonDefaultPop.spriteName = "AchievementCheckedTrue";
@@ -132,7 +133,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Update default floor override checkbox to correct state.
-            if (FloorData.instance.HasPackOverride(thisBuilding) != null)
+            if (FloorData.instance.HasPackOverride(thisBuildingName) != null)
             {
                 // Custom value found.
                 hasNonDefaultFloor.spriteName = "AchievementCheckedTrue";

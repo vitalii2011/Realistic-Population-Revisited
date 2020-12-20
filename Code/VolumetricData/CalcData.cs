@@ -115,19 +115,16 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="building">Selected prefab</param>
         /// <returns>Currently active size pack</returns>
-        internal virtual DataPack ActivePack(BuildingInfo building) => HasPackOverride(building) ?? CurrentDefaultPack(building);
+        internal virtual DataPack ActivePack(BuildingInfo building) => HasPackOverride(building.name) ?? CurrentDefaultPack(building);
 
 
         /// <summary>
         /// Returns the currently active calculation data pack record for the given prefab if an override is in place, or null if none (using the default).
         /// </summary>
-        /// <param name="building">Selected prefab</param>
+        /// <param name="buildingName">Name of selected prefab</param>
         /// <returns>Currently active calculation pack override for the building if one exists, otherwise null.</returns>
-        internal DataPack HasPackOverride(BuildingInfo building)
+        internal DataPack HasPackOverride(string buildingName)
         {
-            // Local reference.
-            string buildingName = building.name;
-
             // Check to see if this building has an entry in the custom settings dictionary.
             if (buildingDict.ContainsKey(buildingName))
             {

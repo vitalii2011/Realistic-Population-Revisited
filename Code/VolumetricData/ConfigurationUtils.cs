@@ -128,21 +128,11 @@ namespace RealisticPopulationRevisited
                             // Deserialize floor overrides.
                             foreach (FloorCalcOverride floorOverride in configFile.floors)
                             {
-                                // Find building.
-                                BuildingInfo building = PrefabCollection<BuildingInfo>.FindLoaded(floorOverride.prefab);
-
-                                if (building == null)
+                                FloorData.instance.AddOverride(floorOverride.prefab, new FloorDataPack
                                 {
-                                    Debugging.Message("Floor override: building " + floorOverride.prefab + " not found");
-                                }
-                                else
-                                {
-                                    FloorData.instance.AddOverride(building, new FloorDataPack
-                                    {
-                                        firstFloorMin = floorOverride.firstHeight,
-                                        floorHeight = floorOverride.floorHeight
-                                    });
-                                }
+                                    firstFloorMin = floorOverride.firstHeight,
+                                    floorHeight = floorOverride.floorHeight
+                                });
                             }
                         }
                     }
@@ -262,11 +252,11 @@ namespace RealisticPopulationRevisited
 
                     // Serialise floor overrides.
                     configFile.floors = new List<FloorCalcOverride>();
-                    foreach (KeyValuePair<BuildingInfo, FloorDataPack> floorOverride in FloorData.instance.overrides)
+                    foreach (KeyValuePair<string, FloorDataPack> floorOverride in FloorData.instance.overrides)
                     {
                         configFile.floors.Add(new FloorCalcOverride
                         {
-                            prefab = floorOverride.Key.name,
+                            prefab = floorOverride.Key,
                             firstHeight = floorOverride.Value.firstFloorMin,
                             floorHeight = floorOverride.Value.floorHeight
                         });

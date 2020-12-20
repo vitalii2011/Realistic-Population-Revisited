@@ -198,7 +198,7 @@ namespace RealisticPopulationRevisited
                     if (overrideFloors != null)
                     {
                         // Successful parsing - add override.
-                        FloorData.instance.AddOverride(currentSelection, overrideFloors);
+                        FloorData.instance.AddOverride(currentSelection.name, overrideFloors);
 
                         // Save configuration.
                         ConfigUtils.SaveSettings();
@@ -253,7 +253,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Remove any floor override.
-                FloorData.instance.DeleteOverride(currentSelection);
+                FloorData.instance.DeleteOverride(currentSelection.name);
 
                 // Update panel override.
                 BuildingDetailsPanel.Panel.OverrideFloors = null;
@@ -323,7 +323,7 @@ namespace RealisticPopulationRevisited
             else
             {
                 // No population override - check for custom floor override.
-                FloorDataPack overridePack = FloorData.instance.HasOverride(building);
+                FloorDataPack overridePack = FloorData.instance.HasOverride(building.name);
                 if (overridePack != null)
                 {
                     // Valid custom settings found; display the result, rename the save button, and enable the delete button.

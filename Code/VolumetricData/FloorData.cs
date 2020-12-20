@@ -13,7 +13,7 @@ namespace RealisticPopulationRevisited
         internal static FloorData instance;
 
         // Custom overrides.
-        protected internal Dictionary<BuildingInfo, FloorDataPack> overrides;
+        protected internal Dictionary<string, FloorDataPack> overrides;
 
 
         /// <summary>
@@ -127,35 +127,35 @@ namespace RealisticPopulationRevisited
             calcPacks.Add(newPack);
 
             // Initialise overrides dictionary.
-            overrides = new Dictionary<BuildingInfo, FloorDataPack>();
+            overrides = new Dictionary<string, FloorDataPack>();
         }
 
 
         /// <summary>
         /// Checks to see if a builing has a custom floor override, and if so, returns it.
         /// </summary>
-        /// <param name="building">Building prefab to check</param>
+        /// <param name="buildingName">Name of building prefab to check</param>
         /// <returns>Override floor pack if the building has one, othewise null</returns>
-        internal FloorDataPack HasOverride(BuildingInfo building) => overrides.ContainsKey(building) ? overrides[building] : null;
+        internal FloorDataPack HasOverride(string buildingName) => overrides.ContainsKey(buildingName) ? overrides[buildingName] : null;
 
 
         /// <summary>
         /// Adds a custom floor override to a building prefab.
         /// </summary>
-        /// <param name="building">Building prefab to add</param>
+        /// <param name="building">Name of building prefab to add</param>
         /// <param name="overridePack">Override floor pack to set</param>
-        internal void AddOverride(BuildingInfo building, FloorDataPack overridePack)
+        internal void AddOverride(string buildingName, FloorDataPack overridePack)
         {
             // Check to see if we already have an entry for this building.
-            if (!overrides.ContainsKey(building))
+            if (!overrides.ContainsKey(buildingName))
             {
                 // No - create new entry.
-                overrides.Add(building, overridePack);
+                overrides.Add(buildingName, overridePack);
             }
             else
             {
                 // An entry for this building already exists - update it.
-                overrides[building] = overridePack;
+                overrides[buildingName] = overridePack;
             }
         }
 
@@ -163,8 +163,8 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Removes a custom floor override from a building prefab.
         /// </summary>
-        /// <param name="building">Building prefab to remove</param>
-        internal void DeleteOverride(BuildingInfo building) => overrides.Remove(building);
+        /// <param name="buildingName">Name of building prefab to remove</param>
+        internal void DeleteOverride(string buildingName) => overrides.Remove(buildingName);
 
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="building">Building prefab to get floor pack for</param>
         /// <returns></returns>
-        internal override DataPack ActivePack(BuildingInfo building) => HasOverride(building) ?? base.ActivePack(building);
+        internal override DataPack ActivePack(BuildingInfo building) => HasOverride(building.name) ?? base.ActivePack(building);
 
 
         /// <summary>

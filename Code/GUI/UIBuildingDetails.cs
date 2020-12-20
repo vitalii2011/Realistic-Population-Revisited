@@ -306,13 +306,21 @@ namespace RealisticPopulationRevisited
             // List to store all building prefabs that pass the filter.
             List<BuildingInfo> filteredList = new List<BuildingInfo>();
 
+            // Settings flags.
+            bool noFilter = !(filterBar.PopOverrideFilter.isChecked || filterBar.FloorOverrideFilter.isChecked || filterBar.DefaultPopFilter.isChecked || filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked);
+            bool popOverrideFilter = filterBar.PopOverrideFilter.isChecked || filterBar.AnyFilter.isChecked;
+            bool floorOverrideFilter = filterBar.FloorOverrideFilter.isChecked || filterBar.AnyFilter.isChecked;
+            bool defaultPopFilter = filterBar.DefaultPopFilter.isChecked || filterBar.AnyFilter.isChecked;
+            bool defaultFloorFilter = filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked;
+
             // Iterate through all loaded building prefabs and add them to the list if they meet the filter conditions.
             for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
             {
                 BuildingInfo item = PrefabCollection<BuildingInfo>.GetLoaded(i);
+                string itemName = item?.name;
 
                 // Skip any null or invalid prefabs.
-                if (item?.name == null)
+                if (itemName == null)
                 {
                     continue;
                 }
@@ -368,11 +376,11 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Filter by settings.
-                if (!(filterBar.PopOverrideFilter.isChecked || filterBar.FloorOverrideFilter.isChecked || filterBar.DefaultPopFilter.isChecked || filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked) ||
-                    ((filterBar.PopOverrideFilter.isChecked || filterBar.AnyFilter.isChecked) && (ExternalCalls.GetResidential(item) != 0 || ExternalCalls.GetWorker(item) != 0)) ||
-                    ((filterBar.FloorOverrideFilter.isChecked || filterBar.AnyFilter.isChecked) && FloorData.instance.HasOverride(item) != null) ||
-                    ((filterBar.DefaultPopFilter.isChecked || filterBar.AnyFilter.isChecked) && PopData.instance.HasPackOverride(item) != null) ||
-                    ((filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked) && FloorData.instance.HasPackOverride(item) != null))
+                if (noFilter ||
+                    ((popOverrideFilter && (ExternalCalls.GetResidential(item) != 0 || ExternalCalls.GetWorker(item) != 0)) ||
+                    (floorOverrideFilter && FloorData.instance.HasOverride(itemName) != null) ||
+                    (defaultPopFilter && PopData.instance.HasPackOverride(itemName) != null) ||
+                    (defaultFloorFilter && FloorData.instance.HasPackOverride(itemName) != null)))
                 {
                     // Finally!  We've got an item that's passed all filters; add it to the list.
                     filteredList.Add(item);
