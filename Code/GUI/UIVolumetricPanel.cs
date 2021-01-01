@@ -30,10 +30,11 @@ namespace RealisticPopulationRevisited
 
 
         // Panel components.
-        private UIScrollablePanel floorsPanel;
+        private UIPanel floorsPanel;
         private UIFastList floorsList;
         private UILabel numFloorsLabel, floorAreaLabel, totalLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
         private UILabel emptyAreaLabel, emptyPercentLabel, perLabel;
+        private UILabel schoolWorkerLabel;
         private UICheckBox multiFloorCheckBox, ignoreFirstCheckBox;
 
 
@@ -64,6 +65,7 @@ namespace RealisticPopulationRevisited
             emptyAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row1);
             emptyPercentLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row2);
             perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row3);
+            schoolWorkerLabel = AddLabel(this, "School workers", LeftColumn, Row6);
 
             // Multi-floor units checkbox.
             multiFloorCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_MFU"), LeftColumn, Row4);
@@ -76,24 +78,21 @@ namespace RealisticPopulationRevisited
             ignoreFirstCheckBox.Disable();
 
             // Floor panel.
-            floorsPanel = this.AddUIComponent<UIScrollablePanel>();
+            floorsPanel = this.AddUIComponent<UIPanel>();
             floorsPanel.relativePosition = new Vector3(0, Row8);
-            floorsPanel.autoSize = false;
             floorsPanel.width = this.width;
-            floorsPanel.height = this.height - floorsPanel.relativePosition.y;
-            floorsPanel.autoLayout = false;
-            floorsPanel.scrollWheelDirection = UIOrientation.Vertical;
+            floorsPanel.height = this.height - Row8;
 
-            // Building selection list.
+            // Floor list.
             floorsList = UIFastList.Create<UIFloorRow>(floorsPanel);
             floorsList.backgroundSprite = "UnlockingPanel";
-            floorsList.relativePosition = Vector3.zero;
             floorsList.width = floorsPanel.width;
             floorsList.height = floorsPanel.height;
             floorsList.isInteractive = true;
-            floorsList.canSelect = true;
+            floorsList.canSelect = false;
             floorsList.rowHeight = 20;
             floorsList.autoHideScrollbar = true;
+            floorsList.relativePosition = Vector3.zero;
             floorsList.rowsData = new FastList<object>();
             floorsList.selectedIndex = -1;
         }
@@ -135,9 +134,10 @@ namespace RealisticPopulationRevisited
         /// Perform and display volumetric calculations for the currently selected building.
         /// </summary>
         /// <param name="building">Selected building prefab</param>
-        /// <param name="levelData">Level calculation data to apply to calculations</param>
+        /// <param name="levelData">Population (level) calculation data to apply to calculations</param>
         /// <param name="floorData">Floor calculation data to apply to calculations</param>
-        internal void CalculateVolumetric(BuildingInfo building, LevelData levelData, FloorDataPack floorData)
+        /// <param name="schoolData">School calculation data to apply to calculations</param>
+        internal void CalculateVolumetric(BuildingInfo building, LevelData levelData, FloorDataPack floorData, SchoolDataPack schoolData)
         {
             // Safety first!
             if (building == null)
@@ -211,6 +211,21 @@ namespace RealisticPopulationRevisited
                 }
             }
 
+            // Do we have a current school selection.
+            if (schoolData != null)
+            {
+                // Yes - calculate and display school worker breakdown.
+                int[] workers = SchoolData.instance.CalcWorkers(schoolData, totalUnits);
+
+                schoolWorkerLabel.Show();
+                schoolWorkerLabel.text = workers[0] + "/" + workers[1] + "/" + workers[2] + "/" + workers[3];
+            }
+            else
+            {
+                // No - hide school worker breakdown label.
+                schoolWorkerLabel.Hide();
+            }
+
             // Allocate our new list of labels to the floors list (via an interim fastlist to avoid race conditions if we 'build' manually directly into floorsList).
             FastList<object> fastList = new FastList<object>();
             fastList.m_buffer = floorLabels.ToArray();
@@ -219,6 +234,9 @@ namespace RealisticPopulationRevisited
 
             // Display total unit calculation result.
             totalLabel.text = totalUnits.ToString();
+
+            // Display school calculation values.
+
         }
 
 

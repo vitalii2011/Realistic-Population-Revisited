@@ -73,13 +73,13 @@ namespace RealisticPopulationRevisited
                 // Row label.
                 rowLabels[i] = RowLabel(panel, currentY, Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString());
 
-                emptyAreaFields[i] = AddTextField(panel, TextFieldWidth, EmptyAreaX + Margin, currentY);
+                emptyAreaFields[i] = UIControls.AddTextField(panel, TextFieldWidth, EmptyAreaX + Margin, currentY);
                 emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-                emptyPercentFields[i] = AddTextField(panel, TextFieldWidth, EmptyPercentX + Margin, currentY);
+                emptyPercentFields[i] = UIControls.AddTextField(panel, TextFieldWidth, EmptyPercentX + Margin, currentY);
                 emptyPercentFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
 
-                areaPerFields[i] = AddTextField(panel, TextFieldWidth, AreaPerX + Margin, currentY);
+                areaPerFields[i] = UIControls.AddTextField(panel, TextFieldWidth, AreaPerX + Margin, currentY);
                 areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
                 multiFloorCheck[i] = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);

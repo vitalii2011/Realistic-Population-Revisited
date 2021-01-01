@@ -27,6 +27,12 @@ namespace RealisticPopulationRevisited
                 FloorData.instance = new FloorData();
             }
 
+            // Ditto SchoolData.
+            if (SchoolData.instance == null)
+            {
+                SchoolData.instance = new SchoolData();
+            }
+
             // Load (volumetric) building settings file if we haven't already..
             if (!ConfigUtils.configRead)
             {
@@ -51,8 +57,8 @@ namespace RealisticPopulationRevisited
         private Dictionary<ItemClass.Service, Dictionary<ItemClass.SubService, DataPack>> defaultsDict;
 
 
-        // Abstract methods.
-        internal abstract DataPack BaseDefaultPack(ItemClass.Service service, ItemClass.SubService subService);
+        // Methods that should generally be overriden.
+        internal virtual DataPack BaseDefaultPack(ItemClass.Service service, ItemClass.SubService subService) => null;
         protected abstract string BuildingPack(BuildingRecord buildingRecord);
 
 
@@ -70,14 +76,19 @@ namespace RealisticPopulationRevisited
         }
 
 
-
         /// <summary>
         /// Updates our building setting dictionary for the selected building prefab to the indicated calculation pack.
         /// </summary>
         /// <param name="building">Building prefab to update</param>
         /// <param name="pack">New data pack to apply</param>
-        internal void UpdateBuildingPack(BuildingInfo prefab, DataPack pack)
+        internal virtual void UpdateBuildingPack(BuildingInfo prefab, DataPack pack)
         {
+            // Don't do anything with null packs (e.g. null school packs).
+            if (pack == null)
+            {
+                return;
+            }
+
             // Local reference.
             string buildingName = prefab.name;
 
@@ -144,7 +155,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="building">Building prefab</param>
         /// <returns>Default calculation data pack</returns>
-        internal DataPack CurrentDefaultPack(BuildingInfo building) => CurrentDefaultPack(building.GetService(), building.GetSubService());
+        internal virtual DataPack CurrentDefaultPack(BuildingInfo building) => CurrentDefaultPack(building.GetService(), building.GetSubService());
 
 
         /// <summary>
@@ -286,11 +297,12 @@ namespace RealisticPopulationRevisited
             }
         }
 
+
         /// <summary>
         /// Deserializes a provided building record list.
         /// </summary>
         /// <param name="recordList">List to deserialize</param>
-        internal void DeserializeBuildings(List<BuildingRecord> recordList)
+        internal virtual void DeserializeBuildings(List<BuildingRecord> recordList)
         {
             // Iterate through each record in list.
             for (int i = 0; i < recordList.Count; ++i)
@@ -313,6 +325,8 @@ namespace RealisticPopulationRevisited
                     Debugging.Message("Couldn't find calculation pack " + packName + " for " + buildingRecord.prefab);
                     continue;
                 }
+
+                Debugging.Message("added building settings for " + buildingRecord.prefab + " with calculation pack " + calcPack.name);
 
                 // Add building to our dictionary.
                 buildingDict.Add(buildingRecord.prefab, calcPack);

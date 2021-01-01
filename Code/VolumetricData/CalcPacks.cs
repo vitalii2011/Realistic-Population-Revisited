@@ -45,7 +45,7 @@
     /// </summary>
     public class PopDataPack : DataPack
     {
-        // Service/subservice restrictions.
+        // Service restrictions.
         public ItemClass.Service service;
 
 
@@ -65,6 +65,20 @@
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
         public virtual PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level) => new PrefabEmployStruct();
+    }
+
+
+    /// <summary>
+    /// Population clculation data pack - provides parameters for calculating building populations.
+    /// </summary>
+    public class SchoolDataPack : DataPack
+    {
+        // Education ItemClass.Level.
+        public ItemClass.Level level;
+
+        // Employment calculation arrays.
+        public int[] baseWorkers;
+        public int[] workersPer;
     }
 
 

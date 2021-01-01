@@ -230,7 +230,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="existingList">Existing list to modify, from population pack serialization (null if none)</param>
         /// <returns>New list of building pack settings ready for XML</returns>
-        internal List<BuildingRecord> SerializeBuildings(SortedList<string, BuildingRecord> existingList)
+        internal SortedList<string, BuildingRecord> SerializeBuildings(SortedList<string, BuildingRecord> existingList)
         {
             // Return list.
             SortedList<string, BuildingRecord> returnList = existingList ?? new SortedList<string, BuildingRecord>();
@@ -254,7 +254,7 @@ namespace RealisticPopulationRevisited
                 }
             }
 
-            return returnList.Values.ToList();
+            return returnList;
         }
 
 

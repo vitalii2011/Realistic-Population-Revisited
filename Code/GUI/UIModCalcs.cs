@@ -11,28 +11,39 @@ namespace RealisticPopulationRevisited
         private const float ColumnWidth = 300f;
         private const float ComponentWidth = ColumnWidth - (Margin * 2f);
         private const float RightColumnX = ColumnWidth + Margin;
+        private const float LabelHeight = 20f;
+        private const float MenuHeight = 30f;
+        private const float DescriptionHeight = 40f;
         private const float ColumnLabelY = 30f;
-        private const float MenuY = ColumnLabelY + 20f;
-        private const float DescriptionY = MenuY + 30f;
-        private const float SaveY = DescriptionY + 40f;
-        private const float CalcY = SaveY + 35f;
+        private const float MenuY = ColumnLabelY + LabelHeight;
+        private const float DescriptionY = MenuY + MenuHeight;
+        private const float BaseSaveY = DescriptionY + DescriptionHeight;
+        private const float BaseCalcY = BaseSaveY + 35f;
+        private const float SchoolSaveY = BaseSaveY + LabelHeight + MenuHeight + DescriptionHeight;
+        private const float SchoolCalcY = SchoolSaveY + 35f;
+        private const float ButtonWidth = 200f;
+        private const float ApplyX = ColumnWidth - (ButtonWidth / 2);
+        private const float Row2LabelY = DescriptionY + DescriptionHeight;
 
         // Panel components.
         private UILabel title;
-        private UIPanel floorPanel;
+        private UIPanel floorPanel, schoolPanel;
         private UILegacyCalcs legacyPanel;
         private UIVolumetricPanel volumetricPanel;
-        private UIDropDown popMenu, floorMenu;
-        private UILabel popDescription, floorDescription, floorOverrideLabel;
+        private UIDropDown popMenu, floorMenu, schoolMenu;
+        private UILabel popDescription, floorDescription, schoolDescription, floorOverrideLabel;
+        private UIButton applyButton;
 
         // Data arrays.
         private PopDataPack[] popPacks;
         private DataPack[] floorPacks;
+        private SchoolDataPack[] schoolPacks;
 
         // Current selections.
         private BuildingInfo currentBuilding;
         private PopDataPack currentPopPack;
         private FloorDataPack currentFloorPack, currentFloorOverride;
+        private SchoolDataPack currentSchoolPack;
 
         // Flags.
         private bool usingLegacy;
@@ -79,7 +90,7 @@ namespace RealisticPopulationRevisited
 
                 // Update panel with new calculations.
                 volumetricPanel.UpdateFloorText(displayPack);
-                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack);
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack, currentSchoolPack);
             }
         }
         
@@ -108,12 +119,12 @@ namespace RealisticPopulationRevisited
             title.width = this.width;
 
             // Column titles.
-            UILabel densityTitle = ColumnLabel(Translations.Translate("RPR_CAL_DEN"), Margin);
-            UILabel floorTitle = ColumnLabel(Translations.Translate("RPR_CAL_BFL"), RightColumnX);
+            UILabel densityTitle = ColumnLabel(this, Translations.Translate("RPR_CAL_DEN"), Margin, ColumnLabelY);
+            UILabel floorTitle = ColumnLabel(this, Translations.Translate("RPR_CAL_BFL"), RightColumnX, ColumnLabelY);
 
             // Volumetric calculations panel.
             volumetricPanel = this.AddUIComponent<UIVolumetricPanel>();
-            volumetricPanel.relativePosition = new Vector2(0f, CalcY);
+            volumetricPanel.relativePosition = new Vector2(0f, BaseCalcY);
             volumetricPanel.height = this.height - title.height + 80f;
             volumetricPanel.width = this.width;
             volumetricPanel.Setup();
@@ -135,33 +146,48 @@ namespace RealisticPopulationRevisited
             floorPanel.Show();
 
             // Floor override label (for when floor dropdown menu is hidden).
-            floorOverrideLabel = UIControls.AddLabel(this, Translations.Translate("RPR_CAL_FOV"), RightColumnX, MenuY, this.width - RightColumnX);
-            floorOverrideLabel.textScale = 0.7f;
+            floorOverrideLabel = UIControls.AddLabel(this, Translations.Translate("RPR_CAL_FOV"), RightColumnX, MenuY, this.width - RightColumnX, 0.7f);
             floorOverrideLabel.Hide();
 
             // Pack dropdowns.
             popMenu = UIControls.AddDropDown(this, Margin, MenuY, ComponentWidth);
             floorMenu = UIControls.AddDropDown(floorPanel, 0f, 0f, ComponentWidth);
 
+            // School dropdown panel.
+            schoolPanel = this.AddUIComponent<UIPanel>();
+            schoolPanel.relativePosition = new Vector2(Margin, Row2LabelY);
+            schoolPanel.autoSize = true;
+            schoolPanel.autoLayout = false;
+            schoolPanel.clipChildren = false;
+
+            // School panel title and dropdown menu.
+            UILabel schoolTitle = ColumnLabel(schoolPanel, Translations.Translate("RPR_CAL_SCH"), 0, 0);
+            schoolMenu = UIControls.AddDropDown(schoolPanel, 0f, LabelHeight, ComponentWidth);
+            schoolPanel.Hide();
+
             // Pack descriptions.
             popDescription = Description(this, Margin, DescriptionY);
             floorDescription = Description(floorPanel, 0f, DescriptionY - MenuY);
+            schoolDescription = Description(schoolPanel, 0f, LabelHeight + DescriptionY - MenuY);
 
             // Apply button.
-            UIButton applyButton = UIUtils.CreateButton(this, 200f);
-            applyButton.relativePosition = new Vector2(ColumnWidth - (200f / 2), SaveY);
+            applyButton = UIUtils.CreateButton(this, ButtonWidth);
+            applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
             applyButton.text = Translations.Translate("RPR_OPT_SAA");
             applyButton.eventClicked += (control, clickEvent) =>
             {
                 // Update building setting and save.
                 PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
                 FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
+                // Make sure SchoolData is called AFTER student count is settled via Pop and Floor packs, so it can work from updated data.
+                SchoolData.instance.UpdateBuildingPack(currentBuilding, currentSchoolPack);
                 ConfigUtils.SaveSettings();
             };
 
             // Dropdown event handlers.
             popMenu.eventSelectedIndexChanged += (component, index) => UpdatePopSelection(index);
             floorMenu.eventSelectedIndexChanged += (component, index) => UpdateFloorSelection(index);
+            schoolMenu.eventSelectedIndexChanged += (component, index) => UpdateSchoolSelection(index);
         }
 
 
@@ -203,7 +229,7 @@ namespace RealisticPopulationRevisited
                     // No override - update panel with new calculations.
                     LevelData thisLevel = CurrentLevelData;
                     volumetricPanel.UpdatePopText(thisLevel);
-                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack);
+                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack, currentSchoolPack);
 
                     // Set visibility.
                     floorOverrideLabel.Hide();
@@ -244,10 +270,29 @@ namespace RealisticPopulationRevisited
 
             // Update panel with new calculations.
             volumetricPanel.UpdateFloorText(currentFloorPack);
-            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack);
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack);
 
             // Communicate change with to rest of panel.
             BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
+        }
+
+
+        /// <summary>
+        /// Updates the school calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        internal void UpdateSchoolSelection(int index)
+        {
+            // Update selected pack.
+            currentSchoolPack = schoolPacks[index];
+
+            // Update description.
+            schoolDescription.text = currentSchoolPack.description;
+
+            // Update panel with new calculations.
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack);
+
+            // School selections aren't used anywhere else, so no need to communicate change to rest of panel.
         }
 
 
@@ -267,7 +312,7 @@ namespace RealisticPopulationRevisited
                 popPacks = PopData.instance.GetPacks(building);
                 floorPacks = FloorData.instance.Packs;
 
-                // Get current and default packs for this item
+                // Get current and default packs for this item.
                 currentPopPack = (PopDataPack)PopData.instance.ActivePack(building);
                 currentFloorPack = (FloorDataPack)FloorData.instance.ActivePack(building);
                 PopDataPack defaultPopPack = (PopDataPack)PopData.instance.CurrentDefaultPack(building);
@@ -279,7 +324,7 @@ namespace RealisticPopulationRevisited
                 {
                     popMenu.items[i] = popPacks[i].displayName;
 
-                    // Check for deefault name match,
+                    // Check for default name match,
                     if (popPacks[i].name.Equals(defaultPopPack.name))
                     {
                         popMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
@@ -301,7 +346,7 @@ namespace RealisticPopulationRevisited
                 {
                     floorMenu.items[i] = floorPacks[i].displayName;
 
-                    // Check for deefault name match,
+                    // Check for default name match,
                     if (floorPacks[i].name.Equals(defaultFloorPack.name))
                     {
                         floorMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
@@ -322,6 +367,58 @@ namespace RealisticPopulationRevisited
                 {
                     legacyPanel.SelectionChanged(building);
                 }
+
+                // Is this a school building (need to do school building after pop and floor packs are updated)?
+                if (building.GetAI() is SchoolAI)
+                {
+                    // Yes - school building.  Extend panel height and show school panel.
+                    volumetricPanel.relativePosition = new Vector2(0f, SchoolCalcY);
+                    applyButton.relativePosition = new Vector2(ApplyX, SchoolSaveY);
+
+                    // Get available school packs for this building.
+                    schoolPacks = SchoolData.instance.GetPacks(building);
+
+                    // Get current and default packs for this item.
+                    currentSchoolPack = (SchoolDataPack)SchoolData.instance.ActivePack(building);
+                    SchoolDataPack defaultSchoolPack = (SchoolDataPack)SchoolData.instance.CurrentDefaultPack(building);
+
+                    // Build school pack menu.
+                    schoolMenu.items = new string[schoolPacks.Length];
+
+                    Debugging.Message("current schoolk pack is " + currentSchoolPack.name);
+
+                    for (int i = 0; i < schoolMenu.items.Length; ++i)
+                    {
+                        Debugging.Message("checking school pack name " + schoolPacks[i].name);
+
+                        schoolMenu.items[i] = schoolPacks[i].displayName;
+
+                        // Check for default name match,
+                        if (schoolPacks[i].name.Equals(defaultSchoolPack.name))
+                        {
+                            schoolMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                        }
+
+                        // Set menu selection to current pack if it matches.
+                        if (schoolPacks[i].name.Equals(currentSchoolPack.name))
+                        {
+                            schoolMenu.selectedIndex = i;
+
+                            // Force pack selection update.
+                            UpdateSchoolSelection(i);
+                        }
+                    }
+
+                    schoolPanel.Show();
+                }
+                else
+                {
+                    // Not a school building - use non-school layout.
+                    currentSchoolPack = null;
+                    volumetricPanel.relativePosition = new Vector2(0f, BaseCalcY);
+                    applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
+                    schoolPanel.Hide();
+                }
             }
         }
 
@@ -329,13 +426,15 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Adds a column header label.
         /// </summary>
+        /// <param name="parent">Parent component</param>
         /// <param name="text">Label text</param>
         /// <param name="xPos">Label x-position</param>
+        /// <param name="xPos">Label y-position</param>
         /// <returns>New column label</returns>
-        private UILabel ColumnLabel(string text, float xPos)
+        private UILabel ColumnLabel(UIComponent parent, string text, float xPos, float yPos)
         {
-            UILabel newLabel = this.AddUIComponent<UILabel>();
-            newLabel.relativePosition = new Vector3(xPos, ColumnLabelY);
+            UILabel newLabel = parent.AddUIComponent<UILabel>();
+            newLabel.relativePosition = new Vector3(xPos, yPos);
             newLabel.textAlignment = UIHorizontalAlignment.Center;
             newLabel.text = text;
             newLabel.textScale = 1f;

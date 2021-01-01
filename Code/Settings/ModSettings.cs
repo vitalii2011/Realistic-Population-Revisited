@@ -5,7 +5,8 @@
     /// </summary>
     internal static class ModSettings
     {
-        internal static bool enableSchools = false;
-        internal static float crimeMultiplier = 100f;
+        internal static bool enableSchools = true;
+        internal static bool enableSchoolJobs = true;
+        internal static float crimeMultiplier = 50f;
     }
 }

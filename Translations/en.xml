@@ -70,6 +70,14 @@
     <Translation ID="RPR_PCK_FHB_DES" String="High-bay industrial and commercial warehouses." />
     <Translation ID="RPR_PCK_FEX_NAM" String="Primary industry" />
     <Translation ID="RPR_PCK_FEX_DES" String="Industrial extractors and processors" />
+    <Translation ID="RPR_PCK_SVE_NAM" String="Vanilla elementary" />
+    <Translation ID="RPR_PCK_SVE_DES" String="Scaling according to the vanilla elementary school" />
+    <Translation ID="RPR_PCK_SVH_NAM" String="Vanilla high school" />
+    <Translation ID="RPR_PCK_SVH_DES" String="Scaling according to the vanilla high school" />
+    <Translation ID="RPR_PCK_SVC_NAM" String="Vanilla community" />
+    <Translation ID="RPR_PCK_SVC_DES" String="Scaling according to the vanilla community school" />
+    <Translation ID="RPR_PCK_SVA_NAM" String="Vanilla art school" />
+    <Translation ID="RPR_PCK_SVA_DES" String="Scaling according to the vanilla art school" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
     <Translation ID="RPR_CAT_RHI" String="Residential high" />
@@ -156,6 +164,7 @@
     <Translation ID="RPR_CAL_FLR" String="Calculated floors:" />
     <Translation ID="RPR_CAL_M2" String="Calculated area:" />
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />
+    <Translation ID="RPR_CAL_SCH" String="Staff and cost scaling" />
     <Translation ID="RPR_OPT_MOD" String="Mod settings" />
     <Translation ID="RPR_OPT_KEY" String="Hotkey for building options screen" />
     <Translation ID="RPR_OPT_PRS" String="Press any key" />
@@ -181,7 +190,16 @@
     <Translation ID="RPR_OPT_RTS" String="Revert to saved" />
     <Translation ID="RPR_OPT_SAA" String="Save and apply" />
     <Translation ID="RPR_OPT_SCH" String="Schools" />
-    <Translation ID="RPR_OPT_SCH_ENB" String="Enable realistic school capacities" />
+    <Translation ID="RPR_OPT_SEN" String="Enable realistic school stuent capacities" />
+    <Translation ID="RPR_OPT_SEJ" String="Enable realistic school employment numbers" />
+    <Translation ID="RPR_OPT_JB0" String="Uneducated jobs" />
+    <Translation ID="RPR_OPT_JB1" String="Educated jobs" />
+    <Translation ID="RPR_OPT_JB2" String="Well-educated jobs" />
+    <Translation ID="RPR_OPT_JB3" String="Highly-educated jobs" />
+    <Translation ID="RPR_OPT_SHE" String="Elementary schools" />
+    <Translation ID="RPR_OPT_SHH" String="High schools" />
+    <Translation ID="RPR_OPT_SJB" String="Base jobs" />
+    <Translation ID="RPR_OPT_SJX" String="Extra job per # students" />
     <Translation ID="RPR_OPT_CRI" String="Crime" />
     <Translation ID="RPR_OPT_CML" String="Crime multiplier (percentage)" />
     <Translation ID="RPR_OPT_POP" String="Population" />

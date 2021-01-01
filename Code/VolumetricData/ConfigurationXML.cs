@@ -92,6 +92,11 @@ namespace RealisticPopulationRevisited
         [XmlAttribute("floor")]
         [DefaultValue("")]
         public string floorPack;
+
+        // School properties pack.
+        [XmlAttribute("school")]
+        [DefaultValue("")]
+        public string schoolPack;
     }
 
 

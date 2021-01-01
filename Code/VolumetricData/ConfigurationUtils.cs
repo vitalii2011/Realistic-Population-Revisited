@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -120,6 +121,7 @@ namespace RealisticPopulationRevisited
                             // Deserialise building pack lists.
                             PopData.instance.DeserializeBuildings(configFile.buildings);
                             FloorData.instance.DeserializeBuildings(configFile.buildings);
+                            SchoolData.instance.DeserializeBuildings(configFile.buildings);
 
                             // Deserialise building population overrides.
                             DeSerializePopOverrides(configFile.households, DataStore.householdCache);
@@ -243,8 +245,10 @@ namespace RealisticPopulationRevisited
                     configFile.popDefaults = PopData.instance.SerializeDefaults();
                     configFile.floorDefaults = FloorData.instance.SerializeDefaults();
 
-                    // Serialise building pack dictionaries.
-                    configFile.buildings = FloorData.instance.SerializeBuildings(PopData.instance.SerializeBuildings());
+                    // Serialise building pack dictionaries, in order.
+                    SortedList<string, BuildingRecord> buildingList = PopData.instance.SerializeBuildings();
+                    buildingList = FloorData.instance.SerializeBuildings(buildingList);
+                    configFile.buildings = SchoolData.instance.SerializeBuildings(buildingList);
 
                     // Serialise building population overrides.
                     configFile.households = SerializePopOverrides(DataStore.householdCache);

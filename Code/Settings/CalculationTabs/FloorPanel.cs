@@ -57,13 +57,13 @@ namespace RealisticPopulationRevisited
             PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), 1.0f);
 
             // Add level textfields.
-            floorHeightField = AddTextField(panel, TextFieldWidth, FloorHeightX + Margin, currentY);
+            floorHeightField = UIControls.AddTextField(panel, TextFieldWidth, FloorHeightX + Margin, currentY);
             floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-            firstMinField = AddTextField(panel, TextFieldWidth, FirstMinX + Margin, currentY);
+            firstMinField = UIControls.AddTextField(panel, TextFieldWidth, FirstMinX + Margin, currentY);
             firstMinField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-            firstExtraField = AddTextField(panel, TextFieldWidth, FirstMaxX + Margin, currentY);
+            firstExtraField = UIControls.AddTextField(panel, TextFieldWidth, FirstMaxX + Margin, currentY);
             firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
             firstEmptyCheck = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);

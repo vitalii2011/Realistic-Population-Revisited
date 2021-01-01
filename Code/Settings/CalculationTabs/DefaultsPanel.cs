@@ -135,7 +135,7 @@ namespace RealisticPopulationRevisited
         {
             // Layout constants.
             const float LeftColumn = 270f;
-            const float RightCoiumn = 510f;
+            const float RightColumn = 510f;
 
 
             // Y position indicator.
@@ -156,7 +156,7 @@ namespace RealisticPopulationRevisited
 
             // Add titles.
             UILabel popLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, 5f, 220f);
-            UILabel floorLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightCoiumn, 5f, 220f);
+            UILabel floorLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightColumn, 5f, 220f);
             popLabel.textAlignment = UIHorizontalAlignment.Center;
             floorLabel.textAlignment = UIHorizontalAlignment.Center;
 
@@ -182,7 +182,7 @@ namespace RealisticPopulationRevisited
                 };
 
                 // Floor pack dropdown.
-                floorMenus[i] = UIControls.AddDropDown(panel, RightCoiumn, currentY + 3f);
+                floorMenus[i] = UIControls.AddDropDown(panel, RightColumn, currentY + 3f);
 
                 // Save current index in object user data.
                 floorMenus[i].objectUserData = i;

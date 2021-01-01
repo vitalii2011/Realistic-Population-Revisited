@@ -78,6 +78,10 @@ namespace RealisticPopulationRevisited
         // Realistic education.
         [XmlElement("EnableSchools")]
         public bool enableSchools { get => ModSettings.enableSchools; set => ModSettings.enableSchools = value; }
+
+        // Realistic education.
+        [XmlElement("EnableSchoolJobs")]
+        public bool enableSchoolJobs { get => ModSettings.enableSchoolJobs; set => ModSettings.enableSchoolJobs = value; }
     }
 
 

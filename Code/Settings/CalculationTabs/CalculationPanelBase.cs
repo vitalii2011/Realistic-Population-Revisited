@@ -96,28 +96,5 @@ namespace RealisticPopulationRevisited
 
             return checkBox;
         }
-
-
-        /// <summary>
-        /// Adds an input text field at the specified coordinates.
-        /// </summary>
-        /// <param name="textField">Textfield object</param>
-        /// <param name="panel">panel to add to</param>
-        /// <param name="posX">Relative X postion</param>
-        /// <param name="posY">Relative Y position</param>
-        /// <param name="tooltip">Tooltip, if any</param>
-        protected UITextField AddTextField(UIPanel panel, float width, float posX, float posY, string tooltip = null)
-        {
-            UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
-            textField.relativePosition = new Vector3(posX, posY);
-
-            // Add tooltip.
-            if (tooltip != null)
-            {
-                textField.tooltip = tooltip;
-            }
-
-            return textField;
-        }
     }
 }

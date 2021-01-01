@@ -760,7 +760,6 @@ namespace RealisticPopulationRevisited
         /// <param name="buildingRecord">Building record to extract from</param>
         /// <returns>Floor pack name (if any)</returns>
         protected override string BuildingPack(BuildingRecord buildingRecord) => buildingRecord.popPack;
-
     }
 }
  

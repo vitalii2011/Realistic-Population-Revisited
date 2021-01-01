@@ -21,6 +21,29 @@ namespace RealisticPopulationRevisited
     public static class UIControls
     {
         /// <summary>
+        /// Adds an input text field at the specified coordinates.
+        /// </summary>
+        /// <param name="textField">Textfield object</param>
+        /// <param name="panel">panel to add to</param>
+        /// <param name="posX">Relative X postion</param>
+        /// <param name="posY">Relative Y position</param>
+        /// <param name="tooltip">Tooltip, if any</param>
+        public static UITextField AddTextField(UIPanel panel, float width, float posX, float posY, string tooltip = null)
+        {
+            UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
+            textField.relativePosition = new Vector3(posX, posY);
+
+            // Add tooltip.
+            if (tooltip != null)
+            {
+                textField.tooltip = tooltip;
+            }
+
+            return textField;
+        }
+
+
+        /// <summary>
         /// Adds a checkbox with a descriptive text label immediately to the right.
         /// </summary>
         /// <param name="parent">Parent component</param>
@@ -89,8 +112,9 @@ namespace RealisticPopulationRevisited
         /// <param name="xPos">Relative x position)</param>
         /// <param name="yPos">Relative y position</param>
         /// <param name="width">Label width (default 700)</param>
+        /// <param name="width">Text scale (default 1.0)</param>
         /// <returns></returns>
-        internal static UILabel AddLabel(UIComponent parent, string text, float xPos, float yPos, float width = 700f)
+        internal static UILabel AddLabel(UIComponent parent, string text, float xPos, float yPos, float width = 700f, float textScale = 1.0f)
         {
             // Add label.
             UILabel label = (UILabel)parent.AddUIComponent<UILabel>();
@@ -98,6 +122,7 @@ namespace RealisticPopulationRevisited
             label.autoHeight = true;
             label.wordWrap = true;
             label.width = width;
+            label.textScale = textScale;
             label.text = text;
             label.relativePosition = new Vector2(xPos, yPos);
 
