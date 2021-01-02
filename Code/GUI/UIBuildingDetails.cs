@@ -123,6 +123,12 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Refreshes the building selection list.
+        /// </summary>
+        internal void RefreshList() => buildingSelection.Refresh();
+
+
+        /// <summary>
         /// Communicates floor calculation pack changes to previewer and edit panel.
         /// </summary>
         internal FloorDataPack FloorDataPack { set => previewPanel.FloorPack = value; }

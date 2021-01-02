@@ -150,7 +150,7 @@ namespace RealisticPopulationRevisited
             // Perform calculations.
             // Get floors and allocate area an number of floor labels.
             SortedList<int, float> floors = PopData.instance.VolumetricFloors(building.m_generatedInfo, levelData, floorData, out float totalArea);
-            floorAreaLabel.text = totalArea.ToString();
+            floorAreaLabel.text = totalArea.ToString("N0", LocaleManager.cultureInfo);
             numFloorsLabel.text = floors.Count.ToString();
 
             // Get total units.
@@ -244,7 +244,7 @@ namespace RealisticPopulationRevisited
             floorsList.rowsData = fastList;
 
             // Display total unit calculation result.
-            totalLabel.text = totalUnits.ToString();
+            totalLabel.text = totalUnits.ToString("N0", LocaleManager.cultureInfo);
         }
 
 

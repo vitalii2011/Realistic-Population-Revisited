@@ -182,6 +182,9 @@ namespace RealisticPopulationRevisited
                 // Make sure SchoolData is called AFTER student count is settled via Pop and Floor packs, so it can work from updated data.
                 SchoolData.instance.UpdateBuildingPack(currentBuilding, currentSchoolPack);
                 ConfigUtils.SaveSettings();
+
+                // Refresh the selection list (to make sure settings checkboxes reflect new state).
+                BuildingDetailsPanel.Panel.RefreshList();
             };
 
             // Dropdown event handlers.
