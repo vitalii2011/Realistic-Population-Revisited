@@ -302,7 +302,7 @@ namespace RealisticPopulationRevisited
         /// Deserializes a provided building record list.
         /// </summary>
         /// <param name="recordList">List to deserialize</param>
-        internal virtual void DeserializeBuildings(List<BuildingRecord> recordList)
+        internal void DeserializeBuildings(List<BuildingRecord> recordList)
         {
             // Iterate through each record in list.
             for (int i = 0; i < recordList.Count; ++i)

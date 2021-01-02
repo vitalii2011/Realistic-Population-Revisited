@@ -156,6 +156,9 @@ namespace RealisticPopulationRevisited
                 }
             }
 
+            // Apply school settings.
+            SchoolData.instance.ApplyConfig();
+
             // Create new XML if one doesn't already exist.
             if (!File.Exists(DataStore.currentFileLocation))
             {

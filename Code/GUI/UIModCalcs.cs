@@ -371,45 +371,54 @@ namespace RealisticPopulationRevisited
                 // Is this a school building (need to do school building after pop and floor packs are updated)?
                 if (building.GetAI() is SchoolAI)
                 {
-                    // Yes - school building.  Extend panel height and show school panel.
-                    volumetricPanel.relativePosition = new Vector2(0f, SchoolCalcY);
-                    applyButton.relativePosition = new Vector2(ApplyX, SchoolSaveY);
-
-                    // Get available school packs for this building.
-                    schoolPacks = SchoolData.instance.GetPacks(building);
-
-                    // Get current and default packs for this item.
+                    // Yes - school building.  Set current pack.
                     currentSchoolPack = (SchoolDataPack)SchoolData.instance.ActivePack(building);
-                    SchoolDataPack defaultSchoolPack = (SchoolDataPack)SchoolData.instance.CurrentDefaultPack(building);
 
-                    // Build school pack menu.
-                    schoolMenu.items = new string[schoolPacks.Length];
-
-                    Debugging.Message("current schoolk pack is " + currentSchoolPack.name);
-
-                    for (int i = 0; i < schoolMenu.items.Length; ++i)
+                    // Are we using custom school settings?
+                    if (ModSettings.enableSchoolProperties)
                     {
-                        Debugging.Message("checking school pack name " + schoolPacks[i].name);
+                        // Yes -extend panel height and show school panel.
+                        volumetricPanel.relativePosition = new Vector2(0f, SchoolCalcY);
+                        applyButton.relativePosition = new Vector2(ApplyX, SchoolSaveY);
 
-                        schoolMenu.items[i] = schoolPacks[i].displayName;
+                        // Get available school packs for this building.
+                        schoolPacks = SchoolData.instance.GetPacks(building);
 
-                        // Check for default name match,
-                        if (schoolPacks[i].name.Equals(defaultSchoolPack.name))
+                        // Get current and default packs for this item.
+                        currentSchoolPack = (SchoolDataPack)SchoolData.instance.ActivePack(building);
+                        SchoolDataPack defaultSchoolPack = (SchoolDataPack)SchoolData.instance.CurrentDefaultPack(building);
+
+                        // Build school pack menu.
+                        schoolMenu.items = new string[schoolPacks.Length];
+                        for (int i = 0; i < schoolMenu.items.Length; ++i)
                         {
-                            schoolMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                            schoolMenu.items[i] = schoolPacks[i].displayName;
+
+                            // Check for default name match,
+                            if (schoolPacks[i].name.Equals(defaultSchoolPack.name))
+                            {
+                                schoolMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                            }
+
+                            // Set menu selection to current pack if it matches.
+                            if (schoolPacks[i].name.Equals(currentSchoolPack.name))
+                            {
+                                schoolMenu.selectedIndex = i;
+
+                                // Force pack selection update.
+                                UpdateSchoolSelection(i);
+                            }
                         }
 
-                        // Set menu selection to current pack if it matches.
-                        if (schoolPacks[i].name.Equals(currentSchoolPack.name))
-                        {
-                            schoolMenu.selectedIndex = i;
-
-                            // Force pack selection update.
-                            UpdateSchoolSelection(i);
-                        }
+                        schoolPanel.Show();
                     }
-
-                    schoolPanel.Show();
+                    else
+                    {
+                        // We're not using custom school settings, so use the non-school layout.
+                        volumetricPanel.relativePosition = new Vector2(0f, BaseCalcY);
+                        applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
+                        schoolPanel.Hide();
+                    }
                 }
                 else
                 {

@@ -27,7 +27,11 @@ namespace RealisticPopulationRevisited
                 version = (int)DataVersion.one,
                 level = ItemClass.Level.Level1,
                 baseWorkers = new int[] { 1, 2, 1, 0 },
-                workersPer = new int[] { 20, 50, 300, 0 }
+                perWorker = new int[] { 20, 50, 300, 0 },
+                baseCost = 1000,
+                costPer = 30,
+                baseMaint = 100,
+                maintPer = 3
             };
             calcPacks.Add(newPack);
 
@@ -40,7 +44,11 @@ namespace RealisticPopulationRevisited
                 version = (int)DataVersion.one,
                 level = ItemClass.Level.Level1,
                 baseWorkers = new int[] { 2, 2, 1, 1 },
-                workersPer = new int[] { 25, 25, 50, 0 }
+                perWorker = new int[] { 25, 25, 50, 0 },
+                baseCost = 2000,
+                costPer = 40,
+                baseMaint = 250,
+                maintPer = 5
             };
             calcPacks.Add(newPack);
 
@@ -53,7 +61,11 @@ namespace RealisticPopulationRevisited
                 version = (int)DataVersion.one,
                 level = ItemClass.Level.Level2,
                 baseWorkers = new int[] { 9, 11, 5, 1 },
-                workersPer = new int[] { 100, 20, 100, 250 }
+                perWorker = new int[] { 100, 20, 100, 250 },
+                baseCost = 4000,
+                costPer = 20,
+                baseMaint = 500,
+                maintPer = 3
             };
             calcPacks.Add(newPack);
 
@@ -66,7 +78,11 @@ namespace RealisticPopulationRevisited
                 version = (int)DataVersion.one,
                 level = ItemClass.Level.Level2,
                 baseWorkers = new int[] { 10, 20, 5, 1 },
-                workersPer = new int[] { 80, 20, 80, 200 }
+                perWorker = new int[] { 80, 20, 80, 200 },
+                baseCost = 6000,
+                costPer = 30,
+                baseMaint = 500,
+                maintPer = 5
             };
             calcPacks.Add(newPack);
         }
@@ -201,31 +217,36 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Deserializes a provided building record list.
+        /// Applies configuration settings to all school prefabs.
+        /// Should be called OnLevelLoaded, after prefabs have been loaded but before gameplay commences.
         /// </summary>
-        /// <param name="recordList">List to deserialize</param>
-        internal override void DeserializeBuildings(List<BuildingRecord> recordList)
+        internal void ApplyConfig()
         {
-            Debugging.Message("starting deserialization of schools with record count " + recordList.Count);
-
-            // Use base deserialisation to populate dictionary.
-            base.DeserializeBuildings(recordList);
-
-            // Now, apply each entry in dictionary.
-            foreach (string buildingName in buildingDict.Keys)
+            // Don't apply if settting isn't set.
+            if (ModSettings.enableSchoolProperties)
             {
-                Debugging.Message("Found school settings for " + buildingName);
-                ApplyPack(PrefabCollection<BuildingInfo>.FindLoaded(buildingName), buildingDict[buildingName] as SchoolDataPack);
+                // Iterate through all loaded building prefabs.
+                for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); ++i)
+                {
+                    BuildingInfo building = PrefabCollection<BuildingInfo>.GetLoaded(i);
+
+                    // Check for schools.
+                    if (building?.name != null && building.GetAI() is SchoolAI schoolAI && (building.GetClassLevel() == ItemClass.Level.Level1 || building.GetClassLevel() == ItemClass.Level.Level2))
+                    {
+                        // Found a school - get currently active pack and apply it.
+                        ApplyPack(building, ActivePack(building) as SchoolDataPack);
+                    }
+                }
             }
         }
 
 
         /// <summary>
-        /// Calculates school worker totals by education level, given a school calculatin pack and a total student count.
+        /// Calculates school worker totals by education level, given a school calculation pack and a total student count.
         /// </summary>
         /// <param name="schoolPack">School calculation pack to use</param>
         /// <param name="students">Student count to use</param>
-        /// <returns></returns>
+        /// <returns>Array (length 4) of workers by education level</returns>
         internal int[] CalcWorkers(SchoolDataPack schoolPack, int students)
         {
             const int WorkerLevels = 4;
@@ -235,20 +256,39 @@ namespace RealisticPopulationRevisited
             // Basic checks.  If we fail we just return the zeroed array.
             if (schoolPack != null)
             {
-
                 // Local references.
                 int[] baseWorkers = schoolPack.baseWorkers;
-                int[] workersPer = schoolPack.workersPer;
+                int[] perWorker = schoolPack.perWorker;
 
-                // Calculate extra jobs for X number of students (ensuring divisor is greater than zero).
+                // Calculate workers: base jobs plus extra jobs for X number of students (ensuring divisor is greater than zero).
                 for (int i = 0; i < WorkerLevels; ++i)
                 {
-                    workers[i] = baseWorkers[i] + (workersPer[0] > 0 ? students / workersPer[0] : 0);
+                    workers[i] = baseWorkers[i] + (perWorker[0] > 0 ? students / perWorker[0] : 0);
                 }
             }
 
             return workers;
         }
+
+
+        /// <summary>
+        /// Calculates school building placement cost, given a school calculation pack and a total student count.
+        /// Placement cost is base cost plus extra cost per X students.
+        /// </summary>
+        /// <param name="schoolPack">School calculation pack to use</param>
+        /// <param name="students">Student count to use</param>
+        /// <returns>Placement cost</returns>
+        internal int CalcCost(SchoolDataPack schoolPack, int students) => schoolPack.baseCost + (schoolPack.costPer * students);
+
+
+        /// <summary>
+        /// Calculates school building maintenance cost, given a school calculation pack and a total student count.
+        /// Maintenance cost is base maintenance plus extra maintenance per X students.
+        /// </summary>
+        /// <param name="schoolPack">School calculation pack to use</param>
+        /// <param name="students">Student count to use</param>
+        /// <returns>Maintenance cost</returns>
+        internal int CalcMaint(SchoolDataPack schoolPack, int students) => schoolPack.baseMaint + (schoolPack.maintPer * students);
 
 
         /// <summary>
@@ -261,7 +301,8 @@ namespace RealisticPopulationRevisited
             // Null checks first.
             if (prefab?.name == null)
             {
-                Debugging.Message("No prefab found for SchoolPack");
+                Debugging.Message("No prefab found for SchoolPack " + schoolPack.name);
+                return;
             }
 
             if (schoolPack == null)
@@ -269,6 +310,7 @@ namespace RealisticPopulationRevisited
                 Debugging.Message("No SchoolPack found for prefab " + prefab.name);
             }
 
+            // TODO:Remove.
             Debugging.Message("applying school pack " + schoolPack.name + " to prefab " + prefab.name);
 
             // Apply settings to prefab.
@@ -283,6 +325,10 @@ namespace RealisticPopulationRevisited
                 schoolAI.m_workPlaceCount1 = workers[1];
                 schoolAI.m_workPlaceCount2 = workers[2];
                 schoolAI.m_workPlaceCount3 = workers[3];
+
+                // Calculate and update costs and maintenance.
+                schoolAI.m_constructionCost = CalcCost(schoolPack, schoolAI.StudentCount);
+                schoolAI.m_maintenanceCost = CalcCost(schoolPack, schoolAI.StudentCount);
             }
         }
 

@@ -21,9 +21,14 @@ namespace RealisticPopulationRevisited
             panel.autoLayout = true;
 
             // Enable realistic schools checkbox.
-            UICheckBox enableEdCheck = UIControls.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_SCH_ENB"));
-            enableEdCheck.isChecked = ModSettings.enableSchools;
-            enableEdCheck.eventCheckChanged += (control, isChecked) => ModSettings.enableSchools = isChecked;
+            UICheckBox schoolCapacityCheck = UIControls.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_SEN"));
+            schoolCapacityCheck.isChecked = ModSettings.enableSchoolPop;
+            schoolCapacityCheck.eventCheckChanged += (control, isChecked) => ModSettings.enableSchoolPop = isChecked;
+
+            // Enable realistic schools checkbox.
+            UICheckBox schoolPropertyCheck = UIControls.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_SEJ"));
+            schoolPropertyCheck.isChecked = ModSettings.enableSchoolProperties;
+            schoolPropertyCheck.eventCheckChanged += (control, isChecked) => ModSettings.enableSchoolProperties = isChecked;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace RealisticPopulationRevisited
         private UIFastList floorsList;
         private UILabel numFloorsLabel, floorAreaLabel, totalLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
         private UILabel emptyAreaLabel, emptyPercentLabel, perLabel;
-        private UILabel schoolWorkerLabel;
+        private UILabel schoolWorkerLabel, costLabel;
         private UICheckBox multiFloorCheckBox, ignoreFirstCheckBox;
 
 
@@ -65,7 +65,8 @@ namespace RealisticPopulationRevisited
             emptyAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row1);
             emptyPercentLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row2);
             perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row3);
-            schoolWorkerLabel = AddLabel(this, "School workers", LeftColumn, Row6);
+            schoolWorkerLabel = AddLabel(this, Translations.Translate("RPR_CAL_SWK"), LeftColumn, Row6);
+            costLabel = AddLabel(this, Translations.Translate("RPR_CAL_CST"), LeftColumn, Row7);
 
             // Multi-floor units checkbox.
             multiFloorCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_MFU"), LeftColumn, Row4);
@@ -211,19 +212,23 @@ namespace RealisticPopulationRevisited
                 }
             }
 
-            // Do we have a current school selection.
-            if (schoolData != null)
+            // Do we have a current school selection, and are we using school property overrides?
+            if (schoolData != null && ModSettings.enableSchoolProperties)
             {
                 // Yes - calculate and display school worker breakdown.
                 int[] workers = SchoolData.instance.CalcWorkers(schoolData, totalUnits);
-
                 schoolWorkerLabel.Show();
                 schoolWorkerLabel.text = workers[0] + "/" + workers[1] + "/" + workers[2] + "/" + workers[3];
+
+                // Calculate and display school cost breakdown.
+                costLabel.Show();
+                costLabel.text = SchoolData.instance.CalcCost(schoolData, totalUnits).ToString() + "/" + SchoolData.instance.CalcMaint(schoolData, totalUnits).ToString();
             }
             else
             {
-                // No - hide school worker breakdown label.
+                // No - hide school worker breakdown and cost labels.
                 schoolWorkerLabel.Hide();
+                costLabel.Hide();
             }
 
             // Allocate our new list of labels to the floors list (via an interim fastlist to avoid race conditions if we 'build' manually directly into floorsList).
@@ -234,9 +239,6 @@ namespace RealisticPopulationRevisited
 
             // Display total unit calculation result.
             totalLabel.text = totalUnits.ToString();
-
-            // Display school calculation values.
-
         }
 
 

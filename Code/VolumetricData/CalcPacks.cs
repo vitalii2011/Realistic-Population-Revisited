@@ -78,7 +78,13 @@
 
         // Employment calculation arrays.
         public int[] baseWorkers;
-        public int[] workersPer;
+        public int[] perWorker;
+
+        // Cost and maintenance fields.
+        public int baseCost;
+        public int costPer;
+        public int baseMaint;
+        public int maintPer;
     }
 
 
