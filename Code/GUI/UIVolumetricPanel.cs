@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using UnityEngine;
 using ColossalFramework.UI;
+using ColossalFramework.Globalization;
 using System.Collections.Generic;
 
 
@@ -14,7 +15,7 @@ namespace RealisticPopulationRevisited
         // Layout constants.
         private const float Margin = 5f;
         private const float ColumnWidth = 300f;
-        private const float LabelOffset = 190f;
+        private const float LabelOffset = 180f;
         private const float LeftColumn = LabelOffset;
         private const float RightColumn = ColumnWidth + LabelOffset;
         private const float RowTopMargin = Margin;
@@ -218,11 +219,16 @@ namespace RealisticPopulationRevisited
                 // Yes - calculate and display school worker breakdown.
                 int[] workers = SchoolData.instance.CalcWorkers(schoolData, totalUnits);
                 schoolWorkerLabel.Show();
-                schoolWorkerLabel.text = workers[0] + "/" + workers[1] + "/" + workers[2] + "/" + workers[3];
+                schoolWorkerLabel.text = workers[0] + " / " + workers[1] + " / " + workers[2] + " / " + workers[3];
 
-                // Calculate and display school cost breakdown.
+                // Calculate maintenance cost to display.
+                int amount = SchoolData.instance.CalcMaint(schoolData, totalUnits) * 100;
+                ColossalFramework.Singleton<EconomyManager>.instance.m_EconomyWrapper.OnGetMaintenanceCost(ref amount, building.m_class.m_service, building.m_class.m_subService, building.m_class.m_level);
+                float displayCost = Mathf.Abs(amount * 0.0016f);
+
+                // And display school cost breakdown.
                 costLabel.Show();
-                costLabel.text = SchoolData.instance.CalcCost(schoolData, totalUnits).ToString() + "/" + SchoolData.instance.CalcMaint(schoolData, totalUnits).ToString();
+                costLabel.text = SchoolData.instance.CalcCost(schoolData, totalUnits).ToString(Settings.moneyFormatNoCents, LocaleManager.cultureInfo) + " / " + displayCost.ToString((!(displayCost >= 10f)) ? Settings.moneyFormat : Settings.moneyFormatNoCents, LocaleManager.cultureInfo);
             }
             else
             {
@@ -256,7 +262,7 @@ namespace RealisticPopulationRevisited
             UILabel newLabel = parent.AddUIComponent<UILabel>();
             newLabel.relativePosition = new Vector3(xPos, yPos);
             newLabel.textAlignment = UIHorizontalAlignment.Left;
-            newLabel.textScale = 0.9f;
+            newLabel.textScale = 0.8f;
             newLabel.text = "Blank";
 
             // Add label title to the left.
@@ -311,7 +317,7 @@ namespace RealisticPopulationRevisited
         private void AddLabelToComponent(UIComponent parent, string text)
         {
             UILabel label = parent.AddUIComponent<UILabel>();
-            label.relativePosition = new Vector3(-(LabelOffset - Margin), 3);
+            label.relativePosition = new Vector3(-(LabelOffset - Margin), 0);
             label.autoSize = false;
             label.width = LabelOffset - (Margin * 2);
             label.textScale = 0.8f;

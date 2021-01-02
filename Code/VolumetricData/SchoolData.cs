@@ -310,9 +310,6 @@ namespace RealisticPopulationRevisited
                 Debugging.Message("No SchoolPack found for prefab " + prefab.name);
             }
 
-            // TODO:Remove.
-            Debugging.Message("applying school pack " + schoolPack.name + " to prefab " + prefab.name);
-
             // Apply settings to prefab.
             SchoolAI schoolAI = prefab.GetAI() as SchoolAI;
             if (prefab != null && schoolPack != null)
@@ -328,7 +325,7 @@ namespace RealisticPopulationRevisited
 
                 // Calculate and update costs and maintenance.
                 schoolAI.m_constructionCost = CalcCost(schoolPack, schoolAI.StudentCount);
-                schoolAI.m_maintenanceCost = CalcCost(schoolPack, schoolAI.StudentCount);
+                schoolAI.m_maintenanceCost = CalcMaint(schoolPack, schoolAI.StudentCount);
             }
         }
 
