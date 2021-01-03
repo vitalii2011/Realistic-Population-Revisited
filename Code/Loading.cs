@@ -156,8 +156,11 @@ namespace RealisticPopulationRevisited
                 }
             }
 
-            // Apply school settings.
-            SchoolData.instance.ApplyConfig();
+            // Wait for loading to fully complete.
+            while (!LoadingManager.instance.m_loadingComplete) { }
+
+            // Record initial (default) school settings and apply ours over the top.
+            SchoolData.instance.OnLoad();
 
             // Create new XML if one doesn't already exist.
             if (!File.Exists(DataStore.currentFileLocation))

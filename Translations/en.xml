@@ -192,7 +192,7 @@
     <Translation ID="RPR_OPT_RTS" String="Revert to saved" />
     <Translation ID="RPR_OPT_SAA" String="Save and apply" />
     <Translation ID="RPR_OPT_SCH" String="Schools" />
-    <Translation ID="RPR_OPT_SEN" String="Enable realistic school stuent capacities" />
+    <Translation ID="RPR_OPT_SEN" String="Enable realistic school student capacities" />
     <Translation ID="RPR_OPT_SEJ" String="Enable realistic school properties (jobs, costs) - requires restart" />
     <Translation ID="RPR_OPT_JB0" String="Uneducated jobs" />
     <Translation ID="RPR_OPT_JB1" String="Educated jobs" />

@@ -1,9 +1,21 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
+using ColossalFramework.UI;
 
 
 namespace RealisticPopulationRevisited
 {
+    /// <summary>
+    /// Simple class to store original school stats (for reversion to if needed).
+    /// </summary>
+    public class OriginalSchoolStats
+    {
+        public int jobs0, jobs1, jobs2, jobs3;
+        public int cost, maintenance;
+    }
+
+
     /// <summary>
     /// Centralised store and management of school calculation data.
     /// </summary>
@@ -11,6 +23,10 @@ namespace RealisticPopulationRevisited
     {
         // Instance reference.
         internal static SchoolData instance;
+
+
+        // Dictionary of original settings.
+        Dictionary<string, OriginalSchoolStats> originalStats;
 
 
         /// <summary>
@@ -217,23 +233,36 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Applies configuration settings to all school prefabs.
+        /// Performs task on completion of level loading - recording of school default properties and application of our settings.
         /// Should be called OnLevelLoaded, after prefabs have been loaded but before gameplay commences.
         /// </summary>
-        internal void ApplyConfig()
+        internal void OnLoad()
         {
-            // Don't apply if settting isn't set.
-            if (ModSettings.enableSchoolProperties)
-            {
-                // Iterate through all loaded building prefabs.
-                for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); ++i)
-                {
-                    BuildingInfo building = PrefabCollection<BuildingInfo>.GetLoaded(i);
+            // Initialise original properties dictionary.
+            originalStats = new Dictionary<string, OriginalSchoolStats>();
 
-                    // Check for schools.
-                    if (building?.name != null && building.GetAI() is SchoolAI schoolAI && (building.GetClassLevel() == ItemClass.Level.Level1 || building.GetClassLevel() == ItemClass.Level.Level2))
+            // Iterate through all loaded building prefabs.
+            for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); ++i)
+            {
+                BuildingInfo building = PrefabCollection<BuildingInfo>.GetLoaded(i);
+
+                // Check for schools.
+                if (building?.name != null && building.GetAI() is SchoolAI schoolAI && (building.GetClassLevel() == ItemClass.Level.Level1 || building.GetClassLevel() == ItemClass.Level.Level2))
+                {
+                    // Found a school; add it to our dictionary.
+                    originalStats.Add(building.name, new OriginalSchoolStats
                     {
-                        // Found a school - get currently active pack and apply it.
+                        jobs0 = schoolAI.m_workPlaceCount0,
+                        jobs1 = schoolAI.m_workPlaceCount1,
+                        jobs2 = schoolAI.m_workPlaceCount2,
+                        jobs3 = schoolAI.m_workPlaceCount3,
+                        cost = schoolAI.m_constructionCost,
+                        maintenance = schoolAI.m_maintenanceCost
+                    });
+
+                    // If setting is set, get currently active pack and apply it.
+                    if (ModSettings.enableSchoolProperties)
+                    {
                         ApplyPack(building, ActivePack(building) as SchoolDataPack);
                     }
                 }
@@ -326,6 +355,56 @@ namespace RealisticPopulationRevisited
                 // Calculate and update costs and maintenance.
                 schoolAI.m_constructionCost = CalcCost(schoolPack, schoolAI.StudentCount);
                 schoolAI.m_maintenanceCost = CalcMaint(schoolPack, schoolAI.StudentCount);
+
+                // Update tooltip.
+                UpdateSchoolTooltip(prefab);
+            }
+        }
+
+
+        /// <summary>
+        /// Updates a school building's tooltip (in the education tool panel).
+        /// </summary>
+        /// <param name="prefab">School prefab to update</param>
+        private void UpdateSchoolTooltip(BuildingInfo prefab)
+        {
+            // Find education panel game object.
+            GameObject educationPanelObject = GameObject.Find("EducationDefaultPanel");
+            if (educationPanelObject == null)
+            {
+                Debugging.Message("couldn't find education panel object (tooltip won't be updated)");
+            }
+            else
+            {
+                // Find education panel scrollable panel.
+                UIScrollablePanel edScrollPanel = educationPanelObject.GetComponentInChildren<UIScrollablePanel>();
+                if (edScrollPanel == null)
+                {
+                    Debugging.Message("couldn't find education panel scrollable panel (tooltip won't be updated)");
+                }
+                else
+                {
+                    // Find buttons in panel.
+                    UIButton[] schoolButtons = edScrollPanel.GetComponentsInChildren<UIButton>();
+
+                    if (schoolButtons == null)
+                    {
+                        Debugging.Message("couldn't find school buttons (tooltip won't be updated)");
+                    }
+                    else
+                    {
+                        // Iterate through list of buttons, looking for a match for our prefab.
+                        foreach (UIButton schoolButton in schoolButtons)
+                        {
+                            if (schoolButton.name.Equals(prefab.name))
+                            {
+                                // Match!  Update tooltip.
+                                Debugging.Message("updating tooltip for " + prefab.name);
+                                schoolButton.tooltip = prefab.GetLocalizedTooltip();
+                            }
+                        }
+                    }
+                }
             }
         }
 
