@@ -221,14 +221,18 @@ namespace RealisticPopulationRevisited
                 schoolWorkerLabel.Show();
                 schoolWorkerLabel.text = workers[0] + " / " + workers[1] + " / " + workers[2] + " / " + workers[3];
 
+                // Calculate construction cost to display.
+                int cost = SchoolData.instance.CalcCost(schoolData, totalUnits);
+                ColossalFramework.Singleton<EconomyManager>.instance.m_EconomyWrapper.OnGetConstructionCost(ref cost, building.m_class.m_service, building.m_class.m_subService, building.m_class.m_level);
+
                 // Calculate maintenance cost to display.
-                int amount = SchoolData.instance.CalcMaint(schoolData, totalUnits) * 100;
-                ColossalFramework.Singleton<EconomyManager>.instance.m_EconomyWrapper.OnGetMaintenanceCost(ref amount, building.m_class.m_service, building.m_class.m_subService, building.m_class.m_level);
-                float displayCost = Mathf.Abs(amount * 0.0016f);
+                int maintenance = SchoolData.instance.CalcMaint(schoolData, totalUnits) * 100;
+                ColossalFramework.Singleton<EconomyManager>.instance.m_EconomyWrapper.OnGetMaintenanceCost(ref maintenance, building.m_class.m_service, building.m_class.m_subService, building.m_class.m_level);
+                float displayMaint = Mathf.Abs(maintenance * 0.0016f);
 
                 // And display school cost breakdown.
                 costLabel.Show();
-                costLabel.text = SchoolData.instance.CalcCost(schoolData, totalUnits).ToString(Settings.moneyFormatNoCents, LocaleManager.cultureInfo) + " / " + displayCost.ToString((!(displayCost >= 10f)) ? Settings.moneyFormat : Settings.moneyFormatNoCents, LocaleManager.cultureInfo);
+                costLabel.text = cost.ToString((!(displayMaint >= 10f)) ? Settings.moneyFormat : Settings.moneyFormatNoCents, LocaleManager.cultureInfo) + " / " + displayMaint.ToString((!(displayMaint >= 10f)) ? Settings.moneyFormat : Settings.moneyFormatNoCents, LocaleManager.cultureInfo);
             }
             else
             {
