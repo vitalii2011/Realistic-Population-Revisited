@@ -26,8 +26,9 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
+        /// <param name="multiplier">Optional population multiplier (default 1.0)</param>
         /// <returns>Population</returns>
-        internal int Population(BuildingInfo buildingPrefab, int level)
+        internal int Population(BuildingInfo buildingPrefab, int level, float multiplier = 1.0f)
         {
             // First, check for population override.
             int population;
@@ -50,7 +51,7 @@ namespace RealisticPopulationRevisited
             }
 
             // If we got here, there's no override; return pack default.
-            return ((PopDataPack)ActivePack(buildingPrefab)).Population(buildingPrefab, level);
+            return ((PopDataPack)ActivePack(buildingPrefab)).Population(buildingPrefab, level, multiplier);
         }
 
 
@@ -60,10 +61,11 @@ namespace RealisticPopulationRevisited
         /// <param name="buildingInfoGen">Building info record</param>
         /// <param name="levelData">LevelData record to use for calculations</param>
         /// <param name="floorData">FloorDataPack record to use for calculations</param>
+        /// <param name="multiplier"Population multiplier</param>
         /// <param name="floorList">Optional precalculated list of calculated floors (to save time; will be generated if not provided)</param>
         /// <param name="totalArea">Optional precalculated total building area  (to save time; will be generated if not provided)</param>
         /// <returns></returns>
-        internal int VolumetricPopulation(BuildingInfoGen buildingInfoGen, LevelData levelData, FloorDataPack floorData, SortedList<int, float> floorList = null, float totalArea = 0)
+        internal int VolumetricPopulation(BuildingInfoGen buildingInfoGen, LevelData levelData, FloorDataPack floorData, float multiplier, SortedList<int, float> floorList = null, float totalArea = 0 )
         {
             // Return value.
             int totalUnits = 0;
@@ -91,6 +93,8 @@ namespace RealisticPopulationRevisited
                 {
                     // Units base on total floor area: calculate number of units in total building (always rounded down), after subtracting exmpty space.
                     totalUnits = (int)(((floorArea - emptyArea) * areaPercent) / levelData.areaPer);
+                    // Adjust by multiplier (after rounded calculation above).
+                    totalUnits = (int)(totalUnits *  multiplier);
                 }
                 else
                 {
@@ -111,6 +115,8 @@ namespace RealisticPopulationRevisited
 
                         // Number of units on this floor - always rounded down.
                         int floorUnits = (int)((floors[i] * areaPercent) / levelData.areaPer);
+                        // Adjust by multiplier (after rounded calculation above).
+                        floorUnits = (int)(floorUnits * multiplier);
                         totalUnits += floorUnits;
                     }
                 }

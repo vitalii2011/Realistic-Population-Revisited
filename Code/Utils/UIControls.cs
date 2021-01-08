@@ -79,7 +79,7 @@ namespace RealisticPopulationRevisited
         /// <param name="xPos">Relative x position (default 0)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
         /// <returns>New UI checkbox *without* attached labels</returns>
-        internal static UICheckBox AddCheckBox(UIComponent parent, float xPos = 20f, float yPos = 0f)
+        public static UICheckBox AddCheckBox(UIComponent parent, float xPos = 20f, float yPos = 0f)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
 
@@ -114,7 +114,7 @@ namespace RealisticPopulationRevisited
         /// <param name="width">Label width (default 700)</param>
         /// <param name="width">Text scale (default 1.0)</param>
         /// <returns></returns>
-        internal static UILabel AddLabel(UIComponent parent, string text, float xPos, float yPos, float width = 700f, float textScale = 1.0f)
+        public static UILabel AddLabel(UIComponent parent, string text, float xPos, float yPos, float width = 700f, float textScale = 1.0f)
         {
             // Add label.
             UILabel label = (UILabel)parent.AddUIComponent<UILabel>();
@@ -138,7 +138,7 @@ namespace RealisticPopulationRevisited
         /// <param name="xPos">Relative x position (default 20)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
         /// <returns></returns>
-        internal static UIDropDown LabelledDropDown(UIComponent parent, string text, float xPos = 20f, float yPos = 0f)
+        public static UIDropDown LabelledDropDown(UIComponent parent, string text, float xPos = 20f, float yPos = 0f)
         {
             // Create dropdown.
             UIDropDown dropDown = AddDropDown(parent, xPos, yPos);
@@ -167,7 +167,7 @@ namespace RealisticPopulationRevisited
         /// <param name="xPos">Relative x position (default 20)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
         /// <returns></returns>
-        internal static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f)
+        public static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f)
         {
             // Constants.
             const float Height = 25f;
@@ -264,11 +264,10 @@ namespace RealisticPopulationRevisited
         /// <param name="eventCallback">Slider event handler</param>
         /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
         /// <returns>New UI slider with attached labels</returns>
-        public static UISlider AddSliderWithValue(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
+        public static UISlider AddSlider(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
         {
             // Add slider component.
             UIPanel sliderPanel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsSliderTemplate")) as UIPanel;
-            sliderPanel.Find<UILabel>("Label").text = text;
 
             // Label.
             UILabel sliderLabel = sliderPanel.Find<UILabel>("Label");
@@ -297,6 +296,29 @@ namespace RealisticPopulationRevisited
             sliderPanel.width = width + 50f;
             sliderPanel.height = newSlider.relativePosition.y + newSlider.height + 20f;
 
+            return newSlider;
+        }
+
+
+
+        /// <summary>
+        /// Adds a slider with a descriptive text label above and an automatically updating value label immediately to the right.
+        /// </summary>
+        /// <param name="parent">Panel to add the control to</param>
+        /// <param name="text">Descriptive label text</param>
+        /// <param name="min">Slider minimum value</param>
+        /// <param name="max">Slider maximum value</param>
+        /// <param name="step">Slider minimum step</param>
+        /// <param name="defaultValue">Slider initial value</param>
+        /// <param name="eventCallback">Slider event handler</param>
+        /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
+        /// <returns>New UI slider with attached labels</returns>
+        public static UISlider AddSliderWithValue(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
+        {
+            // Add slider component.
+            UISlider newSlider = AddSlider(parent, text, min, max, step, defaultValue, eventCallback, width);
+            UIPanel sliderPanel = (UIPanel)newSlider.parent;
+
             // Value label.
             UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
             valueLabel.name = "ValueLabel";
@@ -315,12 +337,47 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Adds a slider with a descriptive text label above and an automatically updating value label immediately to the right.
+        /// </summary>
+        /// <param name="parent">Panel to add the control to</param>
+        /// <param name="text">Descriptive label text</param>
+        /// <param name="min">Slider minimum value</param>
+        /// <param name="max">Slider maximum value</param>
+        /// <param name="step">Slider minimum step</param>
+        /// <param name="defaultValue">Slider initial value</param>
+        /// <param name="eventCallback">Slider event handler</param>
+        /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
+        /// <returns>New UI slider with attached labels</returns>
+        public static UISlider AddSliderWithMultipler(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
+        {
+            // Add slider component.
+            UISlider newSlider = AddSlider(parent, text, min, max, step, defaultValue, eventCallback, width);
+            UIPanel sliderPanel = (UIPanel)newSlider.parent;
+
+            // Value label.
+            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
+            valueLabel.name = "ValueLabel";
+            valueLabel.text = "x" + newSlider.value.ToString();
+            valueLabel.relativePosition = PositionUnder(newSlider, 0, 0f);
+
+            // Event handler to update value label.
+            newSlider.eventValueChanged += (component, value) =>
+            {
+                valueLabel.text = "x" + value.ToString();
+                eventCallback(value);
+            };
+
+            return newSlider;
+        }
+
+
+        /// <summary>
         /// Creates a plain checkbox using the game's option panel checkbox template.
         /// </summary>
         /// <param name="parent">Parent component</param>
         /// <param name="text">Descriptive label text</param>
         /// <returns></returns>
-        internal static UICheckBox AddPlainCheckBox(UIComponent parent, string text)
+        public static UICheckBox AddPlainCheckBox(UIComponent parent, string text)
         {
             UICheckBox checkBox = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsCheckBoxTemplate")) as UICheckBox;
 

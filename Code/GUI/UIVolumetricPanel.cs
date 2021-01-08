@@ -66,8 +66,8 @@ namespace RealisticPopulationRevisited
             emptyAreaLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row1);
             emptyPercentLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row2);
             perLabel = AddLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row3);
-            schoolWorkerLabel = AddLabel(this, Translations.Translate("RPR_CAL_SWK"), LeftColumn, Row6);
-            costLabel = AddLabel(this, Translations.Translate("RPR_CAL_CST"), LeftColumn, Row7);
+            schoolWorkerLabel = AddLabel(this, Translations.Translate("RPR_CAL_SCH_WKR"), LeftColumn, Row6);
+            costLabel = AddLabel(this, Translations.Translate("RPR_CAL_SCH_CST"), LeftColumn, Row7);
 
             // Multi-floor units checkbox.
             multiFloorCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_MFU"), LeftColumn, Row4);
@@ -139,14 +139,14 @@ namespace RealisticPopulationRevisited
         /// <param name="levelData">Population (level) calculation data to apply to calculations</param>
         /// <param name="floorData">Floor calculation data to apply to calculations</param>
         /// <param name="schoolData">School calculation data to apply to calculations</param>
-        internal void CalculateVolumetric(BuildingInfo building, LevelData levelData, FloorDataPack floorData, SchoolDataPack schoolData)
+        /// <param name="schoolData">Multiplier to apply to calculations</param>
+        internal void CalculateVolumetric(BuildingInfo building, LevelData levelData, FloorDataPack floorData, SchoolDataPack schoolData, float multiplier)
         {
             // Safety first!
             if (building == null)
             {
                 return;
             }
-
             // Perform calculations.
             // Get floors and allocate area an number of floor labels.
             SortedList<int, float> floors = PopData.instance.VolumetricFloors(building.m_generatedInfo, levelData, floorData, out float totalArea);
@@ -154,7 +154,7 @@ namespace RealisticPopulationRevisited
             numFloorsLabel.text = floors.Count.ToString();
 
             // Get total units.
-            int totalUnits = PopData.instance.VolumetricPopulation(building.m_generatedInfo, levelData, floorData, floors, totalArea);
+            int totalUnits = PopData.instance.VolumetricPopulation(building.m_generatedInfo, levelData, floorData, multiplier, floors, totalArea);
 
             // Floor labels list.
             List<string> floorLabels = new List<string>();
@@ -192,17 +192,19 @@ namespace RealisticPopulationRevisited
                     // Floor number
                     floorString.Append(i + 1);
                     floorString.Append(" " + Translations.Translate("RPR_CAL_VOL_ARA") + " ");
-                    floorString.Append(floors[i]);
+                    floorString.Append(floors[i].ToString("N0"));
 
                     // See if we're calculating units per individual floor.
                     if (!levelData.multiFloorUnits)
                     {
                         // Number of units on this floor - always rounded down.
                         int floorUnits = (int)((floors[i] * areaPercent) / levelData.areaPer);
+                        // Adjust by multiplier (after rounded calculation above).
+                        floorUnits = (int)(floorUnits * multiplier);
 
                         // Add extra info to label.
                         floorString.Append(" (");
-                        floorString.Append(floorUnits);
+                        floorString.Append(floorUnits.ToString("N0"));
                         floorString.Append(" ");
                         floorString.Append(unitName);
                         floorString.Append(")");

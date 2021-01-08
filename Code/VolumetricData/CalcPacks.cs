@@ -54,8 +54,9 @@
         /// </summary>
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
+        /// <param name="multiplier">Population multiplier</param>
         /// <returns>Population</returns>
-        public virtual int Population(BuildingInfo buildingPrefab, int level) => 0;
+        public virtual int Population(BuildingInfo buildingPrefab, int level, float multiplier) => 0;
 
 
         /// <summary>
@@ -123,8 +124,9 @@
         /// </summary>
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
+        /// <param name="multiplier">Population multiplier</param>
         /// <returns>Population</returns>
-        public override int Population(BuildingInfo buildingPrefab, int level) => PopData.instance.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level], (FloorDataPack)FloorData.instance.ActivePack(buildingPrefab));
+        public override int Population(BuildingInfo buildingPrefab, int level, float multiplier) => PopData.instance.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level], (FloorDataPack)FloorData.instance.ActivePack(buildingPrefab), multiplier);
 
 
         /// <summary>
@@ -147,8 +149,9 @@
         /// </summary>
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
+        /// <param name="multiplier">Ignored</param>
         /// <returns>Population</returns>
-        public override int Population(BuildingInfo buildingPrefab, int level)
+        public override int Population(BuildingInfo buildingPrefab, int level, float multiplier)
         {
             int[] array = ResidentialBuildingAIMod.GetArray(buildingPrefab, (int)level);
             return AI_Utils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array, (int)level);
@@ -209,9 +212,6 @@
             }
 
             AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, minWorkers, ref array, out output);
-
-
-            Debugging.Message("calculating legacy workplace count for industry " + buildingPrefab.name + " with workplaces " + output.level0 + "," + output.level1 + "," + output.level2 + "," + output.level3);
 
             return output;
         }

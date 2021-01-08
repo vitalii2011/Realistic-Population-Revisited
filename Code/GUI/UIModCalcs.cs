@@ -31,6 +31,7 @@ namespace RealisticPopulationRevisited
         private UILegacyCalcs legacyPanel;
         private UIVolumetricPanel volumetricPanel;
         private UIDropDown popMenu, floorMenu, schoolMenu;
+        UISlider multSlider;
         private UILabel popDescription, floorDescription, schoolDescription, floorOverrideLabel;
         private UIButton applyButton;
 
@@ -47,6 +48,29 @@ namespace RealisticPopulationRevisited
 
         // Flags.
         private bool usingLegacy;
+
+
+        /// <summary>
+        /// Current population modifier.
+        /// </summary>
+        float CurrentMult
+        {
+            // Getter - if the multiplier slider exists, use its value; otherwise, use default of 1.
+            get
+            {
+                return multSlider == null ? 1.0f : multSlider.value;
+            }
+
+            // Setter - recalculate volumetric figures with new amount.
+            // Should only be called from slider onValueChanged.
+            set
+            {
+                if (!usingLegacy)
+                {
+                    volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
+                }
+            }
+        }
 
 
         /// <summary>
@@ -90,7 +114,7 @@ namespace RealisticPopulationRevisited
 
                 // Update panel with new calculations.
                 volumetricPanel.UpdateFloorText(displayPack);
-                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack, currentSchoolPack);
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack, currentSchoolPack, CurrentMult);
             }
         }
         
@@ -156,12 +180,14 @@ namespace RealisticPopulationRevisited
             // School dropdown panel.
             schoolPanel = this.AddUIComponent<UIPanel>();
             schoolPanel.relativePosition = new Vector2(Margin, Row2LabelY);
-            schoolPanel.autoSize = true;
+            schoolPanel.autoSize = false;
             schoolPanel.autoLayout = false;
             schoolPanel.clipChildren = false;
+            schoolPanel.height = ApplyX - Row2LabelY;
+            schoolPanel.width = this.width - (Margin * 2);
 
             // School panel title and dropdown menu.
-            UILabel schoolTitle = ColumnLabel(schoolPanel, Translations.Translate("RPR_CAL_SCH"), 0, 0);
+            UILabel schoolTitle = ColumnLabel(schoolPanel, Translations.Translate("RPR_CAL_SCH_PRO"), 0, 0);
             schoolMenu = UIControls.AddDropDown(schoolPanel, 0f, LabelHeight, ComponentWidth);
             schoolPanel.Hide();
 
@@ -176,7 +202,8 @@ namespace RealisticPopulationRevisited
             applyButton.text = Translations.Translate("RPR_OPT_SAA");
             applyButton.eventClicked += (control, clickEvent) =>
             {
-                // Update building setting and save.
+                // Update building setting and save - multiplier first!
+                Multipliers.instance.UpdateMultiplier(currentBuilding, CurrentMult);
                 PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
                 FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
                 // Make sure SchoolData is called AFTER student count is settled via Pop and Floor packs, so it can work from updated data.
@@ -191,6 +218,13 @@ namespace RealisticPopulationRevisited
             popMenu.eventSelectedIndexChanged += (component, index) => UpdatePopSelection(index);
             floorMenu.eventSelectedIndexChanged += (component, index) => UpdateFloorSelection(index);
             schoolMenu.eventSelectedIndexChanged += (component, index) => UpdateSchoolSelection(index);
+
+            // Muliplier label.
+            UILabel PopMultLabel = ColumnLabel(schoolPanel, Translations.Translate("RPR_CAL_MUL"), RightColumnX, 0);
+
+            // Add school multiplier slider.
+            multSlider = UIControls.AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 10f, 0.5f, Multipliers.instance.ActiveMultiplier(currentBuilding?.name), (value) => CurrentMult = value, ComponentWidth);
+            multSlider.parent.relativePosition = new Vector2(RightColumnX, 0f);
         }
 
 
@@ -232,7 +266,7 @@ namespace RealisticPopulationRevisited
                     // No override - update panel with new calculations.
                     LevelData thisLevel = CurrentLevelData;
                     volumetricPanel.UpdatePopText(thisLevel);
-                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack, currentSchoolPack);
+                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack, currentSchoolPack, CurrentMult);
 
                     // Set visibility.
                     floorOverrideLabel.Hide();
@@ -273,7 +307,7 @@ namespace RealisticPopulationRevisited
 
             // Update panel with new calculations.
             volumetricPanel.UpdateFloorText(currentFloorPack);
-            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack);
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
 
             // Communicate change with to rest of panel.
             BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
@@ -293,7 +327,7 @@ namespace RealisticPopulationRevisited
             schoolDescription.text = currentSchoolPack.description;
 
             // Update panel with new calculations.
-            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack);
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
 
             // School selections aren't used anywhere else, so no need to communicate change to rest of panel.
         }
@@ -320,6 +354,9 @@ namespace RealisticPopulationRevisited
                 currentFloorPack = (FloorDataPack)FloorData.instance.ActivePack(building);
                 PopDataPack defaultPopPack = (PopDataPack)PopData.instance.CurrentDefaultPack(building);
                 FloorDataPack defaultFloorPack = (FloorDataPack)FloorData.instance.CurrentDefaultPack(building);
+
+                // Update multiplier before we do any other calcs.
+                multSlider.value = Multipliers.instance.ActiveMultiplier(building.name);
 
                 // Build pop pack menu.
                 popMenu.items = new string[popPacks.Length];

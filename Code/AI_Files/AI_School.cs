@@ -21,7 +21,8 @@ namespace RealisticPopulationRevisited
             if (ModSettings.enableSchoolPop && __instance.m_info.GetClassLevel() <= ItemClass.Level.Level2)
             {
                 // We are - set the result to our realistic population lookup.
-                __result = PopData.instance.Population(__instance.m_info, (int)__instance.m_info.GetClassLevel());
+                BuildingInfo thisInfo = __instance.m_info;
+                __result = (int)(PopData.instance.Population(thisInfo, (int)__instance.m_info.GetClassLevel(), Multipliers.instance.ActiveMultiplier(thisInfo.name)));
 
                 // Don't continue on to original method.
                 return false;

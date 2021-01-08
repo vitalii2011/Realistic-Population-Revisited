@@ -229,7 +229,7 @@ namespace RealisticPopulationRevisited
         /// Serializes building pack settings to XML.
         /// </summary>
         /// <param name="existingList">Existing list to modify, from population pack serialization (null if none)</param>
-        /// <returns>New list of building pack settings ready for XML</returns>
+        /// <returns>New sorted list with building pack settings</returns>
         internal SortedList<string, BuildingRecord> SerializeBuildings(SortedList<string, BuildingRecord> existingList)
         {
             // Return list.

@@ -97,6 +97,11 @@ namespace RealisticPopulationRevisited
         [XmlAttribute("school")]
         [DefaultValue("")]
         public string schoolPack;
+
+        // Multiplier.
+        [XmlAttribute("multiplier")]
+        [DefaultValue("1")]
+        public float multiplier = 1;
     }
 
 

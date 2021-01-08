@@ -33,6 +33,12 @@ namespace RealisticPopulationRevisited
                 SchoolData.instance = new SchoolData();
             }
 
+            // Ditto Multipliers.
+            if (Multipliers.instance == null)
+            {
+                Multipliers.instance = new Multipliers();
+            }
+
             // Load (volumetric) building settings file if we haven't already..
             if (!ConfigUtils.configRead)
             {
@@ -79,7 +85,7 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Updates our building setting dictionary for the selected building prefab to the indicated calculation pack.
         /// </summary>
-        /// <param name="building">Building prefab to update</param>
+        /// <param name="prefab">Building prefab to update</param>
         /// <param name="pack">New data pack to apply</param>
         internal virtual void UpdateBuildingPack(BuildingInfo prefab, DataPack pack)
         {
@@ -325,8 +331,6 @@ namespace RealisticPopulationRevisited
                     Debugging.Message("Couldn't find calculation pack " + packName + " for " + buildingRecord.prefab);
                     continue;
                 }
-
-                Debugging.Message("added building settings for " + buildingRecord.prefab + " with calculation pack " + calcPack.name);
 
                 // Add building to our dictionary.
                 buildingDict.Add(buildingRecord.prefab, calcPack);
