@@ -223,7 +223,7 @@ namespace RealisticPopulationRevisited
             UILabel PopMultLabel = ColumnLabel(schoolPanel, Translations.Translate("RPR_CAL_MUL"), RightColumnX, 0);
 
             // Add school multiplier slider.
-            multSlider = UIControls.AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 10f, 0.5f, Multipliers.instance.ActiveMultiplier(currentBuilding?.name), (value) => CurrentMult = value, ComponentWidth);
+            multSlider = UIControls.AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 5f, 0.5f, Multipliers.instance.ActiveMultiplier(currentBuilding?.name), (value) => CurrentMult = value, ComponentWidth);
             multSlider.parent.relativePosition = new Vector2(RightColumnX, 0f);
         }
 

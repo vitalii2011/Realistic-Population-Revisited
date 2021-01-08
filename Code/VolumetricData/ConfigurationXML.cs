@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
+using UnityEngine;
 
 
 namespace RealisticPopulationRevisited
@@ -98,10 +99,28 @@ namespace RealisticPopulationRevisited
         [DefaultValue("")]
         public string schoolPack;
 
-        // Multiplier.
+        // Multiplier - don't want to serialize default values (1 or less).
         [XmlAttribute("multiplier")]
-        [DefaultValue(0)]
-        public float multiplier { get; set; }
+        [DefaultValue("")]
+        public string Multiplier
+        {
+            get => multiplier > 1 ? multiplier.ToString() : string.Empty;
+            set
+            {
+                // Attempt to parse value as float.
+                if (!float.TryParse(value, out multiplier))
+                {
+                    Debugging.Message("unable to parse multiplier as float; setting to default");
+                    multiplier = 1f;
+                }
+
+                // Minimum value of 1.
+                multiplier = Mathf.Max(1f, multiplier);
+            }
+        }
+
+        [XmlIgnore]
+        public float multiplier;
     }
 
 

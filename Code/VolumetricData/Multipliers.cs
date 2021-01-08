@@ -35,8 +35,6 @@ namespace RealisticPopulationRevisited
             // Check to see if we have a multiplier override in effect.
             if (buildingName != null && buildingDict.ContainsKey(buildingName))
             {
-                Debugging.Message("found multiplier " + buildingDict[buildingName] + " for building " + buildingName);
-
                 // Yes - return the mutlplier.
                 return buildingDict[buildingName];
             }
