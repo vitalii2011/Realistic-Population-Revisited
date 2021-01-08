@@ -358,7 +358,7 @@ namespace RealisticPopulationRevisited
             UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
             valueLabel.name = "ValueLabel";
             valueLabel.text = "x" + newSlider.value.ToString();
-            valueLabel.relativePosition = PositionUnder(newSlider, 0, 0f);
+            valueLabel.relativePosition = PositionUnder(newSlider, 2, 0f);
 
             // Event handler to update value label.
             newSlider.eventValueChanged += (component, value) =>

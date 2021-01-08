@@ -291,7 +291,7 @@ namespace RealisticPopulationRevisited
                 // Calculate workers: base jobs plus extra jobs for X number of students (ensuring divisor is greater than zero).
                 for (int i = 0; i < WorkerLevels; ++i)
                 {
-                    workers[i] = baseWorkers[i] + (perWorker[0] > 0 ? students / perWorker[0] : 0);
+                    workers[i] = baseWorkers[i] + (perWorker[i] > 0 ? students / perWorker[i] : 0);
                 }
             }
 

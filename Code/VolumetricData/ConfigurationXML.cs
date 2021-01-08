@@ -100,8 +100,8 @@ namespace RealisticPopulationRevisited
 
         // Multiplier.
         [XmlAttribute("multiplier")]
-        [DefaultValue("1")]
-        public float multiplier = 1;
+        [DefaultValue(0)]
+        public float multiplier { get; set; }
     }
 
 
