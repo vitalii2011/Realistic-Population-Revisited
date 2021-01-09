@@ -165,7 +165,7 @@
     <Translation ID="RPR_CAL_M2" String="Calculated area:" />
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />
     <Translation ID="RPR_CAL_CAP_OVR" String="Custom capacity multiplier" />
-    <Translation ID="RPR_CAL_CAP_DEF" String="(default)" />
+    <Translation ID="RPR_CAL_CAP_DEF" String="Default multiplier:" />
     <Translation ID="RPR_CAL_SCH_PRO" String="Staff and cost scaling" />
     <Translation ID="RPR_CAL_SCH_WKR" String="School workers" />
     <Translation ID="RPR_CAL_SCH_CST" String="Cost/maintenance" />

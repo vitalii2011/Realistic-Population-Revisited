@@ -34,6 +34,7 @@ namespace RealisticPopulationRevisited
         private UIDropDown popMenu, floorMenu, schoolMenu;
         private UICheckBox multCheck;
         private UISlider multSlider;
+        private UILabel multDefaultLabel;
         private UILabel popDescription, floorDescription, schoolDescription, floorOverrideLabel;
         private UIButton applyButton;
 
@@ -234,26 +235,30 @@ namespace RealisticPopulationRevisited
             floorMenu.eventSelectedIndexChanged += (component, index) => UpdateFloorSelection(index);
             schoolMenu.eventSelectedIndexChanged += (component, index) => UpdateSchoolSelection(index);
 
-
             // Add school multiplier slider (starts hidden).
             multSlider = AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 5f, 0.5f, ModSettings.DefaultSchoolMult, (value) => CurrentMult = value, ComponentWidth);
-            multSlider.parent.relativePosition = new Vector2(RightColumnX, 0f);
+            multSlider.parent.relativePosition = new Vector2(RightColumnX, 10f);
             multSlider.parent.Hide();
 
             // Muliplier checkbox.
-            multCheck = UIControls.AddCheckBox(schoolPanel, Translations.Translate("RPR_CAL_CAP_OVR"), RightColumnX, 8f);
+            multCheck = UIControls.AddCheckBox(schoolPanel, Translations.Translate("RPR_CAL_CAP_OVR"), RightColumnX, 18f);
+
+            // Multiplier default label.
+            multDefaultLabel = UIControls.AddLabel(schoolPanel, Translations.Translate("RPR_CAL_CAP_DEF") + " x" + ModSettings.DefaultSchoolMult, RightColumnX + 21f, 40f, textScale: 0.8f);
 
             // Multplier checkbox event handler.
             multCheck.eventCheckChanged += (control, isChecked) =>
             {
-                // Toggle slider visibility.
+                // Toggle slider and default label visibility.
                 if (isChecked)
                 {
+                    multDefaultLabel.Hide();
                     multSlider.parent.Show();
                 }
                 else
                 {
                     multSlider.parent.Hide();
+                    multDefaultLabel.Show();
                 }
             };
         }
@@ -571,21 +576,11 @@ namespace RealisticPopulationRevisited
             valueLabel.name = "ValueLabel";
             valueLabel.relativePosition = UIControls.PositionUnder(newSlider, 2, 0f);
             valueLabel.text = "x" + newSlider.value.ToString();
-            if (defaultValue == ModSettings.DefaultSchoolMult)
-            {
-                valueLabel.text += " " + Translations.Translate("RPR_CAL_CAP_DEF");
-            }
 
             // Event handler to update value label.
             newSlider.eventValueChanged += (component, value) =>
             {
                 valueLabel.text = "x" + value.ToString();
-
-                // Add default label if value is default.
-                if (value == ModSettings.DefaultSchoolMult)
-                {
-                    valueLabel.text += " " + Translations.Translate("RPR_CAL_CAP_DEF");
-                }
 
                 // Execute provided callback.
                 eventCallback(value);
