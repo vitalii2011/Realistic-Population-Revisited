@@ -337,41 +337,6 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Adds a slider with a descriptive text label above and an automatically updating value label immediately to the right.
-        /// </summary>
-        /// <param name="parent">Panel to add the control to</param>
-        /// <param name="text">Descriptive label text</param>
-        /// <param name="min">Slider minimum value</param>
-        /// <param name="max">Slider maximum value</param>
-        /// <param name="step">Slider minimum step</param>
-        /// <param name="defaultValue">Slider initial value</param>
-        /// <param name="eventCallback">Slider event handler</param>
-        /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
-        /// <returns>New UI slider with attached labels</returns>
-        public static UISlider AddSliderWithMultipler(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
-        {
-            // Add slider component.
-            UISlider newSlider = AddSlider(parent, text, min, max, step, defaultValue, eventCallback, width);
-            UIPanel sliderPanel = (UIPanel)newSlider.parent;
-
-            // Value label.
-            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
-            valueLabel.name = "ValueLabel";
-            valueLabel.text = "x" + newSlider.value.ToString();
-            valueLabel.relativePosition = PositionUnder(newSlider, 2, 0f);
-
-            // Event handler to update value label.
-            newSlider.eventValueChanged += (component, value) =>
-            {
-                valueLabel.text = "x" + value.ToString();
-                eventCallback(value);
-            };
-
-            return newSlider;
-        }
-
-
-        /// <summary>
         /// Creates a plain checkbox using the game's option panel checkbox template.
         /// </summary>
         /// <param name="parent">Parent component</param>

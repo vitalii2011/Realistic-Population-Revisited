@@ -276,6 +276,27 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Updates all school prefabs (e.g. when the global multiplier has changed).
+        /// </summary>
+        internal void UpdateSchools()
+        {
+
+            // Iterate through all loaded building prefabs.
+            for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); ++i)
+            {
+                BuildingInfo building = PrefabCollection<BuildingInfo>.GetLoaded(i);
+
+                // Check for schools.
+                if (building?.name != null && building.GetAI() is SchoolAI schoolAI && (building.GetClassLevel() == ItemClass.Level.Level1 || building.GetClassLevel() == ItemClass.Level.Level2))
+                {
+                    // Found a school; update school record and tooltip.
+                    UpdateSchoolPrefab(building, schoolAI);
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Calculates school worker totals by education level, given a school calculation pack and a total student count.
         /// </summary>
         /// <param name="schoolPack">School calculation pack to use</param>

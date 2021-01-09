@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ICities;
 using ColossalFramework.UI;
 
 
@@ -31,7 +32,8 @@ namespace RealisticPopulationRevisited
         private UILegacyCalcs legacyPanel;
         private UIVolumetricPanel volumetricPanel;
         private UIDropDown popMenu, floorMenu, schoolMenu;
-        UISlider multSlider;
+        private UICheckBox multCheck;
+        private UISlider multSlider;
         private UILabel popDescription, floorDescription, schoolDescription, floorOverrideLabel;
         private UIButton applyButton;
 
@@ -206,6 +208,19 @@ namespace RealisticPopulationRevisited
                 Multipliers.instance.UpdateMultiplier(currentBuilding, CurrentMult);
                 PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
                 FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
+                
+                // Update multiplier.
+                if (multCheck.isChecked)
+                {
+                    // If the multiplier override checkbox is selected, update the multiplier with the slider value.
+                    Multipliers.instance.UpdateMultiplier(currentBuilding, CurrentMult);
+                }
+                else
+                {
+                    // Otherwise, delete any multiplier override.
+                    Multipliers.instance.DeleteMultiplier(currentBuilding.name);
+                }
+
                 // Make sure SchoolData is called AFTER student count is settled via Pop and Floor packs, so it can work from updated data.
                 SchoolData.instance.UpdateBuildingPack(currentBuilding, currentSchoolPack);
                 ConfigUtils.SaveSettings();
@@ -219,12 +234,28 @@ namespace RealisticPopulationRevisited
             floorMenu.eventSelectedIndexChanged += (component, index) => UpdateFloorSelection(index);
             schoolMenu.eventSelectedIndexChanged += (component, index) => UpdateSchoolSelection(index);
 
-            // Muliplier label.
-            UILabel PopMultLabel = ColumnLabel(schoolPanel, Translations.Translate("RPR_CAL_MUL"), RightColumnX, 0);
 
-            // Add school multiplier slider.
-            multSlider = UIControls.AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 5f, 0.5f, Multipliers.instance.ActiveMultiplier(currentBuilding?.name), (value) => CurrentMult = value, ComponentWidth);
+            // Add school multiplier slider (starts hidden).
+            multSlider = AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 5f, 0.5f, ModSettings.DefaultSchoolMult, (value) => CurrentMult = value, ComponentWidth);
             multSlider.parent.relativePosition = new Vector2(RightColumnX, 0f);
+            multSlider.parent.Hide();
+
+            // Muliplier checkbox.
+            multCheck = UIControls.AddCheckBox(schoolPanel, Translations.Translate("RPR_CAL_CAP_OVR"), RightColumnX, 8f);
+
+            // Multplier checkbox event handler.
+            multCheck.eventCheckChanged += (control, isChecked) =>
+            {
+                // Toggle slider visibility.
+                if (isChecked)
+                {
+                    multSlider.parent.Show();
+                }
+                else
+                {
+                    multSlider.parent.Hide();
+                }
+            };
         }
 
 
@@ -356,7 +387,7 @@ namespace RealisticPopulationRevisited
                 FloorDataPack defaultFloorPack = (FloorDataPack)FloorData.instance.CurrentDefaultPack(building);
 
                 // Update multiplier before we do any other calcs.
-                multSlider.value = Multipliers.instance.ActiveMultiplier(building.name);
+                multCheck.isChecked = Multipliers.instance.HasOverride(building.name);
 
                 // Build pop pack menu.
                 popMenu.items = new string[popPacks.Length];
@@ -512,6 +543,55 @@ namespace RealisticPopulationRevisited
             newLabel.width = ComponentWidth;
 
             return newLabel;
+        }
+
+
+
+
+        /// <summary>
+        /// Adds a slider with a multiplier label below.
+        /// </summary>
+        /// <param name="parent">Panel to add the control to</param>
+        /// <param name="text">Descriptive label text</param>
+        /// <param name="min">Slider minimum value</param>
+        /// <param name="max">Slider maximum value</param>
+        /// <param name="step">Slider minimum step</param>
+        /// <param name="defaultValue">Slider initial value</param>
+        /// <param name="eventCallback">Slider event handler</param>
+        /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
+        /// <returns>New UI slider with attached labels</returns>
+        private UISlider AddSliderWithMultipler(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
+        {
+            // Add slider component.
+            UISlider newSlider = UIControls.AddSlider(parent, text, min, max, step, defaultValue, eventCallback, width);
+            UIPanel sliderPanel = (UIPanel)newSlider.parent;
+
+            // Value label.
+            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
+            valueLabel.name = "ValueLabel";
+            valueLabel.relativePosition = UIControls.PositionUnder(newSlider, 2, 0f);
+            valueLabel.text = "x" + newSlider.value.ToString();
+            if (defaultValue == ModSettings.DefaultSchoolMult)
+            {
+                valueLabel.text += " " + Translations.Translate("RPR_CAL_CAP_DEF");
+            }
+
+            // Event handler to update value label.
+            newSlider.eventValueChanged += (component, value) =>
+            {
+                valueLabel.text = "x" + value.ToString();
+
+                // Add default label if value is default.
+                if (value == ModSettings.DefaultSchoolMult)
+                {
+                    valueLabel.text += " " + Translations.Translate("RPR_CAL_CAP_DEF");
+                }
+
+                // Execute provided callback.
+                eventCallback(value);
+            };
+
+            return newSlider;
         }
     }
 }

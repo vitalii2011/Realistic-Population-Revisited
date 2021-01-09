@@ -164,7 +164,8 @@
     <Translation ID="RPR_CAL_FLR" String="Calculated floors:" />
     <Translation ID="RPR_CAL_M2" String="Calculated area:" />
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />
-    <Translation ID="RPR_CAL_MUL" String="Population multiplier" />
+    <Translation ID="RPR_CAL_CAP_OVR" String="Custom capacity multiplier" />
+    <Translation ID="RPR_CAL_CAP_DEF" String="(default)" />
     <Translation ID="RPR_CAL_SCH_PRO" String="Staff and cost scaling" />
     <Translation ID="RPR_CAL_SCH_WKR" String="School workers" />
     <Translation ID="RPR_CAL_SCH_CST" String="Cost/maintenance" />
@@ -195,6 +196,7 @@
     <Translation ID="RPR_OPT_SCH" String="Schools" />
     <Translation ID="RPR_OPT_SEN" String="Enable realistic school student capacities" />
     <Translation ID="RPR_OPT_SEJ" String="Enable realistic school properties (jobs, costs) - requires restart" />
+    <Translation ID="RPR_OPT_SDM" String="Default school capacity multiplier" />
     <Translation ID="RPR_OPT_JB0" String="Uneducated jobs" />
     <Translation ID="RPR_OPT_JB1" String="Educated jobs" />
     <Translation ID="RPR_OPT_JB2" String="Well-educated jobs" />

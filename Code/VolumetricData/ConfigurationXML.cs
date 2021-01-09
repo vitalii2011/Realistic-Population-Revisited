@@ -99,19 +99,21 @@ namespace RealisticPopulationRevisited
         [DefaultValue("")]
         public string schoolPack;
 
-        // Multiplier - don't want to serialize default values (1 or less).
+        // Multiplier - don't want to serialize default or invalid values (1 or less).
         [XmlAttribute("multiplier")]
         [DefaultValue("")]
         public string Multiplier
         {
-            get => multiplier > 1 ? multiplier.ToString() : string.Empty;
+            // Only serialize if multiplier is at least one.
+            get => multiplier >= 1 ? multiplier.ToString() : string.Empty;
+
             set
             {
                 // Attempt to parse value as float.
                 if (!float.TryParse(value, out multiplier))
                 {
                     Debugging.Message("unable to parse multiplier as float; setting to default");
-                    multiplier = 1f;
+                    multiplier = ModSettings.DefaultSchoolMult;
                 }
 
                 // Minimum value of 1.

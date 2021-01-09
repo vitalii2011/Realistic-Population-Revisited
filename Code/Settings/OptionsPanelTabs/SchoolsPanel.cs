@@ -29,6 +29,9 @@ namespace RealisticPopulationRevisited
             UICheckBox schoolPropertyCheck = UIControls.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_SEJ"));
             schoolPropertyCheck.isChecked = ModSettings.enableSchoolProperties;
             schoolPropertyCheck.eventCheckChanged += (control, isChecked) => ModSettings.enableSchoolProperties = isChecked;
+
+            // School default multiplier.  Simple integer.
+            UISlider schoolMult = UIControls.AddSliderWithValue(panel, Translations.Translate("RPR_OPT_SDM"), 1f, 5f, 0.5f, ModSettings.DefaultSchoolMult, (value) => { ModSettings.DefaultSchoolMult = value; });
         }
     }
 }

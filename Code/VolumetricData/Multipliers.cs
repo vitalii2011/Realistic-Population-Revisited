@@ -26,7 +26,21 @@ namespace RealisticPopulationRevisited
         }
 
         /// <summary>
-        /// Returns the currently active multipler for the given prefab (default 1.0).
+        /// Checks if there is a current mulitplier override for the given prefab.
+        /// </summary>
+        /// <param name="buildingName">Name of selected prefab</param>
+        /// <returns>True if a muliplier override currently exists, false otherwise.</returns>
+        internal bool HasOverride(string buildingName) => buildingDict.ContainsKey(buildingName);
+
+        /// <summary>
+        /// Deletes the building mulitplier override (if any) for the given prefab.
+        /// </summary>
+        /// <param name="buildingName">Name of selected prefab</param>
+        internal void DeleteMultiplier(string buildingName) => buildingDict.Remove(buildingName);
+
+
+        /// <summary>
+        /// Returns the currently active multipler for the given prefab (custom if set, otherwise global default).
         /// </summary>
         /// <param name="buildingName">Selected prefab name</param>
         /// <returns>Currently active multiplier, or 1.0 by default if no override in place</returns>
@@ -40,7 +54,7 @@ namespace RealisticPopulationRevisited
             }
 
             // If we got here, we don't have a multiplier override; return the default.
-            return DefaultMultiplier;
+            return ModSettings.DefaultSchoolMult;
         }
 
 
@@ -56,27 +70,12 @@ namespace RealisticPopulationRevisited
             // Check to see if we have an existing entry.
             if (buildingDict.ContainsKey(buildingName))
             {
-                // We have an existing key - is the new value the default 1.0f?
-                if (multiplier == DefaultMultiplier)
-                {
-                    // Yes, applying the default multiplier - simply remove default entry.
-                    buildingDict.Remove(buildingName);
-                }
-                else
-                {
-                    // No, applying a different modifier - update dictionary entry.
-                    buildingDict[buildingName] = multiplier;
-                }
+                // Udate dictionary entry.
+                buildingDict[buildingName] = multiplier;
             }
             else
             {
-                // No existing entry - if we're only trying to apply the default, just return without doing anything.
-                if (multiplier == DefaultMultiplier)
-                {
-                    return;
-                }
-
-                // Otherwise, create a new dictionary entry.
+                // No existing entry - create a new dictionary entry.
                 buildingDict.Add(buildingName, multiplier);
             }
         }

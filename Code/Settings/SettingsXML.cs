@@ -79,9 +79,13 @@ namespace RealisticPopulationRevisited
         [XmlElement("EnableSchoolPop")]
         public bool enableSchools { get => ModSettings.enableSchoolPop; set => ModSettings.enableSchoolPop = value; }
 
-        // Realistic education.
+        // School properties.
         [XmlElement("EnableSchoolProperties")]
         public bool enableSchoolProperties { get => ModSettings.enableSchoolProperties; set => ModSettings.enableSchoolProperties = value; }
+
+        // Default school capacity multiplier.
+        [XmlElement("DefaultSchoolMultiplier")]
+        public float defaultSchoolModifier { get => ModSettings.DefaultSchoolMult; set => ModSettings.DefaultSchoolMult = value; }
     }
 
 
