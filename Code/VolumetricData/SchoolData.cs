@@ -263,7 +263,13 @@ namespace RealisticPopulationRevisited
                     if (ModSettings.enableSchoolProperties)
                     {
                         ApplyPack(building, ActivePack(building) as SchoolDataPack);
+
+                        // ApplyPack includes a call to UpdateSchoolPrefab, so no need to do it again here.
+                        continue;
                     }
+
+                    // Update school record and tooltip.
+                    UpdateSchoolPrefab(building, schoolAI);
                 }
             }
         }
@@ -355,9 +361,27 @@ namespace RealisticPopulationRevisited
                 schoolAI.m_constructionCost = CalcCost(schoolPack, schoolAI.StudentCount);
                 schoolAI.m_maintenanceCost = CalcMaint(schoolPack, schoolAI.StudentCount);
 
-                // Update tooltip.
-                UpdateSchoolTooltip(prefab);
+                // Force update of m_studentCount.
+                schoolAI.m_studentCount = schoolAI.StudentCount;
+
+                // Update prefab and tooltip.
+                UpdateSchoolPrefab(prefab, schoolAI);
             }
+        }
+
+
+        /// <summary>
+        /// Updates a school prefab record (and associated tooltip) with updated population.
+        /// </summary>
+        /// <param name="prefab"></param>
+        /// <param name="ai"></param>
+        private void UpdateSchoolPrefab(BuildingInfo prefab, SchoolAI schoolAI)
+        {
+            // Update prefab population record.
+            schoolAI.m_studentCount = schoolAI.StudentCount;
+
+            // Update tooltip.
+            UpdateSchoolTooltip(prefab);
         }
 
 
@@ -398,7 +422,7 @@ namespace RealisticPopulationRevisited
                             if (schoolButton.name.Equals(prefab.name))
                             {
                                 // Match!  Update tooltip.
-                                Debugging.Message("updating tooltip for " + prefab.name);
+                                Debugging.Message("updating tooltip for " + prefab.name + " with student count " + ((SchoolAI)(prefab.GetAI())).m_studentCount);
                                 schoolButton.tooltip = prefab.GetLocalizedTooltip();
                             }
                         }
