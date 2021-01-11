@@ -1,7 +1,7 @@
 ﻿using System;
 using ColossalFramework;
 using UnityEngine;
-using Harmony;
+using HarmonyLib;
 
 
 namespace RealisticPopulationRevisited
@@ -42,6 +42,9 @@ namespace RealisticPopulationRevisited
 
                 // Percentage reduction
                 crimeAccumulation = (crimeAccumulation * (number - percentage)) / number;
+
+                // Crime multiplier application.
+                crimeAccumulation = (int)((crimeAccumulation * ModSettings.crimeMultiplier) / 100f);
 
                 // ----- End of changes -----
 

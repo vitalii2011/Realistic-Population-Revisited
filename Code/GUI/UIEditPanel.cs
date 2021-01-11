@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using ColossalFramework.UI;
-using ColossalFramework;
-using ColossalFramework.Math;
 
 
 namespace RealisticPopulationRevisited
@@ -11,8 +9,23 @@ namespace RealisticPopulationRevisited
     /// </summary>
     public class UIEditPanel : UIPanel
     {
+        // Layout constants.
+        private const float MarginPadding = 10f;
+        private const float LabelWidth = 150f;
+        private const float TitleY = 5f;
+        private const float PopCheckY = TitleY + 30f;
+        private const float HomeJobY = PopCheckY + 25f;
+        private const float FloorCheckY = HomeJobY + 25f;
+        private const float FirstFloorY = FloorCheckY + 25f;
+        private const float FloorHeightY = FirstFloorY + 25f;
+        private const float SaveY = FloorHeightY + 35f;
+        private const float DeleteY = SaveY + 35f;
+        private const float MessageY = DeleteY + 35f;
+
+
         // Panel components
-        private UITextField homeJobsCount;
+        private UILabelledTextfield homeJobsCount, firstFloorField, floorHeightField;
+        private UICheckBox popCheck, floorCheck;
         private UILabel homeJobLabel;
         private UIButton saveButton;
         private UIButton deleteButton;
@@ -21,14 +34,15 @@ namespace RealisticPopulationRevisited
         // Currently selected building.
         private BuildingInfo currentSelection;
 
+        // Flag.
+        private bool suspendTextEvents;
+
 
         /// <summary>
         /// Create the panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
         public void Setup()
         {
-            const int marginPadding = 10;
-
             // Generic setup.
             isVisible = true;
             canFocus = true;
@@ -43,7 +57,7 @@ namespace RealisticPopulationRevisited
 
             // Panel title.
             UILabel title = this.AddUIComponent<UILabel>();
-            title.relativePosition = new Vector3(0, 5);
+            title.relativePosition = new Vector3(0, TitleY);
             title.textAlignment = UIHorizontalAlignment.Center;
             title.text = Translations.Translate("RPR_CUS_TITLE");
             title.textScale = 1.2f;
@@ -51,29 +65,70 @@ namespace RealisticPopulationRevisited
             title.width = this.width;
             title.height = 30;
 
-            // Text field label.
-            homeJobLabel = this.AddUIComponent<UILabel>();
-            homeJobLabel.relativePosition = new Vector3(marginPadding, 40);
-            homeJobLabel.textAlignment = UIHorizontalAlignment.Left;
-            homeJobLabel.text = Translations.Translate("RPR_LBL_HOM");
+            // Checkboxes.
+            popCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_POP"), yPos: PopCheckY, textScale: 1.0f);
+            floorCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_FLR"), yPos: FloorCheckY, textScale: 1.0f);
 
-            // Home or jobs count text field.
-            homeJobsCount = UIUtils.CreateTextField(this, this.width - (marginPadding * 3) - homeJobLabel.width, 20);
-            homeJobsCount.relativePosition = new Vector3(marginPadding + homeJobLabel.width + marginPadding, 40);
+            // Text fields.
+            homeJobsCount = AddLabelledTextfield(HomeJobY, "RPR_LBL_HOM");
+            firstFloorField = AddLabelledTextfield(FirstFloorY,"RPR_LBL_OFF");
+            floorHeightField = AddLabelledTextfield(FloorHeightY, "RPR_LBL_OFH");
+            homeJobLabel = homeJobsCount.label;
 
             // Save button.
             saveButton = UIUtils.CreateButton(this, 200);
-            saveButton.relativePosition = new Vector3(marginPadding, 70);
+            saveButton.relativePosition = new Vector3(MarginPadding, SaveY);
             saveButton.text = Translations.Translate("RPR_CUS_ADD");
             saveButton.tooltip = Translations.Translate("RPR_CUS_ADD_TIP");
             saveButton.Disable();
 
             // Delete button.
             deleteButton = UIUtils.CreateButton(this, 200);
-            deleteButton.relativePosition = new Vector3(marginPadding, 110);
+            deleteButton.relativePosition = new Vector3(MarginPadding, DeleteY);
             deleteButton.text = Translations.Translate("RPR_CUS_DEL");
             deleteButton.tooltip = Translations.Translate("RPR_CUS_DEL_TIP");
             deleteButton.Disable();
+
+            // Message label (initially hidden).
+            messageLabel = this.AddUIComponent<UILabel>();
+            messageLabel.relativePosition = new Vector3(MarginPadding, MessageY);
+            messageLabel.textAlignment = UIHorizontalAlignment.Left;
+            messageLabel.autoSize = false;
+            messageLabel.autoHeight = true;
+            messageLabel.wordWrap = true;
+            messageLabel.width = this.width - (MarginPadding * 2);
+            messageLabel.isVisible = false;
+            messageLabel.text = "No message to display";
+
+            // Checkbox event handlers.
+            popCheck.eventCheckChanged += (component, isChecked) =>
+            {
+                // If this is now selected and floorCheck is also selected, deselect floorCheck.
+                if (isChecked && floorCheck.isChecked)
+                {
+                    floorCheck.isChecked = false;
+                }
+            };
+            floorCheck.eventCheckChanged += (component, isChecked) =>
+            {
+                // If this is now selected and popCheck is also selected, deselect popCheck.
+                if (isChecked && popCheck.isChecked)
+                {
+                    popCheck.isChecked = false;
+                }
+                
+                // If this is now checked, try to parse the floors.
+                if (isChecked)
+                {
+                    FloorDataPack overrideFloors = TryParseFloors();
+                    BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
+                }
+                else
+                {
+                    // If not checked, set override pack to null.
+                    BuildingDetailsPanel.Panel.OverrideFloors = null;
+                }
+            };
 
             // Save button event handler.
             saveButton.eventClick += (component, clickEvent) =>
@@ -87,50 +142,83 @@ namespace RealisticPopulationRevisited
                     return;
                 }
 
-                // Read textfield if possible.
-                if (int.TryParse(homeJobsCount.text, out int homesJobs))
+                // Are we doing population overrides?
+                if (popCheck.isChecked)
                 {
-                    // Minimum value of 1.
-                    if (homesJobs < 1)
+                    // Read total floor count textfield if possible; ignore zero values
+                    if (int.TryParse(homeJobsCount.textField.text, out int homesJobs) && homesJobs != 0)
                     {
-                        // Print warning message in red.
-                        messageLabel.textColor = new Color32(255, 0, 0, 255);
-                        messageLabel.text = Translations.Translate("RPR_ERR_ZERO");
-                        messageLabel.isVisible = true;
-                    }
-                    else
-                    {
-                        // Homes or jobs?
-                        if (currentSelection.GetService() == ItemClass.Service.Residential)
+                        // Minimum value of 1.
+                        if (homesJobs < 1)
                         {
-                            Debugging.Message("adding custom household count of " + homesJobs + " for " + currentSelection.name);
-
-                            // Residential building.
-                            ExternalCalls.SetResidential(currentSelection, homesJobs);
-
-                            // Update household counts for existing instances of this building - only needed for residential buildings.
-                            // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                            UpdateHouseholds(currentSelection.name);
+                            // Print warning message in red.
+                            messageLabel.textColor = new Color32(255, 0, 0, 255);
+                            messageLabel.text = Translations.Translate("RPR_ERR_ZERO");
+                            messageLabel.isVisible = true;
                         }
                         else
                         {
-                            Debugging.Message("adding custom workplace count of " + homesJobs + " for " + currentSelection.name);
+                            // Homes or jobs?
+                            if (currentSelection.GetService() == ItemClass.Service.Residential)
+                            {
+                                // Residential building.
+                                ExternalCalls.SetResidential(currentSelection, homesJobs);
 
-                            // Employment building.
-                            ExternalCalls.SetWorker(currentSelection, homesJobs);
+                                // Update household counts for existing instances of this building - only needed for residential buildings.
+                                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
+                                PopData.instance.UpdateHouseholds(currentSelection.name);
+                            }
+                            else
+                            {
+                                // Employment building.
+                                ExternalCalls.SetWorker(currentSelection, homesJobs);
+                            }
+
+                            // Repopulate field with parsed value.
+                            homeJobLabel.text = homesJobs.ToString();
+
+                            // Refresh the display so that all panels reflect the updated settings.
+                            BuildingDetailsPanel.Panel.Refresh();
                         }
-
-                        // Refresh the display so that all panels reflect the updated settings.
-                        BuildingDetailsPanel.Panel.UpdateSelectedBuilding(currentSelection);
-                        BuildingDetailsPanel.Panel.Refresh();
+                    }
+                    else
+                    {
+                        // TryParse couldn't parse any data; print warning message in red.
+                        messageLabel.textColor = new Color32(255, 0, 0, 255);
+                        messageLabel.text = Translations.Translate("RPR_ERR_INV");
+                        messageLabel.isVisible = true;
                     }
                 }
-                else
+                else if (floorCheck.isChecked)
                 {
-                    // TryParse couldn't parse the data; print warning message in red.
-                    messageLabel.textColor = new Color32(255, 0, 0, 255);
-                    messageLabel.text = Translations.Translate("RPR_ERR_INV");
-                    messageLabel.isVisible = true;
+                    // Attempt to parse values into override floor pack.
+                    FloorDataPack overrideFloors = TryParseFloors();
+
+                    // Were we successful?.
+                    if (overrideFloors != null)
+                    {
+                        // Successful parsing - add override.
+                        FloorData.instance.AddOverride(currentSelection.name, overrideFloors);
+
+                        // Save configuration.
+                        ConfigUtils.SaveSettings();
+
+                        // Update panel override.
+                        BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
+
+                        // Repopulate fields with parsed values.
+                        UpdateFloorTextFields(overrideFloors.firstFloorMin.ToString(), overrideFloors.floorHeight.ToString());
+
+                        // Refresh the display so that all panels reflect the updated settings.
+                        BuildingDetailsPanel.Panel.Refresh();
+                    }
+                    else
+                    {
+                        // Couldn't parse values; print warning message in red.
+                        messageLabel.textColor = new Color32(255, 0, 0, 255);
+                        messageLabel.text = Translations.Translate("RPR_ERR_INV");
+                        messageLabel.isVisible = true;
+                    }
                 }
             };
 
@@ -156,7 +244,7 @@ namespace RealisticPopulationRevisited
 
                     // Update household counts for existing instances of this building - only needed for residential buildings.
                     // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                    UpdateHouseholds(currentSelection.name);
+                    PopData.instance.UpdateHouseholds(currentSelection.name);
                 }
                 else
                 {
@@ -164,21 +252,20 @@ namespace RealisticPopulationRevisited
                     ExternalCalls.RemoveWorker(currentSelection);
                 }
 
+                // Remove any floor override.
+                FloorData.instance.DeleteOverride(currentSelection.name);
+
+                // Update panel override.
+                BuildingDetailsPanel.Panel.OverrideFloors = null;
+
                 // Refresh the display so that all panels reflect the updated settings.
                 BuildingDetailsPanel.Panel.Refresh();
-                homeJobsCount.text = string.Empty;
+                homeJobsCount.textField.text = string.Empty;
             };
 
-            // Message label (initially hidden).
-            messageLabel = this.AddUIComponent<UILabel>();
-            messageLabel.relativePosition = new Vector3(marginPadding, 160);
-            messageLabel.textAlignment = UIHorizontalAlignment.Left;
-            messageLabel.autoSize = false;
-            messageLabel.autoHeight = true;
-            messageLabel.wordWrap = true;
-            messageLabel.width = this.width - (marginPadding * 2);
-            messageLabel.isVisible = false;
-            messageLabel.text = "No message to display";
+            // Floor textfield event handlers.
+            firstFloorField.textField.eventTextChanged += (control, text) => FloorTextFieldChanged();
+            floorHeightField.textField.eventTextChanged += (control, text) => FloorTextFieldChanged();
         }
 
 
@@ -194,10 +281,15 @@ namespace RealisticPopulationRevisited
             // Set current selecion.
             currentSelection = building;
 
-            // Set text field to blank and disable buttons if no valid building is selected.
+            // Blank all textfields and deselect checkboxes to start with.
+            homeJobsCount.textField.text = string.Empty;
+            UpdateFloorTextFields(string.Empty, string.Empty);
+            popCheck.isChecked = false;
+            floorCheck.isChecked = false;
+
+            // Disable buttons and exit if no valid building is selected.
             if (building == null || building.name == null)
             {
-                homeJobsCount.text = string.Empty;
                 saveButton.Disable();
                 deleteButton.Disable();
                 return;
@@ -217,59 +309,135 @@ namespace RealisticPopulationRevisited
                 homesJobs = ExternalCalls.GetWorker(building);
                 homeJobLabel.text = Translations.Translate("RPR_LBL_JOB");
             }
-
-            // If no custom settings have been found (return value was zero), then blank the text field, rename the save button, and disable the delete button.
-            if (homesJobs == 0)
+            // If custom settings were found (return value was non-zero), then display the result, rename the save button, and enable the delete button.
+            if (homesJobs != 0)
             {
-                homeJobsCount.text = string.Empty;
-                saveButton.text = Translations.Translate("RPR_CUS_ADD");
-                deleteButton.Disable();
+                // Valid custom settings found; display the result, rename the save button, and enable the delete button.
+                homeJobsCount.textField.text = homesJobs.ToString();
+                saveButton.text = Translations.Translate("RPR_CUS_UPD");
+                deleteButton.Enable();
+
+                // Select the 'has population override' check.
+                popCheck.isChecked = true;
             }
             else
             {
-                // Valid custom settings found; display the result, rename the save button, and enable the delete button.
-                homeJobsCount.text = homesJobs.ToString();
-                saveButton.text = Translations.Translate("RPR_CUS_UPD");
-                deleteButton.Enable();
+                // No population override - check for custom floor override.
+                FloorDataPack overridePack = FloorData.instance.HasOverride(building.name);
+                if (overridePack != null)
+                {
+                    // Valid custom settings found; display the result, rename the save button, and enable the delete button.
+                    UpdateFloorTextFields(overridePack.firstFloorMin.ToString(), overridePack.floorHeight.ToString());
+                    saveButton.text = Translations.Translate("RPR_CUS_UPD");
+                    deleteButton.Enable();
+
+                    // Select the 'has floor override' check.
+                    floorCheck.isChecked = true;
+                }
+                else
+                {
+                    //  No valid selection - rename the save button, and disable the delete button.
+                    saveButton.text = Translations.Translate("RPR_CUS_ADD");
+                    deleteButton.Disable();
+                }
             }
 
-            // We've got a valid building, so enable the save button.
+            // We've at least got a valid building, so enable the save button.
             saveButton.Enable();
         }
 
 
         /// <summary>
-        /// Updates the household numbers of already existing (placed/grown) residential building instances to the current prefab value.
-        /// Called after updating a residential prefab's household count in order to apply changes to existing buildings.
+        /// Checks to see if valid floor override entries are parseable from floor text fields; called when one of the fields has its text changed.
         /// </summary>
-        /// <param name="prefabName">The (raw BuildingInfo) name of the prefab</param>
-        private void UpdateHouseholds(string prefabName)
+        public void FloorTextFieldChanged()
         {
-            // Get building manager instance.
-            var instance = Singleton<BuildingManager>.instance;
-
-            // Iterate through each building in the scene.
-            for (ushort i = 0; i < instance.m_buildings.m_buffer.Length; i ++)
+            // Don't do anything if the floor override check isn't set, or if text field events are currently suspended.
+            if (floorCheck.isChecked && !suspendTextEvents)
             {
-                // Get current building instance.
-                Building thisBuilding = instance.m_buildings.m_buffer[i];
-
-                // Only interested in residential buildings.
-                BuildingAI thisAI = thisBuilding.Info?.GetAI() as ResidentialBuildingAI;
-                if (thisAI != null)
+                // Check if we have a valid pack.
+                FloorDataPack overrideFloors = TryParseFloors();
+                if (overrideFloors != null)
                 {
-                    // Residential building; check for name match.
-                    if (thisBuilding.Info.name.Equals(prefabName))
-                    {
-                        // Got one!  Recalculate home and visit counts.
-                        int homeCount = ((ResidentialBuildingAI)thisAI).CalculateHomeCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
-                        int visitCount = ((ResidentialBuildingAI)thisAI).CalculateVisitplaceCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
-
-                        // Apply changes via direct call to EnsureCitizenUnits prefix patch from this mod.
-                        RealisticCitizenUnits.Prefix(ref thisAI, i, ref thisBuilding, homeCount, 0, visitCount, 0);
-                    }
+                    // Valid parsing
+                    // Update panel override.
+                    BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Clears the override checkbox (for when the user subsequently selects a floor pack override or legacy calcs).
+        /// </summary>
+        internal void ClearOverride() => floorCheck.isChecked = false;
+
+
+        /// <summary>
+        /// Attempts to parse floor data fields into a valid override floor pack.
+        /// </summary>
+        /// <returns></returns>
+        private FloorDataPack TryParseFloors()
+        {
+            // Attempt to parse fields.
+            if (!string.IsNullOrEmpty(firstFloorField.textField.text) && !string.IsNullOrEmpty(floorHeightField.textField.text) && float.TryParse(firstFloorField.textField.text, out float firstFloor) && float.TryParse(floorHeightField.textField.text, out float floorHeight))
+            {
+                // Success - create new override floor pack with parsed data.
+                return new FloorDataPack
+                {
+                    version = (int)DataVersion.overrideOne,
+                    firstFloorMin = firstFloor,
+                    floorHeight = floorHeight
+                };
+            }
+
+            // If we got here, we didn't get a valid parse; return null.
+            return null;
+        }
+
+
+        /// <summary>
+        /// Adds a textfield with a label to the left.
+        /// </summary>
+        /// <param name="yPos">Relative y-position of textfield</param>
+        /// <param name="key">Translation key for label</param>
+        /// <returns></returns>
+        private UILabelledTextfield AddLabelledTextfield(float yPos, string key)
+        {
+            // Create textfield.
+            UILabelledTextfield newField = new UILabelledTextfield();
+            newField.textField = UIUtils.CreateTextField(this, this.width - (MarginPadding * 3) - LabelWidth, 20);
+            newField.textField.relativePosition = new Vector3(MarginPadding + LabelWidth + MarginPadding, yPos);
+            newField.textField.clipChildren = false;
+
+            // Label.
+            newField.label = newField.textField.AddUIComponent<UILabel>();
+            newField.label.anchor = UIAnchorStyle.Right | UIAnchorStyle.CenterVertical;
+            newField.label.relativePosition = new Vector2(-MarginPadding * 2f, newField.textField.height / 2);
+            newField.label.textAlignment = UIHorizontalAlignment.Right;
+            newField.label.textScale = 0.7f;
+            newField.label.text = Translations.Translate(key);
+
+            return newField;
+        }
+
+
+        /// <summary>
+        /// Updates floor override textfield values without triggering event handler.
+        /// </summary>
+        /// <param name="firstFloorText">Text for first floor height field</param>
+        /// <param name="floorText">Text for other floor height field</param>
+        private void UpdateFloorTextFields(string firstFloorText, string floorText)
+        {
+            // Suspend text events.
+            suspendTextEvents = true;
+
+            // Populate fields.
+            firstFloorField.textField.text = firstFloorText;
+            floorHeightField.textField.text = floorText;
+
+            // Resume text events.
+            suspendTextEvents = false;
         }
     }
 }

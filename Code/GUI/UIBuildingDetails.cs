@@ -100,14 +100,15 @@ namespace RealisticPopulationRevisited
     public class UIBuildingDetails : UIPanel
     {
         // Constants.
-        private const float LeftWidth = 400;
-        private const float MiddleWidth = 250;
-        private const float RightWidth = 280;
-        private const float FilterHeight = 40;
+        private const float LeftWidth = 430f;
+        private const float MiddleWidth = 250f;
+        private const float RightWidth = 600f;
+        private const float FilterHeight = 40f;
         private const float PanelHeight = 550;
-        private const float BottomMargin = 10;
-        private const float Spacing = 5;
-        internal const float TitleHeight = 40;
+        private const float BottomMargin = 10f;
+        private const float Spacing = 5f;
+        internal const float TitleHeight = 40f;
+        private const float CheckFilterHeight = 30f;
 
         // Panel components.
         private UITitleBar titleBar;
@@ -115,10 +116,74 @@ namespace RealisticPopulationRevisited
         private UIFastList buildingSelection;
         private UIPreviewPanel previewPanel;
         private UIEditPanel editPanel;
-        private UIModCalcs modCalcs;
+        private UIModCalcs calcsPanel;
 
-        // General vars.
+        // Current selections.
         private BuildingInfo currentSelection;
+
+
+        /// <summary>
+        /// Refreshes the building selection list.
+        /// </summary>
+        internal void RefreshList() => buildingSelection.Refresh();
+
+
+        /// <summary>
+        /// Communicates floor calculation pack changes to previewer and edit panel.
+        /// </summary>
+        internal FloorDataPack FloorDataPack { set => previewPanel.FloorPack = value; }
+
+
+        /// <summary>
+        /// Suppresses floor preview rendering (e.g. when legacy calculations have been selected).
+        /// </summary>
+        internal bool HideFloors { set => previewPanel.HideFloors = value; }
+
+
+        /// <summary>
+        /// Communicates floor calculation pack changes to previewer.
+        /// </summary>
+        internal FloorDataPack OverrideFloors
+        {
+            set
+            {
+                previewPanel.OverrideFloors = value;
+                calcsPanel.OverrideFloors = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Called when the building selection changes to update other panels.
+        /// </summary>
+        /// <param name="building">Newly selected building</param>
+        public void UpdateSelectedBuilding(BuildingInfo building)
+        {
+            if (building != null)
+            {
+                // Update building preview.
+                currentSelection = building;
+                previewPanel.Show(currentSelection);
+            }
+
+            // Update mod calculations and edit panels.
+            calcsPanel.SelectionChanged(building);
+            editPanel.SelectionChanged(building);
+        }
+
+
+        /// <summary>
+        /// Refreshes the building selection list.
+        /// Used to update custom settings checkboxes.
+        /// </summary>
+        public void Refresh()
+        {
+            // Refresh the building list.
+            buildingSelection.Refresh();
+
+            // Update mod calculations and edit panels.
+            UpdateSelectedBuilding(currentSelection);
+        }
 
 
         /// <summary>
@@ -132,7 +197,7 @@ namespace RealisticPopulationRevisited
                 isVisible = false;
                 canFocus = true;
                 isInteractive = true;
-                width = LeftWidth + MiddleWidth + RightWidth + (Spacing * 4);
+                width = LeftWidth + MiddleWidth + RightWidth + (Spacing * 4) + Spacing;
                 height = PanelHeight + TitleHeight + FilterHeight + (Spacing * 2) + BottomMargin;
                 relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
                 backgroundSprite = "UnlockingPanel2";
@@ -163,8 +228,8 @@ namespace RealisticPopulationRevisited
                 // Left panel - list of buildings.
                 UIPanel leftPanel = AddUIComponent<UIPanel>();
                 leftPanel.width = LeftWidth;
-                leftPanel.height = PanelHeight;
-                leftPanel.relativePosition = new Vector3(Spacing, TitleHeight + FilterHeight + Spacing);
+                leftPanel.height = PanelHeight - CheckFilterHeight;
+                leftPanel.relativePosition = new Vector3(Spacing, TitleHeight + FilterHeight + CheckFilterHeight + Spacing);
 
                 // Middle panel - building preview and edit panels.
                 UIPanel middlePanel = AddUIComponent<UIPanel>();
@@ -185,16 +250,11 @@ namespace RealisticPopulationRevisited
                 editPanel.Setup();
 
                 // Right panel - mod calculations.
-                UIPanel rightPanel = AddUIComponent<UIPanel>();
-                rightPanel.width = RightWidth;
-                rightPanel.height = PanelHeight;
-                rightPanel.relativePosition = new Vector3(LeftWidth + MiddleWidth + (Spacing * 3), TitleHeight + FilterHeight + Spacing);
-
-                modCalcs = rightPanel.AddUIComponent<UIModCalcs>();
-                modCalcs.width = RightWidth;
-                modCalcs.height = PanelHeight;
-                modCalcs.relativePosition = Vector3.zero;
-                modCalcs.Setup();
+                calcsPanel = this.AddUIComponent<UIModCalcs>();
+                calcsPanel.width = RightWidth;
+                calcsPanel.height = PanelHeight;
+                calcsPanel.relativePosition = new Vector3(LeftWidth + MiddleWidth + (Spacing * 3), TitleHeight + FilterHeight + Spacing);
+                calcsPanel.Setup();
 
                 // Building selection list.
                 buildingSelection = UIFastList.Create<UIBuildingRow>(leftPanel);
@@ -202,7 +262,7 @@ namespace RealisticPopulationRevisited
                 buildingSelection.width = leftPanel.width;
                 buildingSelection.height = leftPanel.height;
                 buildingSelection.canSelect = true;
-                buildingSelection.rowHeight = 40;
+                buildingSelection.rowHeight = 30f;
                 buildingSelection.autoHideScrollbar = true;
                 buildingSelection.relativePosition = Vector3.zero;
                 buildingSelection.rowsData = new FastList<object>();
@@ -218,39 +278,6 @@ namespace RealisticPopulationRevisited
             {
                 Debugging.LogException(e);
             }
-        }
-
-
-        /// <summary>
-        /// Called when the building selection changes to update other panels.
-        /// </summary>
-        /// <param name="building"></param>
-        public void UpdateSelectedBuilding(BuildingInfo building)
-        {
-            if (building != null)
-            {
-                // Update building preview.
-                currentSelection = building;
-                previewPanel.Show(currentSelection);
-            }
-
-            // Update mod calculations and edit panels.
-            modCalcs.SelectionChanged(building);
-            editPanel.SelectionChanged(building);
-        }
-
-
-        /// <summary>
-        /// Refreshes the building selection list.
-        /// Used to update custom settings checkboxes.
-        /// </summary>
-        public void Refresh()
-        {
-            // Refresh the building list.
-            buildingSelection.Refresh();
-
-            // Update mod calculations and edit panels.
-            UpdateSelectedBuilding(currentSelection);
         }
 
 
@@ -285,13 +312,21 @@ namespace RealisticPopulationRevisited
             // List to store all building prefabs that pass the filter.
             List<BuildingInfo> filteredList = new List<BuildingInfo>();
 
+            // Settings flags.
+            bool noFilter = !(filterBar.PopOverrideFilter.isChecked || filterBar.FloorOverrideFilter.isChecked || filterBar.DefaultPopFilter.isChecked || filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked);
+            bool popOverrideFilter = filterBar.PopOverrideFilter.isChecked || filterBar.AnyFilter.isChecked;
+            bool floorOverrideFilter = filterBar.FloorOverrideFilter.isChecked || filterBar.AnyFilter.isChecked;
+            bool defaultPopFilter = filterBar.DefaultPopFilter.isChecked || filterBar.AnyFilter.isChecked;
+            bool defaultFloorFilter = filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked;
+
             // Iterate through all loaded building prefabs and add them to the list if they meet the filter conditions.
             for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
             {
                 BuildingInfo item = PrefabCollection<BuildingInfo>.GetLoaded(i);
+                string itemName = item?.name;
 
                 // Skip any null or invalid prefabs.
-                if (item?.name == null)
+                if (itemName == null)
                 {
                     continue;
                 }
@@ -331,6 +366,9 @@ namespace RealisticPopulationRevisited
                 else if ((subService == ItemClass.SubService.ResidentialLowEco || subService == ItemClass.SubService.ResidentialHighEco) && filterBar.categoryToggles[(int)BuildingCategories.Selfsufficient].isChecked)
                 {
                 }
+                else if (service == ItemClass.Service.Education && filterBar.categoryToggles[(int)BuildingCategories.Education].isChecked && item.GetClassLevel() < ItemClass.Level.Level3)
+                {
+                }
                 else
                 {
                     // If we've gotten here, then we've matched no categories; move on to next item.
@@ -343,8 +381,16 @@ namespace RealisticPopulationRevisited
                     continue;
                 }
 
-                // Finally!  We've got an item that's passed all filters; add it to the list.
-                filteredList.Add(item);
+                // Filter by settings.
+                if (noFilter ||
+                    ((popOverrideFilter && (ExternalCalls.GetResidential(item) != 0 || ExternalCalls.GetWorker(item) != 0)) ||
+                    (floorOverrideFilter && FloorData.instance.HasOverride(itemName) != null) ||
+                    (defaultPopFilter && PopData.instance.HasPackOverride(itemName) != null) ||
+                    (defaultFloorFilter && FloorData.instance.HasPackOverride(itemName) != null)))
+                {
+                    // Finally!  We've got an item that's passed all filters; add it to the list.
+                    filteredList.Add(item);
+                }
             }
 
             // Create return list with our filtered list, sorted alphabetically.

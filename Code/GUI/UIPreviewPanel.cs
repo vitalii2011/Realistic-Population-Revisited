@@ -5,68 +5,35 @@ using ColossalFramework.UI;
 namespace RealisticPopulationRevisited
 {
     /// <summary>
-    /// Panel that contains the building preview image.
+    /// Panel showing the building preview.
     /// </summary>
-    public class UIPreviewPanel : UIPanel
+    class UIPreviewPanel : UIPanel
     {
-        // Panel components.
-        private UITextureSprite previewSprite;
-        private UISprite noPreviewSprite;
-        private UIPreviewRenderer previewRender;
-        private UILabel buildingName;
+        // UI components.
+        private UIPreview preview;
+        private UICheckBox showFloorsCheck;
+        private static bool lastFloorCheckState;
 
-        // Currently selected building and its pre-rendered (by game) equivalent for rendering.
-        private BuildingInfo currentSelection;
+        // References.
+        private BuildingInfo currentBuilding;
 
 
         /// <summary>
-        /// Create the panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
+        /// Handles changes to selected floor data pack (for previewing).
         /// </summary>
-        public void Setup()
-        {
-            // Set background and sprites.
-            backgroundSprite = "GenericPanel";
+        internal FloorDataPack FloorPack { set => preview.FloorPack = value; }
 
-            previewSprite = AddUIComponent<UITextureSprite>();
-            previewSprite.size = size;
-            previewSprite.relativePosition = Vector3.zero;
 
-            noPreviewSprite = AddUIComponent<UISprite>();
-            noPreviewSprite.size = size;
-            noPreviewSprite.relativePosition = Vector3.zero;
+        /// <summary>
+        /// Suppresses floor preview rendering (e.g. when legacy calculations have been selected).
+        /// </summary>
+        internal bool HideFloors { set => preview.HideFloors = value; }
 
-            // Initialise renderer; use double size for anti-aliasing.
-            previewRender = gameObject.AddComponent<UIPreviewRenderer>();
-            previewRender.Size = previewSprite.size * 2;
 
-            // Click-and-drag rotation.
-            eventMouseDown += (c, p) =>
-            {
-                eventMouseMove += RotateCamera;
-            };
-
-            eventMouseUp += (c, p) =>
-            {
-                eventMouseMove -= RotateCamera;
-            };
-
-            // Zoom with mouse wheel.
-            eventMouseWheel += (c, p) =>
-            {
-                previewRender.Zoom -= Mathf.Sign(p.wheelDelta) * 0.25f;
-                RenderPreview();
-            };
-
-            // Display building name.
-            buildingName = AddUIComponent<UILabel>();
-            buildingName.textScale = 0.9f;
-            buildingName.useDropShadow = true;
-            buildingName.dropShadowColor = new Color32(80, 80, 80, 255);
-            buildingName.dropShadowOffset = new Vector2(2, -2);
-            buildingName.text = "Name";
-            buildingName.isVisible = false;
-            buildingName.relativePosition = new Vector3(5, 10);
-        }
+        /// <summary>
+        /// Handles changes to selected floor data override pack (for previewing).
+        /// </summary>
+        internal FloorDataPack OverrideFloors { set => preview.OverrideFloors = value; }
 
 
         /// <summary>
@@ -75,88 +42,32 @@ namespace RealisticPopulationRevisited
         /// <param name="building">The building to render</param>
         public void Show(BuildingInfo building)
         {
-            // If we're already showing this building, nothing further needs to be done.
-            if (building == currentSelection)
-            {
-                return;
-            }
-
-            // Update current selection to the new building.
-            currentSelection = building;
-
-            // Generate render if there's a selection with a mesh.
-            if (currentSelection != null && currentSelection.m_mesh != null)
-            {
-                // Set default values.
-                previewRender.CameraRotation = 210f;
-                previewRender.Zoom = 4f;
-                previewRender.Mesh = currentSelection.m_mesh;
-                previewRender.material = currentSelection.m_material;
-
-                RenderPreview();
-
-                // Set background.
-                previewSprite.texture = previewRender.Texture;
-                noPreviewSprite.isVisible = false;
-            }
-            else
-            {
-                // No valid current selection with a mesh; reset background.
-                previewSprite.texture = null;
-                noPreviewSprite.isVisible = true;
-            }
-
-            // Hide any empty building names.
-            if (building == null)
-            {
-                buildingName.isVisible = false;
-            }
-            else
-            {
-                // Set and show building name.
-                buildingName.isVisible = true;
-                buildingName.text = UIBuildingDetails.GetDisplayName(currentSelection.name);
-                UIUtils.TruncateLabel(buildingName, width - 45);
-                buildingName.autoHeight = true;
-            }
+            currentBuilding = building;
+            preview.Show(building);
         }
 
 
         /// <summary>
-        /// Render the preview image.
+        /// Performs initial setup for the panel.
         /// </summary>
-        private void RenderPreview()
+        public void Setup()
         {
-            if (currentSelection == null)
-            {
-                return;
-            }
+            // Basic setup.
+            preview = AddUIComponent<UIPreview>();
+            preview.width = width;
+            preview.height = height - 40f;
+            preview.relativePosition = Vector2.zero;
+            preview.Setup();
 
-            // If the selected building has colour variations, temporarily set the colour to the default for rendering.
-            if (currentSelection.m_useColorVariations)
+            // 'Show floors' checkbox.
+            showFloorsCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_PRV_SFL"), yPos: height - 30f);
+            showFloorsCheck.eventCheckChanged += (control, isChecked) =>
             {
-                Color originalColor = currentSelection.m_material.color;
-                currentSelection.m_material.color = currentSelection.m_color0;
-                previewRender.Render();
-                currentSelection.m_material.color = originalColor;
-            }
-            else
-            {
-                // No temporary colour change needed.
-                previewRender.Render();
-            }
-        }
+                preview.RenderFloors = isChecked;
+                lastFloorCheckState = isChecked;
+            };
 
-
-        /// <summary>
-        /// Rotates the preview camera (model rotation) in accordance with mouse movement.
-        /// </summary>
-        /// <param name="c">Not used</param>
-        /// <param name="p">Mouse event</param>
-        private void RotateCamera(UIComponent c, UIMouseEventParameter p)
-        {
-            previewRender.CameraRotation -= p.moveDelta.x / previewSprite.width * 360f;
-            RenderPreview();
+            showFloorsCheck.isChecked = lastFloorCheckState;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using ColossalFramework.Math;
 using UnityEngine;
-using Harmony;
+using HarmonyLib;
 
 
 namespace RealisticPopulationRevisited
@@ -18,8 +18,9 @@ namespace RealisticPopulationRevisited
 
             if (!DataStore.prefabHouseHolds.TryGetValue(item.gameObject.GetHashCode(), out returnValue))
             {
-                int[] array = ResidentialBuildingAIMod.GetArray(__instance.m_info, (int)level);
-                returnValue = AI_Utils.CalculatePrefabHousehold(width, length, ref item, ref array, (int)level);
+                returnValue = PopData.instance.Population(item, (int)level);
+
+                // Store values in cache.
                 DataStore.prefabHouseHolds.Add(item.gameObject.GetHashCode(), returnValue);
             }
 

@@ -32,11 +32,14 @@
     <RootNamespace>RealisticPopulationRevisited</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Lib.Harmony.1.2.0.1\lib\net35\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Lib.Harmony.2.0.1\lib\net35\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CitiesHarmony.API, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\CitiesHarmony.API.1.0.5\lib\net35\CitiesHarmony.API.dll</HintPath>
     </Reference>
     <Reference Include="ColossalManaged">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll</HintPath>
@@ -111,23 +114,54 @@
     <Content Include="XML_Files\WG_OfficeAndLowResidentialChange.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\GUI\UIEditPanel.cs" />
+    <Compile Include="Code\AI_Files\AI_School.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
+    <Compile Include="Code\GUI\UIPreviewPanel.cs" />
+    <Compile Include="Code\Patcher.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\CommercialPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ConsumptionPanelBase.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\IndustrialPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\OfficePanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\PanelBase.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ResidentialPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\FloorPanel.cs" />
+    <Compile Include="Code\Settings\ModSettings.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ConsumptionPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\LegacyPanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\CrimePanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\DefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\PopulationPanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
+    <Compile Include="Code\Utils\UIControls.cs" />
+    <Compile Include="Code\VolumetricData\CalcData.cs" />
+    <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />
+    <Compile Include="Code\VolumetricData\ConfigurationXML.cs" />
+    <Compile Include="Code\VolumetricData\CalcPacks.cs" />
+    <Compile Include="Code\VolumetricData\DataMapping.cs" />
+    <Compile Include="Code\VolumetricData\EmploymentData.cs" />
+    <Compile Include="Code\VolumetricData\Multipliers.cs" />
+    <Compile Include="Code\VolumetricData\PopData.cs" />
+    <Compile Include="Code\GUI\UIEditPanel.cs" />
+    <Compile Include="Code\GUI\UIFloorList.cs" />
+    <Compile Include="Code\GUI\UILegacyCalcs.cs" />
     <Compile Include="Code\GUI\UIBuildingDetails.cs" />
     <Compile Include="Code\GUI\UIBuildingFilter.cs" />
     <Compile Include="Code\GUI\UIBuildingRow.cs" />
-    <Compile Include="Code\GUI\UIPreviewPanel.cs" />
+    <Compile Include="Code\GUI\UIPreview.cs" />
     <Compile Include="Code\GUI\UIPreviewRenderer.cs" />
     <Compile Include="Code\GUI\UITitleBar.cs" />
     <Compile Include="Code\GUI\UIFastList.cs" />
     <Compile Include="Code\GUI\UIThreading.cs" />
     <Compile Include="Code\GUI\UIUtils.cs" />
+    <Compile Include="Code\GUI\UIVolumetricPanel.cs" />
     <Compile Include="Code\Settings\OptionsKeymapping.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\CommercialPanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\IndustrialPanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\OfficePanel.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\PanelBase.cs" />
-    <Compile Include="Code\Settings\OptionsPanelTabs\ResidentialPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\LegacyConsumptionTabs\LegacyCommercialPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\LegacyConsumptionTabs\LegacyIndustrialPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\LegacyConsumptionTabs\LegacyOfficePanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\LegacyConsumptionTabs\LegacyPanelBase.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\LegacyConsumptionTabs\LegacyResidentialPanel.cs" />
     <Compile Include="Code\Settings\PanelUtils.cs" />
     <Compile Include="Code\Settings\OptionsPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\ModOptionsPanel.cs" />
@@ -136,6 +170,8 @@
     <Compile Include="Code\TranslationFramework\TranslationFramework.cs" />
     <Compile Include="Code\TranslationFramework\TranslationXML.cs" />
     <Compile Include="Code\Utils\ModUtils.cs" />
+    <Compile Include="Code\VolumetricData\FloorData.cs" />
+    <Compile Include="Code\VolumetricData\SchoolData.cs" />
     <Compile Include="Code\XML\XML_UtilsWG.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\AI_Files\AI_Building.cs" />

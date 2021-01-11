@@ -74,6 +74,18 @@ namespace RealisticPopulationRevisited
                 }
             }
         }
+
+        // Realistic education.
+        [XmlElement("EnableSchoolPop")]
+        public bool enableSchools { get => ModSettings.enableSchoolPop; set => ModSettings.enableSchoolPop = value; }
+
+        // School properties.
+        [XmlElement("EnableSchoolProperties")]
+        public bool enableSchoolProperties { get => ModSettings.enableSchoolProperties; set => ModSettings.enableSchoolProperties = value; }
+
+        // Default school capacity multiplier.
+        [XmlElement("DefaultSchoolMultiplier")]
+        public float defaultSchoolModifier { get => ModSettings.DefaultSchoolMult; set => ModSettings.DefaultSchoolMult = value; }
     }
 
 
@@ -143,7 +155,7 @@ namespace RealisticPopulationRevisited
         {
             try
             {
-                // Pretty straightforward.  Serialisation is within GBRSettingsFile class.
+                // Pretty straightforward.  Serialisation is within settings file class.
                 using (StreamWriter writer = new StreamWriter(SettingsFileName))
                 {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLSettingsFile));

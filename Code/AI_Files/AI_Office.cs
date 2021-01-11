@@ -1,7 +1,7 @@
 ﻿using System;
 using ColossalFramework.Math;
 using UnityEngine;
-using Harmony;
+using HarmonyLib;
 
 
 namespace RealisticPopulationRevisited
@@ -16,13 +16,14 @@ namespace RealisticPopulationRevisited
         {
             ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;
-            int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             PrefabEmployStruct output;
             // If not seen prefab, calculate
             if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out output))
             {
-                AI_Utils.CalculateprefabWorkerVisit(width, length, ref item, 10, ref array, out output);
+                output = PopData.instance.Workplaces(item, (int)level);
+
+                // Store values in cache.
                 DataStore.prefabWorkerVisit.Add(item.gameObject.GetHashCode(), output);
             }
 

@@ -1,314 +1,592 @@
-﻿using ColossalFramework.Math;
+﻿using UnityEngine;
+using ICities;
 using ColossalFramework.UI;
-using UnityEngine;
 
 
 namespace RealisticPopulationRevisited
 {
-    /// <summary>
-    /// Different mod calculations shown (in text labels) by this panel.
-    /// </summary>
-    public enum Details
-    {
-        width,
-        length,
-        area,
-        personArea,
-        height,
-        floorHeight,
-        floors,
-        extraFloors,
-        numDetails
-    }
-
-
-    /// <summary>
-    /// Panel to display the mod's calculations for jobs/workplaces.
-    /// </summary>
     public class UIModCalcs : UIPanel
     {
-        // Margin at left of standard selection
-        private const int leftPadding = 10;
+        // Layout constants.
+        private const float Margin = 5f;
+        private const float ColumnWidth = 300f;
+        private const float ComponentWidth = ColumnWidth - (Margin * 2f);
+        private const float RightColumnX = ColumnWidth + Margin;
+        private const float LabelHeight = 20f;
+        private const float MenuHeight = 30f;
+        private const float DescriptionHeight = 40f;
+        private const float ColumnLabelY = 30f;
+        private const float MenuY = ColumnLabelY + LabelHeight;
+        private const float DescriptionY = MenuY + MenuHeight;
+        private const float BaseSaveY = DescriptionY + DescriptionHeight;
+        private const float BaseCalcY = BaseSaveY + 35f;
+        private const float SchoolSaveY = BaseSaveY + LabelHeight + MenuHeight + DescriptionHeight;
+        private const float SchoolCalcY = SchoolSaveY + 35f;
+        private const float ButtonWidth = 200f;
+        private const float ApplyX = ColumnWidth - (ButtonWidth / 2);
+        private const float Row2LabelY = DescriptionY + DescriptionHeight;
 
-        // Panel components. 
-        private UIPanel titlePanel;
+        // Panel components.
         private UILabel title;
-        private UIPanel detailsPanel;
-        private UILabel[] detailLabels;
-        private UILabel messageLabel;
+        private UIPanel floorPanel, schoolPanel;
+        private UILegacyCalcs legacyPanel;
+        private UIVolumetricPanel volumetricPanel;
+        private UIDropDown popMenu, floorMenu, schoolMenu;
+        private UICheckBox multCheck;
+        private UISlider multSlider;
+        private UILabel multDefaultLabel;
+        private UILabel popDescription, floorDescription, schoolDescription, floorOverrideLabel;
+        private UIButton applyButton;
 
-        // Special-purpose labels used to display either jobs or households as appropriate.
-        private UILabel homesJobsCalcLabel;
-        private UILabel homesJobsCustomLabel;
-        private UILabel homesJobsActualLabel;
+        // Data arrays.
+        private PopDataPack[] popPacks;
+        private DataPack[] floorPacks;
+        private SchoolDataPack[] schoolPacks;
+
+        // Current selections.
+        private BuildingInfo currentBuilding;
+        private PopDataPack currentPopPack;
+        private FloorDataPack currentFloorPack, currentFloorOverride;
+        private SchoolDataPack currentSchoolPack;
+
+        // Flags.
+        private bool usingLegacy;
+
+
+        /// <summary>
+        /// Current population modifier.
+        /// </summary>
+        float CurrentMult
+        {
+            // Getter - if the multiplier slider exists, use its value; otherwise, use default of 1.
+            get
+            {
+                return multSlider == null ? 1.0f : multSlider.value;
+            }
+
+            // Setter - recalculate volumetric figures with new amount.
+            // Should only be called from slider onValueChanged.
+            set
+            {
+                if (!usingLegacy)
+                {
+                    volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Sets the a floor data manual override for previewing.
+        /// </summary>
+        internal FloorDataPack OverrideFloors
+        {
+            set
+            {
+                // Store override.
+                currentFloorOverride = value;
+
+                // Don't do anything else if we're using legacy calculations.
+                if (usingLegacy)
+                {
+                    return;
+                }
+
+                // Floor data pack to display.
+                FloorDataPack displayPack;
+
+                // If value is null (no override), show floor panel and display current floor pack data; otherwise, hide the floor panel and show the provided override data.
+                if (value == null)
+                {
+                    displayPack = currentFloorPack;
+                    floorOverrideLabel.Hide();
+                    floorPanel.Show();
+                }
+                else
+                {
+                    // Valid override - hide floor panel.
+                    floorPanel.Hide();
+
+                    // Set override text label and show it.
+                    floorOverrideLabel.text = Translations.Translate("RPR_CAL_FOV");
+                    floorOverrideLabel.Show();
+
+                    // Display figures for override, not current floor pack.
+                    displayPack = value;
+                }
+
+                // Update panel with new calculations.
+                volumetricPanel.UpdateFloorText(displayPack);
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack, currentSchoolPack, CurrentMult);
+            }
+        }
+        
+
+        /// <summary>
+        /// /// Returns the level data record from the current floor pack that's relevant to the selected building's level.
+        /// /// </summary>
+        private LevelData CurrentLevelData => ((VolumetricPopPack)currentPopPack).levels[(int)currentBuilding.GetClassLevel()];
 
 
         /// <summary>
         /// Create the mod calcs panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
-        public void Setup()
+        internal void Setup()
         {
-            // Generic setup.
-            isVisible = true;
-            canFocus = true;
-            isInteractive = true;
-            backgroundSprite = "UnlockingPanel";
-            autoLayout = true;
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoLayoutPadding.top = 5;
-            autoLayoutPadding.right = 5;
-            builtinKeyNavigation = true;
+            // Basic setup.
             clipChildren = true;
 
-            // Panel title.
-            titlePanel = this.AddUIComponent<UIPanel>();
-            titlePanel.height = 20;
-
-            title = titlePanel.AddUIComponent<UILabel>();
+            // Title.
+            title = this.AddUIComponent<UILabel>();
             title.relativePosition = new Vector3(0, 0);
             title.textAlignment = UIHorizontalAlignment.Center;
-            title.text = "Mod calculations";
+            title.text = Translations.Translate("RPR_CAL_MOD");
             title.textScale = 1.2f;
             title.autoSize = false;
             title.width = this.width;
 
-            // Panel to display calculations; hidden when no building is selected.
-            detailsPanel = this.AddUIComponent<UIPanel>();
-            detailsPanel.height = 0;
-            detailsPanel.isVisible = false;
-            detailsPanel.name = "DetailsPanel";
+            // Column titles.
+            UILabel densityTitle = ColumnLabel(this, Translations.Translate("RPR_CAL_DEN"), Margin, ColumnLabelY);
+            UILabel floorTitle = ColumnLabel(this, Translations.Translate("RPR_CAL_BFL"), RightColumnX, ColumnLabelY);
 
-            // Set up detail fields.
-            detailLabels = new UILabel[(int)Details.numDetails];
-            for (int i = 0; i < (int)Details.numDetails; i++)
+            // Volumetric calculations panel.
+            volumetricPanel = this.AddUIComponent<UIVolumetricPanel>();
+            volumetricPanel.relativePosition = new Vector2(0f, BaseCalcY);
+            volumetricPanel.height = this.height - title.height + 80f;
+            volumetricPanel.width = this.width;
+            volumetricPanel.Setup();
+
+            // Legacy calculations panel - copy volumetric calculations panel.
+            legacyPanel = this.AddUIComponent<UILegacyCalcs>();
+            legacyPanel.relativePosition = volumetricPanel.relativePosition;
+            legacyPanel.height = volumetricPanel.height;
+            legacyPanel.width = volumetricPanel.width;
+            legacyPanel.Setup();
+            legacyPanel.Hide();
+
+            // Floor dropdown panel.
+            floorPanel = this.AddUIComponent<UIPanel>();
+            floorPanel.relativePosition = new Vector2(RightColumnX, MenuY);
+            floorPanel.autoSize = true;
+            floorPanel.autoLayout = false;
+            floorPanel.clipChildren = false;
+            floorPanel.Show();
+
+            // Floor override label (for when floor dropdown menu is hidden).
+            floorOverrideLabel = UIControls.AddLabel(this, Translations.Translate("RPR_CAL_FOV"), RightColumnX, MenuY, this.width - RightColumnX, 0.7f);
+            floorOverrideLabel.Hide();
+
+            // Pack dropdowns.
+            popMenu = UIControls.AddDropDown(this, Margin, MenuY, ComponentWidth);
+            floorMenu = UIControls.AddDropDown(floorPanel, 0f, 0f, ComponentWidth);
+
+            // School dropdown panel.
+            schoolPanel = this.AddUIComponent<UIPanel>();
+            schoolPanel.relativePosition = new Vector2(Margin, Row2LabelY);
+            schoolPanel.autoSize = false;
+            schoolPanel.autoLayout = false;
+            schoolPanel.clipChildren = false;
+            schoolPanel.height = ApplyX - Row2LabelY;
+            schoolPanel.width = this.width - (Margin * 2);
+
+            // School panel title and dropdown menu.
+            UILabel schoolTitle = ColumnLabel(schoolPanel, Translations.Translate("RPR_CAL_SCH_PRO"), 0, 0);
+            schoolMenu = UIControls.AddDropDown(schoolPanel, 0f, LabelHeight, ComponentWidth);
+            schoolPanel.Hide();
+
+            // Pack descriptions.
+            popDescription = Description(this, Margin, DescriptionY);
+            floorDescription = Description(floorPanel, 0f, DescriptionY - MenuY);
+            schoolDescription = Description(schoolPanel, 0f, LabelHeight + DescriptionY - MenuY);
+
+            // Apply button.
+            applyButton = UIUtils.CreateButton(this, ButtonWidth);
+            applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
+            applyButton.text = Translations.Translate("RPR_OPT_SAA");
+            applyButton.eventClicked += (control, clickEvent) =>
             {
-                detailLabels[i] = detailsPanel.AddUIComponent<UILabel>();
-                detailLabels[i].relativePosition = new Vector3(leftPadding, (i * 30) + 30);
-                detailLabels[i].width = 270;
-                detailLabels[i].textAlignment = UIHorizontalAlignment.Left;
+                // Update building setting and save - multiplier first!
+                Multipliers.instance.UpdateMultiplier(currentBuilding, CurrentMult);
+                PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
+                FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
+                
+                // Update multiplier.
+                if (multCheck.isChecked)
+                {
+                    // If the multiplier override checkbox is selected, update the multiplier with the slider value.
+                    Multipliers.instance.UpdateMultiplier(currentBuilding, CurrentMult);
+                }
+                else
+                {
+                    // Otherwise, delete any multiplier override.
+                    Multipliers.instance.DeleteMultiplier(currentBuilding.name);
+                }
+
+                // Make sure SchoolData is called AFTER student count is settled via Pop and Floor packs, so it can work from updated data.
+                SchoolData.instance.UpdateBuildingPack(currentBuilding, currentSchoolPack);
+                ConfigUtils.SaveSettings();
+
+                // Refresh the selection list (to make sure settings checkboxes reflect new state).
+                BuildingDetailsPanel.Panel.RefreshList();
+            };
+
+            // Dropdown event handlers.
+            popMenu.eventSelectedIndexChanged += (component, index) => UpdatePopSelection(index);
+            floorMenu.eventSelectedIndexChanged += (component, index) => UpdateFloorSelection(index);
+            schoolMenu.eventSelectedIndexChanged += (component, index) => UpdateSchoolSelection(index);
+
+            // Add school multiplier slider (starts hidden).
+            multSlider = AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 5f, 0.5f, ModSettings.DefaultSchoolMult, (value) => CurrentMult = value, ComponentWidth);
+            multSlider.parent.relativePosition = new Vector2(RightColumnX, 10f);
+            multSlider.parent.Hide();
+
+            // Muliplier checkbox.
+            multCheck = UIControls.AddCheckBox(schoolPanel, Translations.Translate("RPR_CAL_CAP_OVR"), RightColumnX, 18f);
+
+            // Multiplier default label.
+            multDefaultLabel = UIControls.AddLabel(schoolPanel, Translations.Translate("RPR_CAL_CAP_DEF") + " x" + ModSettings.DefaultSchoolMult, RightColumnX + 21f, 40f, textScale: 0.8f);
+
+            // Multplier checkbox event handler.
+            multCheck.eventCheckChanged += (control, isChecked) =>
+            {
+                // Toggle slider and default label visibility.
+                if (isChecked)
+                {
+                    multDefaultLabel.Hide();
+                    multSlider.parent.Show();
+                }
+                else
+                {
+                    multSlider.parent.Hide();
+                    multDefaultLabel.Show();
+                }
+            };
+        }
+
+
+        /// <summary>
+        /// Updates the population calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        internal void UpdatePopSelection(int index)
+        {
+            // Update selected pack.
+            currentPopPack = popPacks[index];
+
+            // Update description.
+            popDescription.text = currentPopPack.description;
+
+            // Check if we're using legacy or volumetric data.
+            if (currentPopPack is VolumetricPopPack)
+            {
+                // Volumetric pack.  Are we coming from a legacy setting?
+                if (usingLegacy)
+                {
+                    // Reset flag.
+                    usingLegacy = false;
+
+                    // Restore floor rendering.
+                    BuildingDetailsPanel.Panel.HideFloors = false;
+
+                    // Update override label text.
+                    floorOverrideLabel.text = Translations.Translate("RPR_CAL_FOV");
+
+                    // Set visibility.
+                    legacyPanel.Hide();
+                    volumetricPanel.Show();
+                }
+
+                // Is there an override in place?
+                if (currentFloorOverride == null)
+                {
+                    // No override - update panel with new calculations.
+                    LevelData thisLevel = CurrentLevelData;
+                    volumetricPanel.UpdatePopText(thisLevel);
+                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack, currentSchoolPack, CurrentMult);
+
+                    // Set visibility.
+                    floorOverrideLabel.Hide();
+                    floorPanel.Show();
+                }
             }
+            else
+            {
+                // Using legacy calcs = set flag.
+                usingLegacy = true;
 
-            // Homes/jobs labels.
-            homesJobsCalcLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsCalcLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 2) * 30);
-            homesJobsCalcLabel.width = 270;
-            homesJobsCalcLabel.textAlignment = UIHorizontalAlignment.Left;
+                // Set visibility.
+                volumetricPanel.Hide();
+                floorPanel.Hide();
+                legacyPanel.Show();
 
-            homesJobsCustomLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsCustomLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 3) * 30);
-            homesJobsCustomLabel.width = 270;
-            homesJobsCustomLabel.textAlignment = UIHorizontalAlignment.Left;
+                // Set override label and show.
+                floorOverrideLabel.text = Translations.Translate("RPR_CAL_FLG");
+                floorOverrideLabel.Show();
 
-            homesJobsActualLabel = detailsPanel.AddUIComponent<UILabel>();
-            homesJobsActualLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 5) * 30);
-            homesJobsActualLabel.width = 270;
-            homesJobsActualLabel.textAlignment = UIHorizontalAlignment.Left;
+                // Cancel any floor rendering.
+                BuildingDetailsPanel.Panel.HideFloors = true;
+            }
+        }
 
 
-            // Message label (initially hidden).
-            messageLabel = detailsPanel.AddUIComponent<UILabel>();
-            messageLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 6) * 30);
-            messageLabel.textAlignment = UIHorizontalAlignment.Left;
-            messageLabel.autoSize = false;
-            messageLabel.autoHeight = true;
-            messageLabel.wordWrap = true;
-            messageLabel.width = 270;
-            messageLabel.text = "No message to display";
-            messageLabel.isVisible = false;
+        /// <summary>
+        /// Updates the floor calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        internal void UpdateFloorSelection(int index)
+        {
+            // Update selected pack.
+            currentFloorPack = (FloorDataPack)floorPacks[index];
+
+            // Update description.
+            floorDescription.text = currentFloorPack.description;
+
+            // Update panel with new calculations.
+            volumetricPanel.UpdateFloorText(currentFloorPack);
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
+
+            // Communicate change with to rest of panel.
+            BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
+        }
+
+
+        /// <summary>
+        /// Updates the school calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        internal void UpdateSchoolSelection(int index)
+        {
+            // Update selected pack.
+            currentSchoolPack = schoolPacks[index];
+
+            // Update description.
+            schoolDescription.text = currentSchoolPack.description;
+
+            // Update panel with new calculations.
+            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
+
+            // School selections aren't used anywhere else, so no need to communicate change to rest of panel.
         }
 
 
         /// <summary>
         /// Called whenever the currently selected building is changed to update the panel display.
         /// </summary>
-        /// <param name="building"></param>
-        public void SelectionChanged(BuildingInfo building)
+        /// <param name="building">Newly selected building</param>
+        internal void SelectionChanged(BuildingInfo building)
         {
-            if ((building == null) || (building.name == null))
+            // Set current building.
+            currentBuilding = building;
+
+            // Safety first!
+            if (currentBuilding != null)
             {
-                // If no valid building selected, then hide the calculations panel.
-                detailsPanel.height = 0;
-                detailsPanel.isVisible = false;
-                return;
-            }
+                // Get available calculation packs for this building.
+                popPacks = PopData.instance.GetPacks(building);
+                floorPacks = FloorData.instance.Packs;
 
-            // Variables to compare actual counts vs. mod count, to see if there's another mod overriding counts.
-            int appliedCount;
-            int modCount;
+                // Get current and default packs for this item.
+                currentPopPack = (PopDataPack)PopData.instance.ActivePack(building);
+                currentFloorPack = (FloorDataPack)FloorData.instance.ActivePack(building);
+                PopDataPack defaultPopPack = (PopDataPack)PopData.instance.CurrentDefaultPack(building);
+                FloorDataPack defaultFloorPack = (FloorDataPack)FloorData.instance.CurrentDefaultPack(building);
 
-            // Building model size, not plot size.
-            Vector3 buildingSize = building.m_size;
-            int floorCount;
-            // Array used for calculations depending on building service/subservice (via DataStore).
-            int[] array;
-            // Default minimum number of homes or jobs is one; different service types will override this.
-            int minHomesJobs = 1;
-            int customHomeJobs;
+                // Update multiplier before we do any other calcs.
+                multCheck.isChecked = Multipliers.instance.HasOverride(building.name);
 
-            // Check for valid building AI.
-            if (!(building.GetAI() is PrivateBuildingAI buildingAI))
-            {
-                Debugging.Message("invalid building AI type in building details");
-                return;
-            }
-
-            // Residential vs. workplace AI.
-            if (buildingAI is ResidentialBuildingAI)
-            {
-                // Get appropriate calculation array.
-                array = ResidentialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-
-                // Set calculated homes label.
-                homesJobsCalcLabel.text = Translations.Translate("RPR_CAL_HOM_CALC");
-
-                // Set customised homes label and get value (if any).
-                homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_HOM_CUST");
-                customHomeJobs = ExternalCalls.GetResidential(building);
-
-                // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
-                // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
-                appliedCount = buildingAI.CalculateHomeCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength());
-                homesJobsActualLabel.text = Translations.Translate("RPR_CAL_HOM_APPL") + appliedCount;
-            }
-            else
-            {
-                // Workplace AI.
-                // Default minimum number of jobs is 4.
-                minHomesJobs = 4;
-
-                // Find the correct array for the relevant building AI.
-                switch (building.GetService())
+                // Build pop pack menu.
+                popMenu.items = new string[popPacks.Length];
+                for (int i = 0; i < popMenu.items.Length; ++i)
                 {
-                    case ItemClass.Service.Commercial:
-                        array = CommercialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                        break;
-                    case ItemClass.Service.Office:
-                        array = OfficeBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                        break;
-                    case ItemClass.Service.Industrial:
-                        if (buildingAI is IndustrialExtractorAI)
-                        {
-                            array = IndustrialExtractorAIMod.GetArray(building, (int)building.GetClassLevel());
-                        }
-                        else
-                        {
-                            array = IndustrialBuildingAIMod.GetArray(building, (int)building.GetClassLevel());
-                        }
-                        break;
-                    default:
-                        Debugging.Message("invalid building service in building details");
-                        return;
+                    popMenu.items[i] = popPacks[i].displayName;
+
+                    // Check for default name match,
+                    if (popPacks[i].name.Equals(defaultPopPack.name))
+                    {
+                        popMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                    }
+
+                    // Set menu selection to current pack if it matches.
+                    if (popPacks[i].name.Equals(currentPopPack.name))
+                    {
+                        popMenu.selectedIndex = i;
+
+                        // Force pack selection update.
+                        UpdatePopSelection(i);
+                    }
                 }
 
-                // Set calculated jobs label.
-                homesJobsCalcLabel.text = Translations.Translate("RPR_CAL_JOB_CALC") + " ";
-
-                // Set customised jobs label and get value (if any).
-                homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_JOB_CUST") + " ";
-                customHomeJobs = ExternalCalls.GetWorker(building);
-
-                // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
-                // It differs from calculated jobs if there's an override value for that building with this mod, or if another mod is overriding.
-                int[] jobs = new int[4];
-                buildingAI.CalculateWorkplaceCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
-                appliedCount = jobs[0] + jobs[1] + jobs[2] + jobs[3];
-                homesJobsActualLabel.text = Translations.Translate("RPR_CAL_JOB_APPL") + " " + appliedCount;
-            }
-
-            // Reproduce CalcBase calculations to get building area.
-            int calcWidth = building.GetWidth();
-            int calcLength = building.GetLength();
-            floorCount = Mathf.Max(1, Mathf.FloorToInt(buildingSize.y / array[DataStore.LEVEL_HEIGHT]));
-
-            // If CALC_METHOD is zero, then calculations are based on building model size, not plot size.
-            if (array[DataStore.CALC_METHOD] == 0)
-            {
-                // If asset has small x dimension, then use plot width in squares x 6m (75% of standard width) instead.
-                if (buildingSize.x <= 1)
+                // Build floor pack menu.
+                floorMenu.items = new string[floorPacks.Length];
+                for (int i = 0; i < floorPacks.Length; ++i)
                 {
-                    calcWidth *= 6;
+                    floorMenu.items[i] = floorPacks[i].displayName;
+
+                    // Check for default name match,
+                    if (floorPacks[i].name.Equals(defaultFloorPack.name))
+                    {
+                        floorMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                    }
+
+                    // Set menu selection to current pack if it matches.
+                    if (floorPacks[i].name.Equals(currentFloorPack.name))
+                    {
+                        floorMenu.selectedIndex = i;
+
+                        // Force pack selection update.
+                        UpdateFloorSelection(i);
+                    }
+                }
+
+                // Update legacy panel for private building AIs (volumetric panel is updated by menu selection change above).
+                if (building.GetAI() is PrivateBuildingAI)
+                {
+                    legacyPanel.SelectionChanged(building);
+                }
+
+                // Is this a school building (need to do school building after pop and floor packs are updated)?
+                if (building.GetAI() is SchoolAI)
+                {
+                    // Yes - school building.  Set current pack.
+                    currentSchoolPack = (SchoolDataPack)SchoolData.instance.ActivePack(building);
+
+                    // Are we using custom school settings?
+                    if (ModSettings.enableSchoolProperties)
+                    {
+                        // Yes -extend panel height and show school panel.
+                        volumetricPanel.relativePosition = new Vector2(0f, SchoolCalcY);
+                        applyButton.relativePosition = new Vector2(ApplyX, SchoolSaveY);
+
+                        // Get available school packs for this building.
+                        schoolPacks = SchoolData.instance.GetPacks(building);
+
+                        // Get current and default packs for this item.
+                        currentSchoolPack = (SchoolDataPack)SchoolData.instance.ActivePack(building);
+                        SchoolDataPack defaultSchoolPack = (SchoolDataPack)SchoolData.instance.CurrentDefaultPack(building);
+
+                        // Build school pack menu.
+                        schoolMenu.items = new string[schoolPacks.Length];
+                        for (int i = 0; i < schoolMenu.items.Length; ++i)
+                        {
+                            schoolMenu.items[i] = schoolPacks[i].displayName;
+
+                            // Check for default name match,
+                            if (schoolPacks[i].name.Equals(defaultSchoolPack.name))
+                            {
+                                schoolMenu.items[i] += Translations.Translate("RPR_PCK_DEF");
+                            }
+
+                            // Set menu selection to current pack if it matches.
+                            if (schoolPacks[i].name.Equals(currentSchoolPack.name))
+                            {
+                                schoolMenu.selectedIndex = i;
+
+                                // Force pack selection update.
+                                UpdateSchoolSelection(i);
+                            }
+                        }
+
+                        schoolPanel.Show();
+                    }
+                    else
+                    {
+                        // We're not using custom school settings, so use the non-school layout.
+                        volumetricPanel.relativePosition = new Vector2(0f, BaseCalcY);
+                        applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
+                        schoolPanel.Hide();
+                    }
                 }
                 else
                 {
-                    calcWidth = (int)buildingSize.x;
-                }
-
-                // If asset has small z dimension, then use plot length in squares x 6m (75% of standard length) instead.
-                if (buildingSize.z <= 1)
-                {
-                    calcLength *= 6;
-                }
-                else
-                {
-                    calcLength = (int)buildingSize.z;
+                    // Not a school building - use non-school layout.
+                    currentSchoolPack = null;
+                    volumetricPanel.relativePosition = new Vector2(0f, BaseCalcY);
+                    applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
+                    schoolPanel.Hide();
                 }
             }
-            else
+        }
+
+
+        /// <summary>
+        /// Adds a column header label.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="text">Label text</param>
+        /// <param name="xPos">Label x-position</param>
+        /// <param name="xPos">Label y-position</param>
+        /// <returns>New column label</returns>
+        private UILabel ColumnLabel(UIComponent parent, string text, float xPos, float yPos)
+        {
+            UILabel newLabel = parent.AddUIComponent<UILabel>();
+            newLabel.relativePosition = new Vector3(xPos, yPos);
+            newLabel.textAlignment = UIHorizontalAlignment.Center;
+            newLabel.text = text;
+            newLabel.textScale = 1f;
+            newLabel.autoSize = false;
+            newLabel.width = ComponentWidth;
+
+            return newLabel;
+        }
+
+
+        /// <summary>
+        /// Adds a pack description text label.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="xPos">Label x-position</param>
+        /// <param name="xPos">Label y-position</param>
+        /// <returns></returns>
+        private UILabel Description(UIComponent parent, float xPos, float yPos)
+        {
+            UILabel newLabel = parent.AddUIComponent<UILabel>();
+            newLabel.relativePosition = new Vector2(xPos, yPos);
+            newLabel.autoSize = false;
+            newLabel.autoHeight = true;
+            newLabel.wordWrap = true;
+            newLabel.textScale = 0.7f;
+            newLabel.width = ComponentWidth;
+
+            return newLabel;
+        }
+
+
+
+
+        /// <summary>
+        /// Adds a slider with a multiplier label below.
+        /// </summary>
+        /// <param name="parent">Panel to add the control to</param>
+        /// <param name="text">Descriptive label text</param>
+        /// <param name="min">Slider minimum value</param>
+        /// <param name="max">Slider maximum value</param>
+        /// <param name="step">Slider minimum step</param>
+        /// <param name="defaultValue">Slider initial value</param>
+        /// <param name="eventCallback">Slider event handler</param>
+        /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
+        /// <returns>New UI slider with attached labels</returns>
+        private UISlider AddSliderWithMultipler(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
+        {
+            // Add slider component.
+            UISlider newSlider = UIControls.AddSlider(parent, text, min, max, step, defaultValue, eventCallback, width);
+            UIPanel sliderPanel = (UIPanel)newSlider.parent;
+
+            // Value label.
+            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
+            valueLabel.name = "ValueLabel";
+            valueLabel.relativePosition = UIControls.PositionUnder(newSlider, 2, 0f);
+            valueLabel.text = "x" + newSlider.value.ToString();
+
+            // Event handler to update value label.
+            newSlider.eventValueChanged += (component, value) =>
             {
-                // If CALC_METHOD is nonzero, then caluclations are based on plot size, not building size.
-                // Plot size is 8 metres per square.
-                calcWidth *= 8;
-                calcLength *= 8;
-            }
+                valueLabel.text = "x" + value.ToString();
 
-            // Display calculated (and retrieved) details.
-            detailLabels[(int)Details.width].text = Translations.Translate("RPR_CAL_BLD_X") + " " + calcWidth;
-            detailLabels[(int)Details.length].text = Translations.Translate("RPR_CAL_BLD_Z") + " " + calcLength;
-            detailLabels[(int)Details.height].text = Translations.Translate("RPR_CAL_BLD_Y") + " " + (int)buildingSize.y;
-            detailLabels[(int)Details.personArea].text = Translations.Translate("RPR_CAL_BLD_M2") + " " + array[DataStore.PEOPLE];
-            detailLabels[(int)Details.floorHeight].text = Translations.Translate("RPR_CAL_FLR_Y") + " " + array[DataStore.LEVEL_HEIGHT];
-            detailLabels[(int)Details.floors].text = Translations.Translate("RPR_CAL_FLR") + " " + floorCount;
+                // Execute provided callback.
+                eventCallback(value);
+            };
 
-            // Area calculation - will need this later.
-            int calculatedArea = calcWidth * calcLength;
-            detailLabels[(int)Details.area].text = Translations.Translate("RPR_CAL_M2") + " " + calculatedArea;
-
-            // Show or hide extra floor modifier as appropriate (hide for zero or less, otherwise show).
-            if (array[DataStore.DENSIFICATION] > 0)
-            {
-                detailLabels[(int)Details.extraFloors].text = Translations.Translate("RPR_CAL_FLR_M") + " " + array[DataStore.DENSIFICATION];
-                detailLabels[(int)Details.extraFloors].isVisible = true;
-            }
-            else
-            {
-                detailLabels[(int)Details.extraFloors].isVisible = false;
-            }
-
-            // Set minimum residences for high density.
-            if ((building.GetSubService() == ItemClass.SubService.ResidentialHigh) || (building.GetSubService() == ItemClass.SubService.ResidentialHighEco))
-            {
-                // Minimum of 2, or 90% number of floors, whichever is greater. This helps the 1x1 high density.
-                minHomesJobs = Mathf.Max(2, Mathf.CeilToInt(0.9f * floorCount));
-            }
-
-            // Perform actual household or workplace calculation.
-            modCount = Mathf.Max(minHomesJobs, (calculatedArea * (floorCount + Mathf.Max(0, array[DataStore.DENSIFICATION]))) / array[DataStore.PEOPLE]);
-            homesJobsCalcLabel.text += modCount;
-
-            // Set customised homes/jobs label (leave blank if no custom setting retrieved).
-            if (customHomeJobs > 0)
-            {
-                homesJobsCustomLabel.text += customHomeJobs.ToString();
-
-                // Update modCount to reflect the custom figures.
-                modCount = customHomeJobs;
-            }
-
-            // Check to see if Ploppable RICO Revisited is controlling this building's population.
-            if (ModUtils.CheckRICO(building))
-            {
-                messageLabel.text = Translations.Translate("RPR_CAL_RICO");
-                messageLabel.Show();
-            }
-            else
-            {
-                // Hide message text by default.
-                messageLabel.Hide();
-            }
-
-            // We've got a valid building and results, so show panel.
-            detailsPanel.height = 270;
-            detailsPanel.isVisible = true;
+            return newSlider;
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEngine;
-using ICities;
+﻿using UnityEngine;
+using ColossalFramework;
 using ColossalFramework.UI;
 
 
@@ -11,6 +10,70 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal static class PanelUtils
     {
+        /// <summary>
+        /// Event handler filter for text fields to ensure only integer values are entered.
+        /// </summary>
+        /// <param name="control">Relevant control</param>
+        /// <param name="value">Text value</param>
+        internal static void IntTextFilter(UITextField control, string value)
+        {
+            // If it's not blank and isn't an integer, remove the last character and set selection to end.
+            if (!value.IsNullOrWhiteSpace() && !int.TryParse(value, out int result))
+            {
+                control.text = value.Substring(0, value.Length - 1);
+                control.MoveSelectionPointRight();
+            }
+        }
+
+
+        /// <summary>
+        /// Event handler filter for text fields to ensure only floating-point values are entered.
+        /// </summary>
+        /// <param name="control">Relevant control</param>
+        /// <param name="value">Text value</param>
+        internal static void FloatTextFilter(UITextField control, string value)
+        {
+            // If it's not blank and isn't an integer, remove the last character and set selection to end.
+            if (!value.IsNullOrWhiteSpace() && !float.TryParse(value, out float result))
+            {
+                control.text = value.Substring(0, value.Length - 1);
+                control.MoveSelectionPointRight();
+            }
+        }
+
+
+        /// <summary>
+        /// Attempts to parse a string for an integer value; if the parse fails, simply does nothing (leaving the original value intact).
+        /// </summary>
+        /// <param name="intVar">Integer variable to store result (left unchanged if parse fails)</param>
+        /// <param name="text">Text to parse</param>
+        internal static void ParseInt(ref int intVar, string text)
+        {
+            int result;
+
+            if (int.TryParse(text, out result))
+            {
+                intVar = result;
+            }
+        }
+
+
+        /// <summary>
+        /// Attempts to parse a string for an floating-point value; if the parse fails, simply does nothing (leaving the original value intact).
+        /// </summary>
+        /// <param name="floatVer">Float variable to store result (left unchanged if parse fails)</param>
+        /// <param name="text">Text to parse</param>
+        internal static void ParseFloat(ref float floatVar, string text)
+        {
+            float result;
+
+            if (float.TryParse(text, out result))
+            {
+                floatVar = result;
+            }
+        }
+
+
         /// <summary>
         /// Adds a tab to a UI tabstrip.
         /// </summary>
@@ -52,142 +115,64 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Adds a plain text label to the specified UI panel.
+        /// Adds a row header icon label at the current Y position.
         /// </summary>
-        /// <param name="panel">UI panel to add the label to</param>
+        /// <param name="panel">UI panel</param>
+        /// <param name="yPos">Reference Y positions</param>
+        /// <param name="text">Tooltip text</param>
+        /// <param name="icon">Icon name</param>
+        internal static void RowHeaderIcon(UIPanel panel, ref float yPos, string text, string icon, string atlas)
+        {
+            // UI layout constants.
+            const float Margin = 5f;
+            const float LeftTitle = 50f;
+
+
+            // Actual icon.
+            UISprite thumbSprite = panel.AddUIComponent<UISprite>();
+            thumbSprite.relativePosition = new Vector3(Margin, yPos - 2.5f);
+            thumbSprite.width = 35f;
+            thumbSprite.height = 35f;
+            thumbSprite.atlas = UIUtils.GetAtlas(atlas);
+            thumbSprite.spriteName = icon;
+
+            // Text label.
+            UILabel lineLabel = panel.AddUIComponent<UILabel>();
+            lineLabel.textScale = 1.0f;
+            lineLabel.text = text;
+            lineLabel.relativePosition = new Vector3(LeftTitle, yPos + 7);
+            lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
+
+            // Increment our current height.
+            yPos += 30f;
+        }
+
+
+        /// <summary>
+        /// Adds a column header text label.
+        /// </summary>
+        /// <param name="panel">UI panel</param>
+        /// <param name="xPos">Reference X position</param>
+        /// <param name="baseY">Y position of base of label/param>
+        /// <param name="width">Width of reference item (for centering)</param>
         /// <param name="text">Label text</param>
-        /// <returns></returns>
-        internal static UILabel AddLabel(UIPanel panel, string text)
+        /// <param name="scale">Label text size (default 0.8)</param>
+        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, float scale = 0.8f)
         {
-            // Add label.
-            UILabel label = (UILabel)panel.AddUIComponent<UILabel>();
-            label.autoSize = false;
-            label.autoHeight = true;
-            label.wordWrap = true;
-            label.width = 700;
-            label.text = text;
+            // Basic setup.
+            UILabel columnLabel = panel.AddUIComponent<UILabel>();
+            columnLabel.textScale = scale;
+            columnLabel.verticalAlignment = UIVerticalAlignment.Middle;
+            columnLabel.textAlignment = UIHorizontalAlignment.Center;
+            columnLabel.autoSize = false;
+            columnLabel.autoHeight = true;
+            columnLabel.wordWrap = true;
+            columnLabel.width = width;
 
-            // Increase panel height to compensate.
-            panel.height += label.height;
+            columnLabel.text = text;
 
-            return label;
-        }
-
-
-        /// <summary>
-        /// Creates a plain dropdown using the game's option panel dropdown template.
-        /// </summary>
-        /// <param name="parent">Parent component</param>
-        /// <param name="text">Descriptive label text</param>
-        /// <param name="items">Dropdown menu item list</param>
-        /// <param name="selectedIndex">Initially selected index (default 0)</param>
-        /// <param name="width">Width of dropdown (default 60)</param>
-        /// <returns></returns>
-        public static UIDropDown AddPlainDropDown(UIComponent parent, string text, string[] items, int selectedIndex = 0, float width = 270f)
-        {
-            UIPanel panel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsDropdownTemplate")) as UIPanel;
-            UIDropDown dropDown = panel.Find<UIDropDown>("Dropdown");
-
-            // Set text.
-            panel.Find<UILabel>("Label").text = text;
-
-            // Slightly increase width.
-            dropDown.autoSize = false;
-            dropDown.width = width;
-
-            // Add items.
-            dropDown.items = items;
-            dropDown.selectedIndex = selectedIndex;
-
-            return dropDown;
-        }
-
-
-        /// <summary>
-        /// Adds a slider with a descriptive text label above and an automatically updating value label immediately to the right.
-        /// </summary>
-        /// <param name="parent">Panel to add the control to</param>
-        /// <param name="text">Descriptive label text</param>
-        /// <param name="min">Slider minimum value</param>
-        /// <param name="max">Slider maximum value</param>
-        /// <param name="step">Slider minimum step</param>
-        /// <param name="defaultValue">Slider initial value</param>
-        /// <param name="eventCallback">Slider event handler</param>
-        /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
-        /// <returns>New UI slider with attached labels</returns>
-        public static UISlider AddSliderWithValue(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
-        {
-            // Add slider component.
-            UIPanel sliderPanel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsSliderTemplate")) as UIPanel;
-            sliderPanel.Find<UILabel>("Label").text = text;
-
-            // Label.
-            UILabel sliderLabel = sliderPanel.Find<UILabel>("Label");
-            sliderLabel.autoHeight = true;
-            sliderLabel.width = width;
-            sliderLabel.anchor = UIAnchorStyle.Left | UIAnchorStyle.Top;
-            sliderLabel.relativePosition = Vector3.zero;
-            sliderLabel.relativePosition = Vector3.zero;
-            sliderLabel.text = text;
-
-            // Slider configuration.
-            UISlider newSlider = sliderPanel.Find<UISlider>("Slider");
-            newSlider.minValue = min;
-            newSlider.maxValue = max;
-            newSlider.stepSize = step;
-            newSlider.value = defaultValue;
-
-            // Move default slider position to match resized label.
-            sliderPanel.autoLayout = false;
-            newSlider.anchor = UIAnchorStyle.Left | UIAnchorStyle.Top;
-            newSlider.relativePosition = PositionUnder(sliderLabel);
-            newSlider.width = width;
-
-            // Increase height of panel to accomodate it all plus some extra space for margin.
-            sliderPanel.autoSize = false;
-            sliderPanel.width = width + 50f;
-            sliderPanel.height = newSlider.relativePosition.y + newSlider.height + 20f;
-
-            // Value label.
-            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
-            valueLabel.name = "ValueLabel";
-            valueLabel.text = newSlider.value.ToString();
-            valueLabel.relativePosition = PositionRightOf(newSlider, 8f, 1f);
-
-            // Event handler to update value label.
-            newSlider.eventValueChanged += (component, value) =>
-            {
-                valueLabel.text = value.ToString();
-                eventCallback(value);
-            };
-
-            return newSlider;
-        }
-
-
-        /// <summary>
-        /// Returns a relative position below a specified UI component, suitable for placing an adjacent component.
-        /// </summary>
-        /// <param name="uIComponent">Original (anchor) UI component</param>
-        /// <param name="margin">Margin between components (default 8)</param>
-        /// <param name="horizontalOffset">Horizontal offset from first to second component (default 0)</param>
-        /// <returns>Offset position (below original)</returns>
-        private static Vector3 PositionUnder(UIComponent uIComponent, float margin = 8f, float horizontalOffset = 0f)
-        {
-            return new Vector3(uIComponent.relativePosition.x + horizontalOffset, uIComponent.relativePosition.y + uIComponent.height + margin);
-        }
-
-
-        /// <summary>
-        /// Returns a relative position to the right of a specified UI component, suitable for placing an adjacent component.
-        /// </summary>
-        /// <param name="uIComponent">Original (anchor) UI component</param>
-        /// <param name="margin">Margin between components (default 8)</param>
-        /// <param name="verticalOffset">Vertical offset from first to second component (default 0)</param>
-        /// <returns>Offset position (to right of original)</returns>
-        public static Vector3 PositionRightOf(UIComponent uIComponent, float margin = 8f, float verticalOffset = 0f)
-        {
-            return new Vector3(uIComponent.relativePosition.x + uIComponent.width + margin, uIComponent.relativePosition.y + verticalOffset);
+            // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
+            columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), baseY - columnLabel.height);
         }
     }
 }

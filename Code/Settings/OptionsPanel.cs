@@ -38,8 +38,8 @@ namespace RealisticPopulationRevisited
                 // Simple event hook to create/destroy GameObject based on appropriate visibility.
                 gameOptionsPanel.eventVisibilityChanged += (control, isVisible) =>
                 {
-                    // Create/destroy based on visible.
-                    if(isVisible)
+                    // Create/destroy based on whether or not we're now visible.
+                    if (isVisible)
                     {
                         Create();
                     }
@@ -84,25 +84,37 @@ namespace RealisticPopulationRevisited
                 // Create a base panel attached to our game object, perfectly overlaying the game options panel.
                 UIPanel basePanel = optionsGameObject.AddComponent<UIPanel>();
                 basePanel.absolutePosition = optionsPanel.absolutePosition;
-                basePanel.size = optionsPanel.size;
+                basePanel.width = optionsPanel.width;
+                basePanel.height = 725f;
 
                 // Add tabstrip.
                 UITabstrip tabStrip = basePanel.AddUIComponent<UITabstrip>();
                 tabStrip.relativePosition = new Vector3(0, 0);
-                tabStrip.size = new Vector2(744, 713);
+                tabStrip.width = basePanel.width;
+                tabStrip.height = basePanel.height;
 
                 // Tab container (the panels underneath each tab).
                 UITabContainer tabContainer = basePanel.AddUIComponent<UITabContainer>();
-                tabContainer.relativePosition = new Vector3(0, 40);
-                tabContainer.size = new Vector3(744, 713);
+                tabContainer.relativePosition = new Vector3(0, 30f);
+                tabContainer.width = tabStrip.width;
+                tabContainer.height = tabStrip.height;
                 tabStrip.tabPages = tabContainer;
+
+                // Initialize data.
+                DataUtils.Setup();
 
                 // Add tabs and panels.
                 new ModOptionsPanel(tabStrip, 0);
-                new ResidentialPanel(tabStrip, 1);
-                new IndustrialPanel(tabStrip, 2);
-                new CommercialPanel(tabStrip, 3);
-                new OfficePanel(tabStrip, 4);
+                new CalculationsPanel(tabStrip, 1);
+                new EducationPanel(tabStrip, 2);
+                new CrimePanel(tabStrip, 3);
+
+                /*// Change tab size and text scale (to fit them all in...).
+                foreach (UIButton button in tabStrip.components)
+                {
+                    button.textScale = 0.8f;
+                    button.width = 100f;
+                }*/
             }
             catch (Exception e)
             {

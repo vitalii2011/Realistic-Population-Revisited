@@ -4,6 +4,84 @@
     <Translation ID="RPR_NAME" String="Realistic Population Revisited" />
     <Translation ID="RPR_DESC" String="More realistic building populations (based on building size) and utility needs." />"
     <Translation ID="RPR_REALPOP" String="Realistic Population" />
+    <Translation ID="RPR_PCK_DEF" String=" (default)" />
+    <Translation ID="RPR_PCK_NAM" String="Calculations" />
+    <Translation ID="RPR_PCK_LEG_NAM" String="Legacy WG calculations" />
+    <Translation ID="RPR_PCK_LEG_DES" String="Old calculations used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod." />
+    <Translation ID="RPR_PCK_RLS_NAM" String="Single dwellings" />
+    <Translation ID="RPR_PCK_RLS_DES" String="One household per building." />
+    <Translation ID="RPR_PCK_RUH_NAM" String="US highrise" />
+    <Translation ID="RPR_PCK_RUH_DES" String="Average US apartments and condos." />
+    <Translation ID="RPR_PCK_REM_NAM" String="European apartments (modern)" />
+    <Translation ID="RPR_PCK_REM_DES" String="European mid-rise and wall-to-wall apartments (medium density; modern buildings)." />
+    <Translation ID="RPR_PCK_REO_NAM" String="European apartments (older)" />
+    <Translation ID="RPR_PCK_REO_DES" String="European mid-rise and wall-to-wall apartments (high density; older buildings)." />
+    <Translation ID="RPR_PCK_CUS_NAM" String="US retail" />
+    <Translation ID="RPR_PCK_CUS_DES" String="General commercial retail density typical of USA." />
+    <Translation ID="RPR_PCK_CUK_NAM" String="UK retail" />
+    <Translation ID="RPR_PCK_CUK_DES" String="General commercial retail density typical of UK." />
+    <Translation ID="RPR_PCK_CRW_NAM" String="Superstores" />
+    <Translation ID="RPR_PCK_CRW_DES" String="Non-food superstores and retail warehouses." />
+    <Translation ID="RPR_PCK_THT_NAM" String="Hotels" />
+    <Translation ID="RPR_PCK_THT_DES" String="Hotels and motels." />
+    <Translation ID="RPR_PCK_LFD_NAM" String="Food service" />
+    <Translation ID="RPR_PCK_LFD_DES" String="Restaurants and cafes." />
+    <Translation ID="RPR_PCK_LEN_NAM" String="Entertainment" />
+    <Translation ID="RPR_PCK_LEN_DES" String="Amusement, fitness, and entertainment centers." />
+    <Translation ID="RPR_PCK_LCN_NAM" String="Cinemas" />
+    <Translation ID="RPR_PCK_LCN_DES" String="Cinemas and theaters." />
+    <Translation ID="RPR_PCK_ILG_NAM" String="Light industry" />
+    <Translation ID="RPR_PCK_ILG_DES" String="Light industries and business parks." />
+    <Translation ID="RPR_PCK_IMN_NAM" String="Manufacturing" />
+    <Translation ID="RPR_PCK_IMN_DES" String="Industrial manufacturing." />
+    <Translation ID="RPR_PCK_IWL_NAM" String="Small warehouses" />
+    <Translation ID="RPR_PCK_IWL_DES" String="Warehouses for local distribution - lots of storage and low employment density." />
+    <Translation ID="RPR_PCK_IWN_NAM" String="Large warehouses" />
+    <Translation ID="RPR_PCK_IWN_DES" String="Warehouses for national distribution - lots of storage and very low employment density." />
+    <Translation ID="RPR_PCK_OCP_NAM" String="Corporate offices" />
+    <Translation ID="RPR_PCK_OCP_DES" String="Corporate, professional services, and public sector offices." />
+    <Translation ID="RPR_PCK_OFN_NAM" String="Finance offices" />
+    <Translation ID="RPR_PCK_OFN_DES" String="Financial offices; higher density than typical corporte offices" />
+    <Translation ID="RPR_PCK_OCS_NAM" String="Call centers" />
+    <Translation ID="RPR_PCK_OCS_DES" String="Call centers and other tightly-packed offices" />
+    <Translation ID="RPR_PCK_ODT_NAM" String="Datacenters" />
+    <Translation ID="RPR_PCK_ODT_DES" String="Datacenters with co-location facilities" />
+    <Translation ID="RPR_PCK_SSB_NAM" String="Surburban school" />
+    <Translation ID="RPR_PCK_SSB_DES" String="Suburban schools" />
+    <Translation ID="RPR_PCK_SML_NAM" String="MN low" />
+    <Translation ID="RPR_PCK_SML_DES" String="Minnesota Dept of Education guide - lowest density" />
+    <Translation ID="RPR_PCK_SMM_NAM" String="MN medium" />
+    <Translation ID="RPR_PCK_SMM_DES" String="Minnesota Dept of Education guide - medium density" />
+    <Translation ID="RPR_PCK_SMH_NAM" String="MN high" />
+    <Translation ID="RPR_PCK_SMH_DES" String="Minnesota Dept of Education guide - highest density" />
+    <Translation ID="RPR_PCK_SUK_NAM" String="UK standard" />
+    <Translation ID="RPR_PCK_SUK_DES" String="Standard planning densities for the UK." />
+    <Translation ID="RPR_PCK_FDF_NAM" String="Generic" />
+    <Translation ID="RPR_PCK_FDF_DES" String="Standard 3m floor height." />
+    <Translation ID="RPR_PCK_FHO_NAM" String="Standalone houses" />
+    <Translation ID="RPR_PCK_FHO_DES" String="Detached residential dwellings." />
+    <Translation ID="RPR_PCK_FDL_NAM" String="Lobbies" />
+    <Translation ID="RPR_PCK_FDL_DES" String="Buildings with lobbies and/or elevated first floors." />
+    <Translation ID="RPR_PCK_FCM_NAM" String="Commercial" />
+    <Translation ID="RPR_PCK_FCM_DES" String="Commercial, office, educational and industrial buildings with higher floor heights." />
+    <Translation ID="RPR_PCK_FWH_NAM" String="Warehouse" />
+    <Translation ID="RPR_PCK_FWH_DES" String="Retail, commercial and industrial warehouses." />
+    <Translation ID="RPR_PCK_FHB_NAM" String="High-bay warehouse" />
+    <Translation ID="RPR_PCK_FHB_DES" String="High-bay industrial and commercial warehouses." />
+    <Translation ID="RPR_PCK_FEX_NAM" String="Primary industry" />
+    <Translation ID="RPR_PCK_FEX_DES" String="Industrial extractors and processors" />
+    <Translation ID="RPR_PCK_SVE_NAM" String="Vanilla elementary" />
+    <Translation ID="RPR_PCK_SVE_DES" String="Scaling according to the vanilla elementary school" />
+    <Translation ID="RPR_PCK_SVH_NAM" String="Vanilla high school" />
+    <Translation ID="RPR_PCK_SVH_DES" String="Scaling according to the vanilla high school" />
+    <Translation ID="RPR_PCK_SVC_NAM" String="Vanilla community" />
+    <Translation ID="RPR_PCK_SVC_DES" String="Scaling according to the vanilla community school" />
+    <Translation ID="RPR_PCK_SVA_NAM" String="Vanilla art school" />
+    <Translation ID="RPR_PCK_SVA_DES" String="Scaling according to the vanilla art school" />
+    <Translation ID="RPR_CAT_RES" String="Residential" />
+    <Translation ID="RPR_CAT_RLO" String="Residential low" />
+    <Translation ID="RPR_CAT_RHI" String="Residential high" />
+    <Translation ID="RPR_CAT_COM" String="Commercial" />
     <Translation ID="RPR_CAT_ALL" String="All categories" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />
@@ -28,8 +106,16 @@
     <Translation ID="RPR_CAT_SSH" String="Self-sufficient homes" />
     <Translation ID="RPR_CAT_ERL" String="Eco residential low" />
     <Translation ID="RPR_CAT_ERH" String="Eco residential high" />
+    <Translation ID="RPR_CAT_SCH" String="Schools" />
     <Translation ID="RPR_FIL_NAME" String="Name:" />
-    <Translation ID="RPR_CUS_HAS" String="Has custom settings" />
+    <Translation ID="RPR_FIL_SET" String="Filter by settings (see tooltips)" />
+    <Translation ID="RPR_EDT_POP" String="Override population" />
+    <Translation ID="RPR_EDT_FLR" String="Override floors" />
+    <Translation ID="RPR_CUS_POP" String="Has custom population settings" />
+    <Translation ID="RPR_CUS_FLR" String="Has custom floor settings" />
+    <Translation ID="RPR_CUS_NDP" String="Has non-default population pack" />
+    <Translation ID="RPR_CUS_NDF" String="Has non-default floor pack" />
+    <Translation ID="RPR_CUS_ANY" String="Has custom settings or non-default calculation pack" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />
     <Translation ID="RPR_CUS_ADD" String="Add custom settings" />
     <Translation ID="RPR_CUS_ADD_TIP" String="Adds (or updates) a custom setting for the selected building" />
@@ -40,6 +126,29 @@
     <Translation ID="RPR_ERR_INV" String="ERROR: invalid value" />
     <Translation ID="RPR_LBL_HOM" String="Homes:" />
     <Translation ID="RPR_LBL_JOB" String="Jobs:" />
+    <Translation ID="RPR_LBL_OFF" String="First floor height" />
+    <Translation ID="RPR_LBL_OFH" String="Other floor height" />
+    <Translation ID="RPR_PRV_SFL" String="Show calculated floors" />
+    <Translation ID="RPR_CAL_MOD" String="Mod calculations" />
+    <Translation ID="RPR_CAL_DEN" String="Population density" />
+    <Translation ID="RPR_CAL_BFL" String="Building floors" />
+    <Translation ID="RPR_CAL_FOV" String="Using custom override" />
+    <Translation ID="RPR_CAL_FLG" String="Floor calculation selection is not available when using legacy calculations" />
+    <Translation ID="RPR_CAL_VOL_FLR" String="Floors" />
+    <Translation ID="RPR_CAL_VOL_TFA" String="Total floor area" />
+    <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />
+    <Translation ID="RPR_CAL_VOL_FLH" String="Floor height" />
+    <Translation ID="RPR_CAL_VOL_EMP" String="Empty area (fixed)" />
+    <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
+    <Translation ID="RPR_CAL_VOL_FMN" String="First floor height min" />
+    <Translation ID="RPR_CAL_VOL_FMX" String="First floor extra height" />
+    <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
+    <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
+    <Translation ID="RPR_CAL_VOL_MFU" String="Multi-floor units" />
+    <Translation ID="RPR_CAL_VOL_HOU" String="homes" />
+    <Translation ID="RPR_CAL_VOL_WOR" String="workers" />
+    <Translation ID="RPR_CAL_VOL_STU" String="students" />
+    <Translation ID="RPR_CAL_VOL_ARA" String="area" />
     <Translation ID="RPR_CAL_HOM_CALC" String="Calculated homes:" />
     <Translation ID="RPR_CAL_HOM_CUST" String="Customised homes:" />
     <Translation ID="RPR_CAL_HOM_APPL" String="Applied homes:" />
@@ -55,9 +164,17 @@
     <Translation ID="RPR_CAL_FLR" String="Calculated floors:" />
     <Translation ID="RPR_CAL_M2" String="Calculated area:" />
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />
+    <Translation ID="RPR_CAL_CAP_OVR" String="Custom capacity multiplier" />
+    <Translation ID="RPR_CAL_CAP_DEF" String="Default multiplier:" />
+    <Translation ID="RPR_CAL_SCH_PRO" String="Staff and cost scaling" />
+    <Translation ID="RPR_CAL_SCH_WKR" String="School workers" />
+    <Translation ID="RPR_CAL_SCH_CST" String="Cost/maintenance" />
     <Translation ID="RPR_OPT_MOD" String="Mod settings" />
     <Translation ID="RPR_OPT_KEY" String="Hotkey for building options screen" />
     <Translation ID="RPR_OPT_PRS" String="Press any key" />
+    <Translation ID="RPR_OPT_LEG" String="Legacy" />
+    <Translation ID="RPR_OPT_CON" String="Consumption" />
+    <Translation ID="RPR_OPT_STO" String="Stories" />
     <Translation ID="RPR_OPT_LVL" String="Level" />
     <Translation ID="RPR_OPT_PERW" String="Amounts per worker" />
     <Translation ID="RPR_OPT_PERH" String="Amounts per household" />
@@ -68,10 +185,36 @@
     <Translation ID="RPR_OPT_WAT" String="Water" />
     <Translation ID="RPR_OPT_SEW" String="Sewage" />
     <Translation ID="RPR_OPT_GAR" String="Garbage" />
+    <Translation ID="RPR_OPT_POL" String="Pollution" />
+    <Translation ID="RPR_OPT_NOI" String="Noise" />
+    <Translation ID="RPR_OPT_MAI" String="Mail" />
+    <Translation ID="RPR_OPT_PRO" String="Production" />
     <Translation ID="RPR_OPT_WEA" String="Wealth" />
     <Translation ID="RPR_OPT_RTD" String="Reset to defaults" />
     <Translation ID="RPR_OPT_RTS" String="Revert to saved" />
     <Translation ID="RPR_OPT_SAA" String="Save and apply" />
+    <Translation ID="RPR_OPT_SCH" String="Schools" />
+    <Translation ID="RPR_OPT_SEN" String="Enable realistic school student capacities" />
+    <Translation ID="RPR_OPT_SEJ" String="Enable realistic school properties (jobs, costs) - requires restart" />
+    <Translation ID="RPR_OPT_SDM" String="Default school capacity multiplier" />
+    <Translation ID="RPR_OPT_JB0" String="Uneducated jobs" />
+    <Translation ID="RPR_OPT_JB1" String="Educated jobs" />
+    <Translation ID="RPR_OPT_JB2" String="Well-educated jobs" />
+    <Translation ID="RPR_OPT_JB3" String="Highly-educated jobs" />
+    <Translation ID="RPR_OPT_SHE" String="Elementary schools" />
+    <Translation ID="RPR_OPT_SHH" String="High schools" />
+    <Translation ID="RPR_OPT_SJB" String="Base jobs" />
+    <Translation ID="RPR_OPT_SJX" String="Extra job per # students" />
+    <Translation ID="RPR_OPT_CRI" String="Crime" />
+    <Translation ID="RPR_OPT_CML" String="Crime multiplier (percentage)" />
+    <Translation ID="RPR_OPT_POP" String="Population" />
+    <Translation ID="RPR_OPT_DEF" String="Defaults" />
+    <Translation ID="RPR_OPT_EDT_NAM" String="Pack name" />
+    <Translation ID="RPR_OPT_SVC" String="Service" />
+    <Translation ID="RPR_OPT_CPK" String="Calculation pack" />
+    <Translation ID="RPR_OPT_NEW" String="Add new" />
+    <Translation ID="RPR_OPT_DEL" String="Delete pack" />
+    <Translation ID="RPR_OPT_NPK" String="New pack" />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
   </Translations>

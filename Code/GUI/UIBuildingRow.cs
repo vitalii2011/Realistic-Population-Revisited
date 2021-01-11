@@ -10,13 +10,13 @@ namespace RealisticPopulationRevisited
     public class UIBuildingRow : UIPanel, UIFastListRow
     {
         // Height of each row.
-        private const int rowHeight = 40;
+        private const float rowHeight = 30f;
 
         // Panel components.
         private UIPanel panelBackground;
         private UILabel buildingName;
         private BuildingInfo thisBuilding;
-        private UISprite hasCustom;
+        private UISprite hasPop, hasFloor, hasNonDefaultPop, hasNonDefaultFloor;
 
 
         // Background for each list item.
@@ -49,7 +49,7 @@ namespace RealisticPopulationRevisited
             if (buildingName != null)
             {
                 Background.width = width;
-                buildingName.relativePosition = new Vector3(10f, 5f);
+                buildingName.relativePosition = new Vector2(rowHeight / 2f, 5f);
             }
         }
 
@@ -79,32 +79,71 @@ namespace RealisticPopulationRevisited
                 canFocus = true;
                 isInteractive = true;
                 width = parent.width;
-                height = 40;
+                height = rowHeight;
 
                 buildingName = AddUIComponent<UILabel>();
+                buildingName.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
+                buildingName.relativePosition = new Vector2(rowHeight / 2f, 5f);
                 buildingName.width = 200;
 
-                // Checkbox to indicate which items have custom settings.
-                hasCustom = AddUIComponent<UISprite>();
-                hasCustom.size = new Vector2(20, 20);
-                hasCustom.relativePosition = new Vector3(340, 10);
-                hasCustom.tooltip = Translations.Translate("RPR_CUS_HAS");
+                // Checkboxes to indicate which items have custom settings.
+                hasPop = AddSettingsCheck(UIBuildingFilter.popOverrideX, "RPR_CUS_POP");
+                hasFloor = AddSettingsCheck(UIBuildingFilter.floorOverrideX, "RPR_CUS_FLR");
+                hasNonDefaultPop = AddSettingsCheck(UIBuildingFilter.defaultPopOverrideX, "RPR_CUS_NDP");
+                hasNonDefaultFloor = AddSettingsCheck(UIBuildingFilter.defaultFloorOverrideX, "RPR_CUS_NDF");
             }
 
             // Set selected building.
             thisBuilding = data as BuildingInfo;
-            buildingName.text = UIBuildingDetails.GetDisplayName(thisBuilding.name);
+            string thisBuildingName = thisBuilding.name;
+            buildingName.text = UIBuildingDetails.GetDisplayName(thisBuildingName);
 
             // Update custom settings checkbox to correct state.
             if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0)
             {
+                // Custom population value found.
+                hasPop.spriteName = "AchievementCheckedTrue";
+            }
+            else
+            {
+                // No custom population value.
+                hasPop.spriteName = "AchievementCheckedFalse";
+            }
+
+            // Update custom floor settings checkbox to correct state.
+            if (FloorData.instance.HasOverride(thisBuildingName) != null)
+            {
+                // Custom floor override value found.
+                hasFloor.spriteName = "AchievementCheckedTrue";
+            }
+            else
+            {
+                // No floor override.
+                hasFloor.spriteName = "AchievementCheckedFalse";
+            }
+
+            // Update default pop override checkbox to correct state.
+            if (PopData.instance.HasPackOverride(thisBuildingName) != null)
+            {
                 // Custom value found.
-                hasCustom.spriteName = "AchievementCheckedTrue";
+                hasNonDefaultPop.spriteName = "AchievementCheckedTrue";
             }
             else
             {
                 // No custom value.
-                hasCustom.spriteName = "AchievementCheckedFalse";
+                hasNonDefaultPop.spriteName = "AchievementCheckedFalse";
+            }
+
+            // Update default floor override checkbox to correct state.
+            if (FloorData.instance.HasPackOverride(thisBuildingName) != null)
+            {
+                // Custom value found.
+                hasNonDefaultFloor.spriteName = "AchievementCheckedTrue";
+            }
+            else
+            {
+                // No custom value.
+                hasNonDefaultFloor.spriteName = "AchievementCheckedFalse";
             }
 
             // Set initial background as deselected state.
@@ -140,6 +179,23 @@ namespace RealisticPopulationRevisited
                 // Darker background for even rows.
                 Background.backgroundSprite = null;
             }
+        }
+
+
+        /// <summary>
+        /// Adds a settings check to the current row.
+        /// </summary>
+        /// <param name="xPos">Check relative x-position</param>
+        /// <param name="translationKey">Tooltip translation key</param>
+        /// <returns></returns>
+        private UISprite AddSettingsCheck(float xPos, string translationKey)
+        {
+            UISprite newSprite = AddUIComponent<UISprite>();
+            newSprite.size = new Vector2(20, 20);
+            newSprite.relativePosition = new Vector3(xPos, 5f);
+            newSprite.tooltip = Translations.Translate(translationKey);
+
+            return newSprite;
         }
     }
 }
