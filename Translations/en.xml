@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Language UniqueName="en" ReadableName="English">
   <Translations>
-    <Translation ID="RPR_NAME" String="Realistic Population Revisited" />
+    <Translation ID="RPR_NAME" String="Realistic Population 2" />
     <Translation ID="RPR_DESC" String="More realistic building populations (based on building size) and utility needs." />"
     <Translation ID="RPR_REALPOP" String="Realistic Population" />
     <Translation ID="RPR_PCK_DEF" String=" (default)" />
