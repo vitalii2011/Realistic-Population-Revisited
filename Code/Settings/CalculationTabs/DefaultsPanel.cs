@@ -134,12 +134,13 @@ namespace RealisticPopulationRevisited
         internal DefaultsPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Layout constants.
+            const float Margin = 5f;
             const float LeftColumn = 270f;
             const float RightColumn = 510f;
 
 
             // Y position indicator.
-            float currentY = 30f;
+            float currentY = 25f;
 
 
             // Add tab and helper.
@@ -153,12 +154,26 @@ namespace RealisticPopulationRevisited
             popMenus = new UIDropDown[subServiceNames.Length];
             floorMenus = new UIDropDown[subServiceNames.Length];
 
+            // Add 'Use legacy by default' checkbox.
+            UICheckBox legacyCheck = UIControls.AddCheckBox(panel, Translations.Translate("RPR_DEF_LEG"), Margin, currentY, 1.0f);
+            legacyCheck.label.wordWrap = true;
+            legacyCheck.label.autoSize = false;
+            legacyCheck.label.width = 710f;
+            legacyCheck.label.autoHeight = true;
+            legacyCheck.isChecked = ModSettings.defaultLegacy;
+            legacyCheck.eventCheckChanged += (control, isChecked) =>
+            {
+                ModSettings.defaultLegacy = isChecked;
+                UpdateMenus();
+            };
+            currentY += 45f;
 
             // Add titles.
-            UILabel popLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, 5f, 220f);
-            UILabel floorLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightColumn, 5f, 220f);
+            UILabel popLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, currentY, 220f);
+            UILabel floorLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightColumn, currentY, 220f);
             popLabel.textAlignment = UIHorizontalAlignment.Center;
             floorLabel.textAlignment = UIHorizontalAlignment.Center;
+            currentY += 25f;
 
             for (int i = 0; i < subServiceNames.Length; ++i)
             {
@@ -179,6 +194,16 @@ namespace RealisticPopulationRevisited
 
                     // Save settings.
                     ConfigUtils.SaveSettings();
+
+                    // Hide floor menu if we've selected legacy calcs, otherwise show it.
+                    if (availablePopPacks[serviceIndex][index].version == (int)DataVersion.legacy)
+                    {
+                        floorMenus[serviceIndex].Hide();
+                    }
+                    else
+                    {
+                        floorMenus[serviceIndex].Show();
+                    }
                 };
 
                 // Floor pack dropdown.

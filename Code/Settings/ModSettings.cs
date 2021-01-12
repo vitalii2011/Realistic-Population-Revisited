@@ -5,6 +5,7 @@
     /// </summary>
     internal static class ModSettings
     {
+        internal static bool defaultLegacy = false;
         internal static bool enableSchoolPop = true;
         internal static bool enableSchoolProperties = true;
         internal static float crimeMultiplier = 50f;

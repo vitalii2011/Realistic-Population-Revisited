@@ -75,6 +75,10 @@ namespace RealisticPopulationRevisited
             }
         }
 
+        // Use legacy calculations by default.
+        [XmlElement("DefaultToLegacy")]
+        public bool defaultLegacy { get => ModSettings.defaultLegacy; set => ModSettings.defaultLegacy = value; }
+
         // Realistic education.
         [XmlElement("EnableSchoolPop")]
         public bool enableSchools { get => ModSettings.enableSchoolPop; set => ModSettings.enableSchoolPop = value; }

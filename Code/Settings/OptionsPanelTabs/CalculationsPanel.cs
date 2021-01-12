@@ -33,9 +33,9 @@ namespace RealisticPopulationRevisited
             childTabStrip.tabPages = tabContainer;
 
             // Add child tabs.
-            new PopulationPanel(childTabStrip, 0);
-            new FloorPanel(childTabStrip, 1);
-            new DefaultsPanel(childTabStrip, 2);
+            new DefaultsPanel(childTabStrip, 0);
+            new PopulationPanel(childTabStrip, 1);
+            new FloorPanel(childTabStrip, 2);
             new ConsumptionPanel(childTabStrip, 3);
             new LegacyPanel(childTabStrip, 4);
 
