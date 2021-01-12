@@ -28,7 +28,8 @@ namespace RealisticPopulationRevisited
     public class UILegacyCalcs : UIPanel
     {
         // Margin at left of standard selection
-        private const int leftPadding = 10;
+        private const float LeftPadding = 10;
+        private const float LineHeight = 25f;
 
         // Panel components.
         private UILabel[] detailLabels;
@@ -61,30 +62,30 @@ namespace RealisticPopulationRevisited
             for (int i = 0; i < (int)Details.numDetails; i++)
             {
                 detailLabels[i] = this.AddUIComponent<UILabel>();
-                detailLabels[i].relativePosition = new Vector3(leftPadding, (i * 30) + 30);
+                detailLabels[i].relativePosition = new Vector3(LeftPadding, (i * LineHeight) + LineHeight);
                 detailLabels[i].width = 270;
                 detailLabels[i].textAlignment = UIHorizontalAlignment.Left;
             }
 
             // Homes/jobs labels.
             homesJobsCalcLabel = this.AddUIComponent<UILabel>();
-            homesJobsCalcLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 2) * 30);
+            homesJobsCalcLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 1) * LineHeight);
             homesJobsCalcLabel.width = 270;
             homesJobsCalcLabel.textAlignment = UIHorizontalAlignment.Left;
 
             homesJobsCustomLabel = this.AddUIComponent<UILabel>();
-            homesJobsCustomLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 3) * 30);
+            homesJobsCustomLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 2) * LineHeight);
             homesJobsCustomLabel.width = 270;
             homesJobsCustomLabel.textAlignment = UIHorizontalAlignment.Left;
 
             homesJobsActualLabel = this.AddUIComponent<UILabel>();
-            homesJobsActualLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 5) * 30);
+            homesJobsActualLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 4) * LineHeight);
             homesJobsActualLabel.width = 270;
             homesJobsActualLabel.textAlignment = UIHorizontalAlignment.Left;
 
             // Message label (initially hidden).
             messageLabel = this.AddUIComponent<UILabel>();
-            messageLabel.relativePosition = new Vector3(leftPadding, ((int)Details.numDetails + 6) * 30);
+            messageLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 6) * LineHeight);
             messageLabel.textAlignment = UIHorizontalAlignment.Left;
             messageLabel.autoSize = false;
             messageLabel.autoHeight = true;

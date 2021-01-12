@@ -341,9 +341,12 @@ namespace RealisticPopulationRevisited
             // Update description.
             floorDescription.text = currentFloorPack.description;
 
-            // Update panel with new calculations.
+            // Update panel with new calculations, assuming that we're not using legacy popultion calcs.
             volumetricPanel.UpdateFloorText(currentFloorPack);
-            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
+            if (currentPopPack.version != (int)DataVersion.legacy)
+            {
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
+            }
 
             // Communicate change with to rest of panel.
             BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
