@@ -18,6 +18,12 @@ namespace RealisticPopulationRevisited
         private static UIBuildingDetails _panel;
         public static UIBuildingDetails Panel => _panel;
 
+        // Previous selection.
+        private static BuildingInfo lastSelection;
+        private static bool[] lastFilter;
+        private static float lastPostion;
+        private static int lastIndex = -1;
+
 
         /// <summary>
         /// Creates the panel object in-game and displays it.
@@ -44,6 +50,20 @@ namespace RealisticPopulationRevisited
                 {
                     Panel.SelectBuilding(selected);
                 }
+                else if (lastSelection != null)
+                {
+                    Panel.SelectBuilding(lastSelection);
+
+                    // Restore previous filter state.
+                    if (lastFilter != null)
+                    {
+                        Panel.SetFilter(lastFilter);
+                    }
+
+                    // Restore previous building selection list postion and selected item.
+                    Panel.SetListPosition(lastIndex, lastPostion);
+                }
+
 
                 Panel.Show();
             }
@@ -60,8 +80,16 @@ namespace RealisticPopulationRevisited
         /// </summary>
         internal static void Close()
         {
+            // Save current selection for next time.
+            lastSelection = Panel?.currentSelection;
+            lastFilter = Panel?.GetFilter();
+            Panel?.GetListPosition(out lastIndex, out lastPostion);
+
+            // Destroy objects and nullify for GC.
             GameObject.Destroy(_panel);
             GameObject.Destroy(uiGameObject);
+            _panel = null;
+            uiGameObject = null;
         }
 
 
@@ -119,13 +147,50 @@ namespace RealisticPopulationRevisited
         private UIModCalcs calcsPanel;
 
         // Current selections.
-        private BuildingInfo currentSelection;
+        internal BuildingInfo currentSelection;
 
 
         /// <summary>
         /// Refreshes the building selection list.
         /// </summary>
         internal void RefreshList() => buildingSelection.Refresh();
+
+
+        /// <summary>
+        /// Gets the current filter state as a boolean array.
+        /// </summary>
+        /// <returns>Current filter toggle settings</returns>
+        internal bool[] GetFilter() => filterBar.GetFilter();
+
+
+        /// <summary>
+        /// Sets the filter state to match a boolean array.
+        /// </summary>
+        internal void SetFilter(bool[] filterState) => filterBar.SetFilter(filterState);
+
+
+        /// <summary>
+        /// Gets the current index and list positions of the building selection list.
+        /// </summary>
+        /// <param name="selectedIndex">Index of currently selected item</param>
+        /// <param name="listPosition">Current list position</param>
+        internal void GetListPosition(out int selectedIndex, out float listPosition)
+        {
+            listPosition = buildingSelection.listPosition;
+            selectedIndex = buildingSelection.selectedIndex;
+        }
+
+
+        /// <summary>
+        /// Sets the current index and list positions of the building selection list.
+        /// </summary>
+        /// <param name="selectedIndex">Selected item index to set</param>
+        /// <param name="listPosition">List position to set</param>
+        internal void SetListPosition(int selectedIndex, float listPosition)
+        {
+            buildingSelection.listPosition = listPosition;
+            buildingSelection.selectedIndex = selectedIndex;
+        }
 
 
         /// <summary>
@@ -312,13 +377,6 @@ namespace RealisticPopulationRevisited
             // List to store all building prefabs that pass the filter.
             List<BuildingInfo> filteredList = new List<BuildingInfo>();
 
-            // Settings flags.
-            bool noFilter = !(filterBar.PopOverrideFilter.isChecked || filterBar.FloorOverrideFilter.isChecked || filterBar.DefaultPopFilter.isChecked || filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked);
-            bool popOverrideFilter = filterBar.PopOverrideFilter.isChecked || filterBar.AnyFilter.isChecked;
-            bool floorOverrideFilter = filterBar.FloorOverrideFilter.isChecked || filterBar.AnyFilter.isChecked;
-            bool defaultPopFilter = filterBar.DefaultPopFilter.isChecked || filterBar.AnyFilter.isChecked;
-            bool defaultFloorFilter = filterBar.DefaultFloorFilter.isChecked || filterBar.AnyFilter.isChecked;
-
             // Iterate through all loaded building prefabs and add them to the list if they meet the filter conditions.
             for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
             {
@@ -382,15 +440,15 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Filter by settings.
-                if (noFilter ||
-                    ((popOverrideFilter && (ExternalCalls.GetResidential(item) != 0 || ExternalCalls.GetWorker(item) != 0)) ||
-                    (floorOverrideFilter && FloorData.instance.HasOverride(itemName) != null) ||
-                    (defaultPopFilter && PopData.instance.HasPackOverride(itemName) != null) ||
-                    (defaultFloorFilter && FloorData.instance.HasPackOverride(itemName) != null)))
-                {
-                    // Finally!  We've got an item that's passed all filters; add it to the list.
-                    filteredList.Add(item);
-                }
+                bool hasOverride = ExternalCalls.GetResidential(item) != 0 || ExternalCalls.GetWorker(item) != 0 || FloorData.instance.HasOverride(itemName) != null;
+                bool hasNonDefault = PopData.instance.HasPackOverride(itemName) != null || FloorData.instance.HasPackOverride(itemName) != null || SchoolData.instance.HasPackOverride(itemName) != null;
+
+                if (filterBar.SettingsFilter[(int)FilterCategories.HasOverride].isChecked && !hasOverride) continue;
+                if (filterBar.SettingsFilter[(int)FilterCategories.HasNonDefault].isChecked && !hasNonDefault) continue;
+                if (filterBar.SettingsFilter[(int)FilterCategories.Any].isChecked && !(hasOverride || hasNonDefault)) continue;
+                
+                // Finally!  We've got an item that's passed all filters; add it to the list.
+                filteredList.Add(item);
             }
 
             // Create return list with our filtered list, sorted alphabetically.

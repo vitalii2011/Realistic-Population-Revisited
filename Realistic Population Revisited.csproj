@@ -118,6 +118,7 @@
     <Compile Include="Code\GUI\UIModCalcs.cs" />
     <Compile Include="Code\GUI\UIPreviewPanel.cs" />
     <Compile Include="Code\Patcher.cs" />
+    <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\CommercialPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ConsumptionPanelBase.cs" />

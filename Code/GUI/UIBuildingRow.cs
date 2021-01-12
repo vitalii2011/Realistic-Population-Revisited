@@ -16,7 +16,7 @@ namespace RealisticPopulationRevisited
         private UIPanel panelBackground;
         private UILabel buildingName;
         private BuildingInfo thisBuilding;
-        private UISprite hasPop, hasFloor, hasNonDefaultPop, hasNonDefaultFloor;
+        private UISprite hasOverride, hasNonDefault;
 
 
         // Background for each list item.
@@ -87,10 +87,8 @@ namespace RealisticPopulationRevisited
                 buildingName.width = 200;
 
                 // Checkboxes to indicate which items have custom settings.
-                hasPop = AddSettingsCheck(UIBuildingFilter.popOverrideX, "RPR_CUS_POP");
-                hasFloor = AddSettingsCheck(UIBuildingFilter.floorOverrideX, "RPR_CUS_FLR");
-                hasNonDefaultPop = AddSettingsCheck(UIBuildingFilter.defaultPopOverrideX, "RPR_CUS_NDP");
-                hasNonDefaultFloor = AddSettingsCheck(UIBuildingFilter.defaultFloorOverrideX, "RPR_CUS_NDF");
+                hasOverride = AddSettingsCheck(UIBuildingFilter.HasOverrideX, "RPR_FTR_OVR");
+                hasNonDefault = AddSettingsCheck(UIBuildingFilter.HasNonDefaultX, "RPR_FTR_NDC");
             }
 
             // Set selected building.
@@ -98,52 +96,29 @@ namespace RealisticPopulationRevisited
             string thisBuildingName = thisBuilding.name;
             buildingName.text = UIBuildingDetails.GetDisplayName(thisBuildingName);
 
-            // Update custom settings checkbox to correct state.
-            if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0)
+            // Update 'has override' check to correct state.
+            if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0 || FloorData.instance.HasOverride(thisBuildingName) != null)
             {
-                // Custom population value found.
-                hasPop.spriteName = "AchievementCheckedTrue";
+                // Override found.
+                hasOverride.spriteName = "AchievementCheckedTrue";
             }
             else
             {
-                // No custom population value.
-                hasPop.spriteName = "AchievementCheckedFalse";
+                // No override.
+                hasOverride.spriteName = "AchievementCheckedFalse";
             }
 
-            // Update custom floor settings checkbox to correct state.
-            if (FloorData.instance.HasOverride(thisBuildingName) != null)
-            {
-                // Custom floor override value found.
-                hasFloor.spriteName = "AchievementCheckedTrue";
-            }
-            else
-            {
-                // No floor override.
-                hasFloor.spriteName = "AchievementCheckedFalse";
-            }
 
-            // Update default pop override checkbox to correct state.
-            if (PopData.instance.HasPackOverride(thisBuildingName) != null)
+            // Update 'has non-default calculation pack' check to correct state.
+            if (PopData.instance.HasPackOverride(thisBuildingName) != null || FloorData.instance.HasPackOverride(thisBuildingName) != null || SchoolData.instance.HasPackOverride(thisBuildingName) != null)
             {
-                // Custom value found.
-                hasNonDefaultPop.spriteName = "AchievementCheckedTrue";
+                // Non-default calculation found.
+                hasNonDefault.spriteName = "AchievementCheckedTrue";
             }
             else
             {
-                // No custom value.
-                hasNonDefaultPop.spriteName = "AchievementCheckedFalse";
-            }
-
-            // Update default floor override checkbox to correct state.
-            if (FloorData.instance.HasPackOverride(thisBuildingName) != null)
-            {
-                // Custom value found.
-                hasNonDefaultFloor.spriteName = "AchievementCheckedTrue";
-            }
-            else
-            {
-                // No custom value.
-                hasNonDefaultFloor.spriteName = "AchievementCheckedFalse";
+                // No non-default packs.
+                hasNonDefault.spriteName = "AchievementCheckedFalse";
             }
 
             // Set initial background as deselected state.

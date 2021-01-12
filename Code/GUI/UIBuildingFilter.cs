@@ -21,7 +21,18 @@ namespace RealisticPopulationRevisited
         Organic,
         Selfsufficient,
         Education,
-        numCategories
+        NumCategories
+    }
+
+    /// <summary>
+    /// Index numbers for attribute filters.
+    /// </summary>
+    public enum FilterCategories
+    {
+        Any = 0,
+        HasOverride,
+        HasNonDefault,
+        NumCategories
     }
 
 
@@ -122,27 +133,26 @@ namespace RealisticPopulationRevisited
     public class UIBuildingFilter : UIPanel
     {
         // Layout constants.
-        internal const float anyX = 285f;
-        internal const float popOverrideX = anyX + 25f;
-        internal const float floorOverrideX = popOverrideX + 25f;
-        internal const float defaultPopOverrideX = floorOverrideX + 25f;
-        internal const float defaultFloorOverrideX = defaultPopOverrideX + 25f;
+        internal const float FilterSpacing = 25f;
+        internal const float AnyX = 335f;
+        internal const float HasOverrideX = AnyX + FilterSpacing;
+        internal const float HasNonDefaultX = HasOverrideX + FilterSpacing;
 
         // Panel components.
-        internal UICheckBox[] categoryToggles;
-        private UICheckBox popOverrideFilter, floorOverrideFilter, defaultPopFilter, defaultFloorFilter, anyFilter;
+        internal UICheckBox[] categoryToggles, settingsFilter;
         internal UIButton allCategories;
         internal UITextField nameFilter;
+
+
+        // FIlter by settings checkboxes.
+        internal UICheckBox[] SettingsFilter => settingsFilter;
+
 
         // Basic event handler for filtering changes.
         public event PropertyChangedEventHandler<int> eventFilteringChanged;
 
-
-        internal UICheckBox PopOverrideFilter => popOverrideFilter;
-        internal UICheckBox FloorOverrideFilter => floorOverrideFilter;
-        internal UICheckBox DefaultPopFilter => defaultPopFilter;
-        internal UICheckBox DefaultFloorFilter => defaultFloorFilter;
-        internal UICheckBox AnyFilter => anyFilter;
+        // Filter checkbox tooltips.
+        private readonly string[] FilterTooltipKeys = { "RPR_FTR_ANY", "RPR_FTR_OVR", "RPR_FTR_NDC" };
 
 
         /// <summary>
@@ -152,9 +162,9 @@ namespace RealisticPopulationRevisited
         public void Setup()
         {
             // Catgegory buttons.
-            categoryToggles = new UICheckBox[(int)BuildingCategories.numCategories];
+            categoryToggles = new UICheckBox[(int)BuildingCategories.NumCategories];
 
-            for (int i = 0; i < (int)BuildingCategories.numCategories; i++)
+            for (int i = 0; i < (int)BuildingCategories.NumCategories; i++)
             {
                 // Basic setup.
                 categoryToggles[i] = UIUtils.CreateIconToggle(this, CategoryIcons.atlases[i], CategoryIcons.spriteNames[i], CategoryIcons.spriteNames[i] + "Disabled");
@@ -169,7 +179,7 @@ namespace RealisticPopulationRevisited
                     // If either shift or control is NOT held down, deselect all other toggles.
                     if (!(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
                     {
-                        for (int j = 0; j < (int)BuildingCategories.numCategories; j++)
+                        for (int j = 0; j < (int)BuildingCategories.NumCategories; j++)
                         {
                             categoryToggles[j].isChecked = false;
                         }
@@ -192,7 +202,7 @@ namespace RealisticPopulationRevisited
             allCategories.eventClick += (c, p) =>
             {
                 // Select all category toggles.
-                for (int i = 0; i < (int)BuildingCategories.numCategories; i++)
+                for (int i = 0; i < (int)BuildingCategories.NumCategories; i++)
                 {
                     categoryToggles[i].isChecked = true;
                 }
@@ -219,27 +229,58 @@ namespace RealisticPopulationRevisited
             UILabel filterLabel = SettingsFilterLabel(55f, Translations.Translate("RPR_FIL_SET"));
 
             // Settings filter checkboxes.
-            popOverrideFilter = AddFilterCheckbox(popOverrideX, Translations.Translate("RPR_CUS_POP"));
-            floorOverrideFilter = AddFilterCheckbox(floorOverrideX, Translations.Translate("RPR_CUS_FLR"));
-            defaultPopFilter = AddFilterCheckbox(defaultPopOverrideX, Translations.Translate("RPR_CUS_NDP"));
-            defaultFloorFilter = AddFilterCheckbox(defaultFloorOverrideX, Translations.Translate("RPR_CUS_NDF"));
-            anyFilter = AddFilterCheckbox(anyX, Translations.Translate("RPR_CUS_ANY"));
-
-            // Settings filter checkbox handlers - 'any' checkbox clears others, other checkboxes clear 'any'.
-            popOverrideFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
-            floorOverrideFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
-            defaultPopFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
-            defaultFloorFilter.eventCheckChanged += (control, isChecked) => { if (isChecked) anyFilter.isChecked = false; };
-            anyFilter.eventCheckChanged += (control, isChecked) =>
+            settingsFilter = new UICheckBox[(int)FilterCategories.NumCategories];
+            for (int i = 0; i < (int)FilterCategories.NumCategories; ++i)
             {
-                if (isChecked)
+                settingsFilter[i] = this.AddUIComponent<UICheckBox>();
+                settingsFilter[i].width = 20f;
+                settingsFilter[i].height = 20f;
+                settingsFilter[i].clipChildren = true;
+                settingsFilter[i].relativePosition = new Vector3(AnyX + (FilterSpacing * i), 45f);
+
+                // Checkbox sprites.
+                UISprite sprite = settingsFilter[i].AddUIComponent<UISprite>();
+                sprite.spriteName = "ToggleBase";
+                sprite.size = new Vector2(20f, 20f);
+                sprite.relativePosition = Vector3.zero;
+
+                settingsFilter[i].checkedBoxObject = sprite.AddUIComponent<UISprite>();
+                ((UISprite)settingsFilter[i].checkedBoxObject).spriteName = "ToggleBaseFocused";
+                settingsFilter[i].checkedBoxObject.size = new Vector2(20f, 20f);
+                settingsFilter[i].checkedBoxObject.relativePosition = Vector3.zero;
+
+                // Tooltip.
+                settingsFilter[i].tooltip = Translations.Translate(FilterTooltipKeys[i]);
+
+                // Special event handling for 'any' checkbox.
+                if (i == (int)FilterCategories.Any)
                 {
-                    popOverrideFilter.isChecked = false;
-                    floorOverrideFilter.isChecked = false;
-                    defaultPopFilter.isChecked = false;
-                    defaultFloorFilter.isChecked = false;
+                    settingsFilter[i].eventCheckChanged += (control, isChecked) =>
+                    {
+                        if (isChecked)
+                        {
+                            // Unselect all other checkboxes if 'any' is checked.
+                            settingsFilter[(int)FilterCategories.HasOverride].isChecked = false;
+                            settingsFilter[(int)FilterCategories.HasNonDefault].isChecked = false;
+                        }
+                    };
                 }
-            };
+                else
+                {
+                    // Non-'any' checkboxes.
+                    // Unselect 'any' checkbox if any other is checked.
+                    settingsFilter[i].eventCheckChanged += (control, isChecked) =>
+                    {
+                        if (isChecked)
+                        {
+                            settingsFilter[0].isChecked = false;
+                        }
+                    };
+                }
+
+                // Trigger filtering changed event if any checkbox is changed.
+                settingsFilter[i].eventCheckChanged += (control, isChecked) => { eventFilteringChanged(this, 0); };
+            }
         }
 
 
@@ -249,7 +290,7 @@ namespace RealisticPopulationRevisited
         /// <param name="buildingClass">ItemClass of the building (to match toggle categories)</param>
         public void SelectBuildingCategory(ItemClass buildingClass)
         {
-            for (int i = 0; i < (int)BuildingCategories.numCategories; i ++)
+            for (int i = 0; i < (int)BuildingCategories.NumCategories; i ++)
             {
                 if (CategoryIcons.subServiceMapping[i] == ItemClass.SubService.None && buildingClass.m_service == CategoryIcons.serviceMapping[i])
                 {
@@ -267,6 +308,51 @@ namespace RealisticPopulationRevisited
                 {
                     categoryToggles[i].isChecked = false;
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the current filter state as a boolean array.
+        /// </summary>
+        /// <returns>Current filter state</returns>
+        internal bool[] GetFilter()
+        {
+            // Stores category toggle states and settings filter states, in that order.
+            bool[] filterState = new bool[(int)BuildingCategories.NumCategories + (int)FilterCategories.NumCategories];
+
+            // Iterate through all toggle states and add them to return array.
+            for (int i = 0; i < (int)BuildingCategories.NumCategories; i++)
+            {
+                filterState[i] = categoryToggles[i].isChecked;
+            }
+
+            // Iterate through all settings filter states and add them to return array, after the toggle states.
+            for (int i = 0; i < (int)FilterCategories.NumCategories; i++)
+            {
+                filterState[i + (int)BuildingCategories.NumCategories] = settingsFilter[i].isChecked;
+            }
+
+            return filterState;
+        }
+
+
+        /// <summary>
+        /// Sets the current filter configuration from provided boolean array.
+        /// </summary>
+        /// <param name="filterState">Filter state to apply</param>
+        internal void SetFilter(bool[] filterState)
+        {
+            // Set toggle states from array.
+            for (int i = 0; i < (int)BuildingCategories.NumCategories; i++)
+            {
+                categoryToggles[i].isChecked = filterState[i];
+            }
+
+            // Set settings filter states from array (appended after category toggle states).
+            for (int i = 0; i < (int)FilterCategories.NumCategories; i++)
+            {
+                settingsFilter[i].isChecked = filterState[i + (int)BuildingCategories.NumCategories];
             }
         }
 
@@ -292,42 +378,6 @@ namespace RealisticPopulationRevisited
             newLabel.relativePosition = new Vector3(10f, yPos - (newLabel.height / 2f), 0);
 
             return newLabel;
-        }
-
-
-        /// <summary>
-        /// Adds a filter checkbox.
-        /// </summary>
-        /// <param name="xPos">Relative X position of checkbox</param>
-        /// <param name="tooltip">Checkbox tooltip</param>
-        /// <returns>New filter checkbox</returns>
-        private UICheckBox AddFilterCheckbox(float xPos, string tooltip)
-        {
-            // Basic setup.
-            UICheckBox newCheckBox = this.AddUIComponent<UICheckBox>();
-            newCheckBox.width = 20f;
-            newCheckBox.height = 20f;
-            newCheckBox.clipChildren = true;
-            newCheckBox.relativePosition = new Vector3(xPos, 45f);
-
-            // Sprite.
-            UISprite sprite = newCheckBox.AddUIComponent<UISprite>();
-            sprite.spriteName = "ToggleBase";
-            sprite.size = new Vector2(20f, 20f);
-            sprite.relativePosition = Vector3.zero;
-
-            newCheckBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
-            ((UISprite)newCheckBox.checkedBoxObject).spriteName = "ToggleBaseFocused";
-            newCheckBox.checkedBoxObject.size = new Vector2(20f, 20f);
-            newCheckBox.checkedBoxObject.relativePosition = Vector3.zero;
-
-            // Tooltip.
-            newCheckBox.tooltip = tooltip;
-
-            // Trigger filtering changed event if any checkbox is changed.
-            newCheckBox.eventCheckChanged += (control, isChecked) => { eventFilteringChanged(this, 0); };
-
-            return newCheckBox;
         }
     }
 }

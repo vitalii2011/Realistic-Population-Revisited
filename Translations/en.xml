@@ -111,11 +111,9 @@
     <Translation ID="RPR_FIL_SET" String="Filter by settings (see tooltips)" />
     <Translation ID="RPR_EDT_POP" String="Override population" />
     <Translation ID="RPR_EDT_FLR" String="Override floors" />
-    <Translation ID="RPR_CUS_POP" String="Has custom population settings" />
-    <Translation ID="RPR_CUS_FLR" String="Has custom floor settings" />
-    <Translation ID="RPR_CUS_NDP" String="Has non-default population pack" />
-    <Translation ID="RPR_CUS_NDF" String="Has non-default floor pack" />
-    <Translation ID="RPR_CUS_ANY" String="Has custom settings or non-default calculation pack" />
+    <Translation ID="RPR_FTR_ANY" String="Has custom override and/or non-default calculation pack" />
+    <Translation ID="RPR_FTR_OVR" String="Has population and/or floor override" />
+    <Translation ID="RPR_FTR_NDC" String="Has non-default calculation pack" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />
     <Translation ID="RPR_CUS_ADD" String="Add custom settings" />
     <Translation ID="RPR_CUS_ADD_TIP" String="Adds (or updates) a custom setting for the selected building" />
