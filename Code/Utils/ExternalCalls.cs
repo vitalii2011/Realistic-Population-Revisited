@@ -47,7 +47,6 @@ namespace RealisticPopulationRevisited
             }
 
             // Save the updated configuration files.
-            XMLUtilsWG.WriteToXML();
             ConfigUtils.SaveSettings();
 
             // Get current building hash (for updating prefab dictionary).
@@ -122,7 +121,6 @@ namespace RealisticPopulationRevisited
             }
 
             // Save the updated configuration files.
-            XMLUtilsWG.WriteToXML();
             ConfigUtils.SaveSettings();
 
             // Get current building hash (for updating prefab dictionary).

@@ -36,6 +36,20 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Saves the current legacy config.
+        /// </summary>
+        /// <param name="panel">UI panel instance</param>
+        protected void SaveLegacy()
+        {
+            // Set flag to show that user has instructed to save legacy file.
+            XMLUtilsWG.writeToLegacy = true;
+
+            // Save legacy data using WG serialization.
+            XMLUtilsWG.WriteToXML();
+        }
+
+
+        /// <summary>
         /// Initialises array structure.
         /// </summary>
         /// <param name="numSubServices">Number of sub-services to initialise for</param>

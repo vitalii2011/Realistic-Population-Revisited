@@ -162,10 +162,11 @@ namespace RealisticPopulationRevisited
             // Record initial (default) school settings and apply ours over the top.
             SchoolData.instance.OnLoad();
 
-            // Create new XML if one doesn't already exist.
-            if (!File.Exists(DataStore.currentFileLocation))
+            // IF a legacy file exists, flag it for writing.
+            if (File.Exists(DataStore.currentFileLocation))
             {
-                XMLUtilsWG.WriteToXML();
+                Debugging.Message("found legacy settings file");
+                XMLUtilsWG.writeToLegacy = true;
             }
 
             // Add button to building info panels.

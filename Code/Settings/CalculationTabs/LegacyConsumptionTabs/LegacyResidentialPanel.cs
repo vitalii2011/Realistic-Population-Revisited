@@ -105,7 +105,7 @@ namespace RealisticPopulationRevisited
             DataStore.prefabHouseHolds.Clear();
 
             // Save new settings.
-            XMLUtilsWG.WriteToXML();
+            SaveLegacy();
 
             // Refresh settings.
             PopulateFields();

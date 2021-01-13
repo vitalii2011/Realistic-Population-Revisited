@@ -108,7 +108,7 @@ namespace RealisticPopulationRevisited
             DataStore.prefabWorkerVisit.Clear();
 
             // Save new settings.
-            XMLUtilsWG.WriteToXML();
+            SaveLegacy();
 
             // Refresh settings.
             PopulateFields();

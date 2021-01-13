@@ -13,6 +13,9 @@ namespace RealisticPopulationRevisited
         // Configuration file name.
         internal const String XML_FILE = "WG_RealisticCity.xml";
 
+        // Flag to determine if we're writing to this legacy file.
+        internal static bool writeToLegacy = false;
+
 
         /// <summary>
         /// Loads the configuration XML file and sets the datastore.
@@ -80,14 +83,18 @@ namespace RealisticPopulationRevisited
         /// </summary>
         internal static void WriteToXML()
         {
-            try
+            // Only write to files if the relevant setting is set (either through a legacy configuration file already existing, or through the user specifically creating one via the options panel).
+            if (writeToLegacy)
             {
-                WG_XMLBaseVersion xml = new XML_VersionSix();
-                xml.writeXML(DataStore.currentFileLocation);
-            }
-            catch (Exception e)
-            {
-                Debugging.Message("XML writing exception:\r\n" + e.Message);
+                try
+                {
+                    WG_XMLBaseVersion xml = new XML_VersionSix();
+                    xml.writeXML(DataStore.currentFileLocation);
+                }
+                catch (Exception e)
+                {
+                    Debugging.Message("XML writing exception:\r\n" + e.Message);
+                }
             }
         }
     }
