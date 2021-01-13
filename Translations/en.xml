@@ -170,7 +170,7 @@
     <Translation ID="RPR_OPT_MOD" String="Mod settings" />
     <Translation ID="RPR_OPT_KEY" String="Hotkey for building options screen" />
     <Translation ID="RPR_OPT_PRS" String="Press any key" />
-    <Translation ID="RPR_OPT_LDF" String="Legacy" />
+    <Translation ID="RPR_OPT_LEG" String="Legacy" />
     <Translation ID="RPR_OPT_CON" String="Consumption" />
     <Translation ID="RPR_OPT_STO" String="Stories" />
     <Translation ID="RPR_OPT_LVL" String="Level" />
