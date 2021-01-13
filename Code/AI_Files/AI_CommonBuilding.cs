@@ -6,10 +6,10 @@ using HarmonyLib;
 
 namespace RealisticPopulationRevisited
 {
-    [HarmonyPatch(typeof(CommonBuildingAI))]
-    [HarmonyPatch("HandleCrime")]
-    [HarmonyPatch(new Type[] { typeof(ushort), typeof(Building), typeof(int), typeof(int) },
-        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal })]
+    //[HarmonyPatch(typeof(CommonBuildingAI))]
+    //[HarmonyPatch("HandleCrime")]
+    //[HarmonyPatch(new Type[] { typeof(ushort), typeof(Building), typeof(int), typeof(int) },
+    //    new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal })]
     class RealisticCrime
     {
         static bool Prefix(CommonBuildingAI __instance, ushort buildingID, ref Building data, int crimeAccumulation, int citizenCount)
@@ -106,6 +106,8 @@ namespace RealisticPopulationRevisited
         // TODO - Revist this and remove.
         static void CalculateGuestVehicles(CommonBuildingAI __instance, ushort buildingID, ref Building data, TransferManager.TransferReason material, ref int count, ref int cargo, ref int capacity, ref int outside)
         {
+            Debugging.Message("Calculating guest vehicles");
+
             VehicleManager instance = Singleton<VehicleManager>.instance;
             ushort num = data.m_guestVehicles;
             int num2 = 0;
