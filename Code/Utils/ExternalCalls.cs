@@ -154,8 +154,9 @@ namespace RealisticPopulationRevisited
             // Remove the entry from the configuration file cache.
             DataStore.workerCache.Remove(prefab.name);
 
-            // Save the updated configuration file.
+            // Save the updated configuration files.
             XMLUtilsWG.WriteToXML();
+            ConfigUtils.SaveSettings();
 
             // Remove current building's record from 'live' dictionary.
             DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());

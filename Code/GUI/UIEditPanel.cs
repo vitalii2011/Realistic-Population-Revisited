@@ -245,6 +245,12 @@ namespace RealisticPopulationRevisited
 
                 Debugging.Message("deleting custom entry for " + currentSelection.name);
 
+                // Remove any floor override BEFORE we call RemoveResidential or RemoveWorker; that way the updated config will be saved (only once) by the Remove call.
+                FloorData.instance.DeleteOverride(currentSelection.name);
+
+                // Update panel override.
+                BuildingDetailsPanel.Panel.OverrideFloors = null;
+
                 // Homes or jobs?  Remove custom entry as appropriate.
                 if (currentSelection.GetService() == ItemClass.Service.Residential)
                 {
@@ -260,12 +266,6 @@ namespace RealisticPopulationRevisited
                     // Employment building.
                     ExternalCalls.RemoveWorker(currentSelection);
                 }
-
-                // Remove any floor override.
-                FloorData.instance.DeleteOverride(currentSelection.name);
-
-                // Update panel override.
-                BuildingDetailsPanel.Panel.OverrideFloors = null;
 
                 // Refresh the display so that all panels reflect the updated settings.
                 BuildingDetailsPanel.Panel.Refresh();
