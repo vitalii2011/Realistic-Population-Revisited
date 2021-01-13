@@ -22,8 +22,10 @@ namespace RealisticPopulationRevisited
          * IL_0001: brfalse IL_00a3
          */
 
-        // The following code is inserted for the call "crimeAccumulation = MultiplyCrime();" (crimeAccumulation is argument 3 of HandleCrime)
-        /* call HandleCrimeTranspiler.RealisticCrime
+        // The following code is inserted for the call "crimeAccumulation = RealisticCrime();" (crimeAccumulation is argument 3 of HandleCrime)
+        /* 
+         * ldarg.3
+         * call HandleCrimeTranspiler.RealisticCrime
          * starg.s 3
         */
 
@@ -66,6 +68,12 @@ namespace RealisticPopulationRevisited
                             // Found our spot! Insert our custom instructions in the output.
                             Debugging.Message("inserting custom method call after ldarg.3, brfalse");
 
+                            // Push crimeAccumulation onto stack as argument for patch method.
+                            yield return new CodeInstruction(OpCodes.Ldarg_3);
+
+                            // Push building data reference onto stack as argument for patch method.
+                            yield return new CodeInstruction(OpCodes.Ldarg_2);
+
                             // Add call to patch method.
                             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HandleCrimeTranspiler), nameof(HandleCrimeTranspiler.RealisticCrime)));
 
@@ -78,14 +86,49 @@ namespace RealisticPopulationRevisited
                     }
                 }
             }
-
-            Debugging.Message("finished HandleCrime tranpiler");
         }
 
 
-        public static int RealisticCrime()
+        /// <summary>
+        /// Adjusts crime accumulation for mod calculations.
+        /// </summary>
+        /// <param name="crimeAccumulation"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static int RealisticCrime(int crimeAccumulation, ref Building data)
         {
-            return 1000;
+            int pereentageFactor = 10;
+            ItemClass itemClass = data.Info.m_class;
+
+            // Higher levels of building have lower crime rates.
+            int levelBasedReduction = (int)((itemClass.m_level >= 0) ? itemClass.m_level : 0);
+
+            // Reduce crime rates for high density buildings and offices, due to the larger number of workers/households with this mod's settings.
+            if (itemClass.m_service == ItemClass.Service.Residential)
+            {
+                // Increase base percentage factor to account for five levels, not three.
+                pereentageFactor = 16;
+
+                if (itemClass.m_subService == ItemClass.SubService.ResidentialHigh)
+                {
+                    crimeAccumulation /= 2;
+                }
+            }
+            else if (itemClass.m_service == ItemClass.Service.Office)
+            {
+                crimeAccumulation /= 5;
+            }
+            else if (itemClass.m_subService == ItemClass.SubService.CommercialHigh)
+            {
+                crimeAccumulation /= 3;
+            }
+
+            // Percentage reduction.
+            double reductionPercentage = (pereentageFactor - levelBasedReduction) / pereentageFactor;
+            crimeAccumulation = (int)(crimeAccumulation * reductionPercentage);
+
+            // Crime multiplier application.
+            return (int)((crimeAccumulation * ModSettings.crimeMultiplier) / 100f);
         }
     }
 }
