@@ -158,7 +158,7 @@ namespace RealisticPopulationRevisited
                         }
                         else
                         {
-                            // Homes or jobs?
+                            // Homes, students, or jobs?
                             if (currentSelection.GetService() == ItemClass.Service.Residential)
                             {
                                 // Residential building.
@@ -167,6 +167,11 @@ namespace RealisticPopulationRevisited
                                 // Update household counts for existing instances of this building - only needed for residential buildings.
                                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
                                 PopData.instance.UpdateHouseholds(currentSelection.name);
+                            }
+                            else if (currentSelection.GetService() == ItemClass.Service.Education)
+                            {
+                                // School building.
+                                PopData.instance.SetPopOverride(currentSelection, homesJobs);
                             }
                             else
                             {
@@ -189,7 +194,9 @@ namespace RealisticPopulationRevisited
                 else
                 {
                     // Population override checkbox wasn't checked; remove any custom settings.
+                    PopData.instance.RemovePopOverride(currentSelection);
                     ExternalCalls.RemoveResidential(currentSelection);
+                    ExternalCalls.RemoveWorker(currentSelection);
                 }
 
                 // Are we doing floor overrides?
@@ -284,6 +291,8 @@ namespace RealisticPopulationRevisited
         /// <param name="building"></param>
         public void SelectionChanged(BuildingInfo building)
         {
+            string buildingName = building.name;
+
             // Hide message.
             messageLabel.isVisible = false;
 
@@ -306,11 +315,18 @@ namespace RealisticPopulationRevisited
 
             int homesJobs;
 
+            // Set label by building type.
             if (building.GetService() == ItemClass.Service.Residential)
             {
-                // See if a custom number of households applies to this building.
+                // Residential building - see if a custom number of households applies to this building.
                 homesJobs = ExternalCalls.GetResidential(building);
                 homeJobLabel.text = Translations.Translate("RPR_LBL_HOM");
+            }
+            else if (building.GetService() == ItemClass.Service.Education)
+            {
+                // Schoool building - see if a custom number of students applies to this building.
+                homesJobs = PopData.instance.GetPopOverride(buildingName);
+                homeJobLabel.text = Translations.Translate("RPR_LBL_STU");
             }
             else
             {
@@ -332,7 +348,7 @@ namespace RealisticPopulationRevisited
             else
             {
                 // No population override - check for custom floor override.
-                FloorDataPack overridePack = FloorData.instance.HasOverride(building.name);
+                FloorDataPack overridePack = FloorData.instance.HasOverride(buildingName);
                 if (overridePack != null)
                 {
                     // Valid custom settings found; display the result, rename the save button, and enable the delete button.

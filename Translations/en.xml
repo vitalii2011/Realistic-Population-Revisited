@@ -124,6 +124,7 @@
     <Translation ID="RPR_ERR_INV" String="ERROR: invalid value" />
     <Translation ID="RPR_LBL_HOM" String="Homes:" />
     <Translation ID="RPR_LBL_JOB" String="Jobs:" />
+    <Translation ID="RPR_LBL_STU" String="Students:" />
     <Translation ID="RPR_LBL_OFF" String="First floor height" />
     <Translation ID="RPR_LBL_OFH" String="Other floor height" />
     <Translation ID="RPR_PRV_SFL" String="Show calculated floors" />

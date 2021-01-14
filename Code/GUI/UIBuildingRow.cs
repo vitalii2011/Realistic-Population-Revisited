@@ -97,7 +97,7 @@ namespace RealisticPopulationRevisited
             buildingName.text = UIBuildingDetails.GetDisplayName(thisBuildingName);
 
             // Update 'has override' check to correct state.
-            if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0 || FloorData.instance.HasOverride(thisBuildingName) != null)
+            if (ExternalCalls.GetResidential(thisBuilding) > 0 || ExternalCalls.GetWorker(thisBuilding) > 0 || PopData.instance.GetPopOverride(thisBuildingName) != 0 || FloorData.instance.HasOverride(thisBuildingName) != null)
             {
                 // Override found.
                 hasOverride.spriteName = "AchievementCheckedTrue";

@@ -127,6 +127,7 @@ namespace RealisticPopulationRevisited
                             // Deserialise building population overrides.
                             DeSerializePopOverrides(configFile.households, DataStore.householdCache);
                             DeSerializePopOverrides(configFile.workplaces, DataStore.workerCache);
+                            PopData.instance.DeserializePopOverrides(configFile.students);
 
                             // Deserialize floor overrides.
                             foreach (FloorCalcOverride floorOverride in configFile.floors)
@@ -256,6 +257,7 @@ namespace RealisticPopulationRevisited
                     // Serialise building population overrides.
                     configFile.households = SerializePopOverrides(DataStore.householdCache);
                     configFile.workplaces = SerializePopOverrides(DataStore.workerCache);
+                    configFile.students = PopData.instance.SerializePopOverrides();
 
                     // Serialise floor overrides.
                     configFile.floors = new List<FloorCalcOverride>();

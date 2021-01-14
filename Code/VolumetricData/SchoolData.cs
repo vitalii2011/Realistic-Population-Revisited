@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using ColossalFramework.UI;
 
@@ -23,9 +24,8 @@ namespace RealisticPopulationRevisited
         // Instance reference.
         internal static SchoolData instance;
 
-
         // Dictionary of original settings.
-        Dictionary<string, OriginalSchoolStats> originalStats;
+        private Dictionary<string, OriginalSchoolStats> originalStats;
 
 
         /// <summary>
@@ -394,10 +394,23 @@ namespace RealisticPopulationRevisited
         /// <summary>
         /// Updates a school prefab record (and associated tooltip) with updated population.
         /// </summary>
-        /// <param name="prefab"></param>
-        /// <param name="ai"></param>
+        /// <param name="prefab">Prefab to update</param>
+        internal void UpdateSchoolPrefab(BuildingInfo prefab) => UpdateSchoolPrefab(prefab, prefab.GetAI() as SchoolAI);
+
+
+        /// <summary>
+        /// Updates a school prefab record (and associated tooltip) with updated population.
+        /// </summary>
+        /// <param name="prefab">Prefab to update</param>
+        /// <param name="ai">Prefab AI</param>
         private void UpdateSchoolPrefab(BuildingInfo prefab, SchoolAI schoolAI)
         {
+            if (prefab == null || schoolAI == null)
+            {
+                Debugging.Message("null parameter passed to UpdateSchoolPrefab");
+                return;
+            }
+
             // Update prefab population record.
             schoolAI.m_studentCount = schoolAI.StudentCount;
 

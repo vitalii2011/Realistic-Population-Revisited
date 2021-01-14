@@ -49,6 +49,10 @@ namespace RealisticPopulationRevisited
         [XmlArrayItem("workplaces")]
         public List<PopCountOverride> workplaces { get; set; }
 
+        [XmlArray("override_students")]
+        [XmlArrayItem("students")]
+        public List<PopCountOverride> students { get; set; }
+
         [XmlArray("override_floors")]
         [XmlArrayItem("floors")]
         public List<FloorCalcOverride> floors { get; set; }
