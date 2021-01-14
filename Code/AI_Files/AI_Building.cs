@@ -7,10 +7,10 @@ using HarmonyLib;
 
 namespace RealisticPopulationRevisited
 {
-    [HarmonyPatch(typeof(BuildingAI))]
-    [HarmonyPatch("EnsureCitizenUnits")]
-    [HarmonyPatch(new Type[] { typeof(ushort), typeof(Building), typeof(int), typeof(int), typeof(int), typeof(int) },
-        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal })]
+    //[HarmonyPatch(typeof(BuildingAI))]
+    //[HarmonyPatch("EnsureCitizenUnits")]
+    //[HarmonyPatch(new Type[] { typeof(ushort), typeof(Building), typeof(int), typeof(int), typeof(int), typeof(int) },
+    //    new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal })]
     public class RealisticCitizenUnits
     {
         private static CitizenManager citizenManager = Singleton<CitizenManager>.instance;
@@ -424,7 +424,7 @@ namespace RealisticPopulationRevisited
         /// <param name="buildingID"></param>
         /// <param name="data"></param>
         /// <param name="citizenNumber"></param>
-        private static void RemoveHouseHold(ushort buildingID, ref Building data, int maxHomes)
+        internal static void RemoveHouseHold(ushort buildingID, ref Building data, int maxHomes)
         {
             CitizenManager instance = Singleton<CitizenManager>.instance;
             CitizenUnit[] citizenUnitArray = instance.m_units.m_buffer;
@@ -467,8 +467,8 @@ namespace RealisticPopulationRevisited
                     // Link previous unit to next unit and release the item
                     citizenUnitArray[previousUnit].m_nextUnit = nextUnit;
 
-                    citizenUnitArray[currentUnit] = default(CitizenUnit);
-                    instance.m_units.ReleaseItem(currentUnit);
+                    ReversePatches.ReleaseUnitImplementation(instance, currentUnit, ref citizenUnitArray[currentUnit]);
+                    instance.m_unitCount = (int)(instance.m_units.ItemCount() - 1);
                     // Previous unit number has not changed
                 }
                 else
