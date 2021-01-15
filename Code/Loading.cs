@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using ICities;
-using ColossalFramework.UI;
-using ColossalFramework.Plugins;
 using RealisticPopulationRevisited.MessageBox;
 
 
@@ -18,12 +14,10 @@ namespace RealisticPopulationRevisited
         private static bool conflictingMod = false;
 
 
-
-        public static bool IsModEnabled(UInt64 id)
-        {
-            return PluginManager.instance.GetPluginsInfo().Any(mod => (mod.publishedFileID.AsUInt64 == id && mod.isEnabled));
-        }
-
+        /// <summary>
+        /// Called by the game when the mod is initialised at the start of the loading process.
+        /// </summary>
+        /// <param name="loading">Loading mode (e.g. game, editor, scenario, etc.)</param>
         public override void OnCreated(ILoading loading)
         {
             base.OnCreated(loading);
@@ -42,15 +36,22 @@ namespace RealisticPopulationRevisited
             {
                 isModEnabled = false;
                 Debugging.Message("Harmony patches not applied; aborting");
+                return;
             }
 
-            // Check for original WG Realistic Population and Consumption Mod; if it's enabled, flag and don't activate this mod.
-            if (IsModEnabled(426163185ul))
+            // Check for mod conflicts.
+            if (ModUtils.ConflictingMod())
             {
                 conflictingMod = true;
-                Debugging.Message("Realistic Population and Consumption Mod detected, skipping activation");
+                isModEnabled = false;
+
+                // Unload Harmony patches.
+                Patcher.UnpatchAll();
+                return;
             }
-            else if (!isModEnabled)
+
+            // Passed all checks - okay to load (if we haven't already fo some reason)>
+            if (!isModEnabled)
             {
                 isModEnabled = true;
                 Debugging.Message("version v", RealPopMod.Version, " loading");
@@ -70,38 +71,56 @@ namespace RealisticPopulationRevisited
         }
 
 
+        /// <summary>
+        /// Called by the game when level loading is complete.
+        /// </summary>
+        /// <param name="mode">Loading mode (e.g. game, editor, scenario, etc.)</param>
         public override void OnLevelLoaded(LoadMode mode)
         {
-            // Check to see that Harmony was properly loaded.
+            base.OnLevelLoaded(mode);
+
+            // Check to see that Harmony 2 was properly loaded.
             if (!harmonyLoaded)
             {
-                // Patch wasn't operating; display warning notification and exit.
+                // Harmony 2 wasn't loaded; display warning notification and exit.
                 ListMessageBox harmonyBox = MessageBoxBase.ShowModal<ListMessageBox>();
 
                 // Key text items.
                 harmonyBox.Title = RealPopMod.ModName;
                 harmonyBox.ButtonText = Translations.Translate("RPR_MES_CLS");
-                harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR0"), Translations.Translate("RPR_ERR_HAR1"), Translations.Translate("RPR_ERR_HAR2"));
+                harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_HAR1"), Translations.Translate("RPR_ERR_HAR2"));
 
                 // List of dot points.
                 harmonyBox.AddList(Translations.Translate("RPR_ERR_HAR3"), Translations.Translate("RPR_ERR_HAR4"));
 
                 // Closing para.
                 harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR5"));
-
-                return;
             }
 
-
-            // Check to see if a conflicting mod has been detected - if so, alert the user.
+            // Check to see if a conflicting mod has been detected.
             if (conflictingMod)
             {
-                UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Realistic Population Revisited", "Original Realistic Population and Consumption Mod mod detected - Realistic Population Revisited is shutting down to protect your game.  Only ONE of these mods can be enabled at the same time; please unsubscribe from the old Realistic Population and Consumption Mod, which is now deprecated!", true);
+                // Mod conflict detected - display warning notification and exit.
+                ListMessageBox modConflictBox = MessageBoxBase.ShowModal<ListMessageBox>();
+
+                // Key text items.
+                modConflictBox.Title = RealPopMod.ModName;
+                modConflictBox.ButtonText = Translations.Translate("RPR_MES_CLS");
+                modConflictBox.AddParas(Translations.Translate("RPR_ERR_CON0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_CON1"), Translations.Translate("RPR_ERR_CON2"));
+
+                // Add conflicting mod name(s).
+                modConflictBox.AddList(ModUtils.conflictingModNames.ToArray());
+
+                // Closing para.
+                modConflictBox.AddParas(Translations.Translate("RPR_ERR_CON3"));
             }
 
-            // Don't do anything further if mod hasn't activated (conflicting mod detected, or loading into editor instead of game).
+            // Don't do anything further if mod hasn't activated for whatever reason (mod conflict, harmony error, something else).
             if (!isModEnabled)
             {
+                // Disable keystrokes.
+                UIThreading.operating = false;
+
                 return;
             }
 

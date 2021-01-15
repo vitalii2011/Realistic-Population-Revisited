@@ -9,6 +9,7 @@
 - Upgrade to Harmony 2
 - Add settings filters to building details panel
 - Backport building preview renderer improvements from Ploppable RICO Revisited
+- Overhauled mod conflict detection and notification
 - Multiple code cleanups
 
 

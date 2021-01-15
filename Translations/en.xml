@@ -218,11 +218,16 @@
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
     <Translation ID="RPR_MES_CLS" String="Close" />
+    <Translation ID="RPR_ERR_FAT" String="This means that Realistic Population 2 is not able to operate properly and has shut down." />
     <Translation ID="RPR_ERR_HAR0" String="Harmony patching error!" />
-    <Translation ID="RPR_ERR_HAR1" String="Realistic Population 2 was unable to complete its required Harmony patches.  This means that the mod is not able to operate, and has shut down to protect your save file from damage." />
+    <Translation ID="RPR_ERR_HAR1" String="Realistic Population 2 was unable to complete its required Harmony patches." />
     <Translation ID="RPR_ERR_HAR2" String="Possible causes of this problem include:" />
     <Translation ID="RPR_ERR_HAR3" String="The required Harmony 2 mod dependency was not installed" />
     <Translation ID="RPR_ERR_HAR4" String="An old and/or broken mod is preventing Harmony 2 from operating properly" />
     <Translation ID="RPR_ERR_HAR5" String="Please refer to the mod's Steam Workshop page for further information." />
+    <Translation ID="RPR_ERR_CON0" String="Mod conflict detected!" />
+    <Translation ID="RPR_ERR_CON1" String="Realistic Population 2 detected a conflict with at least one other mod." />
+    <Translation ID="RPR_ERR_CON2" String="The conflicting mods are:" />
+    <Translation ID="RPR_ERR_CON3" String="These mods must be removed before Realistic Population 2 can operate." />
   </Translations>
 </Language>

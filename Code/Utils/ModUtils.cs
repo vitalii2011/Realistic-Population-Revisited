@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 using ColossalFramework.Plugins;
 
 
@@ -10,9 +12,68 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal static class ModUtils
     {
+        internal static List<string> conflictingModNames;
+
         // RICO methods.
         internal static MethodInfo ricoPopManaged;
         internal static MethodInfo ricoClearWorkplace;
+
+        /// <summary>
+        /// Checks for any known mod conflicts.
+        /// </summary>
+        /// <returns>True if a mod conflict was detected, false otherwise</returns>
+        internal static bool ConflictingMod()
+        {
+            // Initialise flag and list of conflicting mods.
+            bool conflictDetected = false;
+            conflictingModNames = new List<string>();
+
+            // Orignal WG mod detected.
+            if (IsModInstalled("WG_BalancedPopMod"))
+            {
+                conflictDetected = true;
+                conflictingModNames.Add("Realistic Population and Consumption Mod");
+            }
+
+            // Garbage bin controller.
+            if (IsModInstalled("VanillaGarbageBinBlocker"))
+            {
+                conflictDetected = true;
+                conflictingModNames.Add("Garbage Bin Controller");
+            }
+
+            // Enhanced Building Capacity.
+            if (IsModInstalled("EnhancedBuildingCapacity"))
+            {
+                // Garbage bin controller mod detected.
+                conflictDetected = true;
+                conflictingModNames.Add("Enhanced Building Capacity");
+            }
+
+            // Painter - this one is trickier because both Painter and Repaint use Painter.dll (thanks to CO savegame serialization...)
+            if (IsModInstalled("Painter"))
+            {
+                IEnumerable<PluginManager.PluginInfo> plugins = PluginManager.instance.GetPluginsInfo().Where(plugin => plugin.userModInstance.GetType().ToString().Equals("Painter.UserMod"));
+                if (plugins.Count() > 0)
+                {
+                    conflictDetected = true;
+                    conflictingModNames.Add("Painter");
+                }
+            }
+
+            // Was a conflict detected?
+            if (conflictDetected)
+            {
+                // Yes - log each conflict.
+                foreach (string conflictingMod in conflictingModNames)
+                {
+                    Debugging.Message("Conflicting mod found: ", conflictingMod);
+                }
+                Debugging.Message("exiting due to mod conflict");
+            }
+
+            return conflictDetected;
+        }
 
 
         /// <summary>
@@ -31,7 +92,7 @@ namespace RealisticPopulationRevisited
                 {
                     if (assembly.GetName().Name.Equals(assemblyName))
                     {
-                        Debugging.Message("found mod assembly ", assemblyName);
+                        Debugging.Message("found mod assembly ", assemblyName, ", version ", assembly.GetName().Version.ToString());
                         if (enabledOnly)
                         {
                             return plugin.isEnabled;

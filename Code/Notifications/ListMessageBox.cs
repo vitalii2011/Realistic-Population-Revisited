@@ -56,6 +56,21 @@ namespace RealisticPopulationRevisited.MessageBox
 
 
         /// <summary>
+        /// Creates a blank panel spacer.
+        /// </summary>
+        /// <param name="height">Spacer height (default 10)</param>
+        /// <returns></returns>
+        public void AddSpacer(float height = 10f)
+        {
+            UIPanel spacer = ScrollableContent.AddUIComponent<UIPanel>();
+
+            spacer.autoSize = false;
+            spacer.height = height;
+            spacer.width = width - ScrollableContent.autoLayoutPadding.left - ScrollableContent.autoLayoutPadding.right;
+        }
+
+
+        /// <summary>
         /// Add dot pointed list.
         /// </summary>
         /// <param name="listItems">Array of messages for display as separte dot points</param>
@@ -67,6 +82,9 @@ namespace RealisticPopulationRevisited.MessageBox
                 ListItem listItem = ScrollableContent.AddUIComponent<ListItem>();
                 listItem.Text = listItems[i];
             }
+
+            // Add spacer at end of list.
+            AddSpacer();
         }
 
 
