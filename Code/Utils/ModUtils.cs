@@ -31,7 +31,7 @@ namespace RealisticPopulationRevisited
                 {
                     if (assembly.GetName().Name.Equals(assemblyName))
                     {
-                        Debugging.Message("found mod assembly " + assemblyName);
+                        Debugging.Message("found mod assembly ", assemblyName);
                         if (enabledOnly)
                         {
                             return plugin.isEnabled;

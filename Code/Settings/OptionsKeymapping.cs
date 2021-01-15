@@ -62,8 +62,6 @@ namespace RealisticPopulationRevisited
         /// <param name="keyEvent">Keypress event parameter</param>
         public void OnKeyDown(UIKeyEventParameter keyEvent)
         {
-            Debugging.Message("keydown " + isPrimed);
-
             // Only do this if we're primed and the keypress isn't a modifier key.
             if (isPrimed && !IsModifierKey(keyEvent.keycode))
             {

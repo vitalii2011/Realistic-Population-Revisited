@@ -145,7 +145,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("XML MakeNodes exception:\r\n" + e.ToString());
+                Debugging.Message("XML MakeNodes exception:\r\n", e.ToString());
             }
 
             // First segment
@@ -298,7 +298,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("PathFileName exception:\r\n" + e.ToString());
+                Debugging.Message("PathFileName exception:\r\n", e.ToString());
             }
 
             try
@@ -307,7 +307,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("XML save exception:\r\n" + e.ToString());
+                Debugging.Message("XML save exception:\r\n", e.ToString());
                 return false;  // Only time when we say there's an error
             }
 
@@ -1115,7 +1115,7 @@ namespace RealisticPopulationRevisited
                     break;
 
                 default:
-                    Debugging.Message("callingFunction " + callingFunction + ". unknown element name: " + name);
+                    Debugging.Message("callingFunction ", callingFunction, ". unknown element name: ", name);
                     break;
             }
             return array;

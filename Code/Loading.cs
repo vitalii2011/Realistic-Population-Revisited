@@ -45,7 +45,7 @@ namespace RealisticPopulationRevisited
             else if (!isModEnabled)
             {
                 isModEnabled = true;
-                Debugging.Message("version v" + RealPopMod.Version + " loading");
+                Debugging.Message("version v", RealPopMod.Version, " loading");
 
                 MergeDefaultBonus();
 

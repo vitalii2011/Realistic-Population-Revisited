@@ -64,7 +64,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.Message("XML readNodes exception:\r\n" + e.ToString());
+                    Debugging.Message("XML readNodes exception:\r\n", e.ToString());
                 }
             }
         } // end readXML
@@ -731,7 +731,7 @@ namespace RealisticPopulationRevisited
                     break;
 
                 default:
-                    Debugging.Message("callingFunction " + callingFunction + ". unknown element name: " + name);
+                    Debugging.Message("callingFunction ", callingFunction, ". unknown element name: ", name);
                     break;
             }
             return array;

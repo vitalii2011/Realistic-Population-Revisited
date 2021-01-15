@@ -35,7 +35,7 @@ namespace RealisticPopulationRevisited
                 // Write to savegame.
                 serializableDataManager.SaveData(dataID, stream.ToArray());
 
-                Debugging.Message("wrote " + stream.Length);
+                Debugging.Message("wrote ", stream.Length.ToString());
             }
         }
 
@@ -105,7 +105,7 @@ namespace RealisticPopulationRevisited
 
             try
             {
-                Debugging.Message("read data version " + dataVersion);
+                Debugging.Message("read data version ", dataVersion.ToString());
             }
             catch
             {

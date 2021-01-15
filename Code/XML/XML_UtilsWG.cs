@@ -35,7 +35,7 @@ namespace RealisticPopulationRevisited
 
             if (fileAvailable)
             {
-                Debugging.Message("loading configuration file " + DataStore.currentFileLocation);
+                Debugging.Message("loading legacy configuration file ", DataStore.currentFileLocation);
 
                 // Load in from XML - Designed to be flat file for ease
                 WG_XMLBaseVersion reader = new XML_VersionSix();
@@ -73,7 +73,7 @@ namespace RealisticPopulationRevisited
             }
             else
             {
-                Debugging.Message("configuration file not found. Will output new file to: " + DataStore.currentFileLocation);
+                Debugging.Message("legacy configuration file not found. Will output new file to: " + DataStore.currentFileLocation);
             }
         }
 
@@ -93,7 +93,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.Message("XML writing exception:\r\n" + e.Message);
+                    Debugging.Message("XML writing exception:\r\n", e.Message);
                 }
             }
         }

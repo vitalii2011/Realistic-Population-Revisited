@@ -128,7 +128,7 @@ namespace RealisticPopulationRevisited
                 DataStore.prefabWorkerVisit.Add(__instance.m_info.gameObject.GetHashCode(), visitors);
 
                 // Log this to help identify specific issues.  Should only occur once per prefab.
-                Debugging.Message("CalculateprefabWorkerVisit redux: " + __instance.m_info.name);
+                Debugging.Message("CalculateprefabWorkerVisit redux: ", __instance.m_info.name);
             }
 
             // Original method return value.
@@ -197,7 +197,7 @@ namespace RealisticPopulationRevisited
                 // Prevent unnecessary log spamming due to 'level-less' buildings returning level 1 instead of level 0.
                 if (level != 1)
                 {
-                    Debugging.Message(item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0");
+                    Debugging.Message(item.gameObject.name," attempted to be use ", item.m_class.m_subService.ToString(), " with level ", level.ToString(), ". Returning as level 0");
                 }
                 return array[0];
             }

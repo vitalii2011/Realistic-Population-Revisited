@@ -61,8 +61,6 @@ namespace RealisticPopulationRevisited
                     {
                         Panel.SetFilter(lastFilter);
                     }
-
-                    Debugging.Message("restoring last index " + lastIndex + " and position " + lastPostion);
                 }
 
 
@@ -85,7 +83,6 @@ namespace RealisticPopulationRevisited
             lastSelection = Panel?.currentSelection;
             lastFilter = Panel?.GetFilter();
             Panel?.GetListPosition(out lastIndex, out lastPostion);
-            Debugging.Message("storing last index " + lastIndex + " and position " + lastPostion);
 
             // Destroy objects and nullify for GC.
             GameObject.Destroy(_panel);

@@ -356,13 +356,13 @@ namespace RealisticPopulationRevisited
             // Null checks first.
             if (prefab?.name == null)
             {
-                Debugging.Message("No prefab found for SchoolPack " + schoolPack.name);
+                Debugging.Message("No prefab found for SchoolPack ", schoolPack.name);
                 return;
             }
 
             if (schoolPack == null)
             {
-                Debugging.Message("No SchoolPack found for prefab " + prefab.name);
+                Debugging.Message("No SchoolPack found for prefab ", prefab.name);
             }
 
             // Apply settings to prefab.
@@ -456,7 +456,6 @@ namespace RealisticPopulationRevisited
                             if (schoolButton.name.Equals(prefab.name))
                             {
                                 // Match!  Update tooltip.
-                                Debugging.Message("updating tooltip for " + prefab.name + " with student count " + ((SchoolAI)(prefab.GetAI())).m_studentCount);
                                 schoolButton.tooltip = prefab.GetLocalizedTooltip();
                             }
                         }

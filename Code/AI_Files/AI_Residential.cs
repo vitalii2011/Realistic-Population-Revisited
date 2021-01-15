@@ -117,7 +117,7 @@ namespace RealisticPopulationRevisited
             }
             catch (System.Exception)
             {
-                Debugging.Message(item.gameObject.name + " attempted to be use " + item.m_class.m_subService.ToString() + " with level " + level + ". Returning as level 0");
+                Debugging.Message(item.gameObject.name, " attempted to be use ", item.m_class.m_subService.ToString(), " with level ", level.ToString(), ". Returning as level 0");
                 return array[0];
             }
         }
