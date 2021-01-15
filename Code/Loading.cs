@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using ICities;
-using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
 using RealisticPopulationRevisited.MessageBox;
@@ -14,7 +12,6 @@ namespace RealisticPopulationRevisited
     public class Loading : LoadingExtensionBase
     {
         private static bool isModEnabled = false;
-        private static bool isLevelLoaded = false;
         private bool harmonyLoaded = false;
 
         // Used to flag if a conflicting mod is running.
@@ -58,33 +55,8 @@ namespace RealisticPopulationRevisited
                 isModEnabled = true;
                 Debugging.Message("version v", RealPopMod.Version, " loading");
 
-                MergeDefaultBonus();
-
-                // Remove bonus names from over rides
-                foreach (string name in DataStore.bonusHouseholdCache.Keys)
-                {
-                    DataStore.householdCache.Remove(name);
-                }
-
-                foreach (string name in DataStore.bonusWorkerCache.Keys)
-                {
-                    DataStore.workerCache.Remove(name);
-                }
-
-                DataStore.seedToId.Clear();
-                for (int i = 0; i <= ushort.MaxValue; ++i)  // Up to 1M buildings apparently is ok
-                {
-                    // This creates a unique number
-                    try
-                    {
-                        Randomizer number = new Randomizer(i);
-                        DataStore.seedToId.Add(number.seed, (ushort)i);
-                    }
-                    catch (Exception)
-                    {
-                        //Debugging.writeDebugToFile("Seed collision at number: " + i);
-                    }
-                }
+                // Perform legacy datastore setup.
+                XMLUtilsWG.Setup();
 
                 // Check for Ploppable RICO Revisited.
                 ModUtils.RICOReflection();
@@ -94,49 +66,6 @@ namespace RealisticPopulationRevisited
 
                 // Initialize data.
                 DataUtils.Setup();
-            }
-        }
-
-        private void MergeDefaultBonus()
-        {
-            if (DataStore.mergeResidentialNames)
-            {
-                foreach(KeyValuePair<string, int> entry in DataStore.defaultHousehold)
-                {
-                    try
-                    {
-                        DataStore.householdCache.Add(entry.Key, entry.Value);
-                    }
-                    catch (Exception)
-                    {
-                        // Don't care
-                    }
-                }
-            }
-
-            if (DataStore.mergeEmploymentNames)
-            {
-                foreach (KeyValuePair<string, int> entry in DataStore.defaultWorker)
-                {
-                    try
-                    {
-                        DataStore.workerCache.Add(entry.Key, entry.Value);
-                    }
-                    catch (Exception)
-                    {
-                        // Don't care
-                    }
-                }
-            }
-        }
-
-
-        public override void OnLevelUnloading()
-        {
-            if (isLevelLoaded)
-            {
-                isLevelLoaded = false;
-                DataStore.allowRemovalOfCitizens = false;
             }
         }
 
@@ -174,17 +103,6 @@ namespace RealisticPopulationRevisited
             if (!isModEnabled)
             {
                 return;
-            }
-            else if (mode == LoadMode.LoadGame || mode == LoadMode.NewGame)
-            {
-                if (!isLevelLoaded)
-                {
-                    isLevelLoaded = true;
-                    // Now we can remove people
-                    DataStore.allowRemovalOfCitizens = true;
-                    Debugging.releaseBuffer();
-                    Debugging.Message("successfully applied");
-                }
             }
 
             // Wait for loading to fully complete.

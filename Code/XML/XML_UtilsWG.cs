@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
+using System.Collections.Generic;
+using ColossalFramework.Math;
 
 
 namespace RealisticPopulationRevisited
@@ -94,6 +96,66 @@ namespace RealisticPopulationRevisited
                 catch (Exception e)
                 {
                     Debugging.Message("XML writing exception:\r\n", e.Message);
+                }
+            }
+        }
+
+
+        internal static void Setup()
+        {
+            if (DataStore.mergeResidentialNames)
+            {
+                foreach (KeyValuePair<string, int> entry in DataStore.defaultHousehold)
+                {
+                    try
+                    {
+                        DataStore.householdCache.Add(entry.Key, entry.Value);
+                    }
+                    catch (Exception)
+                    {
+                        // Don't care
+                    }
+                }
+            }
+
+            if (DataStore.mergeEmploymentNames)
+            {
+                foreach (KeyValuePair<string, int> entry in DataStore.defaultWorker)
+                {
+                    try
+                    {
+                        DataStore.workerCache.Add(entry.Key, entry.Value);
+                    }
+                    catch (Exception)
+                    {
+                        // Don't care
+                    }
+                }
+            }
+
+            // Remove bonus names from over rides
+            foreach (string name in DataStore.bonusHouseholdCache.Keys)
+            {
+                DataStore.householdCache.Remove(name);
+            }
+
+            foreach (string name in DataStore.bonusWorkerCache.Keys)
+            {
+                DataStore.workerCache.Remove(name);
+            }
+
+            DataStore.seedToId.Clear();
+            for (int i = 0; i <= ushort.MaxValue; ++i)  // Up to 1M buildings apparently is ok
+            {
+                // This creates a unique number
+                try
+                {
+                    Randomizer number = new Randomizer(i);
+                    DataStore.seedToId.Add(number.seed, (ushort)i);
+                }
+                catch (Exception)
+                {
+                    //Debugging.writeDebugToFile("Seed collision at number: " + i);
                 }
             }
         }
