@@ -6,14 +6,16 @@ using ICities;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
+using RealisticPopulationRevisited.MessageBox;
 
 
 namespace RealisticPopulationRevisited
 {
     public class Loading : LoadingExtensionBase
     {
-        private static volatile bool isModEnabled = false;
-        private static volatile bool isLevelLoaded = false;
+        private static bool isModEnabled = false;
+        private static bool isLevelLoaded = false;
+        private bool harmonyLoaded = false;
 
         // Used to flag if a conflicting mod is running.
         private static bool conflictingMod = false;
@@ -27,6 +29,8 @@ namespace RealisticPopulationRevisited
 
         public override void OnCreated(ILoading loading)
         {
+            base.OnCreated(loading);
+
             // Don't do anything if not in game (e.g. if we're going into an editor).
             if (loading.currentMode != AppMode.Game)
             {
@@ -35,6 +39,13 @@ namespace RealisticPopulationRevisited
                 return;
             }
 
+            // Ensure that Harmony patches have been applied.
+            harmonyLoaded = Patcher.Patched;
+            if (!harmonyLoaded)
+            {
+                isModEnabled = false;
+                Debugging.Message("Harmony patches not applied; aborting");
+            }
 
             // Check for original WG Realistic Population and Consumption Mod; if it's enabled, flag and don't activate this mod.
             if (IsModEnabled(426163185ul))
@@ -132,6 +143,27 @@ namespace RealisticPopulationRevisited
 
         public override void OnLevelLoaded(LoadMode mode)
         {
+            // Check to see that Harmony was properly loaded.
+            if (!harmonyLoaded)
+            {
+                // Patch wasn't operating; display warning notification and exit.
+                ListMessageBox harmonyBox = MessageBoxBase.ShowModal<ListMessageBox>();
+
+                // Key text items.
+                harmonyBox.Title = RealPopMod.ModName;
+                harmonyBox.ButtonText = Translations.Translate("RPR_MES_CLS");
+                harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR0"), Translations.Translate("RPR_ERR_HAR1"), Translations.Translate("RPR_ERR_HAR2"));
+
+                // List of dot points.
+                harmonyBox.AddList(Translations.Translate("RPR_ERR_HAR3"), Translations.Translate("RPR_ERR_HAR4"));
+
+                // Closing para.
+                harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR5"));
+
+                return;
+            }
+
+
             // Check to see if a conflicting mod has been detected - if so, alert the user.
             if (conflictingMod)
             {
@@ -143,7 +175,6 @@ namespace RealisticPopulationRevisited
             {
                 return;
             }
-
             else if (mode == LoadMode.LoadGame || mode == LoadMode.NewGame)
             {
                 if (!isLevelLoaded)
