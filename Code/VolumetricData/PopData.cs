@@ -35,30 +35,8 @@ namespace RealisticPopulationRevisited
         internal int Population(BuildingInfo buildingPrefab, int level, float multiplier = 1.0f)
         {
             // First, check for population override.
-            int population;
-
-            // Homes, students, or jobs?
-            if (buildingPrefab.GetService() == ItemClass.Service.Residential)
-            {
-                // Residential - see if we have a household override for this prefab.
-                if (DataStore.householdCache.TryGetValue(buildingPrefab.name, out population))
-                {
-                    // Yes - return override.
-                    return population;
-                }
-            }
-            else if (buildingPrefab.GetService() == ItemClass.Service.Education)
-            {
-                // School - see if we have a student override for this prefab.
-                population = GetPopOverride(buildingPrefab.name);
-                if (population > 0)
-                {
-                    // Yes - return override.
-                    return population;
-                }
-            }
-            // Not residential - see if we have a workplace override for this prefab.
-            else if (DataStore.workerCache.TryGetValue(buildingPrefab.name, out population))
+            int population = GetPopOverride(buildingPrefab.name);
+            if (population > 0)
             {
                 // Yes - return override.
                 return population;
@@ -79,7 +57,7 @@ namespace RealisticPopulationRevisited
         /// <param name="floorList">Optional precalculated list of calculated floors (to save time; will be generated if not provided)</param>
         /// <param name="totalArea">Optional precalculated total building area  (to save time; will be generated if not provided)</param>
         /// <returns></returns>
-        internal int VolumetricPopulation(BuildingInfoGen buildingInfoGen, LevelData levelData, FloorDataPack floorData, float multiplier, SortedList<int, float> floorList = null, float totalArea = 0 )
+        internal int VolumetricPopulation(BuildingInfoGen buildingInfoGen, LevelData levelData, FloorDataPack floorData, float multiplier, SortedList<int, float> floorList = null, float totalArea = 0)
         {
             // Return value.
             int totalUnits = 0;
@@ -108,7 +86,7 @@ namespace RealisticPopulationRevisited
                     // Units base on total floor area: calculate number of units in total building (always rounded down), after subtracting exmpty space.
                     totalUnits = (int)(((floorArea - emptyArea) * areaPercent) / levelData.areaPer);
                     // Adjust by multiplier (after rounded calculation above).
-                    totalUnits = (int)(totalUnits *  multiplier);
+                    totalUnits = (int)(totalUnits * multiplier);
                 }
                 else
                 {
@@ -657,6 +635,10 @@ namespace RealisticPopulationRevisited
 
             // Initialise student overrides dictionary.
             popOverrides = new Dictionary<string, int>();
+
+            // Convert legacy overrides (if any).
+            ConvertOverrides(DataStore.householdCache);
+            ConvertOverrides(DataStore.workerCache);
         }
 
 
@@ -779,15 +761,14 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Sets a manual population override for the given building prefab, and optionally saves the updated configuration.
+        /// Sets a manual population override for the given building prefab, but does NOT update live prefab data or save the configuration file.
+        /// Used to populate dictionary when the prefab isn't available (e.g. before loading is complete).
         /// </summary>
-        /// <param name="prefab">Building prefab/param>
+        /// <param name="prefabName">Building prefab/param>
         /// <param name="popOverride">Manual population override</param>
         /// <param name="saveConfig">True (default) to save configuration file afterwards, false to not save</param>
-        internal void SetPopOverride(BuildingInfo prefab, int popOverride, bool saveConfig = true)
+        internal void SetPopOverride(string prefabName, int popOverride)
         {
-            string prefabName = prefab.name;
-
             // Override needs to be at least 1.
             if (popOverride > 1)
             {
@@ -802,6 +783,27 @@ namespace RealisticPopulationRevisited
                     // No existing entry found; add one.
                     popOverrides.Add(prefabName, popOverride);
                 }
+            }
+            else
+            {
+                Debugging.Message("invalid pop override '" + popOverride + "' for prefab " + prefabName);
+            }
+        }
+
+
+        /// <summary>
+        /// Sets a manual population override for the given building prefab, and optionally saves the updated configuration; and also UPDATES live prefab data.
+        /// Used to add an entry in-game after prefabs have loaded.
+        /// </summary>
+        /// <param name="prefab">Building prefab/param>
+        /// <param name="popOverride">Manual population override</param>
+        /// <param name="saveConfig">True (default) to save configuration file afterwards, false to not save</param>
+        internal void SetPopOverride(BuildingInfo prefab, int popOverride, bool saveConfig = true)
+        {
+            // Override needs to be at least 1.
+            if (popOverride > 1)
+            {
+                SetPopOverride(prefab.name, popOverride);
 
                 // Apply changes.
                 if (prefab.GetService() == ItemClass.Service.Education)
@@ -817,7 +819,7 @@ namespace RealisticPopulationRevisited
             }
             else
             {
-                Debugging.Message("invalid pop override '" + popOverride + "' for prefab " + prefabName);
+                Debugging.Message("invalid pop override '" + popOverride + "' for prefab " + prefab.name);
             }
         }
 
@@ -912,7 +914,7 @@ namespace RealisticPopulationRevisited
         internal SortedList<string, BuildingRecord> SerializeBuildings()
         {
             // Return list.
-            SortedList<string, BuildingRecord> returnList =  new SortedList<string, BuildingRecord>();
+            SortedList<string, BuildingRecord> returnList = new SortedList<string, BuildingRecord>();
 
             // Iterate through each key (BuildingInfo) in our dictionary.
             foreach (string prefabName in buildingDict.Keys)
@@ -932,6 +934,19 @@ namespace RealisticPopulationRevisited
         /// <param name="buildingRecord">Building record to extract from</param>
         /// <returns>Floor pack name (if any)</returns>
         protected override string BuildingPack(BuildingRecord buildingRecord) => buildingRecord.popPack;
+
+
+        /// <summary>
+        /// Converts population overrides from old WG dictionaries (loaded from legacy WG files) to new-format PopData overrides.
+        /// </summary>
+        /// <param name="dictionary">Legacy override dictionary to convert</param>
+        private void ConvertOverrides(Dictionary<string, int> dictionary)
+        {
+            foreach (KeyValuePair<string, int> entry in dictionary)
+            {
+                SetPopOverride(entry.Key, entry.Value);
+            }
+        }
     }
 }
  

@@ -41,17 +41,9 @@ namespace RealisticPopulationRevisited
         [XmlArrayItem("building")]
         public List<BuildingRecord> buildings { get; set; }
 
-        [XmlArray("override_households")]
-        [XmlArrayItem("households")]
-        public List<PopCountOverride> households { get; set; }
-
-        [XmlArray("override_workplaces")]
-        [XmlArrayItem("workplaces")]
-        public List<PopCountOverride> workplaces { get; set; }
-
-        [XmlArray("override_students")]
-        [XmlArrayItem("students")]
-        public List<PopCountOverride> students { get; set; }
+        [XmlArray("override_population")]
+        [XmlArrayItem("population")]
+        public List<PopCountOverride> popOverrides { get; set; }
 
         [XmlArray("override_floors")]
         [XmlArrayItem("floors")]

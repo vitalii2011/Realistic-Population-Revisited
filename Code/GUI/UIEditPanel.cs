@@ -312,28 +312,26 @@ namespace RealisticPopulationRevisited
                 deleteButton.Disable();
                 return;
             }
-
-            int homesJobs;
-
             // Set label by building type.
             if (building.GetService() == ItemClass.Service.Residential)
             {
-                // Residential building - see if a custom number of households applies to this building.
-                homesJobs = ExternalCalls.GetResidential(building);
+                // Residential building - homes.
                 homeJobLabel.text = Translations.Translate("RPR_LBL_HOM");
             }
             else if (building.GetService() == ItemClass.Service.Education)
             {
-                // Schoool building - see if a custom number of students applies to this building.
-                homesJobs = PopData.instance.GetPopOverride(buildingName);
+                // Schoool building - students.
                 homeJobLabel.text = Translations.Translate("RPR_LBL_STU");
             }
             else
             {
-                // Workplace building; see if a custom number of jobs applies to this building.
-                homesJobs = ExternalCalls.GetWorker(building);
+                // Workplace building - jobs.
                 homeJobLabel.text = Translations.Translate("RPR_LBL_JOB");
             }
+
+            // Get any population override.
+            int homesJobs = PopData.instance.GetPopOverride(buildingName);
+
             // If custom settings were found (return value was non-zero), then display the result, rename the save button, and enable the delete button.
             if (homesJobs != 0)
             {
