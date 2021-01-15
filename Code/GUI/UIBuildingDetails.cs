@@ -52,6 +52,8 @@ namespace RealisticPopulationRevisited
                 }
                 else if (lastSelection != null)
                 {
+                    // Restore previous building selection list postion and selected item (specifically in that order to ensure correct item is selected).
+                    Panel.SetListPosition(lastIndex, lastPostion);
                     Panel.SelectBuilding(lastSelection);
 
                     // Restore previous filter state.
@@ -60,8 +62,7 @@ namespace RealisticPopulationRevisited
                         Panel.SetFilter(lastFilter);
                     }
 
-                    // Restore previous building selection list postion and selected item.
-                    Panel.SetListPosition(lastIndex, lastPostion);
+                    Debugging.Message("restoring last index " + lastIndex + " and position " + lastPostion);
                 }
 
 
@@ -84,6 +85,7 @@ namespace RealisticPopulationRevisited
             lastSelection = Panel?.currentSelection;
             lastFilter = Panel?.GetFilter();
             Panel?.GetListPosition(out lastIndex, out lastPostion);
+            Debugging.Message("storing last index " + lastIndex + " and position " + lastPostion);
 
             // Destroy objects and nullify for GC.
             GameObject.Destroy(_panel);
