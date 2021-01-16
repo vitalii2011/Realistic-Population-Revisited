@@ -117,7 +117,7 @@
     <Compile Include="Code\AI_Files\AI_School.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
     <Compile Include="Code\GUI\UIPreviewPanel.cs" />
-    <Compile Include="Code\Notifications\BaseMessageBox.cs" />
+    <Compile Include="Code\Notifications\MessageBoxBase.cs" />
     <Compile Include="Code\Notifications\LegacyChoiceMessageBox.cs" />
     <Compile Include="Code\Notifications\ListMessageBox.cs" />
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
