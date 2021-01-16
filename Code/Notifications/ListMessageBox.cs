@@ -10,13 +10,7 @@ namespace RealisticPopulationRevisited.MessageBox
     public class ListMessageBox : MessageBoxBase
     {
         // Components.
-        private UIButton button;
-
-
-        /// <summary>
-        /// Sets button text.
-        /// </summary>
-        public string ButtonText { set => button.text = value; }
+        private UIButton closeButton;
 
 
         /// <summary>
@@ -24,8 +18,22 @@ namespace RealisticPopulationRevisited.MessageBox
         /// </summary>
         public ListMessageBox()
         {
-            // Add button instance.
-            button = AddButton(1, 1, Close);
+            // Set title.
+            Title = RealPopMod.ModName;
+
+            // Add buttons.
+            AddButtons();
+        }
+
+
+        /// <summary>
+        /// Adds buttons to the message box.
+        /// </summary>
+        public virtual void AddButtons()
+        {
+            // Add close button.
+            closeButton = AddButton(1, 1, Close);
+            closeButton.text = Translations.Translate("MES_CLS");
         }
 
 

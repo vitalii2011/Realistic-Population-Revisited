@@ -653,7 +653,7 @@ namespace RealisticPopulationRevisited
             string defaultName;
 
             // Are we using legacy by default?
-            if (ModSettings.defaultLegacy)
+            if (ModSettings.ThisSaveLegacy)
             {
                 switch (service)
                 {

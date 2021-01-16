@@ -214,10 +214,18 @@
     <Translation ID="RPR_OPT_NEW" String="Add new" />
     <Translation ID="RPR_OPT_DEL" String="Delete pack" />
     <Translation ID="RPR_OPT_NPK" String="New pack" />
-    <Translation ID="RPR_DEF_LEG" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default" />
+    <Translation ID="RPR_DEF_LEG" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default:" />
+    <Translation ID="RPR_DEF_LTS" String="This save" />
+    <Translation ID="RPR_DEF_LAS" String="New saves" />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
-    <Translation ID="RPR_MES_CLS" String="Close" />
+    <Translation ID="MES_CLS" String="Close" />
+    <Translation ID="RPR_OLD_0" String="This savefile has not been saved with Realistic Population 2." />
+    <Translation ID="RPR_OLD_1" String="Please be aware that applying different population calculations to an existing city can temporarily disrupt city balance." />
+    <Translation ID="RPR_OLD_2" String="If you are loading a city created with an earlier version of this mod, you may wish to continue using the legacy mod calculations for this city; this should preserve your existing city balance.  Alternatively, you can choose to switch to the new (more accurate and flexible) calculation model, noting that your city may require some rebalancing." />
+    <Translation ID="RPR_OLD_3" String="Note that in either case, existing residential buildings will retain their existing capacities and households and will NOT be affected, and workers with existing jobs will NOT be immediately displaced from those jobs, so there will be no immediate impact on your city's population." />
+    <Translation ID="RPR_OLD_LEG" String="Use legacy calculations" />
+    <Translation ID="RPR_OLD_NEW" String="Use new calculations" />
     <Translation ID="RPR_ERR_FAT" String="This means that Realistic Population 2 is not able to operate properly and has shut down." />
     <Translation ID="RPR_ERR_HAR0" String="Harmony patching error!" />
     <Translation ID="RPR_ERR_HAR1" String="Realistic Population 2 was unable to complete its required Harmony patches." />

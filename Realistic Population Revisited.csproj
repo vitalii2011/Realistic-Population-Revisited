@@ -118,6 +118,7 @@
     <Compile Include="Code\GUI\UIModCalcs.cs" />
     <Compile Include="Code\GUI\UIPreviewPanel.cs" />
     <Compile Include="Code\Notifications\BaseMessageBox.cs" />
+    <Compile Include="Code\Notifications\LegacyChoiceMessageBox.cs" />
     <Compile Include="Code\Notifications\ListMessageBox.cs" />
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
     <Compile Include="Code\Patches\Patcher.cs" />

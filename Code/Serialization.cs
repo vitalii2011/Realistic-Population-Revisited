@@ -89,6 +89,9 @@ namespace RealisticPopulationRevisited
 
             // Write data version.
             serializer.WriteInt32(CurrentDataVersion);
+
+            // Write 'using legacy' flag.
+            serializer.WriteBool(ModSettings.ThisSaveLegacy);
         }
 
 
@@ -100,17 +103,27 @@ namespace RealisticPopulationRevisited
         {
             Debugging.Message("reading data from save file");
 
-            // Read data version.
-            int dataVersion = serializer.ReadInt32();
-
             try
             {
-                Debugging.Message("read data version ", dataVersion.ToString());
+                // Read data version.
+                int dataVersion = serializer.ReadInt32();
+
+                if (dataVersion >= 1)
+                {
+
+                    Debugging.Message("read data version ", dataVersion.ToString());
+
+                    // Read 'using legacy' flag.
+                    ModSettings.ThisSaveLegacy = serializer.ReadBool();
+
+                    // Record that we've successfully deserialized savegame data.
+                    ModSettings.saveFlag = true;
+                }
             }
             catch
             {
                 // Don't care if nothing read; assume no settings.
-                Debugging.Message("error reading data version");
+                Debugging.Message("error reading data");
             }
         }
 

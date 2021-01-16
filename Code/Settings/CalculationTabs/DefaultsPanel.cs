@@ -140,7 +140,7 @@ namespace RealisticPopulationRevisited
 
 
             // Y position indicator.
-            float currentY = 25f;
+            float currentY = 10f;
 
 
             // Add tab and helper.
@@ -154,19 +154,37 @@ namespace RealisticPopulationRevisited
             popMenus = new UIDropDown[subServiceNames.Length];
             floorMenus = new UIDropDown[subServiceNames.Length];
 
-            // Add 'Use legacy by default' checkbox.
-            UICheckBox legacyCheck = UIControls.AddCheckBox(panel, Translations.Translate("RPR_DEF_LEG"), Margin, currentY, 1.0f);
-            legacyCheck.label.wordWrap = true;
-            legacyCheck.label.autoSize = false;
-            legacyCheck.label.width = 710f;
-            legacyCheck.label.autoHeight = true;
-            legacyCheck.isChecked = ModSettings.defaultLegacy;
-            legacyCheck.eventCheckChanged += (control, isChecked) =>
+            // Add 'Use legacy by default' checkboxes.
+            UILabel legacyLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_DEF_LEG"), Margin, currentY);
+            currentY += legacyLabel.height + 5f;
+
+            UICheckBox legacyThisSaveCheck = UIControls.AddCheckBox(panel, Translations.Translate("RPR_DEF_LTS"), Margin * 2, currentY);
+            legacyThisSaveCheck.label.wordWrap = true;
+            legacyThisSaveCheck.label.autoSize = false;
+            legacyThisSaveCheck.label.width = 710f;
+            legacyThisSaveCheck.label.autoHeight = true;
+            legacyThisSaveCheck.isChecked = ModSettings.ThisSaveLegacy;
+            legacyThisSaveCheck.eventCheckChanged += (control, isChecked) =>
             {
-                ModSettings.defaultLegacy = isChecked;
+                ModSettings.ThisSaveLegacy = isChecked;
                 UpdateMenus();
             };
-            currentY += 45f;
+            currentY += 20f;
+
+            UICheckBox legacyNewSaveCheck = UIControls.AddCheckBox(panel, Translations.Translate("RPR_DEF_LAS"), Margin * 2, currentY);
+            legacyNewSaveCheck.label.wordWrap = true;
+            legacyNewSaveCheck.label.autoSize = false;
+            legacyNewSaveCheck.label.width = 710f;
+            legacyNewSaveCheck.label.autoHeight = true;
+            legacyNewSaveCheck.isChecked = ModSettings.newSaveLegacy;
+            legacyNewSaveCheck.eventCheckChanged += (control, isChecked) =>
+            {
+                ModSettings.newSaveLegacy = isChecked;
+                UpdateMenus();
+            };
+
+            // Reset current Y to fixed state.
+            currentY = 95f;
 
             // Add titles.
             UILabel popLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, currentY, 220f);
@@ -229,7 +247,7 @@ namespace RealisticPopulationRevisited
                 PanelUtils.RowHeaderIcon(panel, ref currentY, subServiceNames[i], iconNames[i], atlasNames[i]);
 
                 // Extra space.
-                currentY += 5f;
+                currentY += 3f;
             }
 
             // Populate menus.

@@ -17,6 +17,8 @@ namespace RealisticPopulationRevisited
         // RICO methods.
         internal static MethodInfo ricoPopManaged;
         internal static MethodInfo ricoClearWorkplace;
+        internal static MethodInfo ricoClearAllWorkplaces;
+
 
         /// <summary>
         /// Checks for any known mod conflicts.
@@ -168,6 +170,14 @@ namespace RealisticPopulationRevisited
                             {
                                 // Success!
                                 Debugging.Message("found RICO ClearWorkplaceCache");
+                            }
+
+                            // Try to get ClearAllWorkplaceCache method.
+                            ricoClearAllWorkplaces = ricoModUtils.GetMethod("ClearAllWorkplaceCache", BindingFlags.Public | BindingFlags.Static);
+                            if (ricoClearAllWorkplaces != null)
+                            {
+                                // Success!
+                                Debugging.Message("found RICO ClearAllWorkplaceCache");
                             }
                         }
 

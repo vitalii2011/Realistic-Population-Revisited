@@ -86,8 +86,6 @@ namespace RealisticPopulationRevisited
                 ListMessageBox harmonyBox = MessageBoxBase.ShowModal<ListMessageBox>();
 
                 // Key text items.
-                harmonyBox.Title = RealPopMod.ModName;
-                harmonyBox.ButtonText = Translations.Translate("RPR_MES_CLS");
                 harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_HAR1"), Translations.Translate("RPR_ERR_HAR2"));
 
                 // List of dot points.
@@ -104,8 +102,6 @@ namespace RealisticPopulationRevisited
                 ListMessageBox modConflictBox = MessageBoxBase.ShowModal<ListMessageBox>();
 
                 // Key text items.
-                modConflictBox.Title = RealPopMod.ModName;
-                modConflictBox.ButtonText = Translations.Translate("RPR_MES_CLS");
                 modConflictBox.AddParas(Translations.Translate("RPR_ERR_CON0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_CON1"), Translations.Translate("RPR_ERR_CON2"));
 
                 // Add conflicting mod name(s).
@@ -122,6 +118,12 @@ namespace RealisticPopulationRevisited
                 UIThreading.operating = false;
 
                 return;
+            }
+
+            // Show legacy choice message box if this save hasn't been flagged as being from Realistic Population 2.
+            if (!ModSettings.saveFlag)
+            {
+                LegacyChoiceMessageBox legacyChoiceBox = MessageBoxBase.ShowModal<LegacyChoiceMessageBox>();
             }
 
             // Wait for loading to fully complete.
