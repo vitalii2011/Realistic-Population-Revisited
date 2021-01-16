@@ -80,19 +80,19 @@ namespace RealisticPopulationRevisited
             base.OnLevelLoaded(mode);
 
             // Check to see that Harmony 2 was properly loaded.
-            if (!harmonyLoaded)
+            if (harmonyLoaded)
             {
                 // Harmony 2 wasn't loaded; display warning notification and exit.
                 ListMessageBox harmonyBox = MessageBoxBase.ShowModal<ListMessageBox>();
 
                 // Key text items.
-                harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_HAR1"), Translations.Translate("RPR_ERR_HAR2"));
+                harmonyBox.AddParas(Translations.Translate("ERR_HAR0"), Translations.Translate("RPR_ERR_HAR"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("ERR_HAR1"));
 
                 // List of dot points.
-                harmonyBox.AddList(Translations.Translate("RPR_ERR_HAR3"), Translations.Translate("RPR_ERR_HAR4"));
+                harmonyBox.AddList(Translations.Translate("ERR_HAR2"), Translations.Translate("ERR_HAR3"));
 
                 // Closing para.
-                harmonyBox.AddParas(Translations.Translate("RPR_ERR_HAR5"));
+                harmonyBox.AddParas(Translations.Translate("ERR_HAR4"));
             }
 
             // Check to see if a conflicting mod has been detected.

@@ -227,12 +227,12 @@
     <Translation ID="RPR_OLD_LEG" String="Use legacy calculations" />
     <Translation ID="RPR_OLD_NEW" String="Use new calculations" />
     <Translation ID="RPR_ERR_FAT" String="This means that Realistic Population 2 is not able to operate properly and has shut down." />
-    <Translation ID="RPR_ERR_HAR0" String="Harmony patching error!" />
-    <Translation ID="RPR_ERR_HAR1" String="Realistic Population 2 was unable to complete its required Harmony patches." />
-    <Translation ID="RPR_ERR_HAR2" String="Possible causes of this problem include:" />
-    <Translation ID="RPR_ERR_HAR3" String="The required Harmony 2 mod dependency was not installed" />
-    <Translation ID="RPR_ERR_HAR4" String="An old and/or broken mod is preventing Harmony 2 from operating properly" />
-    <Translation ID="RPR_ERR_HAR5" String="Please refer to the mod's Steam Workshop page for further information." />
+    <Translation ID="RPR_ERR_HAR" String="Realistic Population 2 was unable to complete its required Harmony patches." />
+    <Translation ID="ERR_HAR0" String="Harmony patching error!" />
+    <Translation ID="ERR_HAR1" String="Possible causes of this problem include:" />
+    <Translation ID="ERR_HAR2" String="The required Harmony 2 mod dependency was not installed" />
+    <Translation ID="ERR_HAR3" String="An old and/or broken mod is preventing Harmony 2 from operating properly" />
+    <Translation ID="ERR_HAR4" String="Please refer to the mod's Steam Workshop page for further information." />
     <Translation ID="RPR_ERR_CON0" String="Mod conflict detected!" />
     <Translation ID="RPR_ERR_CON1" String="Realistic Population 2 detected a conflict with at least one other mod." />
     <Translation ID="RPR_ERR_CON2" String="The conflicting mods are:" />
