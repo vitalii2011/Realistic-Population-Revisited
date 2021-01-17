@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using ColossalFramework.Plugins;
@@ -21,45 +20,46 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Checks for any known mod conflicts.
+        /// Checks for any known fatal mod conflicts.
         /// </summary>
         /// <returns>True if a mod conflict was detected, false otherwise</returns>
-        internal static bool ConflictingMod()
+        internal static bool IsModConflict()
         {
             // Initialise flag and list of conflicting mods.
             bool conflictDetected = false;
             conflictingModNames = new List<string>();
 
-            // Orignal WG mod detected.
-            if (IsModInstalled("WG_BalancedPopMod"))
+            // Iterate through the full list of plugins.
+            foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
             {
-                conflictDetected = true;
-                conflictingModNames.Add("Realistic Population and Consumption Mod");
-            }
-
-            // Garbage bin controller.
-            if (IsModInstalled("VanillaGarbageBinBlocker"))
-            {
-                conflictDetected = true;
-                conflictingModNames.Add("Garbage Bin Controller");
-            }
-
-            // Enhanced Building Capacity.
-            if (IsModInstalled("EnhancedBuildingCapacity"))
-            {
-                // Garbage bin controller mod detected.
-                conflictDetected = true;
-                conflictingModNames.Add("Enhanced Building Capacity");
-            }
-
-            // Painter - this one is trickier because both Painter and Repaint use Painter.dll (thanks to CO savegame serialization...)
-            if (IsModInstalled("Painter"))
-            {
-                IEnumerable<PluginManager.PluginInfo> plugins = PluginManager.instance.GetPluginsInfo().Where(plugin => plugin.userModInstance.GetType().ToString().Equals("Painter.UserMod"));
-                if (plugins.Count() > 0)
+                foreach (Assembly assembly in plugin.GetAssemblies())
                 {
-                    conflictDetected = true;
-                    conflictingModNames.Add("Painter");
+                    switch (assembly.GetName().Name)
+                    {
+                        case "WG_BalancedPopMod":
+                            // Original WG mod.
+                            conflictDetected = true;
+                            conflictingModNames.Add("Realistic Population and Consumption Mod");
+                            break;
+                        case "EnhancedBuildingCapacity":
+                            // Enhanced building capacity.
+                            conflictDetected = true;
+                            conflictingModNames.Add("Enhanced Building Capacity");
+                            break;
+                        case "VanillaGarbageBinBlocker":
+                            // Garbage Bin Controller
+                            conflictDetected = true;
+                            conflictingModNames.Add("Garbage Bin Controller");
+                            break;
+                        case "Painter":
+                            // Painter - this one is trickier because both Painter and Repaint use Painter.dll (thanks to CO savegame serialization...)
+                            if (plugin.userModInstance.GetType().ToString().Equals("Painter.UserMod"))
+                            {
+                                conflictDetected = true;
+                                conflictingModNames.Add("Painter");
+                            }
+                            break;
+                    }
                 }
             }
 

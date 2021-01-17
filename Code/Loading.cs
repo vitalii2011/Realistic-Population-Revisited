@@ -43,7 +43,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Check for mod conflicts.
-            if (ModUtils.ConflictingMod())
+            if (ModUtils.IsModConflict())
             {
                 // Conflict detected.
                 conflictingMod = true;
