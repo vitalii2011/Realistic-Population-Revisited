@@ -108,7 +108,7 @@ namespace RealisticPopulationRevisited
                 // Attempt to parse value as float.
                 if (!float.TryParse(value, out multiplier))
                 {
-                    Debugging.Message("unable to parse multiplier as float; setting to default");
+                    Logging.Error("unable to parse multiplier as float; setting to default");
                     multiplier = ModSettings.DefaultSchoolMult;
                 }
 

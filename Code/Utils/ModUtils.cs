@@ -69,9 +69,9 @@ namespace RealisticPopulationRevisited
                 // Yes - log each conflict.
                 foreach (string conflictingMod in conflictingModNames)
                 {
-                    Debugging.Message("Conflicting mod found: ", conflictingMod);
+                    Logging.Error("Conflicting mod found: ", conflictingMod);
                 }
-                Debugging.Message("exiting due to mod conflict");
+                Logging.Error("exiting due to mod conflict");
             }
 
             return conflictDetected;
@@ -94,7 +94,7 @@ namespace RealisticPopulationRevisited
                 {
                     if (assembly.GetName().Name.Equals(assemblyName))
                     {
-                        Debugging.Message("found mod assembly ", assemblyName, ", version ", assembly.GetName().Version.ToString());
+                        Logging.Message("found mod assembly ", assemblyName, ", version ", assembly.GetName().Version.ToString());
                         if (enabledOnly)
                         {
                             return plugin.isEnabled;
@@ -149,7 +149,7 @@ namespace RealisticPopulationRevisited
                 {
                     if (assembly.GetName().Name.Equals("ploppablerico") && plugin.isEnabled)
                     {
-                        Debugging.Message("Found Ploppable RICO Revisited");
+                        Logging.Message("Found Ploppable RICO Revisited");
 
                         // Found ploppablerico.dll that's part of an enabled plugin; try to get its ModUtils class.
                         Type ricoModUtils = assembly.GetType("PloppableRICO.Interfaces");
@@ -161,7 +161,7 @@ namespace RealisticPopulationRevisited
                             if (ricoPopManaged != null)
                             {
                                 // Success!
-                                Debugging.Message("found IsRICOPopManaged");
+                                Logging.Message("found IsRICOPopManaged");
                             }
 
                             // Try to get ClearWorkplaceCache method.
@@ -169,7 +169,7 @@ namespace RealisticPopulationRevisited
                             if (ricoClearWorkplace != null)
                             {
                                 // Success!
-                                Debugging.Message("found RICO ClearWorkplaceCache");
+                                Logging.Message("found RICO ClearWorkplaceCache");
                             }
 
                             // Try to get ClearAllWorkplaceCache method.
@@ -177,7 +177,7 @@ namespace RealisticPopulationRevisited
                             if (ricoClearAllWorkplaces != null)
                             {
                                 // Success!
-                                Debugging.Message("found RICO ClearAllWorkplaceCache");
+                                Logging.Message("found RICO ClearAllWorkplaceCache");
                             }
                         }
 
@@ -188,7 +188,7 @@ namespace RealisticPopulationRevisited
             }
 
             // If we got here, we were unsuccessful.
-            Debugging.Message("Ploppable RICO Revisited not found");
+            Logging.Message("Ploppable RICO Revisited not found");
         }
     }
 }

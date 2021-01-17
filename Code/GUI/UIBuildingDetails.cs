@@ -68,7 +68,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception opening building panel");
                 return;
             }
         }
@@ -340,7 +340,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception setting up building panel");
             }
         }
 

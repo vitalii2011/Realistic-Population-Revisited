@@ -86,7 +86,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.LogException(e);
+                    Logging.LogException(e, "exception parsing root.ChildNodes");
                 }
             }
         } // end readXML
@@ -145,7 +145,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("XML MakeNodes exception:\r\n", e.ToString());
+                Logging.LogException(e, "XML MakeNodes exception");
             }
 
             // First segment
@@ -298,7 +298,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("PathFileName exception:\r\n", e.ToString());
+                Logging.LogException(e, "PathFileName exception");
             }
 
             try
@@ -307,7 +307,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("XML save exception:\r\n", e.ToString());
+                Logging.LogException(e, "XML save exception");
                 return false;  // Only time when we say there's an error
             }
 
@@ -609,7 +609,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readPollutionNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readPollutionNode exception");
                 }
             } // end foreach
         }
@@ -637,7 +637,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readConsumptionNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readConsumptionNode exception");
                 }
             }
         }
@@ -679,7 +679,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readPopulationNode exception:\r\n" + e.ToString());
+                        Logging.LogException(e, "readPopulationNode exception");
                     }
 
                     try
@@ -718,7 +718,7 @@ namespace RealisticPopulationRevisited
                         }
                         catch (Exception e)
                         {
-                            Debugging.bufferWarning("readPopulationNode, part b exception:\r\n" + e.ToString());
+                            Logging.LogException(e, "readPopulationNode, part b exception");
                         }
                     }
                 } // end if
@@ -789,7 +789,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readOverrideHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
+                        Logging.LogException(e, "readOverrideHouseNode exception...setting to 1");
                         overrideValue = 1;
                     }
 
@@ -803,7 +803,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("ReadOverrideHouseNode exception:\r\n" + e.ToString());
+                        Logging.LogException(e, "ReadOverrideHouseNode exception");
                     }
                 }
             }
@@ -842,7 +842,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readOverrideWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
+                        Logging.LogException(e, "readOverrideWorkers exception...setting to 5");
                         overrideValue = 5;
                     }
 
@@ -856,7 +856,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("ReadOverrideWorkers exception:\r\n" + e.ToString());
+                        Logging.LogException(e, "ReadOverrideWorkers exception");
                     }
                 }
             }
@@ -887,7 +887,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("ReadBonusHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
+                        Logging.LogException(e, "ReadBonusHouseNode exception...setting to 1");
                     }
                 }
             }
@@ -918,7 +918,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("ReadBonusWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
+                        Logging.LogException(e, "ReadBonusWorkers exception...setting to 5");
                     }
                 }
             }
@@ -949,7 +949,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("ReadPrintHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
+                        Logging.LogException(e, "ReadPrintHouseNode exception...setting to 1");
                     }
                 }
             }
@@ -980,7 +980,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("ReadPrintWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
+                        Logging.LogException(e, "ReadPrintWorkers exception...setting to 5");
                     }
                 }
             }
@@ -1007,7 +1007,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readVisitNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readVisitNode exception");
                 }
             }
         }
@@ -1034,7 +1034,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readProductionNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readProductionNode exception");
                 }
             }
         }
@@ -1115,7 +1115,7 @@ namespace RealisticPopulationRevisited
                     break;
 
                 default:
-                    Debugging.Message("callingFunction ", callingFunction, ". unknown element name: ", name);
+                    Logging.Error("callingFunction ", callingFunction, ". unknown element name: ", name);
                     break;
             }
             return array;

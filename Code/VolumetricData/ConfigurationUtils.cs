@@ -37,7 +37,7 @@ namespace RealisticPopulationRevisited
 
                         if (!(xmlSerializer.Deserialize(reader) is XMLConfigurationFile configFile))
                         {
-                            Debugging.Message("couldn't deserialize configuration file");
+                            Logging.Error("couldn't deserialize configuration file");
                         }
                         else
                         {
@@ -141,7 +141,7 @@ namespace RealisticPopulationRevisited
                 }
                 else
                 {
-                    Debugging.Message("no configuration file found");
+                    Logging.Message("no configuration file found");
                 }
 
                 // Set status flag.
@@ -149,8 +149,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("exception reading configuration file");
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception reading configuration file");
             }
         }
 
@@ -273,8 +272,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("exception saving configuration file");
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception saving configuration file");
             }
         }
 

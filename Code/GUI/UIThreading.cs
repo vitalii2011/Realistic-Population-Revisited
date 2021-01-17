@@ -59,7 +59,7 @@ namespace RealisticPopulationRevisited
                         }
                         catch (Exception e)
                         {
-                            Debugging.LogException(e);
+                            Logging.LogException(e, "exception opening building details panel");
                         }
                     }
                     else

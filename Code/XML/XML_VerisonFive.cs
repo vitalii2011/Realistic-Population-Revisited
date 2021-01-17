@@ -64,7 +64,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.Message("XML readNodes exception:\r\n", e.ToString());
+                    Logging.LogException(e, "XML readNodes exception");
                 }
             }
         } // end readXML
@@ -373,7 +373,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readPollutionNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readPollutionNode exception");
                 }
             } // end foreach
         }
@@ -401,7 +401,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readConsumptionNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readConsumptionNode exception");
                 }
             }
         }
@@ -453,7 +453,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readPopulationNode exception:\r\n" + e.ToString());
+                        Logging.LogException(e, "readPopulationNode exception");
                     }
 
                     try
@@ -492,7 +492,7 @@ namespace RealisticPopulationRevisited
                         }
                         catch (Exception e)
                         {
-                            Debugging.bufferWarning("readPopulationNode, part b exception:\r\n" + e.ToString());
+                            Logging.LogException(e, "readPopulationNode, part b exception");
                         }
                     }
                 } // end if
@@ -567,7 +567,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readBonusHouseNode exception:\r\n" + e.ToString() + "\r\n...setting to 1");
+                        Logging.LogException(e, "readBonusHouseNode exception...setting to 1");
                     }
                 }
             }
@@ -612,7 +612,7 @@ namespace RealisticPopulationRevisited
                     }
                     catch (Exception e)
                     {
-                        Debugging.bufferWarning("readBonusWorkers exception:\r\n" + e.ToString() + "\r\n...setting to 5");
+                        Logging.LogException(e, "readBonusWorkers exception...setting to 5");
                     }
                 }
             }
@@ -639,7 +639,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readVisitNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readVisitNode exception");
                 }
             }
         }
@@ -666,7 +666,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.bufferWarning("readProductionNode exception:\r\n" + e.ToString());
+                    Logging.LogException(e, "readProductionNode exception");
                 }
             }
         }
@@ -731,7 +731,7 @@ namespace RealisticPopulationRevisited
                     break;
 
                 default:
-                    Debugging.Message("callingFunction ", callingFunction, ". unknown element name: ", name);
+                    Logging.Error("callingFunction ", callingFunction, ". unknown element name: ", name);
                     break;
             }
             return array;

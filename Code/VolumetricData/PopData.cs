@@ -786,7 +786,7 @@ namespace RealisticPopulationRevisited
             }
             else
             {
-                Debugging.Message("invalid pop override '", popOverride.ToString(), "' for prefab ", prefabName);
+                Logging.Error("invalid pop override '", popOverride.ToString(), "' for prefab ", prefabName);
             }
         }
 
@@ -819,7 +819,7 @@ namespace RealisticPopulationRevisited
             }
             else
             {
-                Debugging.Message("invalid pop override '", popOverride.ToString(), "' for prefab ", prefab.name);
+                Logging.Error("invalid pop override '", popOverride.ToString(), "' for prefab ", prefab.name);
             }
         }
 
@@ -901,7 +901,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.Message(e.Message, " error deserializing pop override for prefab ", popOverride?.prefab ?? "null");
+                    Logging.LogException(e, " exception deserializing pop override for prefab ", popOverride?.prefab ?? "null");
                 }
             }
         }

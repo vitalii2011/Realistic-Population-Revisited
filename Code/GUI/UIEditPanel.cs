@@ -250,7 +250,7 @@ namespace RealisticPopulationRevisited
                     return;
                 }
 
-                Debugging.Message("deleting custom entry for ", currentSelection.name);
+                Logging.Message("deleting custom entry for ", currentSelection.name);
 
                 // Remove any floor override BEFORE we call RemoveResidential or RemoveWorker; that way the updated config will be saved (only once) by the Remove call.
                 FloorData.instance.DeleteOverride(currentSelection.name);

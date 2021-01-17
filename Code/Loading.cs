@@ -26,7 +26,7 @@ namespace RealisticPopulationRevisited
             if (loading.currentMode != AppMode.Game)
             {
                 isModEnabled = false;
-                Debugging.Message("not loading into game, skipping activation");
+                Logging.KeyMessage("not loading into game, skipping activation");
 
                 // Unload Harmony patches and exit before doing anything further.
                 Patcher.UnpatchAll();
@@ -38,7 +38,7 @@ namespace RealisticPopulationRevisited
             if (!harmonyLoaded)
             {
                 isModEnabled = false;
-                Debugging.Message("Harmony patches not applied; aborting");
+                Logging.KeyMessage("Harmony patches not applied; aborting");
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace RealisticPopulationRevisited
             if (!isModEnabled)
             {
                 isModEnabled = true;
-                Debugging.Message("version v", RealPopMod.Version, " loading");
+                Logging.KeyMessage("version v", RealPopMod.Version, " loading");
 
                 // Perform legacy datastore setup.
                 XMLUtilsWG.Setup();
@@ -139,7 +139,7 @@ namespace RealisticPopulationRevisited
             // IF a legacy file exists, flag it for writing.
             if (File.Exists(DataStore.currentFileLocation))
             {
-                Debugging.Message("found legacy settings file");
+                Logging.KeyMessage("found legacy settings file");
                 XMLUtilsWG.writeToLegacy = true;
             }
 

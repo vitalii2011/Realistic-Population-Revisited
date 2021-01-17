@@ -35,7 +35,7 @@ namespace RealisticPopulationRevisited
                 // Write to savegame.
                 serializableDataManager.SaveData(dataID, stream.ToArray());
 
-                Debugging.Message("wrote ", stream.Length.ToString());
+                Logging.Message("wrote ", stream.Length.ToString());
             }
         }
 
@@ -66,7 +66,7 @@ namespace RealisticPopulationRevisited
             else
             {
                 // No data read.
-                Debugging.Message("no data read");
+                Logging.Message("no data read");
             }
         }
     }
@@ -85,7 +85,7 @@ namespace RealisticPopulationRevisited
         /// <param name="serializer">Data serializer</param>
         public void Serialize(DataSerializer serializer)
         {
-            Debugging.Message("writing data to save file");
+            Logging.Message("writing data to save file");
 
             // Write data version.
             serializer.WriteInt32(CurrentDataVersion);
@@ -101,7 +101,7 @@ namespace RealisticPopulationRevisited
         /// <param name="serializer">Data serializer</param>
         public void Deserialize(DataSerializer serializer)
         {
-            Debugging.Message("reading data from save file");
+            Logging.Message("reading data from save file");
 
             try
             {
@@ -111,7 +111,7 @@ namespace RealisticPopulationRevisited
                 if (dataVersion >= 1)
                 {
 
-                    Debugging.Message("read data version ", dataVersion.ToString());
+                    Logging.Message("read data version ", dataVersion.ToString());
 
                     // Read 'using legacy' flag.
                     ModSettings.ThisSaveLegacy = serializer.ReadBool();
@@ -123,7 +123,7 @@ namespace RealisticPopulationRevisited
             catch
             {
                 // Don't care if nothing read; assume no settings.
-                Debugging.Message("error reading data");
+                Logging.Message("error reading data");
             }
         }
 

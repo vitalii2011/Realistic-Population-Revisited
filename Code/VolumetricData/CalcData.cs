@@ -297,7 +297,7 @@ namespace RealisticPopulationRevisited
                 DataPack calcPack = calcPacks?.Find(pack => (pack?.name != null && pack.name.Equals(defaultPack.pack)));
                 if (calcPack?.name == null)
                 {
-                    Debugging.Message("Couldn't find pop calculation pack ", defaultPack.pack, " for sub-service ", defaultPack.subService.ToString());
+                    Logging.Error("Couldn't find pop calculation pack ", defaultPack.pack, " for sub-service ", defaultPack.subService.ToString());
                     continue;
                 }
 
@@ -331,7 +331,7 @@ namespace RealisticPopulationRevisited
                 DataPack calcPack = calcPacks?.Find(pack => (pack?.name != null && pack.name.Equals(packName)));
                 if (calcPack?.name == null)
                 {
-                    Debugging.Message("Couldn't find calculation pack ", packName," for ", buildingRecord.prefab);
+                    Logging.Error("Couldn't find calculation pack ", packName," for ", buildingRecord.prefab);
                     continue;
                 }
 

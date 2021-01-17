@@ -35,7 +35,7 @@ namespace RealisticPopulationRevisited
                 uiGameObject = GameObject.Find("RealPopUpgradeNotification");
                 if (uiGameObject != null)
                 {
-                    Debugging.Message("found existing upgrade notification instance");
+                    Logging.Message("found existing upgrade notification instance");
                     GameObject.Destroy(uiGameObject);
                 }
 
@@ -47,7 +47,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception creting update notification");
             }
         }
 
@@ -124,7 +124,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception setting up update notification");
             }
         }
 

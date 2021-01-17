@@ -37,7 +37,7 @@ namespace RealisticPopulationRevisited
 
             if (fileAvailable)
             {
-                Debugging.Message("loading legacy configuration file ", DataStore.currentFileLocation);
+                Logging.KeyMessage("loading legacy configuration file ", DataStore.currentFileLocation);
 
                 // Load in from XML - Designed to be flat file for ease
                 WG_XMLBaseVersion reader = new XML_VersionSix();
@@ -54,13 +54,11 @@ namespace RealisticPopulationRevisited
 
                         // Make a back up copy of the old system to be safe
                         File.Copy(DataStore.currentFileLocation, DataStore.currentFileLocation + ".ver5", true);
-                        string error = "Detected an old version of the XML (v5). " + DataStore.currentFileLocation + ".ver5 has been created for future reference and will be upgraded to the new version.";
-                        Debugging.bufferWarning(error);
+                        Logging.KeyMessage("Detected an old version of the XML (v5). ", DataStore.currentFileLocation, ".ver5 has been created for future reference and will be upgraded to the new version.");
                     }
                     else if (version <= 3) // Uh oh... version 4 was a while back..
                     {
-                        string error = "Detected an unsupported version of the XML (v4 or less). Backing up for a new configuration as :" + DataStore.currentFileLocation + ".ver4";
-                        Debugging.bufferWarning(error);
+                        Logging.KeyMessage("Detected an unsupported version of the XML (v4 or less). Backing up for a new configuration as :", DataStore.currentFileLocation + ".ver4");
                         File.Copy(DataStore.currentFileLocation, DataStore.currentFileLocation + ".ver4", true);
                         return;
                     }
@@ -69,13 +67,12 @@ namespace RealisticPopulationRevisited
                 catch (Exception e)
                 {
                     // Game will now use defaults
-                    Debugging.bufferWarning("The following exception(s) were detected while loading the XML file. Some (or all) values may not be loaded.");
-                    Debugging.bufferWarning(e.Message);
+                    Logging.LogException(e, "Exception(s) were detected while loading the XML file. Some (or all) values may not be loaded");
                 }
             }
             else
             {
-                Debugging.Message("legacy configuration file not found. Will output new file to: " + DataStore.currentFileLocation);
+                Logging.KeyMessage("legacy configuration file not found");
             }
         }
 
@@ -95,7 +92,7 @@ namespace RealisticPopulationRevisited
                 }
                 catch (Exception e)
                 {
-                    Debugging.Message("XML writing exception:\r\n", e.Message);
+                    Logging.LogException(e, "XML writing exception");
                 }
             }
         }

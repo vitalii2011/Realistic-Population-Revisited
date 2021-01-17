@@ -135,19 +135,18 @@ namespace RealisticPopulationRevisited
                         XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLSettingsFile));
                         if (!(xmlSerializer.Deserialize(reader) is XMLSettingsFile xmlSettingsFile))
                         {
-                            Debugging.Message("couldn't deserialize settings file");
+                            Logging.Error("couldn't deserialize settings file");
                         }
                     }
                 }
                 else
                 {
-                    Debugging.Message("no settings file found");
+                    Logging.Message("no settings file found");
                 }
             }
             catch (Exception e)
             {
-                Debugging.Message("exception reading XML settings file");
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception reading XML settings file");
             }
         }
 
@@ -168,8 +167,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.Message("exception saving XML settings file");
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception saving XML settings file");
             }
         }
     }

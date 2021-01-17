@@ -43,7 +43,7 @@ namespace RealisticPopulationRevisited
             bool inserted = false;
 
 
-            Debugging.Message("transpiling CommonBuildingAI.HandleCrime");
+            Logging.Message("transpiling CommonBuildingAI.HandleCrime");
 
             // Iterate through ILCode instructions.
             while (instructionsEnumerator.MoveNext())
@@ -66,7 +66,7 @@ namespace RealisticPopulationRevisited
                         if (instruction.opcode == OpCodes.Brfalse)
                         {
                             // Found our spot! Insert our custom instructions in the output.
-                            Debugging.Message("inserting custom method call after ldarg.3, brfalse");
+                            Logging.Message("inserting custom method call after ldarg.3, brfalse");
 
                             // Push crimeAccumulation onto stack as argument for patch method.
                             yield return new CodeInstruction(OpCodes.Ldarg_3);

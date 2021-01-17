@@ -23,7 +23,7 @@ namespace RealisticPopulationRevisited
         public static void EnsureCitizenUnits(object instance, ushort buildingID, ref Building data, int homeCount, int workCount, int visitCount, int studentCount)
         {
             string message = "EnsureCitizenUnits reverse Harmony patch wasn't applied";
-            Debugging.Message(message);
+            Logging.Error(message);
             throw new NotImplementedException(message);
         }
 
@@ -40,7 +40,7 @@ namespace RealisticPopulationRevisited
         public static void ReleaseUnitImplementation(object instance, uint unit, ref CitizenUnit data)
         {
             string message = "ReleaseUnitImplementation reverse Harmony patch wasn't applied";
-            Debugging.Message(message);
+            Logging.Error(message);
             throw new NotImplementedException(message);
         }
     }

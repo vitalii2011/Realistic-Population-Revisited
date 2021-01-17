@@ -356,13 +356,13 @@ namespace RealisticPopulationRevisited
             // Null checks first.
             if (prefab?.name == null)
             {
-                Debugging.Message("No prefab found for SchoolPack ", schoolPack.name);
+                Logging.Error("No prefab found for SchoolPack ", schoolPack.name);
                 return;
             }
 
             if (schoolPack == null)
             {
-                Debugging.Message("No SchoolPack found for prefab ", prefab.name);
+                Logging.Error("No SchoolPack found for prefab ", prefab.name);
             }
 
             // Apply settings to prefab.
@@ -407,7 +407,7 @@ namespace RealisticPopulationRevisited
         {
             if (prefab == null || schoolAI == null)
             {
-                Debugging.Message("null parameter passed to UpdateSchoolPrefab");
+                Logging.Error("null parameter passed to UpdateSchoolPrefab");
                 return;
             }
 
@@ -429,7 +429,7 @@ namespace RealisticPopulationRevisited
             GameObject educationPanelObject = GameObject.Find("EducationDefaultPanel");
             if (educationPanelObject == null)
             {
-                Debugging.Message("couldn't find education panel object (tooltip won't be updated)");
+                Logging.Message("couldn't find education panel object (tooltip won't be updated)");
             }
             else
             {
@@ -437,7 +437,7 @@ namespace RealisticPopulationRevisited
                 UIScrollablePanel edScrollPanel = educationPanelObject.GetComponentInChildren<UIScrollablePanel>();
                 if (edScrollPanel == null)
                 {
-                    Debugging.Message("couldn't find education panel scrollable panel (tooltip won't be updated)");
+                    Logging.Message("couldn't find education panel scrollable panel (tooltip won't be updated)");
                 }
                 else
                 {
@@ -446,7 +446,7 @@ namespace RealisticPopulationRevisited
 
                     if (schoolButtons == null)
                     {
-                        Debugging.Message("couldn't find school buttons (tooltip won't be updated)");
+                        Logging.Message("couldn't find school buttons (tooltip won't be updated)");
                     }
                     else
                     {

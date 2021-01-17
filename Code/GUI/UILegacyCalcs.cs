@@ -124,7 +124,7 @@ namespace RealisticPopulationRevisited
             // Check for valid building AI.
             if (!(building.GetAI() is PrivateBuildingAI buildingAI))
             {
-                Debugging.Message("invalid building AI type in building details");
+                Logging.Error("invalid building AI type in building details for building ", building.name);
                 return;
             }
 
@@ -172,7 +172,7 @@ namespace RealisticPopulationRevisited
                         }
                         break;
                     default:
-                        Debugging.Message("invalid building service in building details");
+                        Logging.Error("invalid building service in building details for building ", building.name);
                         return;
                 }
 

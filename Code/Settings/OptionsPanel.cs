@@ -31,7 +31,7 @@ namespace RealisticPopulationRevisited
 
             if (gameOptionsPanel == null)
             {
-                Debugging.Message("couldn't find OptionsPanel");
+                Logging.Error("couldn't find OptionsPanel");
             }
             else
             {
@@ -118,7 +118,7 @@ namespace RealisticPopulationRevisited
             }
             catch (Exception e)
             {
-                Debugging.LogException(e);
+                Logging.LogException(e, "exception creting options panel");
             }
         }
 
