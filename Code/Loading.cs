@@ -27,6 +27,9 @@ namespace RealisticPopulationRevisited
             {
                 isModEnabled = false;
                 Debugging.Message("not loading into game, skipping activation");
+
+                // Unload Harmony patches and exit before doing anything further.
+                Patcher.UnpatchAll();
                 return;
             }
 
@@ -42,15 +45,16 @@ namespace RealisticPopulationRevisited
             // Check for mod conflicts.
             if (ModUtils.ConflictingMod())
             {
+                // Conflict detected.
                 conflictingMod = true;
                 isModEnabled = false;
 
-                // Unload Harmony patches.
+                // Unload Harmony patches and exit before doing anything further.
                 Patcher.UnpatchAll();
                 return;
             }
 
-            // Passed all checks - okay to load (if we haven't already fo some reason)>
+            // Passed all checks - okay to load (if we haven't already fo some reason).
             if (!isModEnabled)
             {
                 isModEnabled = true;
@@ -102,13 +106,13 @@ namespace RealisticPopulationRevisited
                 ListMessageBox modConflictBox = MessageBoxBase.ShowModal<ListMessageBox>();
 
                 // Key text items.
-                modConflictBox.AddParas(Translations.Translate("RPR_ERR_CON0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_CON1"), Translations.Translate("RPR_ERR_CON2"));
+                modConflictBox.AddParas(Translations.Translate("ERR_CON0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_CON0"), Translations.Translate("ERR_CON1"));
 
                 // Add conflicting mod name(s).
                 modConflictBox.AddList(ModUtils.conflictingModNames.ToArray());
 
                 // Closing para.
-                modConflictBox.AddParas(Translations.Translate("RPR_ERR_CON3"));
+                modConflictBox.AddParas(Translations.Translate("RPR_ERR_CON1"));
             }
 
             // Don't do anything further if mod hasn't activated for whatever reason (mod conflict, harmony error, something else).
