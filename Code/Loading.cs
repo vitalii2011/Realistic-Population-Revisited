@@ -80,7 +80,7 @@ namespace RealisticPopulationRevisited
             base.OnLevelLoaded(mode);
 
             // Check to see that Harmony 2 was properly loaded.
-            if (harmonyLoaded)
+            if (!harmonyLoaded)
             {
                 // Harmony 2 wasn't loaded; display warning notification and exit.
                 ListMessageBox harmonyBox = MessageBoxBase.ShowModal<ListMessageBox>();
