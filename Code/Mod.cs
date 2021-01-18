@@ -40,7 +40,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Adds the options panel event handler for the start screen (to enable/disable options panel based on visibility).
+        /// Called by the game when the mod is enabled.
         /// </summary>
         public void OnEnabled()
         {

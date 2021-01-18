@@ -14,7 +14,7 @@ namespace RealisticPopulationRevisited
     {
         // Unique data ID.
         private readonly string dataID = "RealPop2";
-        private const uint DataVersion = 0;
+        private const uint DataVersion = 1;
 
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace RealisticPopulationRevisited
                 if ((LoadMode)Singleton<SimulationManager>.instance.m_metaData.m_updateMode == LoadMode.NewGame)
                 {
                     Logging.KeyMessage("new game detected");
-                    // Assuming new game - set this game's legacy save settings to the new game defaults, and set the savegame flag.
+                    // New game - set this game's legacy save settings to the new game defaults, and set the savegame flag.
                     ModSettings.ThisSaveLegacy = ModSettings.newSaveLegacy;
                     ModSettings.isRealPop2Save = true;
                 }
@@ -123,7 +123,7 @@ namespace RealisticPopulationRevisited
                 // Read data version.
                 int dataVersion = serializer.ReadInt32();
 
-                if (dataVersion >= 1)
+                if (dataVersion > 0)
                 {
 
                     Logging.Message("read data version ", dataVersion.ToString());
