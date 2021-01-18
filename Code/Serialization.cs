@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using ICities;
 using ColossalFramework;
@@ -76,13 +75,9 @@ namespace RealisticPopulationRevisited
             if (!ModSettings.isRealPop2Save)
             {
                 // No - we need to work out if this is a new game, or an existing load.
-                uint population = Singleton<DistrictManager>.instance.m_districts.m_buffer[0].m_populationData.m_finalCount;
-                Logging.KeyMessage("No savegame flag - population count is ", population.ToString());
-
-                // Check to see if population is zero; if so, assume that this is a new game.
-                if (population == 0)
+                if ((LoadMode)Singleton<SimulationManager>.instance.m_metaData.m_updateMode == LoadMode.NewGame)
                 {
-                    Logging.KeyMessage("assuming new game");
+                    Logging.KeyMessage("new game detected");
                     // Assuming new game - set this game's legacy save settings to the new game defaults, and set the savegame flag.
                     ModSettings.ThisSaveLegacy = ModSettings.newSaveLegacy;
                     ModSettings.isRealPop2Save = true;
