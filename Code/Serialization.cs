@@ -14,7 +14,7 @@ namespace RealisticPopulationRevisited
     {
         // Unique data ID.
         private readonly string dataID = "RealPop2";
-        private const uint DataVersion = 1;
+        internal const int CurrentDataVersion = 1;
 
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace RealisticPopulationRevisited
                 BinaryFormatter formatter = new BinaryFormatter();
 
                 // Serialise savegame settings.
-                DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, DataVersion, new RealPopSerializer());
+                DataSerializer.Serialize(stream, DataSerializer.Mode.Memory, CurrentDataVersion, new RealPopSerializer());
 
                 // Write to savegame.
                 serializableDataManager.SaveData(dataID, stream.ToArray());
@@ -92,8 +92,6 @@ namespace RealisticPopulationRevisited
     /// </summary>
     public class RealPopSerializer : IDataContainer
     {
-        private const int CurrentDataVersion = 0;
-
         /// <summary>
         /// Serialise to savegame.
         /// </summary>
@@ -103,7 +101,7 @@ namespace RealisticPopulationRevisited
             Logging.Message("writing data to save file");
 
             // Write data version.
-            serializer.WriteInt32(CurrentDataVersion);
+            serializer.WriteInt32(Serializer.CurrentDataVersion);
 
             // Write 'using legacy' flag.
             serializer.WriteBool(ModSettings.ThisSaveLegacy);
@@ -123,7 +121,8 @@ namespace RealisticPopulationRevisited
                 // Read data version.
                 int dataVersion = serializer.ReadInt32();
 
-                if (dataVersion > 0)
+                // Make sure we have a matching data version.
+                if (dataVersion == Serializer.CurrentDataVersion)
                 {
 
                     Logging.Message("read data version ", dataVersion.ToString());
