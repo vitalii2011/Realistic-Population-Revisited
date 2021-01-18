@@ -28,6 +28,9 @@ namespace RealisticPopulationRevisited
                 isModEnabled = false;
                 Logging.KeyMessage("not loading into game, skipping activation");
 
+                // Set harmonyLoaded flag to suppress Harmony warning when e.g. loading into editor.
+                harmonyLoaded = true;
+
                 // Unload Harmony patches and exit before doing anything further.
                 Patcher.UnpatchAll();
                 return;
