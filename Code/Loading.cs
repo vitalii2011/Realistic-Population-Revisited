@@ -125,7 +125,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Show legacy choice message box if this save hasn't been flagged as being from Realistic Population 2.
-            if (!ModSettings.saveFlag)
+            if (!ModSettings.isRealPop2Save)
             {
                 LegacyChoiceMessageBox legacyChoiceBox = MessageBoxBase.ShowModal<LegacyChoiceMessageBox>();
             }

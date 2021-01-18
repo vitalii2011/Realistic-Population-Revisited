@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using ICities;
+using ColossalFramework;
 using ColossalFramework.IO;
 
 
@@ -46,6 +48,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         public override void OnLoadData()
         {
+            Logging.Message("reading data from save file");
             base.OnLoadData();
 
             // Read data from savegame.
@@ -67,6 +70,23 @@ namespace RealisticPopulationRevisited
             {
                 // No data read.
                 Logging.Message("no data read");
+            }
+
+            // Were we able to deserialize data?
+            if (!ModSettings.isRealPop2Save)
+            {
+                // No - we need to work out if this is a new game, or an existing load.
+                uint population = Singleton<DistrictManager>.instance.m_districts.m_buffer[0].m_populationData.m_finalCount;
+                Logging.KeyMessage("No savegame flag - population count is ", population.ToString());
+
+                // Check to see if population is zero; if so, assume that this is a new game.
+                if (population == 0)
+                {
+                    Logging.KeyMessage("assuming new game");
+                    // Assuming new game - set this game's legacy save settings to the new game defaults, and set the savegame flag.
+                    ModSettings.ThisSaveLegacy = ModSettings.newSaveLegacy;
+                    ModSettings.isRealPop2Save = true;
+                }
             }
         }
     }
@@ -101,7 +121,7 @@ namespace RealisticPopulationRevisited
         /// <param name="serializer">Data serializer</param>
         public void Deserialize(DataSerializer serializer)
         {
-            Logging.Message("reading data from save file");
+            Logging.Message("deserializing data from save file");
 
             try
             {
@@ -117,13 +137,13 @@ namespace RealisticPopulationRevisited
                     ModSettings.ThisSaveLegacy = serializer.ReadBool();
 
                     // Record that we've successfully deserialized savegame data.
-                    ModSettings.saveFlag = true;
+                    ModSettings.isRealPop2Save = true;
                 }
             }
             catch
             {
                 // Don't care if nothing read; assume no settings.
-                Logging.Message("error reading data");
+                Logging.Message("error deserializing data");
             }
         }
 

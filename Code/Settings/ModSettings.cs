@@ -12,7 +12,7 @@
         internal static float crimeMultiplier = 50f;
 
         // Status flags.
-        internal static bool saveFlag = false;
+        internal static bool isRealPop2Save = false;
         private static float defaultSchoolMult = 1f;
         private static bool thisSaveLegacy = false;
 
