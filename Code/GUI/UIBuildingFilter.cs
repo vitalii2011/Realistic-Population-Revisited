@@ -218,8 +218,8 @@ namespace RealisticPopulationRevisited
             nameLabel.relativePosition = new Vector3(width - 250, 0);
             nameLabel.text = Translations.Translate("RPR_FIL_NAME");
 
-            nameFilter = UIUtils.CreateTextField(this, 200f, 30f);
-            nameFilter.relativePosition = new Vector3(width - nameFilter.width, 0);
+            nameFilter = UIControls.AddTextField(this, 200f, width - 200f, 0, scale: 1.0f);
+            nameFilter.padding = new RectOffset(6, 6, 6, 6);
 
             // Name filter event handling - update on any change.
             nameFilter.eventTextChanged += (control, text) => eventFilteringChanged(this, 5);

@@ -15,29 +15,6 @@ namespace RealisticPopulationRevisited
         //
         // So, thank you, SamsamTS!
 
-
-        public static UITextField CreateTextField(UIComponent parent, float width, float height, float scale = 1.0f)
-        {
-            UITextField textField = parent.AddUIComponent<UITextField>();
-
-            textField.size = new Vector2(width, height);
-            textField.textScale = scale;
-            textField.padding = new RectOffset(6, 6, 3, 3);
-            textField.builtinKeyNavigation = true;
-            textField.isInteractive = true;
-            textField.readOnly = false;
-            textField.horizontalAlignment = UIHorizontalAlignment.Center;
-            textField.selectionSprite = "EmptySprite";
-            textField.selectionBackgroundColor = new Color32(0, 172, 234, 255);
-            textField.normalBgSprite = "TextFieldPanelHovered";
-            textField.disabledBgSprite = "TextFieldPanel";
-            textField.textColor = new Color32(0, 0, 0, 255);
-            textField.disabledTextColor = new Color32(0, 0, 0, 128);
-            textField.color = new Color32(255, 255, 255, 255);
-
-            return textField;
-        }
-
         public static UIButton CreateButton(UIComponent parent, float width)
         {
             UIButton button = parent.AddUIComponent<UIButton>();

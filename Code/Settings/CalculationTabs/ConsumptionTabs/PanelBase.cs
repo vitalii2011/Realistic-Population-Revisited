@@ -107,8 +107,7 @@ namespace RealisticPopulationRevisited
         /// <param name="tooltip">Tooltip, if any</param>
         protected UITextField AddTextField(UIPanel panel, float width, float posX, float posY, string tooltip = null)
         {
-            UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
-            textField.relativePosition = new Vector3(posX, posY);
+            UITextField textField = UIControls.AddTextField(panel, width, posX, posY, 18f);
             textField.eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
 
             // Add tooltip.

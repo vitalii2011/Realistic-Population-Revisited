@@ -24,14 +24,38 @@ namespace RealisticPopulationRevisited
         /// Adds an input text field at the specified coordinates.
         /// </summary>
         /// <param name="textField">Textfield object</param>
-        /// <param name="panel">panel to add to</param>
+        /// <param name="parent">component to add to</param>
         /// <param name="posX">Relative X postion</param>
         /// <param name="posY">Relative Y position</param>
+        /// <param name="height">Textfield height (default 30)</param>
+        /// <param name="scale">Text scale (default 0.9)</param>
         /// <param name="tooltip">Tooltip, if any</param>
-        public static UITextField AddTextField(UIPanel panel, float width, float posX, float posY, string tooltip = null)
+        public static UITextField AddTextField(UIComponent parent, float width, float posX, float posY, float height = 30f, float scale = 0.9f, string tooltip = null)
         {
-            UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
+            UITextField textField = parent.AddUIComponent<UITextField>();
+
+            // Size and position.
+            textField.size = new Vector2(width, height);
             textField.relativePosition = new Vector2(posX, posY);
+
+            // Text settings.
+            textField.textScale = scale;
+            textField.padding = new RectOffset(6, 6, 3, 3);
+            textField.horizontalAlignment = UIHorizontalAlignment.Center;
+
+            // Behaviour.
+            textField.builtinKeyNavigation = true;
+            textField.isInteractive = true;
+            textField.readOnly = false;
+
+            // Appearance.
+            textField.color = new Color32(255, 255, 255, 255);
+            textField.textColor = new Color32(0, 0, 0, 255);
+            textField.disabledTextColor = new Color32(0, 0, 0, 128);
+            textField.selectionSprite = "EmptySprite";
+            textField.selectionBackgroundColor = new Color32(0, 172, 234, 255);
+            textField.normalBgSprite = "TextFieldPanelHovered";
+            textField.disabledBgSprite = "TextFieldPanel";
 
             // Add tooltip.
             if (tooltip != null)

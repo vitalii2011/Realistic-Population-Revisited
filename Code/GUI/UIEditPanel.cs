@@ -432,8 +432,7 @@ namespace RealisticPopulationRevisited
         {
             // Create textfield.
             UILabelledTextfield newField = new UILabelledTextfield();
-            newField.textField = UIUtils.CreateTextField(this, this.width - (MarginPadding * 3) - LabelWidth, 20);
-            newField.textField.relativePosition = new Vector3(MarginPadding + LabelWidth + MarginPadding, yPos);
+            newField.textField = UIControls.AddTextField(this, this.width - (MarginPadding * 3) - LabelWidth, MarginPadding + LabelWidth + MarginPadding, yPos, scale: 1.0f, height: 20f);
             newField.textField.clipChildren = false;
 
             // Label.

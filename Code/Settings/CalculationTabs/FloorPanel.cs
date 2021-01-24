@@ -57,13 +57,13 @@ namespace RealisticPopulationRevisited
             PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), 1.0f);
 
             // Add level textfields.
-            floorHeightField = UIControls.AddTextField(panel, TextFieldWidth, FloorHeightX + Margin, currentY);
+            floorHeightField = UIControls.AddTextField(panel, TextFieldWidth, FloorHeightX + Margin, currentY, height: 20f);
             floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-            firstMinField = UIControls.AddTextField(panel, TextFieldWidth, FirstMinX + Margin, currentY);
+            firstMinField = UIControls.AddTextField(panel, TextFieldWidth, FirstMinX + Margin, currentY, height: 20f);
             firstMinField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-            firstExtraField = UIControls.AddTextField(panel, TextFieldWidth, FirstMaxX + Margin, currentY);
+            firstExtraField = UIControls.AddTextField(panel, TextFieldWidth, FirstMaxX + Margin, currentY, height: 20f);
             firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
             firstEmptyCheck = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);
@@ -75,11 +75,10 @@ namespace RealisticPopulationRevisited
             currentY += RowHeight;
 
             // Pack name textfield.
-            packNameField = UIUtils.CreateTextField(panel, 200f, 30f);
-            UILabel packNameLabel = UIControls.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"), -100f, (packNameField.height - 18f) / 2);
-            packNameField.relativePosition = new Vector3(140f, currentY);
+            packNameField = UIControls.AddTextField(panel, 200f, 140f, currentY, scale: 1.0f);
             packNameField.padding = new RectOffset(6, 6, 6, 6);
             packNameField.isEnabled = false;
+            UILabel packNameLabel = UIControls.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"), -100f, (packNameField.height - 18f) / 2);
 
             // Space for buttons.
             currentY += 50f;
