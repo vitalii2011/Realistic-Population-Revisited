@@ -73,13 +73,13 @@ namespace RealisticPopulationRevisited
                 // Row label.
                 rowLabels[i] = RowLabel(panel, currentY, Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString());
 
-                emptyAreaFields[i] = UIControls.AddTextField(panel, TextFieldWidth, EmptyAreaX + Margin, currentY, height: 20f);
+                emptyAreaFields[i] = UIControls.AddTextField(panel, EmptyAreaX + Margin, currentY, width: TextFieldWidth, height: 20f);
                 emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-                emptyPercentFields[i] = UIControls.AddTextField(panel, TextFieldWidth, EmptyPercentX + Margin, currentY, height: 20f);
+                emptyPercentFields[i] = UIControls.AddTextField(panel, EmptyPercentX + Margin, currentY, width: TextFieldWidth, height: 20f);
                 emptyPercentFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
 
-                areaPerFields[i] = UIControls.AddTextField(panel, TextFieldWidth, AreaPerX + Margin, currentY, height: 20f);
+                areaPerFields[i] = UIControls.AddTextField(panel, AreaPerX + Margin, currentY, width: TextFieldWidth, height: 20f);
                 areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
                 multiFloorCheck[i] = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);
@@ -92,7 +92,7 @@ namespace RealisticPopulationRevisited
             currentY += RowHeight;
 
             // Pack name textfield.
-            packNameField = UIControls.AddTextField(panel, 200f, 140f, currentY, scale:1.0f);
+            packNameField = UIControls.AddTextField(panel, 140f, currentY, scale:1.0f);
             packNameField.padding = new RectOffset(6, 6, 6, 6);
             packNameField.isEnabled = false;
             UILabel packNameLabel = UIControls.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"), -100f, (packNameField.height - 18f) / 2);

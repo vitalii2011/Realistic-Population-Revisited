@@ -21,16 +21,46 @@ namespace RealisticPopulationRevisited
     public static class UIControls
     {
         /// <summary>
+        /// Adds a textfield with an attached label to the left.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="posX">Relative X postion</param>
+        /// <param name="posY">Relative Y position</param>
+        /// <param name="text">Label text</param>
+        /// <param name="width">Textfield width (default 200)</param>
+        /// <param name="height">Textfield height (default 30)</param>
+        /// <param name="scale">Text scale (default 1.0)</param>
+        /// <returns>New textfield with attached label</returns>
+        internal static UITextField LabelledTextField(UIComponent parent, float posX, float posY, string text, float width = 200f, float height = 30f, float scale = 1.0f)
+        {
+            UITextField textField = AddTextField(parent, posX, posY, width);
+
+            // Label.
+            UILabel label = textField.AddUIComponent<UILabel>();
+            label.textScale = scale;
+            label.text = text;
+            label.autoSize = true;
+            label.verticalAlignment = UIVerticalAlignment.Middle;
+            label.wordWrap = true;
+
+            // Set position.
+            label.relativePosition = new Vector2(-(label.width + 5f), (height - label.height) / 2);
+
+            return textField;
+        }
+
+
+        /// <summary>
         /// Adds an input text field at the specified coordinates.
         /// </summary>
         /// <param name="textField">Textfield object</param>
-        /// <param name="parent">component to add to</param>
         /// <param name="posX">Relative X postion</param>
         /// <param name="posY">Relative Y position</param>
+        /// <param name="parent">component to add to</param>
         /// <param name="height">Textfield height (default 30)</param>
         /// <param name="scale">Text scale (default 0.9)</param>
         /// <param name="tooltip">Tooltip, if any</param>
-        public static UITextField AddTextField(UIComponent parent, float width, float posX, float posY, float height = 30f, float scale = 0.9f, string tooltip = null)
+        public static UITextField AddTextField(UIComponent parent, float posX, float posY, float width = 200f, float height = 30f, float scale = 0.9f, string tooltip = null)
         {
             UITextField textField = parent.AddUIComponent<UITextField>();
 
@@ -72,11 +102,11 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="parent">Parent component</param>
         /// <param name="text">Descriptive label text</param>
-        /// <param name="xPos">Relative x position (default 0)</param>
-        /// <param name="yPos">Relative y position (default 0)</param>
+        /// <param name="xPos">Relative x position</param>
+        /// <param name="yPos">Relative y position</param>
         /// <param name="textScale">Text scale of label (default 0.8)</param>
         /// <returns>New UI checkbox with attached labels</returns>
-        public static UICheckBox AddCheckBox(UIComponent parent, string text, float xPos = 20f, float yPos = 0f, float textScale = 0.8f)
+        public static UICheckBox AddCheckBox(UIComponent parent, float xPos, float yPos, string text, float textScale = 0.8f)
         {
             // Create base checkbox.
             UICheckBox checkBox = AddCheckBox(parent, xPos, yPos);
@@ -100,10 +130,10 @@ namespace RealisticPopulationRevisited
         /// Adds a checkbox without a label.
         /// </summary>
         /// <param name="parent">Parent component</param>
-        /// <param name="xPos">Relative x position (default 0)</param>
-        /// <param name="yPos">Relative y position (default 0)</param>
+        /// <param name="xPos">Relative x position</param>
+        /// <param name="yPos">Relative y position</param>
         /// <returns>New UI checkbox *without* attached labels</returns>
-        public static UICheckBox AddCheckBox(UIComponent parent, float xPos = 20f, float yPos = 0f)
+        public static UICheckBox AddCheckBox(UIComponent parent, float xPos, float yPos)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
 

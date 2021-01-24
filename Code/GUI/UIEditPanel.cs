@@ -66,8 +66,8 @@ namespace RealisticPopulationRevisited
             title.height = 30;
 
             // Checkboxes.
-            popCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_POP"), yPos: PopCheckY, textScale: 1.0f);
-            floorCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_EDT_FLR"), yPos: FloorCheckY, textScale: 1.0f);
+            popCheck = UIControls.AddCheckBox(this, 20f, PopCheckY, Translations.Translate("RPR_EDT_POP"), textScale: 1.0f);
+            floorCheck = UIControls.AddCheckBox(this, 20f, FloorCheckY, Translations.Translate("RPR_EDT_FLR"), textScale: 1.0f);
 
             // Text fields.
             homeJobsCount = AddLabelledTextfield(HomeJobY, "RPR_LBL_HOM");
@@ -432,7 +432,7 @@ namespace RealisticPopulationRevisited
         {
             // Create textfield.
             UILabelledTextfield newField = new UILabelledTextfield();
-            newField.textField = UIControls.AddTextField(this, this.width - (MarginPadding * 3) - LabelWidth, MarginPadding + LabelWidth + MarginPadding, yPos, scale: 1.0f, height: 20f);
+            newField.textField = UIControls.AddTextField(this, MarginPadding + LabelWidth + MarginPadding, yPos, width: this.width - (MarginPadding * 3) - LabelWidth, scale: 1.0f, height: 20f);
             newField.textField.clipChildren = false;
 
             // Label.
