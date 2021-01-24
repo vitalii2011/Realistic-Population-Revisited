@@ -31,7 +31,7 @@ namespace RealisticPopulationRevisited
         public static UITextField AddTextField(UIPanel panel, float width, float posX, float posY, string tooltip = null)
         {
             UITextField textField = UIUtils.CreateTextField(panel, width, 18f, 0.9f);
-            textField.relativePosition = new Vector3(posX, posY);
+            textField.relativePosition = new Vector2(posX, posY);
 
             // Add tooltip.
             if (tooltip != null)
@@ -137,11 +137,12 @@ namespace RealisticPopulationRevisited
         /// <param name="text">Text label</param>
         /// <param name="xPos">Relative x position (default 20)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
+        /// <param name="width">Dropdown menu width, excluding label (default 220f)</param>
         /// <returns></returns>
-        public static UIDropDown LabelledDropDown(UIComponent parent, string text, float xPos = 20f, float yPos = 0f)
+        public static UIDropDown AddLabelledDropDown(UIComponent parent, string text, float xPos = 20f, float yPos = 0f, float width = 220f)
         {
             // Create dropdown.
-            UIDropDown dropDown = AddDropDown(parent, xPos, yPos);
+            UIDropDown dropDown = AddDropDown(parent, xPos, yPos, width);
 
             // Add label.
             UILabel label = dropDown.AddUIComponent<UILabel>();
@@ -205,7 +206,7 @@ namespace RealisticPopulationRevisited
             dropDown.triggerButton = button;
             button.size = dropDown.size;
             button.text = "";
-            button.relativePosition = new Vector3(0f, 0f);
+            button.relativePosition = new Vector2(0f, 0f);
             button.textVerticalAlignment = UIVerticalAlignment.Middle;
             button.textHorizontalAlignment = UIHorizontalAlignment.Left;
             button.normalFgSprite = "IconDownArrow";
@@ -300,7 +301,6 @@ namespace RealisticPopulationRevisited
         }
 
 
-
         /// <summary>
         /// Adds a slider with a descriptive text label above and an automatically updating value label immediately to the right.
         /// </summary>
@@ -353,9 +353,8 @@ namespace RealisticPopulationRevisited
         }
 
 
-
         /// <summary>
-        /// Creates a vertical scrollbar
+        /// Creates a vertical scrollbar.
         /// </summary>
         /// <param name="parent">Parent component</param>
         /// <param name="scrollPanel">Panel to scroll</param>
