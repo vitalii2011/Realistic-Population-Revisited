@@ -102,16 +102,9 @@
     <Content Include="Images\Screen_LRes.jpg" />
     <Content Include="Images\Screen_Office.jpg" />
     <Content Include="Images\Screen_PloppableRICO.jpg" />
-    <Content Include="RegressionList.txt" />
     <Content Include="Translations\en.xml" />
     <Content Include="Translations\zh-tw.xml" />
     <Content Include="Translations\zh.xml" />
-    <Content Include="XML_Files\LocalRICOSettings.xml" />
-    <Content Include="XML_Files\WG_DefaultValuesFromKundun.xml" />
-    <Content Include="XML_Files\WG_GameDefaults.xml" />
-    <Content Include="XML_Files\WG_ModLite_Values.xml" />
-    <Content Include="XML_Files\WG_ModVanillaValues.xml" />
-    <Content Include="XML_Files\WG_OfficeAndLowResidentialChange.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\AI_Files\AI_School.cs" />
@@ -208,8 +201,6 @@
     <PostBuildEvent>mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
 del "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\$(TargetFileName)"
 xcopy /y "$(TargetPath)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
-del "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\*.xml"
-xcopy /y "$(SolutionDir)\XML_Files\*xml" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
 del "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\CitiesHarmony.API.dll"
 xcopy /y "$(SolutionDir)packages\CitiesHarmony.API.1.0.5\lib\net35\CitiesHarmony.API.dll" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
 mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\Translations"
