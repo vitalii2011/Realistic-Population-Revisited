@@ -1,14 +1,16 @@
-- Major overhaul: new volumetric population calculations
-- Major overhaul: separate calculation presets for builidng physical size and populaton, along with optional manual overrides
+- Major overhaul: new volumetric population calculations, with option to choose between these and the old Legacy calculation
+- Major overhaul: separate calculation presets for builidng floorspace and populaton, along with optional manual overrides
 - Major new feature: selectable configuration presets for each service type
 - Major new feature: optional realistic student capacity calculations for elementary and high schools
 - Major new feature: adjust crime rate
+- Save status flag to savegame to track which calculations (new or legacy) should be used by default for that save
 - Rearrange options panel layout and add sub-tabs as required
 - Enable preview of calculated building floors in building preview
 - Add custom mouse button keybinding option
 - Upgrade to Harmony 2
 - Add settings filters to building details panel
 - Backport building preview renderer improvements from Ploppable RICO Revisited
+- Overhaul update notifications (thanks, macsergey!)
 - Overhaul mod conflict detection and notification
 - Overhaul logging
 - Multiple code cleanups

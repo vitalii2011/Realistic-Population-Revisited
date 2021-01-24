@@ -7,12 +7,15 @@ namespace RealisticPopulationRevisited
 {
     public class RealPopMod : IUserMod
     {
-        public static string ModName => "Realistic Population 2";
-        public static string Version => "2.0 ALPHA";
-
+        // Public mod name and description.
         public string Name => ModName + " " + Version;
-
         public string Description => Translations.Translate("RPR_DESC");
+
+        // Internal and private name and version components.
+        internal static string ModName => "Realistic Population 2";
+        internal static string Version => BaseVersion + " " + Beta;
+        internal static string Beta => "BETA 1";
+        private static string BaseVersion => "2.0";
 
 
         /// <summary>

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Realistic Population Revisited")]
+[assembly: AssemblyTitle("Realistic Population 2")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Realistic Population Revisited")]
+[assembly: AssemblyProduct("Realistic Population 2")]
 [assembly: AssemblyCopyright("Copyright © 2015-2020 algernon, Whitefang Greytail")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

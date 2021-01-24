@@ -149,14 +149,10 @@ namespace RealisticPopulationRevisited
             // Add button to building info panels.
             BuildingDetailsPanel.AddInfoPanelButton();
 
-            // Check if we need to display update notification.
-            if (UpdateNotification.notificationVersion != 2)
-            {
-                // No update notification "Don't show again" flag found; show the notification.
-                UpdateNotification notification = new UpdateNotification();
-                notification.Create();
-                notification.Show();
-            }
+            Logging.KeyMessage("loading complete");
+
+            // Display update notification.
+            WhatsNew.ShowWhatsNew();
 
             // Set up options panel event handler.
             OptionsPanel.OptionsEventHook();

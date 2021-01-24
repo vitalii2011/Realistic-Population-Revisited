@@ -13,9 +13,12 @@ namespace RealisticPopulationRevisited
     [XmlRoot("SettingsFile")]
     public class XMLSettingsFile
     {
-        // Stores the version of the most recent update notification that the user has decided to "Don't show again".
-        [XmlElement("NotificationVersion")]
-        public int NotificationVersion { get => UpdateNotification.notificationVersion; set { UpdateNotification.notificationVersion = value; } }
+        [XmlElement("WhatsNewVersion")]
+        public string WhatsNewVersion { get => ModSettings.whatsNewVersion; set => ModSettings.whatsNewVersion = value; }
+
+        [XmlElement("WhatsNewBeta")]
+        [DefaultValue("")]
+        public string WhatsNewBeta { get => ModSettings.whatsNewBeta; set => ModSettings.whatsNewBeta = value; }
 
         // Language.
         [XmlElement("Language")]

@@ -220,6 +220,8 @@
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
     <Translation ID="MES_CLS" String="Close" />
+    <Translation ID="MES_DSA" String="Don't show again" />
+    <Translation ID="MES_PAGE" String="Please refer to the mod's Steam Workshop page for further information." />
     <Translation ID="RPR_OLD_0" String="This savefile has not been saved with Realistic Population 2." />
     <Translation ID="RPR_OLD_1" String="Please be aware that applying different population calculations to an existing city can temporarily disrupt city balance." />
     <Translation ID="RPR_OLD_2" String="If you are loading a city created with an earlier version of this mod, you may wish to continue using the legacy mod calculations for this city; this should preserve your existing city balance.  Alternatively, you can choose to switch to the new (more accurate and flexible) calculation model, noting that your city may require some rebalancing." />
@@ -237,5 +239,15 @@
     <Translation ID="ERR_CON1" String="The conflicting mods are:" />
     <Translation ID="RPR_ERR_CON0" String="Realistic Population 2 detected a conflict with at least one other mod." />
     <Translation ID="RPR_ERR_CON1" String="These mods must be removed before Realistic Population 2 can operate." />
+    <Translation ID="RPR_200_0" String="Renaming from 'Realistic Population Revisited' to 'Realistic Population 2' to reflect the extent of the changes" />
+    <Translation ID="RPR_200_1" String="MAJOR NEW FEATURE: new building population calculations based on actual building shapes and sizes with realistically calculated floorspace, with the option to choose between the new or old ('legacy') calculations" />
+    <Translation ID="RPR_200_2" String="MAJOR NEW FEATURE: separate calculation presets for building floorspace and populaton, along with optional manual overrides for either or both" />
+    <Translation ID="RPR_200_3" String="MAJOR NEW FEATURE: selectable configuration presets for each building service type" />
+    <Translation ID="RPR_200_4" String="MAJOR NEW FEATURE: optional realistic student capacity calculations for elementary and high schools, with configurable multiplier for when realistically-sized school buildings aren't available" />
+    <Translation ID="RPR_200_5" String="MAJOR NEW FEATURE: adjustable crime rate" />
+    <Translation ID="RPR_200_6" String="Upgrade to Harmony 2 (boformer's Harmony 2 mod required)" />
+    <Translation ID="RPR_200_7" String="Various enhancements to the building details panel" />
+    <Translation ID="RPR_200_8" String="Improved mod conflict detection and notification" />
+    <Translation ID="RPR_200_9" String="Significant overhaul, cleanup and restructure of the mod's codebase" />
   </Translations>
 </Language>

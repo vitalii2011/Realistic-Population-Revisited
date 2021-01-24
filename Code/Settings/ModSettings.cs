@@ -16,6 +16,10 @@
         private static float defaultSchoolMult = 1f;
         private static bool thisSaveLegacy = false;
 
+        // What's new notification version.
+        internal static string whatsNewVersion = "0.0";
+        internal static string whatsNewBeta = "";
+
 
         /// <summary>
         /// Handles current 'use legacy by default' option changes.
