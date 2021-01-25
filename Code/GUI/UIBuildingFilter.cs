@@ -210,14 +210,7 @@ namespace RealisticPopulationRevisited
             };
 
             // Name filter.
-            UILabel nameLabel = AddUIComponent<UILabel>();
-            nameLabel.textScale = 0.8f;
-            nameLabel.padding = new RectOffset(0, 0, 8, 0);
-            nameLabel.relativePosition = new Vector3(width - 250, 0);
-            nameLabel.text = Translations.Translate("RPR_FIL_NAME");
-
-            nameFilter = UIControls.AddTextField(this, width - 200f, 0, scale: 1.0f);
-            nameFilter.padding = new RectOffset(6, 6, 6, 6);
+            nameFilter = UIControls.BigLabelledTextField(this, width - 200f, 0, Translations.Translate("RPR_FIL_NAME"));
 
             // Name filter event handling - update on any change.
             nameFilter.eventTextChanged += (control, text) => eventFilteringChanged(this, 5);

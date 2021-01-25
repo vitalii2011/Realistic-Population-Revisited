@@ -57,13 +57,13 @@ namespace RealisticPopulationRevisited
             PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), 1.0f);
 
             // Add level textfields.
-            floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth, height: 20f);
+            floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth);
             floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-            firstMinField = UIControls.AddTextField(panel, FirstMinX + Margin, currentY, width: TextFieldWidth, height: 20f);
+            firstMinField = UIControls.AddTextField(panel, FirstMinX + Margin, currentY, width: TextFieldWidth);
             firstMinField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-            firstExtraField = UIControls.AddTextField(panel, FirstMaxX + Margin, currentY, width: TextFieldWidth, height: 20f);
+            firstExtraField = UIControls.AddTextField(panel, FirstMaxX + Margin, currentY, width: TextFieldWidth);
             firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
             firstEmptyCheck = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);
@@ -75,8 +75,7 @@ namespace RealisticPopulationRevisited
             currentY += RowHeight;
 
             // Pack name textfield.
-            packNameField = UIControls.AddTextField(panel, 140f, currentY, scale: 1.0f);
-            packNameField.padding = new RectOffset(6, 6, 6, 6);
+            packNameField = UIControls.BigTextField(panel, 140f, currentY);
             packNameField.isEnabled = false;
             UILabel packNameLabel = UIControls.AddLabel(packNameField, -100f, (packNameField.height - 18f) / 2, Translations.Translate("RPR_OPT_EDT_NAM"));
 

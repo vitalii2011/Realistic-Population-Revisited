@@ -56,6 +56,18 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Adds a large textfield with an attached label to the left.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="posX">Relative X postion</param>
+        /// <param name="posY">Relative Y position</param>
+        /// <param name="text">Label text</param>
+        /// <param name="width">Textfield width (default 200)</param>
+        /// <returns>New large textfield with attached label</returns>
+        public static UITextField BigLabelledTextField(UIComponent parent, float posX, float posY, string text, float width = 200f) => LabelledTextField(parent, posX, posY, text, width, 30f, 1.2f, 6);
+
+
+        /// <summary>
         /// Adds a textfield with an attached label to the left.
         /// </summary>
         /// <param name="parent">Parent component</param>
@@ -63,12 +75,13 @@ namespace RealisticPopulationRevisited
         /// <param name="posY">Relative Y position</param>
         /// <param name="text">Label text</param>
         /// <param name="width">Textfield width (default 200)</param>
-        /// <param name="height">Textfield height (default 30)</param>
+        /// <param name="height">Textfield height (default 22)</param>
         /// <param name="scale">Text scale (default 1.0)</param>
+        /// <param name="vertPad">Vertical text padding within textfield box (default 4)</param>
         /// <returns>New textfield with attached label</returns>
-        internal static UITextField LabelledTextField(UIComponent parent, float posX, float posY, string text, float width = 200f, float height = 30f, float scale = 1.0f)
+        public static UITextField LabelledTextField(UIComponent parent, float posX, float posY, string text, float width = 200f, float height = 22f, float scale = 1.0f, int vertPad = 4)
         {
-            UITextField textField = AddTextField(parent, posX, posY, width);
+            UITextField textField = AddTextField(parent, posX, posY, width, height, scale, vertPad);
 
             // Label.
             UILabel label = textField.AddUIComponent<UILabel>();
@@ -86,17 +99,40 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
+        /// Adds a small input text field at the specified coordinates.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="posX">Relative X postion</param>
+        /// <param name="posY">Relative Y position</param>
+        /// <param name="width">Textfield width (default 200)</param>
+        /// <returns>New large textfield with attached label</returns>
+        public static UITextField SmallTextField(UIComponent parent, float posX, float posY, float width = 200f) => AddTextField(parent, posX, posY, width, 18f, 0.9f, 3);
+
+
+        /// <summary>
+        /// Adds a large input text field at the specified coordinates.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="posX">Relative X postion</param>
+        /// <param name="posY">Relative Y position</param>
+        /// <param name="width">Textfield width (default 200)</param>
+        /// <returns>New large textfield with attached label</returns>
+        public static UITextField BigTextField(UIComponent parent, float posX, float posY, float width = 200f) => AddTextField(parent, posX, posY, width, 30f, 1.2f, 6);
+
+
+        /// <summary>
         /// Adds an input text field at the specified coordinates.
         /// </summary>
         /// <param name="textField">Textfield object</param>
         /// <param name="posX">Relative X postion</param>
         /// <param name="posY">Relative Y position</param>
         /// <param name="parent">component to add to</param>
-        /// <param name="height">Textfield height (default 30)</param>
-        /// <param name="scale">Text scale (default 0.9)</param>
+        /// <param name="height">Textfield height (default 22)</param>
+        /// <param name="scale">Text scale (default 1.0)</param>
+        /// <param name="vertPad">Vertical text padding within textfield box (default 4)</param>
         /// <param name="tooltip">Tooltip, if any</param>
         /// <returns>New textfield *without* attached label</returns>
-        public static UITextField AddTextField(UIComponent parent, float posX, float posY, float width = 200f, float height = 30f, float scale = 0.9f, string tooltip = null)
+        public static UITextField AddTextField(UIComponent parent, float posX, float posY, float width = 200f, float height = 22f, float scale = 1f, int vertPad = 4, string tooltip = null)
         {
             UITextField textField = parent.AddUIComponent<UITextField>();
 
@@ -106,7 +142,7 @@ namespace RealisticPopulationRevisited
 
             // Text settings.
             textField.textScale = scale;
-            textField.padding = new RectOffset(6, 6, 3, 3);
+            textField.padding = new RectOffset(6, 6, vertPad, 3);
             textField.horizontalAlignment = UIHorizontalAlignment.Center;
 
             // Behaviour.

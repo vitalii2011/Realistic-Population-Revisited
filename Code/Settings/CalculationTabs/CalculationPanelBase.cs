@@ -16,7 +16,7 @@ namespace RealisticPopulationRevisited
         protected const float ColumnWidth = TextFieldWidth + (Margin * 2);
         protected const float LeftItem = 75f;
         protected const float FirstItem = 120f;
-        protected const float RowHeight = 23f;
+        protected const float RowHeight = 27f;
 
         // Panel components.
         protected UIDropDown packDropDown;
