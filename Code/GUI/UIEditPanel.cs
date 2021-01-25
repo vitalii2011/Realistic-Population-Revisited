@@ -34,9 +34,6 @@ namespace RealisticPopulationRevisited
         // Currently selected building.
         private BuildingInfo currentSelection;
 
-        // Flag.
-        private bool suspendTextEvents;
-
 
         /// <summary>
         /// Create the panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
@@ -112,18 +109,6 @@ namespace RealisticPopulationRevisited
                 {
                     popCheck.isChecked = false;
                 }
-                /*
-                // If this is now checked, try to parse the floors.
-                if (isChecked)
-                {
-                    FloorDataPack overrideFloors = TryParseFloors();
-                    BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
-                }
-                else
-                {
-                    // If not checked, set override pack to null.
-                    BuildingDetailsPanel.Panel.OverrideFloors = null;
-                }*/
             };
 
             // Save button event handler.
@@ -274,10 +259,6 @@ namespace RealisticPopulationRevisited
                 BuildingDetailsPanel.Panel.Refresh();
                 homeJobsCount.textField.text = string.Empty;
             };
-
-            // Floor textfield event handlers.
-            //firstFloorField.textField.eventTextChanged += (control, text) => FloorTextFieldChanged();
-            //floorHeightField.textField.eventTextChanged += (control, text) => FloorTextFieldChanged();
         }
 
 
@@ -370,26 +351,6 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Checks to see if valid floor override entries are parseable from floor text fields; called when one of the fields has its text changed.
-        /// </summary>
-        public void FloorTextFieldChanged()
-        {
-            // Don't do anything if the floor override check isn't set, or if text field events are currently suspended.
-            if (floorCheck.isChecked && !suspendTextEvents)
-            {
-                // Check if we have a valid pack.
-                FloorDataPack overrideFloors = TryParseFloors();
-                if (overrideFloors != null)
-                {
-                    // Valid parsing
-                    // Update panel override.
-                    BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
-                }
-            }
-        }
-
-
-        /// <summary>
         /// Clears the override checkbox (for when the user subsequently selects a floor pack override or legacy calcs).
         /// </summary>
         internal void ClearOverride() => floorCheck.isChecked = false;
@@ -450,15 +411,9 @@ namespace RealisticPopulationRevisited
         /// <param name="floorText">Text for other floor height field</param>
         private void UpdateFloorTextFields(string firstFloorText, string floorText)
         {
-            // Suspend text events.
-            suspendTextEvents = true;
-
             // Populate fields.
             firstFloorField.textField.text = firstFloorText;
             floorHeightField.textField.text = floorText;
-
-            // Resume text events.
-            suspendTextEvents = false;
         }
     }
 }
