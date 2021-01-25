@@ -60,6 +60,7 @@ namespace RealisticPopulationRevisited
         /// <param name="height">Textfield height (default 30)</param>
         /// <param name="scale">Text scale (default 0.9)</param>
         /// <param name="tooltip">Tooltip, if any</param>
+        /// <returns>New textfield *without* attached label</returns>
         public static UITextField AddTextField(UIComponent parent, float posX, float posY, float width = 200f, float height = 30f, float scale = 0.9f, string tooltip = null)
         {
             UITextField textField = parent.AddUIComponent<UITextField>();
@@ -162,13 +163,13 @@ namespace RealisticPopulationRevisited
         /// Adds a plain text label to the specified UI panel.
         /// </summary>
         /// <param name="parent">Parent component</param>
-        /// <param name="text">Label text</param>
         /// <param name="xPos">Relative x position)</param>
         /// <param name="yPos">Relative y position</param>
+        /// <param name="text">Label text</param>
         /// <param name="width">Label width (default 700)</param>
         /// <param name="width">Text scale (default 1.0)</param>
-        /// <returns></returns>
-        public static UILabel AddLabel(UIComponent parent, string text, float xPos, float yPos, float width = 700f, float textScale = 1.0f)
+        /// <returns>New text label</returns>
+        public static UILabel AddLabel(UIComponent parent, float xPos, float yPos, string text, float width = 700f, float textScale = 1.0f)
         {
             // Add label.
             UILabel label = (UILabel)parent.AddUIComponent<UILabel>();
@@ -188,12 +189,12 @@ namespace RealisticPopulationRevisited
         /// Creates a dropdown menu with an attached text label.
         /// </summary>
         /// <param name="parent">Parent component</param>
+        /// <param name="xPos">Relative x position</param>
+        /// <param name="yPos">Relative y position</param>
         /// <param name="text">Text label</param>
-        /// <param name="xPos">Relative x position (default 20)</param>
-        /// <param name="yPos">Relative y position (default 0)</param>
         /// <param name="width">Dropdown menu width, excluding label (default 220f)</param>
-        /// <returns></returns>
-        public static UIDropDown AddLabelledDropDown(UIComponent parent, string text, float xPos = 20f, float yPos = 0f, float width = 220f)
+        /// <returns>New dropdown menu with an attached text label and enclosing panel</returns>
+        public static UIDropDown AddLabelledDropDown(UIComponent parent, float xPos, float yPos, string text, float width = 220f)
         {
             // Create dropdown.
             UIDropDown dropDown = AddDropDown(parent, xPos, yPos, width);
@@ -221,7 +222,8 @@ namespace RealisticPopulationRevisited
         /// <param name="parent">Parent component</param>
         /// <param name="xPos">Relative x position (default 20)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
-        /// <returns></returns>
+        /// <param name="width">Dropdown menu width, excluding label (default 220f)</param>
+        /// <returns>New dropdown menu *without* an attached text label or enclosing panel</returns>
         public static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f)
         {
             // Constants.
@@ -286,7 +288,7 @@ namespace RealisticPopulationRevisited
         /// <param name="items">Dropdown menu item list</param>
         /// <param name="selectedIndex">Initially selected index (default 0)</param>
         /// <param name="width">Width of dropdown (default 60)</param>
-        /// <returns></returns>
+        /// <returns>New dropdown menu using game's option panel template</returns>
         public static UIDropDown AddPlainDropDown(UIComponent parent, string text, string[] items, int selectedIndex = 0, float width = 270f)
         {
             UIPanel panel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsDropdownTemplate")) as UIPanel;
@@ -395,7 +397,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="parent">Parent component</param>
         /// <param name="text">Descriptive label text</param>
-        /// <returns></returns>
+        /// <returns>New checkbox using the game's option panel template</returns>
         public static UICheckBox AddPlainCheckBox(UIComponent parent, string text)
         {
             UICheckBox checkBox = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsCheckBoxTemplate")) as UICheckBox;
@@ -412,7 +414,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="parent">Parent component</param>
         /// <param name="scrollPanel">Panel to scroll</param>
-        /// <returns></returns>
+        /// <returns>New vertical scrollbar linked to the specified scrollable panel</returns>
         public static UIScrollbar AddScrollbar(UIComponent parent, UIScrollablePanel scrollPanel)
         {
             // Basic setup.

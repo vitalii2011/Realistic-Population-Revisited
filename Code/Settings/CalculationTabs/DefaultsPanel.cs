@@ -155,10 +155,10 @@ namespace RealisticPopulationRevisited
             floorMenus = new UIDropDown[subServiceNames.Length];
 
             // Add 'Use legacy by default' checkboxes.
-            UILabel legacyLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_DEF_LEG"), Margin, currentY);
+            UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate("RPR_DEF_LEG"));
             currentY += legacyLabel.height + 5f;
 
-            UICheckBox legacyThisSaveCheck = UIControls.AddCheckBox(panel, Translations.Translate("RPR_DEF_LTS"), Margin * 2, currentY);
+            UICheckBox legacyThisSaveCheck = UIControls.AddCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LTS"));
             legacyThisSaveCheck.label.wordWrap = true;
             legacyThisSaveCheck.label.autoSize = false;
             legacyThisSaveCheck.label.width = 710f;
@@ -171,7 +171,7 @@ namespace RealisticPopulationRevisited
             };
             currentY += 20f;
 
-            UICheckBox legacyNewSaveCheck = UIControls.AddCheckBox(panel, Translations.Translate("RPR_DEF_LAS"), Margin * 2, currentY);
+            UICheckBox legacyNewSaveCheck = UIControls.AddCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LAS"));
             legacyNewSaveCheck.label.wordWrap = true;
             legacyNewSaveCheck.label.autoSize = false;
             legacyNewSaveCheck.label.width = 710f;
@@ -187,8 +187,8 @@ namespace RealisticPopulationRevisited
             currentY = 95f;
 
             // Add titles.
-            UILabel popLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_DEN"), LeftColumn, currentY, 220f);
-            UILabel floorLabel = UIControls.AddLabel(panel, Translations.Translate("RPR_CAL_BFL"), RightColumn, currentY, 220f);
+            UILabel popLabel = UIControls.AddLabel(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), 220f);
+            UILabel floorLabel = UIControls.AddLabel(panel, RightColumn, currentY, Translations.Translate("RPR_CAL_BFL"), 220f);
             popLabel.textAlignment = UIHorizontalAlignment.Center;
             floorLabel.textAlignment = UIHorizontalAlignment.Center;
             currentY += 25f;

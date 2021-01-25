@@ -95,7 +95,7 @@ namespace RealisticPopulationRevisited
             packNameField = UIControls.AddTextField(panel, 140f, currentY, scale:1.0f);
             packNameField.padding = new RectOffset(6, 6, 6, 6);
             packNameField.isEnabled = false;
-            UILabel packNameLabel = UIControls.AddLabel(packNameField, Translations.Translate("RPR_OPT_EDT_NAM"), -100f, (packNameField.height - 18f) / 2);
+            UILabel packNameLabel = UIControls.AddLabel(packNameField, -100f, (packNameField.height - 18f) / 2, Translations.Translate("RPR_OPT_EDT_NAM"));
 
             // Space for buttons.
             currentY += 50f;

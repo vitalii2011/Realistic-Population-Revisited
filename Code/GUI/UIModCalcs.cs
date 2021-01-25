@@ -173,7 +173,7 @@ namespace RealisticPopulationRevisited
             floorPanel.Show();
 
             // Floor override label (for when floor dropdown menu is hidden).
-            floorOverrideLabel = UIControls.AddLabel(this, Translations.Translate("RPR_CAL_FOV"), RightColumnX, MenuY, this.width - RightColumnX, 0.7f);
+            floorOverrideLabel = UIControls.AddLabel(this, RightColumnX, MenuY, Translations.Translate("RPR_CAL_FOV"), this.width - RightColumnX, 0.7f);
             floorOverrideLabel.Hide();
 
             // Pack dropdowns.
@@ -241,10 +241,10 @@ namespace RealisticPopulationRevisited
             multSlider.parent.Hide();
 
             // Muliplier checkbox.
-            multCheck = UIControls.AddCheckBox(schoolPanel, Translations.Translate("RPR_CAL_CAP_OVR"), RightColumnX, 18f);
+            multCheck = UIControls.AddCheckBox(schoolPanel, RightColumnX, 18f, Translations.Translate("RPR_CAL_CAP_OVR"));
 
             // Multiplier default label.
-            multDefaultLabel = UIControls.AddLabel(schoolPanel, Translations.Translate("RPR_CAL_CAP_DEF") + " x" + ModSettings.DefaultSchoolMult, RightColumnX + 21f, 40f, textScale: 0.8f);
+            multDefaultLabel = UIControls.AddLabel(schoolPanel, RightColumnX + 21f, 40f, Translations.Translate("RPR_CAL_CAP_DEF") + " x" + ModSettings.DefaultSchoolMult, textScale: 0.8f);
 
             // Multplier checkbox event handler.
             multCheck.eventCheckChanged += (control, isChecked) =>

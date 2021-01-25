@@ -60,7 +60,7 @@ namespace RealisticPopulationRevisited
             preview.Setup();
 
             // 'Show floors' checkbox.
-            showFloorsCheck = UIControls.AddCheckBox(this, Translations.Translate("RPR_PRV_SFL"), yPos: height - 30f);
+            showFloorsCheck = UIControls.AddCheckBox(this, 20f, height - 30f, Translations.Translate("RPR_PRV_SFL"));
             showFloorsCheck.eventCheckChanged += (control, isChecked) =>
             {
                 preview.RenderFloors = isChecked;
