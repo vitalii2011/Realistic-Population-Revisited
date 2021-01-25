@@ -24,6 +24,9 @@ namespace RealisticPopulationRevisited
         private static float lastPostion;
         private static int lastIndex = -1;
 
+        // Info panel buttons.
+        private static UIButton zonedButton, serviceButton;
+
 
         /// <summary>
         /// Creates the panel object in-game and displays it.
@@ -97,19 +100,60 @@ namespace RealisticPopulationRevisited
         /// </summary>
         internal static void AddInfoPanelButton()
         {
-            // Get parent panel and apply button.
+            // Zoned building panel - get parent panel and add button.
             ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);
-            UIButton panelButton = UIControls.AddButton(infoPanel.component, infoPanel.component.width - 133f - 10, 120, Translations.Translate("RPR_REALPOP"), 133f, 19.5f, 0.65f);
+            zonedButton = UIControls.AddButton(infoPanel.component, infoPanel.component.width - 133f - 10, 120, Translations.Translate("RPR_REALPOP"), 133f, 19.5f, 0.65f);
+            zonedButton.textPadding = new RectOffset(2, 2, 4, 0);
 
             // Just in case other mods are interfering.
-            panelButton.Enable();
+            zonedButton.Enable();
 
             // Event handler.
-            panelButton.eventClick += (control, clickEvent) =>
+            zonedButton.eventClick += (control, clickEvent) =>
             {
                 // Select current building in the building details panel and show.
-                BuildingDetailsPanel.Open(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
+                Open(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
             };
+
+            // Service building panel - get parent panel and add button.
+            CityServiceWorldInfoPanel servicePanel = UIView.library.Get<CityServiceWorldInfoPanel>(typeof(CityServiceWorldInfoPanel).Name);
+            serviceButton = UIControls.AddButton(servicePanel.component, servicePanel.component.width - 133f - 10, 120, Translations.Translate("RPR_REALPOP"), 133f, 19.5f, 0.65f);
+            serviceButton.textPadding = new RectOffset(2, 2, 4, 0);
+
+            // Event handler.
+            serviceButton.eventClick += (control, clickEvent) =>
+            {
+                // Select current building in the building details panel and show.
+                Open(InstanceManager.GetPrefabInfo(WorldInfoPanel.GetCurrentInstanceID()) as BuildingInfo);
+            };
+        }
+
+
+        /// <summary>
+        /// Updates the state of the service panel Realistic Population button - should only be visible and enabled when looking at elementary and high schools.
+        /// </summary>
+        internal static void UpdateServicePanelButton()
+        {
+            // Get current building instance.
+            ushort building = WorldInfoPanel.GetCurrentInstanceID().Building;
+
+            // Ensure valid building before proceeding.
+            if (building > 0)
+            {
+                // Check for eduction service and level 1 or 2.
+                BuildingInfo info = Singleton<BuildingManager>.instance.m_buildings.m_buffer[building].Info;
+                if (info.GetService() == ItemClass.Service.Education && info.GetClassLevel() < ItemClass.Level.Level3)
+                {
+                    // It's a school!  Enable and show the button, and return.
+                    serviceButton.Enable();
+                    serviceButton.Show();
+                    return;
+                }
+            }
+
+            // If we got here, it's not a valid school building; disable and hide the button.
+            serviceButton.Disable();
+            serviceButton.Hide();
         }
     }
 

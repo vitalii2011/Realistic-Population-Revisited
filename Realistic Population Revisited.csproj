@@ -119,6 +119,7 @@
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
     <Compile Include="Code\Patches\Patcher.cs" />
     <Compile Include="Code\Patches\ReversePatches.cs" />
+    <Compile Include="Code\Patches\WorldInfoPanel.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\CommercialPanel.cs" />
