@@ -200,9 +200,7 @@ namespace RealisticPopulationRevisited
             schoolDescription = Description(schoolPanel, 0f, LabelHeight + DescriptionY - MenuY);
 
             // Apply button.
-            applyButton = UIUtils.CreateButton(this, ButtonWidth);
-            applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
-            applyButton.text = Translations.Translate("RPR_OPT_SAA");
+            applyButton = UIControls.AddButton(this, ApplyX, BaseSaveY, Translations.Translate("RPR_OPT_SAA"), ButtonWidth);
             applyButton.eventClicked += (control, clickEvent) =>
             {
                 // Update building setting and save - multiplier first!

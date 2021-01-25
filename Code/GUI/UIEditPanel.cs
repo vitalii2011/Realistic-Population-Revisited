@@ -76,16 +76,12 @@ namespace RealisticPopulationRevisited
             homeJobLabel = homeJobsCount.label;
 
             // Save button.
-            saveButton = UIUtils.CreateButton(this, 200);
-            saveButton.relativePosition = new Vector3(MarginPadding, SaveY);
-            saveButton.text = Translations.Translate("RPR_CUS_ADD");
+            saveButton = UIControls.AddButton(this, MarginPadding, SaveY, Translations.Translate("RPR_CUS_ADD"));
             saveButton.tooltip = Translations.Translate("RPR_CUS_ADD_TIP");
             saveButton.Disable();
 
             // Delete button.
-            deleteButton = UIUtils.CreateButton(this, 200);
-            deleteButton.relativePosition = new Vector3(MarginPadding, DeleteY);
-            deleteButton.text = Translations.Translate("RPR_CUS_DEL");
+            deleteButton = UIControls.AddButton(this, MarginPadding, DeleteY, Translations.Translate("RPR_CUS_DEL"));
             deleteButton.tooltip = Translations.Translate("RPR_CUS_DEL_TIP");
             deleteButton.Disable();
 

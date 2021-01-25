@@ -101,9 +101,7 @@ namespace RealisticPopulationRevisited
             currentY += 50f;
 
             // 'Add new' button.
-            UIButton addNewButton = UIUtils.CreateButton(panel, 200f);
-            addNewButton.relativePosition = new Vector3(20f, currentY);
-            addNewButton.text = Translations.Translate("RPR_OPT_NEW");
+            UIButton addNewButton = UIControls.AddButton(panel, 20f, currentY, Translations.Translate("RPR_OPT_NEW"));
             addNewButton.eventClicked += (control, clickEvent) =>
             {
                 // Default new pack name.
@@ -155,9 +153,7 @@ namespace RealisticPopulationRevisited
             };
 
             // Save pack button.
-            saveButton = UIUtils.CreateButton(panel, 200f);
-            saveButton.relativePosition = new Vector3(250f, currentY);
-            saveButton.text = Translations.Translate("RPR_OPT_SAA");
+            saveButton = UIControls.AddButton(panel, 250f, currentY, Translations.Translate("RPR_OPT_SAA"));
 
             // Event handler.
             saveButton.eventClicked += (control, clickEvent) =>
@@ -178,11 +174,9 @@ namespace RealisticPopulationRevisited
                     PopData.instance.CalcPackChanged(packList[packDropDown.selectedIndex]);
                 }
             };
-            
+
             // Delete pack button.
-            deleteButton = UIUtils.CreateButton(panel, 200f);
-            deleteButton.relativePosition = new Vector3(480f, currentY);
-            deleteButton.text = Translations.Translate("RPR_OPT_DEL");
+            deleteButton = UIControls.AddButton(panel, 480f, currentY, Translations.Translate("RPR_OPT_DEL"));
             deleteButton.eventClicked += (control, clickEvent) =>
             {
                 // Make sure it's not an inbuilt pack before proceeding.

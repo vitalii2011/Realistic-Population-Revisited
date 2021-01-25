@@ -15,21 +15,6 @@ namespace RealisticPopulationRevisited
         //
         // So, thank you, SamsamTS!
 
-        public static UIButton CreateButton(UIComponent parent, float width)
-        {
-            UIButton button = parent.AddUIComponent<UIButton>();
-
-            button.size = new Vector2(width, 30f);
-            button.textScale = 0.9f;
-            button.normalBgSprite = "ButtonMenu";
-            button.hoveredBgSprite = "ButtonMenuHovered";
-            button.pressedBgSprite = "ButtonMenuPressed";
-            button.disabledBgSprite = "ButtonMenuDisabled";
-            button.disabledTextColor = new Color32(128, 128, 128, 255);
-            button.canFocus = false;
-
-            return button;
-        }
 
 
         public static UICheckBox CreateIconToggle(UIComponent parent, string atlas, string checkedSprite, string uncheckedSprite)

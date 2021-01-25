@@ -194,9 +194,7 @@ namespace RealisticPopulationRevisited
             }
 
             // 'All categories' button.
-            allCategories = UIUtils.CreateButton(this, 120);
-            allCategories.text = Translations.Translate("RPR_CAT_ALL");
-            allCategories.relativePosition = new Vector3(445, 5);
+            allCategories = UIControls.AddButton(this, 445f, 5f, Translations.Translate("RPR_CAT_ALL"), 120f);
 
             // All categories event handler.
             allCategories.eventClick += (c, p) =>

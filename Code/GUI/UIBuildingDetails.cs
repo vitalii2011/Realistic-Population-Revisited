@@ -99,14 +99,7 @@ namespace RealisticPopulationRevisited
         {
             // Get parent panel and apply button.
             ZonedBuildingWorldInfoPanel infoPanel = UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name);
-            UIButton panelButton = UIUtils.CreateButton(infoPanel.component, 133);
-
-            // Basic setup.
-            panelButton.height = 19.5f;
-            panelButton.textScale = 0.65f;
-            panelButton.textVerticalAlignment = UIVerticalAlignment.Bottom;
-            panelButton.relativePosition = new UnityEngine.Vector3(infoPanel.component.width - panelButton.width - 10, 120);
-            panelButton.text = Translations.Translate("RPR_REALPOP");
+            UIButton panelButton = UIControls.AddButton(infoPanel.component, infoPanel.component.width - 133f - 10, 120, Translations.Translate("RPR_REALPOP"), 133f, 19.5f, 0.65f);
 
             // Just in case other mods are interfering.
             panelButton.Enable();
