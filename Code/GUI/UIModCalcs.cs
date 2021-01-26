@@ -58,10 +58,10 @@ namespace RealisticPopulationRevisited
         /// </summary>
         float CurrentMult
         {
-            // Getter - if the multiplier slider exists, use its value if the current selection is a school; otherwise, use default of 1.
+            // Getter - if the multiplier slider exists and is visible, use its value; otherwise, use default of 1.
             get
             {
-                return multSlider == null ? 1.0f : currentBuilding != null && currentBuilding.GetService() == ItemClass.Service.Education ? multSlider.value : 1.0f;
+                return multSlider != null && multSlider.isVisible ? multSlider.value : 1.0f;
             }
 
             // Setter - recalculate volumetric figures with new amount.
@@ -454,7 +454,7 @@ namespace RealisticPopulationRevisited
                     // Are we using custom school settings?
                     if (ModSettings.enableSchoolProperties)
                     {
-                        // Yes -extend panel height and show school panel.
+                        // Yes - extend panel height and show school panel.
                         volumetricPanel.relativePosition = new Vector2(0f, SchoolCalcY);
                         applyButton.relativePosition = new Vector2(ApplyX, SchoolSaveY);
 
@@ -487,11 +487,14 @@ namespace RealisticPopulationRevisited
                             }
                         }
 
+                        // Set multiplier value.
+                        multSlider.value = Multipliers.instance.ActiveMultiplier(building.name);
+
                         schoolPanel.Show();
                     }
                     else
                     {
-                        // We're not using custom school settings, so use the non-school layout.
+                        // It's a school, but we're not using custom school settings, so use the non-school layout.
                         volumetricPanel.relativePosition = new Vector2(0f, BaseCalcY);
                         applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
                         schoolPanel.Hide();

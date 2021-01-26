@@ -477,7 +477,7 @@ namespace RealisticPopulationRevisited
 
                 // Filter by settings.
                 bool hasOverride = ExternalCalls.GetResidential(item) != 0 || ExternalCalls.GetWorker(item) != 0 || FloorData.instance.HasOverride(itemName) != null;
-                bool hasNonDefault = PopData.instance.HasPackOverride(itemName) != null || FloorData.instance.HasPackOverride(itemName) != null || SchoolData.instance.HasPackOverride(itemName) != null;
+                bool hasNonDefault = PopData.instance.HasPackOverride(itemName) != null || FloorData.instance.HasPackOverride(itemName) != null || SchoolData.instance.HasPackOverride(itemName) != null || Multipliers.instance.HasOverride(itemName);
 
                 if (filterBar.SettingsFilter[(int)FilterCategories.HasOverride].isChecked && !hasOverride) continue;
                 if (filterBar.SettingsFilter[(int)FilterCategories.HasNonDefault].isChecked && !hasNonDefault) continue;

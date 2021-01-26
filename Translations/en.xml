@@ -113,7 +113,7 @@
     <Translation ID="RPR_EDT_FLR" String="Override floors" />
     <Translation ID="RPR_FTR_ANY" String="Has custom override and/or non-default calculation pack" />
     <Translation ID="RPR_FTR_OVR" String="Has population and/or floor override" />
-    <Translation ID="RPR_FTR_NDC" String="Has non-default calculation pack" />
+    <Translation ID="RPR_FTR_NDC" String="Has non-default calculation pack and/or custom population multiplier" />
     <Translation ID="RPR_CUS_TITLE" String="Custom settings" />
     <Translation ID="RPR_CUS_ADD" String="Add custom settings" />
     <Translation ID="RPR_CUS_ADD_TIP" String="Adds (or updates) a custom setting for the selected building" />

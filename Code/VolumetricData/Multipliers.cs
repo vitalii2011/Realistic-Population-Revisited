@@ -7,7 +7,7 @@ namespace RealisticPopulationRevisited
     internal class Multipliers
     {
         // Default multiplier.
-        private const float DefaultMultiplier = 1.0f;
+        internal const float DefaultMultiplier = 1.0f;
 
 
         // Instance reference.
