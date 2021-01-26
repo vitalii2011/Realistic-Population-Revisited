@@ -13,7 +13,7 @@ namespace RealisticPopulationRevisited
         internal static PopData instance;
 
         // Dictionary of manual population count overrides.
-        private Dictionary<string, int> popOverrides;
+        private Dictionary<string, int> overrides;
 
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace RealisticPopulationRevisited
         internal int Population(BuildingInfo buildingPrefab, int level, float multiplier = 1.0f)
         {
             // First, check for population override.
-            int population = GetPopOverride(buildingPrefab.name);
+            int population = GetOverride(buildingPrefab.name);
             if (population > 0)
             {
                 // Yes - return override.
@@ -634,7 +634,7 @@ namespace RealisticPopulationRevisited
             calcPacks.Add(newPack);
 
             // Initialise student overrides dictionary.
-            popOverrides = new Dictionary<string, int>();
+            overrides = new Dictionary<string, int>();
 
             // Convert legacy overrides (if any).
             ConvertOverrides(DataStore.householdCache);
@@ -767,21 +767,21 @@ namespace RealisticPopulationRevisited
         /// <param name="prefabName">Building prefab/param>
         /// <param name="popOverride">Manual population override</param>
         /// <param name="saveConfig">True (default) to save configuration file afterwards, false to not save</param>
-        internal void SetPopOverride(string prefabName, int popOverride)
+        internal void SetOverride(string prefabName, int popOverride)
         {
             // Override needs to be at least 1.
             if (popOverride > 1)
             {
                 // Check for existing entry.
-                if (popOverrides.ContainsKey(prefabName))
+                if (overrides.ContainsKey(prefabName))
                 {
                     // Existing entry found; update it.
-                    popOverrides[prefabName] = popOverride;
+                    overrides[prefabName] = popOverride;
                 }
                 else
                 {
                     // No existing entry found; add one.
-                    popOverrides.Add(prefabName, popOverride);
+                    overrides.Add(prefabName, popOverride);
                 }
             }
             else
@@ -792,30 +792,30 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Sets a manual population override for the given building prefab, and optionally saves the updated configuration; and also UPDATES live prefab data.
+        /// Sets a manual population override for the given building prefab, and saves the updated configuration; and also UPDATES live prefab data.
         /// Used to add an entry in-game after prefabs have loaded.
         /// </summary>
         /// <param name="prefab">Building prefab/param>
         /// <param name="popOverride">Manual population override</param>
-        /// <param name="saveConfig">True (default) to save configuration file afterwards, false to not save</param>
-        internal void SetPopOverride(BuildingInfo prefab, int popOverride, bool saveConfig = true)
+        internal void SetOverride(BuildingInfo prefab, int popOverride)
         {
             // Override needs to be at least 1.
             if (popOverride > 1)
             {
-                SetPopOverride(prefab.name, popOverride);
-
                 // Apply changes.
+                SetOverride(prefab.name, popOverride);
+
+                // Apply school changes if this is a school.
                 if (prefab.GetService() == ItemClass.Service.Education)
                 {
                     SchoolData.instance.UpdateSchoolPrefab(prefab);
                 }
 
-                // Save configuration file if we're doing so.
-                if (saveConfig)
-                {
-                    ConfigUtils.SaveSettings();
-                }
+                // Save updated configuration file.
+                ConfigUtils.SaveSettings();
+
+                // Refresh the prefab's population settings to reflect changes.
+                RefreshPrefab(prefab);
             }
             else
             {
@@ -828,10 +828,10 @@ namespace RealisticPopulationRevisited
         /// Removes any manual population override for the given building prefab, and saves the updated configuration if an override was actually removed (i.e. one actually existed).
         /// </summary>
         /// <param name="prefab">Building prefab/param>
-        internal void RemovePopOverride(BuildingInfo prefab)
+        internal void DeleteOverride(BuildingInfo prefab)
         {
             // Remove prefab record from dictionary.
-            if (popOverrides.Remove(prefab.name))
+            if (overrides.Remove(prefab.name))
             {
                 // An entry was removed (i.e. dictionary contained an entry); apply changes to relevant school.
                 if (prefab.GetService() == ItemClass.Service.Education)
@@ -841,6 +841,9 @@ namespace RealisticPopulationRevisited
 
                 // Save the updated configuration file.
                 ConfigUtils.SaveSettings();
+
+                // Refresh the prefab's population settings to reflect changes.
+                RefreshPrefab(prefab);
             }
         }
 
@@ -850,13 +853,13 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="prefabName">Building prefab name</param>
         /// <returns>Manual population override if one exists; otherwise 0</returns>
-        internal int GetPopOverride(string prefabName)
+        internal int GetOverride(string prefabName)
         {
             // Check for entry.
-            if (popOverrides.ContainsKey(prefabName))
+            if (overrides.ContainsKey(prefabName))
             {
                 // Found entry; return the override.
-                return popOverrides[prefabName];
+                return overrides[prefabName];
             }
 
             // If we got here, no override was found; return zero.
@@ -868,13 +871,13 @@ namespace RealisticPopulationRevisited
         /// Serializes manual population overrides to XCML.
         /// </summary>
         /// <returns>Serialized list of population overrides suitable for writing to XML</returns>
-        internal List<PopCountOverride> SerializePopOverrides()
+        internal List<PopCountOverride> SerializeOverrides()
         {
             // Return list.
             List<PopCountOverride> returnList = new List<PopCountOverride>();
 
             // Iterate through each entry in population override dictionary, converting into PopCountOverride XML record and adding to list.
-            foreach (KeyValuePair<string, int> popOverride in popOverrides)
+            foreach (KeyValuePair<string, int> popOverride in overrides)
             {
                 returnList.Add(new PopCountOverride
                 {
@@ -891,13 +894,13 @@ namespace RealisticPopulationRevisited
         /// Deserializes manual population overrides from XML.  Note: does not apply settings, merely populates dictionary.
         /// </summary>
         /// <param name="popCountOverrides">List of population count overrides to deserialize</param>
-        internal void DeserializePopOverrides(List<PopCountOverride> popCountOverrides)
+        internal void DeserializeOverrides(List<PopCountOverride> popCountOverrides)
         {
             foreach (PopCountOverride popOverride in popCountOverrides)
             {
                 try
                 {
-                    SetPopOverride(popOverride.prefab, popOverride.population);
+                    SetOverride(popOverride.prefab, popOverride.population);
                 }
                 catch (Exception e)
                 {
@@ -944,7 +947,7 @@ namespace RealisticPopulationRevisited
         {
             foreach (KeyValuePair<string, int> entry in dictionary)
             {
-                SetPopOverride(entry.Key, entry.Value);
+                SetOverride(entry.Key, entry.Value);
             }
         }
     }

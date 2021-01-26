@@ -125,12 +125,12 @@ namespace RealisticPopulationRevisited
                             Multipliers.instance.DeserializeBuildings(configFile.buildings);
 
                             // Deserialise building population overrides.
-                            PopData.instance.DeserializePopOverrides(configFile.popOverrides);
+                            PopData.instance.DeserializeOverrides(configFile.popOverrides);
 
                             // Deserialize floor overrides.
                             foreach (FloorCalcOverride floorOverride in configFile.floors)
                             {
-                                FloorData.instance.AddOverride(floorOverride.prefab, new FloorDataPack
+                                FloorData.instance.SetOverride(floorOverride.prefab, new FloorDataPack
                                 {
                                     firstFloorMin = floorOverride.firstHeight,
                                     floorHeight = floorOverride.floorHeight
@@ -252,7 +252,7 @@ namespace RealisticPopulationRevisited
                     configFile.buildings = buildingList.Values.ToList();
 
                     // Serialise building population overrides.
-                    configFile.popOverrides = PopData.instance.SerializePopOverrides();
+                    configFile.popOverrides = PopData.instance.SerializeOverrides();
 
                     // Serialise floor overrides.
                     configFile.floors = new List<FloorCalcOverride>();

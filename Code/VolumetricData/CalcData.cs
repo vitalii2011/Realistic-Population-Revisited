@@ -420,7 +420,7 @@ namespace RealisticPopulationRevisited
         /// Refreshes a prefab's population settings to reflect changes.
         /// </summary>
         /// <param name="prefab">Prefab to refresh</param>
-        private void RefreshPrefab(BuildingInfo prefab)
+        protected void RefreshPrefab(BuildingInfo prefab)
         {
             // Clear out any cached calculations for households.workplaces (depending on whether or not this is residential).
             if (prefab.GetService() == ItemClass.Service.Residential)

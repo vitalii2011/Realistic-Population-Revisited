@@ -112,153 +112,10 @@ namespace RealisticPopulationRevisited
             };
 
             // Save button event handler.
-            saveButton.eventClick += (component, clickEvent) =>
-            {
-                // Hide message.
-                messageLabel.isVisible = false;
-
-                // Don't do anything with invalid entries.
-                if (currentSelection == null || currentSelection.name == null)
-                {
-                    return;
-                }
-
-                // Are we doing population overrides?
-                if (popCheck.isChecked)
-                {
-                    // Read total floor count textfield if possible; ignore zero values
-                    if (int.TryParse(homeJobsCount.textField.text, out int homesJobs) && homesJobs != 0)
-                    {
-                        // Minimum value of 1.
-                        if (homesJobs < 1)
-                        {
-                            // Print warning message in red.
-                            messageLabel.textColor = new Color32(255, 0, 0, 255);
-                            messageLabel.text = Translations.Translate("RPR_ERR_ZERO");
-                            messageLabel.isVisible = true;
-                        }
-                        else
-                        {
-                            // Homes, students, or jobs?
-                            if (currentSelection.GetService() == ItemClass.Service.Residential)
-                            {
-                                // Residential building.
-                                ExternalCalls.SetResidential(currentSelection, homesJobs);
-
-                                // Update household counts for existing instances of this building - only needed for residential buildings.
-                                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                                PopData.instance.UpdateHouseholds(currentSelection.name);
-                            }
-                            else if (currentSelection.GetService() == ItemClass.Service.Education)
-                            {
-                                // School building.
-                                PopData.instance.SetPopOverride(currentSelection, homesJobs);
-                            }
-                            else
-                            {
-                                // Employment building.
-                                ExternalCalls.SetWorker(currentSelection, homesJobs);
-                            }
-
-                            // Repopulate field with parsed value.
-                            homeJobLabel.text = homesJobs.ToString();
-                        }
-                    }
-                    else
-                    {
-                        // TryParse couldn't parse any data; print warning message in red.
-                        messageLabel.textColor = new Color32(255, 0, 0, 255);
-                        messageLabel.text = Translations.Translate("RPR_ERR_INV");
-                        messageLabel.isVisible = true;
-                    }
-                }
-                else
-                {
-                    // Population override checkbox wasn't checked; remove any custom settings.
-                    PopData.instance.RemovePopOverride(currentSelection);
-                    ExternalCalls.RemoveResidential(currentSelection);
-                    ExternalCalls.RemoveWorker(currentSelection);
-                }
-
-                // Are we doing floor overrides?
-                if (floorCheck.isChecked)
-                {
-                    // Attempt to parse values into override floor pack.
-                    FloorDataPack overrideFloors = TryParseFloors();
-
-                    // Were we successful?.
-                    if (overrideFloors != null)
-                    {
-                        // Successful parsing - add override.
-                        FloorData.instance.AddOverride(currentSelection.name, overrideFloors);
-
-                        // Save configuration.
-                        ConfigUtils.SaveSettings();
-
-                        // Update panel override.
-                        BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
-
-                        // Repopulate fields with parsed values.
-                        UpdateFloorTextFields(overrideFloors.firstFloorMin.ToString(), overrideFloors.floorHeight.ToString());
-                    }
-                    else
-                    {
-                        // Couldn't parse values; print warning message in red.
-                        messageLabel.textColor = new Color32(255, 0, 0, 255);
-                        messageLabel.text = Translations.Translate("RPR_ERR_INV");
-                        messageLabel.isVisible = true;
-                    }
-                }
-                else
-                {
-                    // Floor override checkbox wasn't checked; remove any floor override.
-                    FloorData.instance.DeleteOverride(currentSelection.name);
-                }
-
-                // Refresh the display so that all panels reflect the updated settings.
-                BuildingDetailsPanel.Panel.Refresh();
-            };
+            saveButton.eventClick += (component, clickEvent) => SaveAndApply();
 
             // Delete button event handler.
-            deleteButton.eventClick += (component, clickEvent) =>
-            {
-                // Hide message.
-                messageLabel.isVisible = false;
-
-                // Don't do anything with invalid entries.
-                if (currentSelection == null || currentSelection.name == null)
-                {
-                    return;
-                }
-
-                Logging.Message("deleting custom entry for ", currentSelection.name);
-
-                // Remove any floor override BEFORE we call RemoveResidential or RemoveWorker; that way the updated config will be saved (only once) by the Remove call.
-                FloorData.instance.DeleteOverride(currentSelection.name);
-
-                // Update panel override.
-                BuildingDetailsPanel.Panel.OverrideFloors = null;
-
-                // Homes or jobs?  Remove custom entry as appropriate.
-                if (currentSelection.GetService() == ItemClass.Service.Residential)
-                {
-                    // Residential building.
-                    ExternalCalls.RemoveResidential(currentSelection);
-
-                    // Update household counts for existing instances of this building - only needed for residential buildings.
-                    // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                    PopData.instance.UpdateHouseholds(currentSelection.name);
-                }
-                else
-                {
-                    // Employment building.
-                    ExternalCalls.RemoveWorker(currentSelection);
-                }
-
-                // Refresh the display so that all panels reflect the updated settings.
-                BuildingDetailsPanel.Panel.Refresh();
-                homeJobsCount.textField.text = string.Empty;
-            };
+            deleteButton.eventClick += (component, clickEvent) => DeleteOverride();
         }
 
 
@@ -307,7 +164,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Get any population override.
-            int homesJobs = PopData.instance.GetPopOverride(buildingName);
+            int homesJobs = PopData.instance.GetOverride(buildingName);
 
             // If custom settings were found (return value was non-zero), then display the result, rename the save button, and enable the delete button.
             if (homesJobs != 0)
@@ -354,6 +211,154 @@ namespace RealisticPopulationRevisited
         /// Clears the override checkbox (for when the user subsequently selects a floor pack override or legacy calcs).
         /// </summary>
         internal void ClearOverride() => floorCheck.isChecked = false;
+
+
+        /// <summary>
+        /// Saves and applies settings - save button event handler.
+        /// </summary>
+        private void SaveAndApply()
+        {
+            // Hide message.
+            messageLabel.isVisible = false;
+
+            // Don't do anything with invalid entries.
+            if (currentSelection == null || currentSelection.name == null)
+            {
+                return;
+            }
+
+            // Are we doing population overrides?
+            if (popCheck.isChecked)
+            {
+                // Read total floor count textfield if possible; ignore zero values
+                if (int.TryParse(homeJobsCount.textField.text, out int homesJobs) && homesJobs != 0)
+                {
+                    // Minimum value of 1.
+                    if (homesJobs < 1)
+                    {
+                        // Print warning message in red.
+                        messageLabel.textColor = new Color32(255, 0, 0, 255);
+                        messageLabel.text = Translations.Translate("RPR_ERR_ZERO");
+                        messageLabel.isVisible = true;
+                    }
+                    else
+                    {
+                        // Set overide.
+                        PopData.instance.SetOverride(currentSelection, homesJobs);
+
+                        // Is this a residential building?
+                        if (currentSelection.GetService() == ItemClass.Service.Residential)
+                        {
+                            // Update household counts for existing instances of this building - only needed for residential buildings.
+                            // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
+                            PopData.instance.UpdateHouseholds(currentSelection.name);
+                        }
+
+                        // Repopulate field with parsed value.
+                        homeJobLabel.text = homesJobs.ToString();
+                    }
+                }
+                else
+                {
+                    // TryParse couldn't parse any data; print warning message in red.
+                    messageLabel.textColor = new Color32(255, 0, 0, 255);
+                    messageLabel.text = Translations.Translate("RPR_ERR_INV");
+                    messageLabel.isVisible = true;
+                }
+            }
+            else
+            {
+                // Population override checkbox wasn't checked; remove any custom settings.
+                PopData.instance.DeleteOverride(currentSelection);
+
+                // Remove any legacy file settings to avoid conflicts.
+                ExternalCalls.RemoveResidential(currentSelection);
+                ExternalCalls.RemoveWorker(currentSelection);
+            }
+
+            // Are we doing floor overrides?
+            if (floorCheck.isChecked)
+            {
+                // Attempt to parse values into override floor pack.
+                FloorDataPack overrideFloors = TryParseFloors();
+
+                // Were we successful?.
+                if (overrideFloors != null)
+                {
+                    // Successful parsing - add override.
+                    FloorData.instance.SetOverride(currentSelection, overrideFloors);
+
+                    // Save configuration.
+                    ConfigUtils.SaveSettings();
+
+                    // Update panel override.
+                    BuildingDetailsPanel.Panel.OverrideFloors = overrideFloors;
+
+                    // Repopulate fields with parsed values.
+                    UpdateFloorTextFields(overrideFloors.firstFloorMin.ToString(), overrideFloors.floorHeight.ToString());
+                }
+                else
+                {
+                    // Couldn't parse values; print warning message in red.
+                    messageLabel.textColor = new Color32(255, 0, 0, 255);
+                    messageLabel.text = Translations.Translate("RPR_ERR_INV");
+                    messageLabel.isVisible = true;
+                }
+            }
+            else
+            {
+                // Floor override checkbox wasn't checked; remove any floor override.
+                FloorData.instance.DeleteOverride(currentSelection);
+            }
+
+            // Refresh the display so that all panels reflect the updated settings.
+            BuildingDetailsPanel.Panel.Refresh();
+        }
+
+
+        /// <summary>
+        /// Removes and deletes a custom override.
+        /// </summary>
+        private void DeleteOverride()
+        {
+            // Hide message.
+            messageLabel.isVisible = false;
+
+            // Don't do anything with invalid entries.
+            if (currentSelection == null || currentSelection.name == null)
+            {
+                return;
+            }
+
+            Logging.Message("deleting custom override for ", currentSelection.name);
+
+            // Remove any and all overrides.
+            FloorData.instance.DeleteOverride(currentSelection);
+            PopData.instance.DeleteOverride(currentSelection);
+
+            // Update panel override.
+            BuildingDetailsPanel.Panel.OverrideFloors = null;
+
+            // Homes or jobs?
+            if (currentSelection.GetService() == ItemClass.Service.Residential)
+            {
+                // Residential building - remove any legacy settings to avoid conflicts.
+                ExternalCalls.RemoveResidential(currentSelection);
+
+                // Update household counts for existing instances of this building - only needed for residential buildings.
+                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
+                PopData.instance.UpdateHouseholds(currentSelection.name);
+            }
+            else
+            {
+                // Employment building - remove any legacy settings to avoid conflicts.
+                ExternalCalls.RemoveWorker(currentSelection);
+            }
+
+            // Refresh the display so that all panels reflect the updated settings.
+            BuildingDetailsPanel.Panel.Refresh();
+            homeJobsCount.textField.text = string.Empty;
+        }
 
 
         /// <summary>

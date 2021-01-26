@@ -140,11 +140,12 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Adds a custom floor override to a building prefab.
+        /// Adds a custom floor override to a building prefab, but does NOT update live prefab data or save the configuration file.
+        /// Used to populate dictionary when the prefab isn't available (e.g. before loading is complete).
         /// </summary>
         /// <param name="building">Name of building prefab to add</param>
         /// <param name="overridePack">Override floor pack to set</param>
-        internal void AddOverride(string buildingName, FloorDataPack overridePack)
+        internal void SetOverride(string buildingName, FloorDataPack overridePack)
         {
             // Check to see if we already have an entry for this building.
             if (!overrides.ContainsKey(buildingName))
@@ -161,10 +162,52 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Removes a custom floor override from a building prefab.
+        /// Sets a custom floor override override for the given building prefab, and saves the updated configuration; and also UPDATES live prefab data.
+        /// Used to add an entry in-game after prefabs have loaded.
         /// </summary>
-        /// <param name="buildingName">Name of building prefab to remove</param>
-        internal void DeleteOverride(string buildingName) => overrides.Remove(buildingName);
+        /// <param name="prefab">Building prefab/param>
+        /// <param name="overridePack">Override floor pack to set</param>
+        internal void SetOverride(BuildingInfo prefab, FloorDataPack overridePack)
+        {
+            // Apply changes.
+            SetOverride(prefab.name, overridePack);
+
+            // Apply school changes if this is a school.
+            if (prefab.GetService() == ItemClass.Service.Education)
+            {
+                SchoolData.instance.UpdateSchoolPrefab(prefab);
+            }
+
+            // Save updated configuration file.
+            ConfigUtils.SaveSettings();
+
+            // Refresh the prefab's population settings to reflect changes.
+            RefreshPrefab(prefab);
+        }
+
+
+        /// <summary>
+        /// Removes any manual population override for the given building prefab, and saves the updated configuration if an override was actually removed (i.e. one actually existed).
+        /// </summary>
+        /// <param name="prefab">Building prefab/param>
+        internal void DeleteOverride(BuildingInfo prefab)
+        {
+            // Remove prefab record from dictionary.
+            if (overrides.Remove(prefab.name))
+            {
+                // An entry was removed (i.e. dictionary contained an entry); apply changes to relevant school.
+                if (prefab.GetService() == ItemClass.Service.Education)
+                {
+                    SchoolData.instance.UpdateSchoolPrefab(prefab);
+                }
+
+                // Save the updated configuration file.
+                ConfigUtils.SaveSettings();
+
+                // Refresh the prefab's population settings to reflect changes.
+                RefreshPrefab(prefab);
+            }
+        }
 
 
         /// <summary>
