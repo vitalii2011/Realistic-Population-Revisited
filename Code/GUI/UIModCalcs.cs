@@ -58,10 +58,10 @@ namespace RealisticPopulationRevisited
         /// </summary>
         float CurrentMult
         {
-            // Getter - if the multiplier slider exists, use its value; otherwise, use default of 1.
+            // Getter - if the multiplier slider exists, use its value if the current selection is a school; otherwise, use default of 1.
             get
             {
-                return multSlider == null ? 1.0f : multSlider.value;
+                return multSlider == null ? 1.0f : currentBuilding != null && currentBuilding.GetService() == ItemClass.Service.Education ? multSlider.value : 1.0f;
             }
 
             // Setter - recalculate volumetric figures with new amount.

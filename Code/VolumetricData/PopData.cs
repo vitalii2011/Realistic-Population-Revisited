@@ -83,7 +83,7 @@ namespace RealisticPopulationRevisited
                 // See if we're calculating based on total building floor area, not per floor.
                 if (levelData.multiFloorUnits)
                 {
-                    // Units base on total floor area: calculate number of units in total building (always rounded down), after subtracting exmpty space.
+                    // Units based on total floor area: calculate number of units in total building (always rounded down), after subtracting empty space.
                     totalUnits = (int)(((floorArea - emptyArea) * areaPercent) / levelData.areaPer);
                     // Adjust by multiplier (after rounded calculation above).
                     totalUnits = (int)(totalUnits * multiplier);

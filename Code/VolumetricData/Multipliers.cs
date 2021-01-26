@@ -67,6 +67,13 @@ namespace RealisticPopulationRevisited
         {
             string buildingName = prefab.name;
 
+            // Currently only accepting multipliers for school buildings.
+            if (prefab.GetService() != ItemClass.Service.Education)
+            {
+                Logging.Error("attempting to set multiplier for non-education building " + buildingName);
+                return;
+            }
+
             // Check to see if we have an existing entry.
             if (buildingDict.ContainsKey(buildingName))
             {
