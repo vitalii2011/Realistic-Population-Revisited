@@ -181,32 +181,7 @@ namespace RealisticPopulationRevisited
 
             // Apply button.
             applyButton = UIControls.AddButton(this, ApplyX, BaseSaveY, Translations.Translate("RPR_OPT_SAA"), ButtonWidth);
-            applyButton.eventClicked += (control, clickEvent) =>
-            {
-                // Update building setting and save - multiplier first!
-                Multipliers.instance.UpdateMultiplier(currentBuilding, currentMult);
-                PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
-                FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
-                
-                // Update multiplier.
-                if (multCheck.isChecked)
-                {
-                    // If the multiplier override checkbox is selected, update the multiplier with the slider value.
-                    Multipliers.instance.UpdateMultiplier(currentBuilding, currentMult);
-                }
-                else
-                {
-                    // Otherwise, delete any multiplier override.
-                    Multipliers.instance.DeleteMultiplier(currentBuilding.name);
-                }
-
-                // Make sure SchoolData is called AFTER student count is settled via Pop and Floor packs, so it can work from updated data.
-                SchoolData.instance.UpdateBuildingPack(currentBuilding, currentSchoolPack);
-                ConfigUtils.SaveSettings();
-
-                // Refresh the selection list (to make sure settings checkboxes reflect new state).
-                BuildingDetailsPanel.Panel.RefreshList();
-            };
+            applyButton.eventClicked += (control, clickEvent) => ApplySettings();
 
             // Dropdown event handlers.
             popMenu.eventSelectedIndexChanged += (component, index) => UpdatePopSelection(index);
@@ -225,20 +200,7 @@ namespace RealisticPopulationRevisited
             multDefaultLabel = UIControls.AddLabel(schoolPanel, RightColumnX + 21f, 40f, Translations.Translate("RPR_CAL_CAP_DEF") + " x" + ModSettings.DefaultSchoolMult, textScale: 0.8f);
 
             // Multplier checkbox event handler.
-            multCheck.eventCheckChanged += (control, isChecked) =>
-            {
-                // Toggle slider and default label visibility.
-                if (isChecked)
-                {
-                    multDefaultLabel.Hide();
-                    multSlider.parent.Show();
-                }
-                else
-                {
-                    multSlider.parent.Hide();
-                    multDefaultLabel.Show();
-                }
-            };
+            multCheck.eventCheckChanged += (control, isChecked) => MultiplierCheckChanged(isChecked);
         }
 
 
@@ -507,20 +469,85 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Updates the current multiplier and regenerates calculations if necesssary.
+        /// Updates the current multiplier and regenerates calculations if necesssary when the multiplier slider is changed.
         /// Should only be called from multSlider onValueChanged.
         /// </summary>
-        /// <param name="value">New multiplier</param>
-        private void UpdateMultiplier(float value)
+        /// <param name="multiplier">New multiplier</param>
+        private void UpdateMultiplier(float multiplier)
         {
             // Set multiplier.
-            currentMult = value;
+            currentMult = multiplier;
 
-            // Recalculte valus if we're not using legacy calcs.
+            // Recalculte values if we're not using legacy calcs.
             if (!usingLegacy)
             {
                 volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, currentMult);
             }
+        }
+
+
+        /// <summary>
+        /// Updates the current multiplier and regenerates calculations if necessary when the custom multiplier check changes.
+        /// Should only be called from multCheck onCheckChanged.
+        /// </summary>
+        /// <param name="isCustom">Custom multiplier enabled state</param>
+        private void MultiplierCheckChanged(bool isCustom)
+        {
+            // Toggle slider and default label visibility.
+            if (isCustom)
+            {
+                multDefaultLabel.Hide();
+                multSlider.parent.Show();
+
+                // Set multiplier value to whatever is currently active for that building.
+                currentMult = Multipliers.instance.ActiveMultiplier(currentBuilding.name);
+                multSlider.value = currentMult;
+            }
+            else
+            {
+                // Set default multiplier.
+                currentMult = ModSettings.DefaultSchoolMult;
+
+                multSlider.parent.Hide();
+                multDefaultLabel.Show();
+            }
+
+            // In either case, recalculate as necessary.
+            if (!usingLegacy)
+            {
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, currentMult);
+            }
+        }
+
+
+        /// <summary>
+        /// Applies current settings and saves the updated configuration to file.
+        /// </summary>
+        private void ApplySettings()
+        {
+            // Update building setting and save - multiplier first!
+            Multipliers.instance.UpdateMultiplier(currentBuilding, currentMult);
+            PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
+            FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
+
+            // Update multiplier.
+            if (multCheck.isChecked)
+            {
+                // If the multiplier override checkbox is selected, update the multiplier with the slider value.
+                Multipliers.instance.UpdateMultiplier(currentBuilding, currentMult);
+            }
+            else
+            {
+                // Otherwise, delete any multiplier override.
+                Multipliers.instance.DeleteMultiplier(currentBuilding.name);
+            }
+
+            // Make sure SchoolData is called AFTER student count is settled via Pop and Floor packs, so it can work from updated data.
+            SchoolData.instance.UpdateBuildingPack(currentBuilding, currentSchoolPack);
+            ConfigUtils.SaveSettings();
+
+            // Refresh the selection list (to make sure settings checkboxes reflect new state).
+            BuildingDetailsPanel.Panel.RefreshList();
         }
 
 

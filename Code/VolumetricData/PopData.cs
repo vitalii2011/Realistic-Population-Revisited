@@ -629,8 +629,8 @@ namespace RealisticPopulationRevisited
                 service = ItemClass.Service.Education,
                 levels = new LevelData[2]
             };
-            newPack.levels[0] = new LevelData { emptyArea = 350f, emptyPercent = 0, areaPer = 4.1f, multiFloorUnits = true };
-            newPack.levels[1] = new LevelData { emptyArea = 1400f, emptyPercent = 0, areaPer = 6.3f, multiFloorUnits = true };
+            newPack.levels[0] = new LevelData { emptyArea = 350f, emptyPercent = 0, areaPer = 4.1f, multiFloorUnits = false };
+            newPack.levels[1] = new LevelData { emptyArea = 1400f, emptyPercent = 0, areaPer = 6.3f, multiFloorUnits = false };
             calcPacks.Add(newPack);
 
             // Initialise student overrides dictionary.
