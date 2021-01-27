@@ -52,28 +52,8 @@ namespace RealisticPopulationRevisited
         // Flags.
         private bool usingLegacy;
 
-
-        /// <summary>
-        /// Current population modifier.
-        /// </summary>
-        float CurrentMult
-        {
-            // Getter - if the multiplier slider exists and is visible, use its value; otherwise, use default of 1.
-            get
-            {
-                return multSlider != null && multSlider.isVisible ? multSlider.value : 1.0f;
-            }
-
-            // Setter - recalculate volumetric figures with new amount.
-            // Should only be called from slider onValueChanged.
-            set
-            {
-                if (!usingLegacy)
-                {
-                    volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
-                }
-            }
-        }
+        // Pop multiplier.
+        private float currentMult;
 
 
         /// <summary>
@@ -117,7 +97,7 @@ namespace RealisticPopulationRevisited
 
                 // Update panel with new calculations.
                 volumetricPanel.UpdateFloorText(displayPack);
-                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack, currentSchoolPack, CurrentMult);
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, displayPack, currentSchoolPack, currentMult);
             }
         }
         
@@ -204,7 +184,7 @@ namespace RealisticPopulationRevisited
             applyButton.eventClicked += (control, clickEvent) =>
             {
                 // Update building setting and save - multiplier first!
-                Multipliers.instance.UpdateMultiplier(currentBuilding, CurrentMult);
+                Multipliers.instance.UpdateMultiplier(currentBuilding, currentMult);
                 PopData.instance.UpdateBuildingPack(currentBuilding, currentPopPack);
                 FloorData.instance.UpdateBuildingPack(currentBuilding, currentFloorPack);
                 
@@ -212,7 +192,7 @@ namespace RealisticPopulationRevisited
                 if (multCheck.isChecked)
                 {
                     // If the multiplier override checkbox is selected, update the multiplier with the slider value.
-                    Multipliers.instance.UpdateMultiplier(currentBuilding, CurrentMult);
+                    Multipliers.instance.UpdateMultiplier(currentBuilding, currentMult);
                 }
                 else
                 {
@@ -234,7 +214,7 @@ namespace RealisticPopulationRevisited
             schoolMenu.eventSelectedIndexChanged += (component, index) => UpdateSchoolSelection(index);
 
             // Add school multiplier slider (starts hidden).
-            multSlider = AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 5f, 0.5f, ModSettings.DefaultSchoolMult, (value) => CurrentMult = value, ComponentWidth);
+            multSlider = AddSliderWithMultipler(schoolPanel, string.Empty, 1f, 5f, 0.5f, ModSettings.DefaultSchoolMult, (value) => UpdateMultiplier(value), ComponentWidth);
             multSlider.parent.relativePosition = new Vector2(RightColumnX, 10f);
             multSlider.parent.Hide();
 
@@ -263,114 +243,6 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// Updates the population calculation pack selection to the selected calculation pack.
-        /// </summary>
-        /// <param name="index">Index number (from menu) of selection pack</param>
-        internal void UpdatePopSelection(int index)
-        {
-            // Update selected pack.
-            currentPopPack = popPacks[index];
-
-            // Update description.
-            popDescription.text = currentPopPack.description;
-
-            // Check if we're using legacy or volumetric data.
-            if (currentPopPack is VolumetricPopPack)
-            {
-                // Volumetric pack.  Are we coming from a legacy setting?
-                if (usingLegacy)
-                {
-                    // Reset flag.
-                    usingLegacy = false;
-
-                    // Restore floor rendering.
-                    BuildingDetailsPanel.Panel.HideFloors = false;
-
-                    // Update override label text.
-                    floorOverrideLabel.text = Translations.Translate("RPR_CAL_FOV");
-
-                    // Set visibility.
-                    legacyPanel.Hide();
-                    volumetricPanel.Show();
-                }
-
-                // Is there an override in place?
-                if (currentFloorOverride == null)
-                {
-                    // No override - update panel with new calculations.
-                    LevelData thisLevel = CurrentLevelData;
-                    volumetricPanel.UpdatePopText(thisLevel);
-                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack, currentSchoolPack, CurrentMult);
-
-                    // Set visibility.
-                    floorOverrideLabel.Hide();
-                    floorPanel.Show();
-                }
-            }
-            else
-            {
-                // Using legacy calcs = set flag.
-                usingLegacy = true;
-
-                // Set visibility.
-                volumetricPanel.Hide();
-                floorPanel.Hide();
-                legacyPanel.Show();
-
-                // Set override label and show.
-                floorOverrideLabel.text = Translations.Translate("RPR_CAL_FLG");
-                floorOverrideLabel.Show();
-
-                // Cancel any floor rendering.
-                BuildingDetailsPanel.Panel.HideFloors = true;
-            }
-        }
-
-
-        /// <summary>
-        /// Updates the floor calculation pack selection to the selected calculation pack.
-        /// </summary>
-        /// <param name="index">Index number (from menu) of selection pack</param>
-        internal void UpdateFloorSelection(int index)
-        {
-            // Update selected pack.
-            currentFloorPack = (FloorDataPack)floorPacks[index];
-
-            // Update description.
-            floorDescription.text = currentFloorPack.description;
-
-            // Update panel with new calculations, assuming that we're not using legacy popultion calcs.
-            volumetricPanel.UpdateFloorText(currentFloorPack);
-            if (currentPopPack.version != (int)DataVersion.legacy)
-            {
-                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
-            }
-
-            // Communicate change with to rest of panel.
-            BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
-        }
-
-
-        /// <summary>
-        /// Updates the school calculation pack selection to the selected calculation pack.
-        /// </summary>
-        /// <param name="index">Index number (from menu) of selection pack</param>
-        internal void UpdateSchoolSelection(int index)
-        {
-            // Update selected pack.
-            currentSchoolPack = schoolPacks[index];
-
-            // Update description.
-            schoolDescription.text = currentSchoolPack.description;
-
-            // Update panel with new calculations.
-            volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, CurrentMult);
-
-            // School selections aren't used anywhere else, so no need to communicate change to rest of panel.
-        }
-
-
-        /// <summary>
         /// Called whenever the currently selected building is changed to update the panel display.
         /// </summary>
         /// <param name="building">Newly selected building</param>
@@ -382,6 +254,8 @@ namespace RealisticPopulationRevisited
             // Safety first!
             if (currentBuilding != null)
             {
+                string buildingName = building.name;
+
                 // Get available calculation packs for this building.
                 popPacks = PopData.instance.GetPacks(building);
                 floorPacks = FloorData.instance.Packs;
@@ -393,7 +267,9 @@ namespace RealisticPopulationRevisited
                 FloorDataPack defaultFloorPack = (FloorDataPack)FloorData.instance.CurrentDefaultPack(building);
 
                 // Update multiplier before we do any other calcs.
-                multCheck.isChecked = Multipliers.instance.HasOverride(building.name);
+                multCheck.isChecked = Multipliers.instance.HasOverride(buildingName);
+                currentMult = Multipliers.instance.ActiveMultiplier(buildingName);
+
 
                 // Build pop pack menu.
                 popMenu.items = new string[popPacks.Length];
@@ -411,11 +287,11 @@ namespace RealisticPopulationRevisited
                     if (popPacks[i].name.Equals(currentPopPack.name))
                     {
                         popMenu.selectedIndex = i;
-
-                        // Force pack selection update.
-                        UpdatePopSelection(i);
                     }
                 }
+
+                // Set population pack to current pack.
+                UpdatePopSelection(currentPopPack);
 
                 // Build floor pack menu.
                 floorMenu.items = new string[floorPacks.Length];
@@ -488,7 +364,7 @@ namespace RealisticPopulationRevisited
                         }
 
                         // Set multiplier value.
-                        multSlider.value = Multipliers.instance.ActiveMultiplier(building.name);
+                        multSlider.value = currentMult;
 
                         schoolPanel.Show();
                     }
@@ -508,6 +384,142 @@ namespace RealisticPopulationRevisited
                     applyButton.relativePosition = new Vector2(ApplyX, BaseSaveY);
                     schoolPanel.Hide();
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Updates the population calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        private void UpdatePopSelection(int index) => UpdatePopSelection(popPacks[index]);
+
+
+        /// <summary>
+        /// Updates the population calculation pack selection to the selected pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        private void UpdatePopSelection(PopDataPack popPack)
+        {
+            // Update selected pack.
+            currentPopPack = popPack;
+
+            // Update description.
+            popDescription.text = currentPopPack.description;
+
+            // Check if we're using legacy or volumetric data.
+            if (currentPopPack is VolumetricPopPack)
+            {
+                // Volumetric pack.  Are we coming from a legacy setting?
+                if (usingLegacy)
+                {
+                    // Reset flag.
+                    usingLegacy = false;
+
+                    // Restore floor rendering.
+                    BuildingDetailsPanel.Panel.HideFloors = false;
+
+                    // Update override label text.
+                    floorOverrideLabel.text = Translations.Translate("RPR_CAL_FOV");
+
+                    // Set visibility.
+                    legacyPanel.Hide();
+                    volumetricPanel.Show();
+                }
+
+                // Is there an override in place?
+                if (currentFloorOverride == null)
+                {
+                    // No override - update panel with new calculations.
+                    LevelData thisLevel = CurrentLevelData;
+                    volumetricPanel.UpdatePopText(thisLevel);
+                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack, currentSchoolPack, currentMult);
+
+                    // Set visibility.
+                    floorOverrideLabel.Hide();
+                    floorPanel.Show();
+                }
+            }
+            else
+            {
+                // Using legacy calcs = set flag.
+                usingLegacy = true;
+
+                // Set visibility.
+                volumetricPanel.Hide();
+                floorPanel.Hide();
+                legacyPanel.Show();
+
+                // Set override label and show.
+                floorOverrideLabel.text = Translations.Translate("RPR_CAL_FLG");
+                floorOverrideLabel.Show();
+
+                // Cancel any floor rendering.
+                BuildingDetailsPanel.Panel.HideFloors = true;
+            }
+        }
+
+
+        /// <summary>
+        /// Updates the floor calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        private void UpdateFloorSelection(int index)
+        {
+            // Update selected pack.
+            currentFloorPack = (FloorDataPack)floorPacks[index];
+
+            // Update description.
+            floorDescription.text = currentFloorPack.description;
+
+            // Update panel with new calculations, assuming that we're not using legacy popultion calcs.
+            volumetricPanel.UpdateFloorText(currentFloorPack);
+            if (currentPopPack.version != (int)DataVersion.legacy)
+            {
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, currentMult);
+            }
+
+            // Communicate change with to rest of panel.
+            BuildingDetailsPanel.Panel.FloorDataPack = currentFloorPack;
+        }
+
+
+        /// <summary>
+        /// Updates the school calculation pack selection to the selected calculation pack.
+        /// </summary>
+        /// <param name="index">Index number (from menu) of selection pack</param>
+        private void UpdateSchoolSelection(int index)
+        {
+            // Update selected pack.
+            currentSchoolPack = schoolPacks[index];
+
+            // Update description.
+            schoolDescription.text = currentSchoolPack.description;
+
+            // Update volumetric panel with new calculations.
+            if (!usingLegacy)
+            {
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, currentMult);
+            }
+
+            // School selections aren't used anywhere else, so no need to communicate change to rest of panel.
+        }
+
+
+        /// <summary>
+        /// Updates the current multiplier and regenerates calculations if necesssary.
+        /// Should only be called from multSlider onValueChanged.
+        /// </summary>
+        /// <param name="value">New multiplier</param>
+        private void UpdateMultiplier(float value)
+        {
+            // Set multiplier.
+            currentMult = value;
+
+            // Recalculte valus if we're not using legacy calcs.
+            if (!usingLegacy)
+            {
+                volumetricPanel.CalculateVolumetric(currentBuilding, CurrentLevelData, currentFloorPack, currentSchoolPack, currentMult);
             }
         }
 
@@ -553,8 +565,6 @@ namespace RealisticPopulationRevisited
 
             return newLabel;
         }
-
-
 
 
         /// <summary>

@@ -666,6 +666,10 @@ namespace RealisticPopulationRevisited
                     case ItemClass.Service.Office:
                         defaultName = "offWG";
                         break;
+                    case ItemClass.Service.Education:
+                        // No legacy equivalent for school packs.
+                        defaultName = "schoolsub";
+                        break;
                     default:
                         defaultName = "comWG";
                         break;
