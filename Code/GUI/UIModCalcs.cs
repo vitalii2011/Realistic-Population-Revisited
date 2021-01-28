@@ -230,7 +230,7 @@ namespace RealisticPopulationRevisited
 
                 // Update multiplier before we do any other calcs.
                 multCheck.isChecked = Multipliers.instance.HasOverride(buildingName);
-                currentMult = Multipliers.instance.ActiveMultiplier(buildingName);
+                currentMult = Multipliers.instance.ActiveMultiplier(building);
 
 
                 // Build pop pack menu.
@@ -500,7 +500,7 @@ namespace RealisticPopulationRevisited
                 multSlider.parent.Show();
 
                 // Set multiplier value to whatever is currently active for that building.
-                currentMult = Multipliers.instance.ActiveMultiplier(currentBuilding.name);
+                currentMult = Multipliers.instance.ActiveMultiplier(currentBuilding);
                 multSlider.value = currentMult;
             }
             else

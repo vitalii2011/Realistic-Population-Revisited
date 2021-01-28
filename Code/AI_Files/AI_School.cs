@@ -22,7 +22,7 @@ namespace RealisticPopulationRevisited
             {
                 // We are - set the result to our realistic population lookup.
                 BuildingInfo thisInfo = __instance.m_info;
-                __result = (int)(PopData.instance.Population(thisInfo, (int)__instance.m_info.GetClassLevel(), Multipliers.instance.ActiveMultiplier(thisInfo.name)));
+                __result = (int)(PopData.instance.Population(thisInfo, (int)__instance.m_info.GetClassLevel(), Multipliers.instance.ActiveMultiplier(thisInfo)));
 
                 // Don't continue on to original method.
                 return false;

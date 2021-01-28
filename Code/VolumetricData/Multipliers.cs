@@ -44,17 +44,24 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="buildingName">Selected prefab name</param>
         /// <returns>Currently active multiplier, or 1.0 by default if no override in place</returns>
-        internal float ActiveMultiplier(string buildingName)
+        internal float ActiveMultiplier(BuildingInfo building)
         {
-            // Check to see if we have a multiplier override in effect.
-            if (buildingName != null && buildingDict.ContainsKey(buildingName))
+            // Only doing education buildings for now.
+            if (building != null && building.GetService() == ItemClass.Service.Education)
             {
-                // Yes - return the mutlplier.
-                return buildingDict[buildingName];
+                // Check to see if we have a multiplier override in effect.
+                if (buildingDict.ContainsKey(building.name))
+                {
+                    // Yes - return the mutlplier.
+                    return buildingDict[building.name];
+                }
+
+                // No entry - return school default.
+                return ModSettings.DefaultSchoolMult;
             }
 
             // If we got here, we don't have a multiplier override; return the default.
-            return ModSettings.DefaultSchoolMult;
+            return DefaultMultiplier;
         }
 
 
