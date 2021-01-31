@@ -9,7 +9,7 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal class DefaultsPanel
     {
-        string[] subServiceNames =
+        readonly string[] subServiceNames =
         {
             Translations.Translate("RPR_CAT_RLO"),
             Translations.Translate("RPR_CAT_RHI"),
@@ -30,7 +30,7 @@ namespace RealisticPopulationRevisited
             Translations.Translate("RPR_CAT_SCH")
         };
 
-        ItemClass.Service[] services =
+        readonly ItemClass.Service[] services =
         {
             ItemClass.Service.Residential,
             ItemClass.Service.Residential,
@@ -51,7 +51,7 @@ namespace RealisticPopulationRevisited
             ItemClass.Service.Education
         };
 
-        ItemClass.SubService[] subServices =
+        readonly ItemClass.SubService[] subServices =
         {
             ItemClass.SubService.ResidentialLow,
             ItemClass.SubService.ResidentialHigh,
@@ -72,7 +72,7 @@ namespace RealisticPopulationRevisited
             ItemClass.SubService.None
         };
 
-        string[] iconNames =
+        readonly string[] iconNames =
         {
             "ZoningResidentialLow",
             "ZoningResidentialHigh",
@@ -93,7 +93,7 @@ namespace RealisticPopulationRevisited
             "ToolbarIconEducation"
         };
 
-        string[] atlasNames =
+        readonly string[] atlasNames =
         {
             "Thumbnails",
             "Thumbnails",
@@ -116,11 +116,11 @@ namespace RealisticPopulationRevisited
 
 
         // DropDown menus.
-        UIDropDown[] popMenus, floorMenus;
+        readonly UIDropDown[] popMenus, floorMenus;
 
         // Available packs arrays.
-        PopDataPack[][] availablePopPacks;
-        DataPack[] availableFloorPacks;
+        readonly PopDataPack[][] availablePopPacks;
+        readonly DataPack[] availableFloorPacks;
 
         // Instance reference.
         internal static DefaultsPanel instance;
@@ -270,7 +270,7 @@ namespace RealisticPopulationRevisited
                 floorMenus[i].objectUserData = i;
 
                 // Get available packs for this service/subservice combination.
-                availablePopPacks[i] = PopData.instance.GetPacks(services[i], subServices[i]);
+                availablePopPacks[i] = PopData.instance.GetPacks(services[i]);
 
                 // Get current and default packs for this item
                 DataPack currentPopPack = PopData.instance.CurrentDefaultPack(services[i], subServices[i]);

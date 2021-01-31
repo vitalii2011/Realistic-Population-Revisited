@@ -14,7 +14,7 @@ namespace RealisticPopulationRevisited
         internal static Multipliers instance;
 
         // List of building settings.
-        private Dictionary<string, float> buildingDict;
+        private readonly Dictionary<string, float> buildingDict;
 
         /// <summary>
         /// Constructor - initializes dictionary and performs other setup tasks.

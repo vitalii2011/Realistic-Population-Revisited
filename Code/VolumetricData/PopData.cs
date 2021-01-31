@@ -13,7 +13,7 @@ namespace RealisticPopulationRevisited
         internal static PopData instance;
 
         // Dictionary of manual population count overrides.
-        private Dictionary<string, int> overrides;
+        private readonly Dictionary<string, int> overrides;
 
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace RealisticPopulationRevisited
                 // Get list of floors and total building area, if one hasn't already been provided.
                 if (floors == null || floorArea == 0)
                 {
-                    floors = VolumetricFloors(buildingInfoGen, levelData, floorData, out floorArea);
+                    floors = VolumetricFloors(buildingInfoGen, floorData, out floorArea);
                 }
 
                 // Determine area percentage to use for calculations (inverse of empty area percentage).
@@ -133,11 +133,10 @@ namespace RealisticPopulationRevisited
         /// Returns a list of floors and populations for the given building.
         /// </summary>
         /// <param name="buildingInfoGen">Building info record</param>
-        /// <param name="levelData">LevelData record to use for calculations</param>
         /// <param name="floorData">Floor calculation pack to use for calculations</param>
         /// <param name="total">Total area of all floors</param>
         /// <returns>Sorted list of floors (key = floor number, value = floor area)</returns>
-        internal SortedList<int, float> VolumetricFloors(BuildingInfoGen buildingInfoGen, LevelData levelData, FloorDataPack floorData, out float totalArea)
+        internal SortedList<int, float> VolumetricFloors(BuildingInfoGen buildingInfoGen, FloorDataPack floorData, out float totalArea)
         {
             // Initialise required fields.
             float floorArea = 0;
@@ -203,39 +202,47 @@ namespace RealisticPopulationRevisited
         public PopData()
         {
             // Legacy residential.
-            LegacyResPack resWG = new LegacyResPack();
-            resWG.name = "resWG";
-            resWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
-            resWG.description = Translations.Translate("RPR_PCK_LEG_DES");
-            resWG.version = (int)DataVersion.legacy;
-            resWG.service = ItemClass.Service.Residential;
+            LegacyResPack resWG = new LegacyResPack
+            {
+                name = "resWG",
+                displayName = Translations.Translate("RPR_PCK_LEG_NAM"),
+                description = Translations.Translate("RPR_PCK_LEG_DES"),
+                version = (int)DataVersion.legacy,
+                service = ItemClass.Service.Residential
+            };
             calcPacks.Add(resWG);
 
             // Legacy industrial.
-            LegacyIndPack indWG = new LegacyIndPack();
-            indWG.name = "indWG";
-            indWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
-            indWG.description = Translations.Translate("RPR_PCK_LEG_DES");
-            indWG.version = (int)DataVersion.legacy;
-            indWG.service = ItemClass.Service.Industrial;
+            LegacyIndPack indWG = new LegacyIndPack()
+            {
+                name = "indWG",
+                displayName = Translations.Translate("RPR_PCK_LEG_NAM"),
+                description = Translations.Translate("RPR_PCK_LEG_DES"),
+                version = (int)DataVersion.legacy,
+                service = ItemClass.Service.Industrial
+            };
             calcPacks.Add(indWG);
 
             // Legacy commercial.
-            LegacyComPack comWG = new LegacyComPack();
-            comWG.name = "comWG";
-            comWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
-            comWG.description = Translations.Translate("RPR_PCK_LEG_DES");
-            comWG.version = (int)DataVersion.legacy;
-            comWG.service = ItemClass.Service.Commercial;
+            LegacyComPack comWG = new LegacyComPack()
+            {
+                name = "comWG",
+                displayName = Translations.Translate("RPR_PCK_LEG_NAM"),
+                description = Translations.Translate("RPR_PCK_LEG_DES"),
+                version = (int)DataVersion.legacy,
+                service = ItemClass.Service.Commercial
+            };
             calcPacks.Add(comWG);
 
             // Legacy office.
-            LegacyOffPack offWG = new LegacyOffPack();
-            offWG.name = "offWG";
-            offWG.displayName = Translations.Translate("RPR_PCK_LEG_NAM");
-            offWG.description = Translations.Translate("RPR_PCK_LEG_DES");
-            offWG.version = (int)DataVersion.legacy;
-            offWG.service = ItemClass.Service.Office;
+            LegacyOffPack offWG = new LegacyOffPack()
+            {
+                name = "offWG",
+                displayName = Translations.Translate("RPR_PCK_LEG_NAM"),
+                description = Translations.Translate("RPR_PCK_LEG_DES"),
+                version = (int)DataVersion.legacy,
+                service = ItemClass.Service.Office
+            };
             calcPacks.Add(offWG);
 
             // Low-density residential.
@@ -735,16 +742,15 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="prefab">BuildingInfo prefab</param>
         /// <returns>Array of available calculation packs</returns>
-        internal PopDataPack[] GetPacks(BuildingInfo prefab) => GetPacks(prefab.GetService(), prefab.GetSubService());
+        internal PopDataPack[] GetPacks(BuildingInfo prefab) => GetPacks(prefab.GetService());
 
 
         /// <summary>
         /// Returns a list of calculation packs available for the given service/subservice combination.
         /// </summary>
         /// <param name="service">Service</param>
-        /// <param name="subService">Sub-service</param>
         /// <returns>Array of available calculation packs</returns>
-        internal PopDataPack[] GetPacks(ItemClass.Service service, ItemClass.SubService subService)
+        internal PopDataPack[] GetPacks(ItemClass.Service service)
         {
             // Return list.
             List<PopDataPack> list = new List<PopDataPack>();

@@ -149,7 +149,7 @@ namespace RealisticPopulationRevisited
             }
             // Perform calculations.
             // Get floors and allocate area an number of floor labels.
-            SortedList<int, float> floors = PopData.instance.VolumetricFloors(building.m_generatedInfo, levelData, floorData, out float totalArea);
+            SortedList<int, float> floors = PopData.instance.VolumetricFloors(building.m_generatedInfo, floorData, out float totalArea);
             floorAreaLabel.text = totalArea.ToString("N0", LocaleManager.cultureInfo);
             numFloorsLabel.text = floors.Count.ToString();
 
@@ -244,9 +244,11 @@ namespace RealisticPopulationRevisited
             }
 
             // Allocate our new list of labels to the floors list (via an interim fastlist to avoid race conditions if we 'build' manually directly into floorsList).
-            FastList<object> fastList = new FastList<object>();
-            fastList.m_buffer = floorLabels.ToArray();
-            fastList.m_size = floorLabels.Count;
+            FastList<object> fastList = new FastList<object>()
+            {
+                m_buffer = floorLabels.ToArray(),
+                m_size = floorLabels.Count
+            };
             floorsList.rowsData = fastList;
 
             // Display total unit calculation result.

@@ -14,7 +14,7 @@ namespace RealisticPopulationRevisited
         // Internal and private name and version components.
         internal static string ModName => "Realistic Population 2";
         internal static string Version => BaseVersion + " " + Beta;
-        internal static string Beta => "BETA 1";
+        internal static string Beta => "ALPHA 14";
         private static string BaseVersion => "2.0";
 
 

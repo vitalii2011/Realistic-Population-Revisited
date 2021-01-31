@@ -482,15 +482,17 @@ namespace RealisticPopulationRevisited
                 if (filterBar.SettingsFilter[(int)FilterCategories.HasOverride].isChecked && !hasOverride) continue;
                 if (filterBar.SettingsFilter[(int)FilterCategories.HasNonDefault].isChecked && !hasNonDefault) continue;
                 if (filterBar.SettingsFilter[(int)FilterCategories.Any].isChecked && !(hasOverride || hasNonDefault)) continue;
-                
+
                 // Finally!  We've got an item that's passed all filters; add it to the list.
                 filteredList.Add(item);
             }
 
             // Create return list with our filtered list, sorted alphabetically.
-            FastList<object> fastList = new FastList<object>();
-            fastList.m_buffer = filteredList.OrderBy(x => UIBuildingDetails.GetDisplayName(x.name)).ToArray();
-            fastList.m_size = filteredList.Count;
+            FastList<object> fastList = new FastList<object>
+            {
+                m_buffer = filteredList.OrderBy(x => UIBuildingDetails.GetDisplayName(x.name)).ToArray(),
+                m_size = filteredList.Count
+            };
             return fastList;
         }
 

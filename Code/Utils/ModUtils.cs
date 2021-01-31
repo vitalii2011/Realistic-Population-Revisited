@@ -11,12 +11,13 @@ namespace RealisticPopulationRevisited
     /// </summary>
     internal static class ModUtils
     {
-        internal static List<string> conflictingModNames;
-
         // RICO methods.
         internal static MethodInfo ricoPopManaged;
         internal static MethodInfo ricoClearWorkplace;
         internal static MethodInfo ricoClearAllWorkplaces;
+
+        // List of conflcting mod names.
+        internal static List<string> conflictingModNames;
 
 
         /// <summary>
@@ -125,9 +126,9 @@ namespace RealisticPopulationRevisited
             {
                 object result = ricoPopManaged.Invoke(null, new object[] { prefab });
 
-                if (result is bool)
+                if (result is bool boolResult)
                 {
-                    return (bool)result;
+                    return boolResult;
                 }
             }
 
@@ -151,7 +152,7 @@ namespace RealisticPopulationRevisited
                     {
                         Logging.Message("Found Ploppable RICO Revisited");
 
-                        // Found ploppablerico.dll that's part of an enabled plugin; try to get its ModUtils class.
+                        // Found ploppablerico.dll that's part of an enabled plugin; try to get its Interfaces class.
                         Type ricoModUtils = assembly.GetType("PloppableRICO.Interfaces");
 
                         if (ricoModUtils != null)

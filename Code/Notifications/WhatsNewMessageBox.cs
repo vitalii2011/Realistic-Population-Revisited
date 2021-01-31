@@ -42,7 +42,7 @@ namespace RealisticPopulationRevisited.MessageBox
         public class VersionMessage : UIPanel
         {
             // Components.
-            private UIButton minimizeButton;
+            private readonly UIButton minimizeButton;
             public List<ListItem> listItems;
 
             // Version title.
