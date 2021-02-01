@@ -55,15 +55,15 @@ namespace RealisticPopulationRevisited
                 }
                 else if (lastSelection != null)
                 {
-                    // Restore previous building selection list postion and selected item (specifically in that order to ensure correct item is selected).
-                    Panel.SetListPosition(lastIndex, lastPostion);
-                    Panel.SelectBuilding(lastSelection);
-
                     // Restore previous filter state.
                     if (lastFilter != null)
                     {
                         Panel.SetFilter(lastFilter);
                     }
+
+                    // Restore previous building selection list postion and selected item (specifically in that order to ensure correct item is selected).
+                    Panel.SetListPosition(lastIndex, lastPostion);
+                    Panel.SelectBuilding(lastSelection);
                 }
 
 
