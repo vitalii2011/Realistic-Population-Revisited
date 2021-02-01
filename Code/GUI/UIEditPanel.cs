@@ -393,8 +393,10 @@ namespace RealisticPopulationRevisited
         private UILabelledTextfield AddLabelledTextfield(float yPos, string key)
         {
             // Create textfield.
-            UILabelledTextfield newField = new UILabelledTextfield();
-            newField.textField = UIControls.AddTextField(this, MarginPadding + LabelWidth + MarginPadding, yPos, width: this.width - (MarginPadding * 3) - LabelWidth);
+            UILabelledTextfield newField = new UILabelledTextfield
+            {
+                textField = UIControls.AddTextField(this, MarginPadding + LabelWidth + MarginPadding, yPos, width: this.width - (MarginPadding * 3) - LabelWidth)
+            };
             newField.textField.clipChildren = false;
 
             // Label.

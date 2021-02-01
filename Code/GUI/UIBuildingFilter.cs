@@ -149,7 +149,7 @@ namespace RealisticPopulationRevisited
 
 
         // Basic event handler for filtering changes.
-        public event PropertyChangedEventHandler<int> eventFilteringChanged;
+        public event PropertyChangedEventHandler<int> EventFilteringChanged;
 
         // Filter checkbox tooltips.
         private readonly string[] FilterTooltipKeys = { "RPR_FTR_ANY", "RPR_FTR_OVR", "RPR_FTR_NDC" };
@@ -189,7 +189,7 @@ namespace RealisticPopulationRevisited
                     ((UICheckBox)c).isChecked = true;
 
                     // Trigger an update.
-                    eventFilteringChanged(this, 0);
+                    EventFilteringChanged(this, 0);
                 };
             }
 
@@ -206,15 +206,15 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Trigger an update.
-                eventFilteringChanged(this, 0);
+                EventFilteringChanged(this, 0);
             };
 
             // Name filter.
             nameFilter = UIControls.BigLabelledTextField(this, width - 200f, 0, Translations.Translate("RPR_FIL_NAME"));
 
             // Name filter event handling - update on any change.
-            nameFilter.eventTextChanged += (control, text) => eventFilteringChanged(this, 5);
-            nameFilter.eventTextSubmitted += (control, text) => eventFilteringChanged(this, 5);
+            nameFilter.eventTextChanged += (control, text) => EventFilteringChanged(this, 5);
+            nameFilter.eventTextSubmitted += (control, text) => EventFilteringChanged(this, 5);
 
             // Settings filter label.
             UILabel filterLabel = SettingsFilterLabel(55f, Translations.Translate("RPR_FIL_SET"));
@@ -270,7 +270,7 @@ namespace RealisticPopulationRevisited
                 }
 
                 // Trigger filtering changed event if any checkbox is changed.
-                settingsFilter[i].eventCheckChanged += (control, isChecked) => { eventFilteringChanged(this, 0); };
+                settingsFilter[i].eventCheckChanged += (control, isChecked) => { EventFilteringChanged(this, 0); };
             }
         }
 

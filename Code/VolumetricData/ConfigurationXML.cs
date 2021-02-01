@@ -15,39 +15,39 @@ namespace RealisticPopulationRevisited
     {
         // Stores the version of the most recent update notification that the user has decided to "Don't show again".
         [XmlElement("version")]
-        public int NotificationVersion { get; set; }
+        public int notificationVersion;
 
         [XmlArray("pop_packs")]
         [XmlArrayItem("pop_pack")]
-        public List<PopPackXML> popPacks { get; set; }
+        public List<PopPackXML> popPacks;
 
         [XmlArray("floor_packs")]
         [XmlArrayItem("floor_pack")]
-        public List<FloorPackXML> floorPacks { get; set; }
+        public List<FloorPackXML> floorPacks;
 
         [XmlArray("consumption")]
         [XmlArrayItem("consumption")]
-        public List<ConsumptionRecord> consumption { get; set; }
+        public List<ConsumptionRecord> consumption;
 
         [XmlArray("default-pop")]
         [XmlArrayItem("default")]
-        public List<DefaultPack> popDefaults { get; set; }
+        public List<DefaultPack> popDefaults;
 
         [XmlArray("default-floor")]
         [XmlArrayItem("default")]
-        public List<DefaultPack> floorDefaults { get; set; }
+        public List<DefaultPack> floorDefaults;
 
         [XmlArray("buildings")]
         [XmlArrayItem("building")]
-        public List<BuildingRecord> buildings { get; set; }
+        public List<BuildingRecord> buildings;
 
         [XmlArray("override_population")]
         [XmlArrayItem("population")]
-        public List<PopCountOverride> popOverrides { get; set; }
+        public List<PopCountOverride> popOverrides;
 
         [XmlArray("override_floors")]
         [XmlArrayItem("floors")]
-        public List<FloorCalcOverride> floors { get; set; }
+        public List<FloorCalcOverride> floors;
     }
 
 
@@ -173,7 +173,7 @@ namespace RealisticPopulationRevisited
         // Level records.
         [XmlArray("levels")]
         [XmlArrayItem("level")]
-        public List<PopLevel> calculationLevels { get; set; }
+        public List<PopLevel> calculationLevels;
     }
 
 
@@ -247,7 +247,7 @@ namespace RealisticPopulationRevisited
         // Level records.
         [XmlArray("levels")]
         [XmlArrayItem("level")]
-        public List<ConsumptionLine> levels { get; set; }
+        public List<ConsumptionLine> levels;
     }
 
 

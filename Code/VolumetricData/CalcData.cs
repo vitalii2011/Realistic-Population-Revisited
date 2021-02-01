@@ -60,7 +60,7 @@ namespace RealisticPopulationRevisited
         protected Dictionary<string, DataPack> buildingDict;
 
         // List of (sub)service default settings.
-        private Dictionary<ItemClass.Service, Dictionary<ItemClass.SubService, DataPack>> defaultsDict;
+        private readonly Dictionary<ItemClass.Service, Dictionary<ItemClass.SubService, DataPack>> defaultsDict;
 
 
         // Methods that should generally be overriden.
@@ -219,7 +219,7 @@ namespace RealisticPopulationRevisited
                         ReversePatches.EnsureCitizenUnits(thisAI, i, ref thisBuilding, homeCount, 0, visitCount, 0);
 
                         // Remove any extra households.
-                        RealisticCitizenUnits.RemoveHouseHold(i, ref instance.m_buildings.m_buffer[i], homeCount);
+                        RealisticCitizenUnits.RemoveHouseHold(ref instance.m_buildings.m_buffer[i], homeCount);
                     }
                 }
             }

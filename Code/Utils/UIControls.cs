@@ -389,10 +389,9 @@ namespace RealisticPopulationRevisited
         /// <param name="max">Slider maximum value</param>
         /// <param name="step">Slider minimum step</param>
         /// <param name="defaultValue">Slider initial value</param>
-        /// <param name="eventCallback">Slider event handler</param>
         /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
         /// <returns>New UI slider with attached labels</returns>
-        public static UISlider AddSlider(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
+        public static UISlider AddSlider(UIComponent parent, string text, float min, float max, float step, float defaultValue, float width = 600f)
         {
             // Add slider component.
             UIPanel sliderPanel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsSliderTemplate")) as UIPanel;
@@ -443,7 +442,7 @@ namespace RealisticPopulationRevisited
         public static UISlider AddSliderWithValue(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
         {
             // Add slider component.
-            UISlider newSlider = AddSlider(parent, text, min, max, step, defaultValue, eventCallback, width);
+            UISlider newSlider = AddSlider(parent, text, min, max, step, defaultValue, width);
             UIPanel sliderPanel = (UIPanel)newSlider.parent;
 
             // Value label.

@@ -22,7 +22,7 @@ namespace RealisticPopulationRevisited
 
         // Language.
         [XmlElement("Language")]
-        public string language
+        public string Language
         {
             get
             {
@@ -37,19 +37,19 @@ namespace RealisticPopulationRevisited
         // Building details panel hotkey backwards-compatibility.
         [XmlElement("hotkey")]
         [DefaultValue("")]
-        public string hotkey { get => ""; set => UIThreading.hotKey = (KeyCode)Enum.Parse(typeof(KeyCode), value); }
+        public string Hotkey { get => ""; set => UIThreading.hotKey = (KeyCode)Enum.Parse(typeof(KeyCode), value); }
 
         [XmlElement("ctrl")]
         [DefaultValue(false)]
-        public bool ctrl { get => false;  set => UIThreading.hotCtrl = value; }
+        public bool Ctrl { get => false;  set => UIThreading.hotCtrl = value; }
 
         [XmlElement("alt")]
         [DefaultValue(false)]
-        public bool alt { get => false;  set => UIThreading.hotAlt = value; }
+        public bool Alt { get => false;  set => UIThreading.hotAlt = value; }
 
         [XmlElement("shift")]
         [DefaultValue(false)]
-        public bool shift { get => false;  set => UIThreading.hotShift = value; }
+        public bool Shift { get => false;  set => UIThreading.hotShift = value; }
 
         // New building details panel hotkey element.
         [XmlElement("PanelKey")]
@@ -80,19 +80,19 @@ namespace RealisticPopulationRevisited
 
         // Use legacy calculations by default.
         [XmlElement("NewSavesLegacy")]
-        public bool defaultLegacy { get => ModSettings.newSaveLegacy; set => ModSettings.newSaveLegacy = value; }
+        public bool DefaultLegacy { get => ModSettings.newSaveLegacy; set => ModSettings.newSaveLegacy = value; }
 
         // Realistic education.
         [XmlElement("EnableSchoolPop")]
-        public bool enableSchools { get => ModSettings.enableSchoolPop; set => ModSettings.enableSchoolPop = value; }
+        public bool EnableSchools { get => ModSettings.enableSchoolPop; set => ModSettings.enableSchoolPop = value; }
 
         // School properties.
         [XmlElement("EnableSchoolProperties")]
-        public bool enableSchoolProperties { get => ModSettings.enableSchoolProperties; set => ModSettings.enableSchoolProperties = value; }
+        public bool EnableSchoolProperties { get => ModSettings.enableSchoolProperties; set => ModSettings.enableSchoolProperties = value; }
 
         // Default school capacity multiplier.
         [XmlElement("DefaultSchoolMultiplier")]
-        public float defaultSchoolModifier { get => ModSettings.DefaultSchoolMult; set => ModSettings.DefaultSchoolMult = value; }
+        public float DefaultSchoolModifier { get => ModSettings.DefaultSchoolMult; set => ModSettings.DefaultSchoolMult = value; }
     }
 
 

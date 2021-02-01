@@ -7,7 +7,7 @@ namespace RealisticPopulationRevisited
     /// <summary>
     /// An individual row in the list of buildings.
     /// </summary>
-    public class UIBuildingRow : UIPanel, UIFastListRow
+    public class UIBuildingRow : UIPanel, IUIFastListRow
     {
         // Height of each row.
         private const float rowHeight = 30f;

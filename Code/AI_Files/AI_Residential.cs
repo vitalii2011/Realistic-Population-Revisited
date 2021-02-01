@@ -4,19 +4,21 @@ using UnityEngine;
 using HarmonyLib;
 
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
+
 namespace RealisticPopulationRevisited
 {
     [HarmonyPatch(typeof(ResidentialBuildingAI))]
     [HarmonyPatch("CalculateHomeCount")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    class RealisticHomeCount
+    public static class RealisticHomeCount
     {
-        static bool Prefix(ref int __result, ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        public static bool Prefix(ref int __result, ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             BuildingInfo item = __instance.m_info;
-            int returnValue = 0;
 
-            if (!DataStore.prefabHouseHolds.TryGetValue(item.gameObject.GetHashCode(), out returnValue))
+            if (!DataStore.prefabHouseHolds.TryGetValue(item.gameObject.GetHashCode(), out int returnValue))
             {
                 returnValue = PopData.instance.Population(item, (int)level);
 
@@ -37,12 +39,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetConsumptionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticResidentialConsumption
+    public static class RealisticResidentialConsumption
     {
-        static bool Prefix(ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        public static bool Prefix(ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
-            ItemClass item = __instance.m_info.m_class;
-
             int[] array = ResidentialBuildingAIMod.GetArray(__instance.m_info, (int)level);
             electricityConsumption = array[DataStore.POWER];
             waterConsumption = array[DataStore.WATER];
@@ -70,11 +70,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetPollutionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(int), typeof(DistrictPolicies.CityPlanning), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticResidentialPollution
+    public static class RealisticResidentialPollution
     {
-        static bool Prefix(ResidentialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        public static bool Prefix(ResidentialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
-            ItemClass @class = __instance.m_info.m_class;
             int[] array = ResidentialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
@@ -86,7 +85,7 @@ namespace RealisticPopulationRevisited
     }
 
 
-    class ResidentialBuildingAIMod
+    public static class ResidentialBuildingAIMod
     {
         public static int[] GetArray(BuildingInfo item, int level)
         {
@@ -123,3 +122,5 @@ namespace RealisticPopulationRevisited
         }
     }
 }
+
+#pragma warning restore IDE0060 // Remove unused parameter

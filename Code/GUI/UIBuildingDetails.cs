@@ -313,7 +313,7 @@ namespace RealisticPopulationRevisited
                 filterBar.height = FilterHeight;
                 filterBar.relativePosition = new Vector3(Spacing, TitleHeight);
 
-                filterBar.eventFilteringChanged += (c, i) =>
+                filterBar.EventFilteringChanged += (c, i) =>
                 {
                     if (i == -1) return;
 

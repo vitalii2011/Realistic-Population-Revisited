@@ -265,9 +265,6 @@ namespace RealisticPopulationRevisited
             if (customHomeJobs > 0)
             {
                 homesJobsCustomLabel.text += customHomeJobs.ToString();
-
-                // Update modCount to reflect the custom figures.
-                modCount = customHomeJobs;
             }
 
             // Check to see if Ploppable RICO Revisited is controlling this building's population.

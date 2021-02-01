@@ -3,13 +3,16 @@ using System.Runtime.CompilerServices;
 using HarmonyLib;
 
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
+
 namespace RealisticPopulationRevisited
 {
     /// <summary>
     ///  Harmony reverse patches.
     /// </summary>
     [HarmonyPatch]
-    internal static class ReversePatches
+    public static class ReversePatches
     {
         /// <summary>
         /// Reverse patch for ResidentAI.FinishSchoolOrWork to access private method of original instance.
@@ -45,3 +48,5 @@ namespace RealisticPopulationRevisited
         }
     }
 }
+
+#pragma warning restore IDE0060 // Remove unused parameter

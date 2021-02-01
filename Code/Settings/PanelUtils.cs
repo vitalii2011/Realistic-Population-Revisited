@@ -18,7 +18,9 @@ namespace RealisticPopulationRevisited
         internal static void IntTextFilter(UITextField control, string value)
         {
             // If it's not blank and isn't an integer, remove the last character and set selection to end.
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             if (!value.IsNullOrWhiteSpace() && !int.TryParse(value, out int result))
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             {
                 control.text = value.Substring(0, value.Length - 1);
                 control.MoveSelectionPointRight();
@@ -34,7 +36,9 @@ namespace RealisticPopulationRevisited
         internal static void FloatTextFilter(UITextField control, string value)
         {
             // If it's not blank and isn't an integer, remove the last character and set selection to end.
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             if (!value.IsNullOrWhiteSpace() && !float.TryParse(value, out float result))
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             {
                 control.text = value.Substring(0, value.Length - 1);
                 control.MoveSelectionPointRight();
@@ -49,9 +53,7 @@ namespace RealisticPopulationRevisited
         /// <param name="text">Text to parse</param>
         internal static void ParseInt(ref int intVar, string text)
         {
-            int result;
-
-            if (int.TryParse(text, out result))
+            if (int.TryParse(text, out int result))
             {
                 intVar = result;
             }
@@ -65,9 +67,7 @@ namespace RealisticPopulationRevisited
         /// <param name="text">Text to parse</param>
         internal static void ParseFloat(ref float floatVar, string text)
         {
-            float result;
-
-            if (float.TryParse(text, out result))
+            if (float.TryParse(text, out float result))
             {
                 floatVar = result;
             }

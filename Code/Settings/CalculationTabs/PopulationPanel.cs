@@ -18,9 +18,9 @@ namespace RealisticPopulationRevisited
         protected const float PackMenuY = 90f;
         protected const float DetailY = PackMenuY + 140f;
 
-        string[] serviceNames = { Translations.Translate("RPR_CAT_RES"), Translations.Translate("RPR_CAT_IND"), Translations.Translate("RPR_CAT_COM"), Translations.Translate("RPR_CAT_OFF"), Translations.Translate("RPR_CAT_SCH") };
-        ItemClass.Service[] services = { ItemClass.Service.Residential, ItemClass.Service.Industrial, ItemClass.Service.Commercial, ItemClass.Service.Office, ItemClass.Service.Education };
-        int[] maxLevels = { 5, 3, 3, 3, 2 };
+        private readonly string[] serviceNames = { Translations.Translate("RPR_CAT_RES"), Translations.Translate("RPR_CAT_IND"), Translations.Translate("RPR_CAT_COM"), Translations.Translate("RPR_CAT_OFF"), Translations.Translate("RPR_CAT_SCH") };
+        private readonly ItemClass.Service[] services = { ItemClass.Service.Residential, ItemClass.Service.Industrial, ItemClass.Service.Commercial, ItemClass.Service.Office, ItemClass.Service.Education };
+        private readonly int[] maxLevels = { 5, 3, 3, 3, 2 };
 
         // Textfield arrays.
         protected UITextField[] emptyAreaFields, emptyPercentFields, areaPerFields;

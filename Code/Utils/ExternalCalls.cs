@@ -17,8 +17,7 @@ namespace RealisticPopulationRevisited
         /// <returns>The custom household count (0 if no settings)</returns>
         public static int GetResidential(BuildingInfo prefab)
         {
-            int returnValue;
-            if (DataStore.householdCache.TryGetValue(prefab.name, out returnValue))
+            if (DataStore.householdCache.TryGetValue(prefab.name, out int returnValue))
             {
                 return returnValue;
             }
@@ -91,8 +90,7 @@ namespace RealisticPopulationRevisited
         /// <returns></returns>
         public static int GetWorker(BuildingInfo prefab)
         {
-            int returnValue;
-            if (DataStore.workerCache.TryGetValue(prefab.name, out returnValue))
+            if (DataStore.workerCache.TryGetValue(prefab.name, out int returnValue))
             {
                 return returnValue;
             }
@@ -128,8 +126,7 @@ namespace RealisticPopulationRevisited
 
             // Calculate employment breakdown.
             int[] array = CommercialBuildingAIMod.GetArray(prefab, (int)prefab.GetClassLevel());
-            PrefabEmployStruct output = new PrefabEmployStruct();
-            AI_Utils.CalculateprefabWorkerVisit(prefab.GetWidth(), prefab.GetLength(), ref prefab, 4, ref array, out output);
+            AI_Utils.CalculateprefabWorkerVisit(prefab.GetWidth(), prefab.GetLength(), ref prefab, 4, ref array, out PrefabEmployStruct output);
 
             // Update entry in 'live' settings.
             if (DataStore.prefabWorkerVisit.ContainsKey(prefabHash))

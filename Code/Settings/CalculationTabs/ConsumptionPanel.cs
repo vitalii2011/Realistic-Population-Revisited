@@ -18,7 +18,6 @@ namespace RealisticPopulationRevisited
         {
             // Add tab and helper.
             UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex);
-            UIHelper helper = new UIHelper(panel);
             panel.autoLayout = false;
 
             // Add tabstrip.

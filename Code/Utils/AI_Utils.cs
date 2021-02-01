@@ -33,19 +33,18 @@ namespace RealisticPopulationRevisited
                 int floorSpace = CalcBase(width, length, ref array, v);
                 int floorCount = Mathf.Max(1, Mathf.FloorToInt(v.y / array[DataStore.LEVEL_HEIGHT])) + array[DataStore.DENSIFICATION];
                 value = (floorSpace * floorCount) / array[DataStore.PEOPLE];
-                int outValue = 0;
 
                 if ((array[DataStore.CALC_METHOD] == 0)) // Plot only will ignore any over ride or bonus
                 {
                     // Check over ride
                     string name = item.gameObject.name;
-                    if (DataStore.workerCache.TryGetValue(name, out outValue))
+                    if (DataStore.workerCache.TryGetValue(name, out int outValue))
                     {
                         value = outValue;
                     }
                     else if (DataStore.bonusWorkerCache.TryGetValue(name, out outValue))
                     {
-                        value = value + outValue;
+                        value += outValue;
                         DataStore.workerCache.Add(name, value);
                         DataStore.bonusWorkerCache.Remove(name);
                     }
@@ -90,7 +89,7 @@ namespace RealisticPopulationRevisited
         /// <param name="length"></param>
         /// <param name="item"></param>
         /// <param name="returnValue"></param>
-        internal static int CalculatePrefabHousehold(int width, int length, ref BuildingInfo item, ref int[] array, int level)
+        internal static int CalculatePrefabHousehold(int width, int length, ref BuildingInfo item, ref int[] array)
         {
             Vector3 v = item.m_size;
             int floorCount = Mathf.Max(1, Mathf.FloorToInt(v.y / array[DataStore.LEVEL_HEIGHT]));
@@ -106,18 +105,17 @@ namespace RealisticPopulationRevisited
                 returnValue = Mathf.Max(1, returnValue);
             }
 
-            int outValue = 0;
             if ((array[DataStore.CALC_METHOD] == 0)) // Plot only will ignore any over ride or bonus
             {
                 // Check over ride
                 string name = item.gameObject.name;
-                if (DataStore.householdCache.TryGetValue(name, out outValue))
+                if (DataStore.householdCache.TryGetValue(name, out int outValue))
                 {
                     returnValue = outValue;
                 }
                 else if (DataStore.bonusHouseholdCache.TryGetValue(name, out outValue))
                 {
-                    returnValue = returnValue + outValue;
+                    returnValue += outValue;
                     DataStore.householdCache.Add(name, returnValue);
                     DataStore.bonusHouseholdCache.Remove(name);
                 }

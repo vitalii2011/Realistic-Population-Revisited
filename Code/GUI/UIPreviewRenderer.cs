@@ -11,7 +11,7 @@ namespace RealisticPopulationRevisited
     public class UIPreviewRenderer : MonoBehaviour
     {
         // Rendering settings.
-        private Camera renderCamera;
+        private readonly Camera renderCamera;
         private Mesh currentMesh;
         private Bounds currentBounds;
         private float currentRotation;
@@ -23,7 +23,7 @@ namespace RealisticPopulationRevisited
         private List<BuildingInfo.SubInfo> subBuildings;
 
         // Floor preview rendering.
-        private Texture2D floorTexture;
+        private readonly Texture2D floorTexture;
 
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace RealisticPopulationRevisited
                 return;
             }
 
-            int vertexCount = currentMesh.vertices.Length;
+            int vertexCount;
 
             // Use skybox background.
             renderCamera.clearFlags = CameraClearFlags.Skybox;
@@ -288,8 +288,10 @@ namespace RealisticPopulationRevisited
                 if (renderFloors && floorDataPack != null)
                 {
                     // Create new material using building shader.
-                    Material testMaterial = new Material(_material.shader);
-                    testMaterial.mainTexture = floorTexture;
+                    Material testMaterial = new Material(_material.shader)
+                    {
+                        mainTexture = floorTexture
+                    };
 
                     // Coordinates using current bounds.
                     float left = minX - 1.5f;

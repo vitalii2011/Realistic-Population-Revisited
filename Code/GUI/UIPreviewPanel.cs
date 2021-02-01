@@ -14,9 +14,6 @@ namespace RealisticPopulationRevisited
         private UICheckBox showFloorsCheck;
         private static bool lastFloorCheckState;
 
-        // References.
-        private BuildingInfo currentBuilding;
-
 
         /// <summary>
         /// Handles changes to selected floor data pack (for previewing).
@@ -42,7 +39,6 @@ namespace RealisticPopulationRevisited
         /// <param name="building">The building to render</param>
         public void Show(BuildingInfo building)
         {
-            currentBuilding = building;
             preview.Show(building);
         }
 

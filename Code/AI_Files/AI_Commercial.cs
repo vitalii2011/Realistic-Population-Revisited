@@ -4,22 +4,23 @@ using UnityEngine;
 using HarmonyLib;
 
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
+
 namespace RealisticPopulationRevisited
 {
     [HarmonyPatch(typeof(CommercialBuildingAI))]
     [HarmonyPatch("CalculateWorkplaceCount")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticCommercialWorkplaceCount
+    public static class RealisticCommercialWorkplaceCount
     {
-        static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        public static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
-            ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;
 
-            PrefabEmployStruct output;
             // If not seen prefab, calculate
-            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out output))
+            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out PrefabEmployStruct output))
             {
                 output = PopData.instance.Workplaces(item, (int)level);
 
@@ -42,12 +43,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetConsumptionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticCommercialConsumption
+    public static class RealisticCommercialConsumption
     {
-        static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        public static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
-            ItemClass item = __instance.m_info.m_class;
-
             int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             electricityConsumption = array[DataStore.POWER];
@@ -76,9 +75,9 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetPollutionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(int), typeof(DistrictPolicies.CityPlanning), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticCommercialPollution
+    public static class RealisticCommercialPollution
     {
-        static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        public static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
             ItemClass item = __instance.m_info.m_class;
             int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
@@ -102,18 +101,15 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(typeof(CommercialBuildingAI))]
     [HarmonyPatch("CalculateVisitplaceCount")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    class RealisticCommercialVisits
+    public static class RealisticCommercialVisits
     {
-        static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        public static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
-            PrefabEmployStruct visitors;
-
-
             // All commercial places will need visitors. CalcWorkplaces is normally called first, redirected above to include a calculation of worker visits (CalculateprefabWorkerVisit).
             // However, there is a problem with some converted assets that don't come through the "front door" (i.e. Ploppable RICO - see below).
 
             // Try to retrieve previously calculated value.
-            if (!DataStore.prefabWorkerVisit.TryGetValue(__instance.m_info.gameObject.GetHashCode(), out visitors))
+            if (!DataStore.prefabWorkerVisit.TryGetValue(__instance.m_info.gameObject.GetHashCode(), out PrefabEmployStruct visitors))
             {
                 // If we didn't get a value, most likely it was because the prefab wasn't properly initialised.
                 // This can happen with Ploppable RICO when the underlying asset class isn't 'Default' (for example, where Ploppable RICO assets are originally Parks, Plazas or Monuments).
@@ -143,11 +139,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(typeof(CommercialBuildingAI))]
     [HarmonyPatch("CalculateProductionCapacity")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    class RealisticCommercialProduction
+    public static class RealisticCommercialProduction
     {
-        static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        public static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
-            ItemClass @class = __instance.m_info.m_class;
             int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             // Original method return value.
@@ -159,7 +154,7 @@ namespace RealisticPopulationRevisited
     }
 
 
-    public class CommercialBuildingAIMod
+    public static class CommercialBuildingAIMod
     {
         public static int[] GetArray(BuildingInfo item, int level)
         {
@@ -204,3 +199,5 @@ namespace RealisticPopulationRevisited
         }
     }
 }
+
+#pragma warning restore IDE0060 // Remove unused parameter

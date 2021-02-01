@@ -16,15 +16,6 @@ namespace RealisticPopulationRevisited
         private const int NumSubServices = 4;
         private const int NumLevels = 5;
 
-        // Label constants.
-        private string[] subServiceLables =
-        {
-            "RPR_OPT_RLO",
-            "RPR_OPT_RHI",
-            "RPR_OPT_ELO",
-            "RPR_OPT_EHI"
-        };
-
 
         /// <summary>
         /// Adds residential options tab to tabstrip.

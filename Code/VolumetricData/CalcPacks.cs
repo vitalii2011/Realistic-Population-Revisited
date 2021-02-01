@@ -154,7 +154,7 @@
         public override int Population(BuildingInfo buildingPrefab, int level, float multiplier)
         {
             int[] array = ResidentialBuildingAIMod.GetArray(buildingPrefab, (int)level);
-            return AI_Utils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array, (int)level);
+            return AI_Utils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array);
         }
     }
 
@@ -172,10 +172,8 @@
         /// <returns>Workplace breakdowns and visitor count </returns>
         public override PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level)
         {
-            PrefabEmployStruct output;
-
             int[] array = CommercialBuildingAIMod.GetArray(buildingPrefab, level);
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 4, ref array, out output);
+            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 4, ref array, out PrefabEmployStruct output);
 
             return output;
         }
@@ -195,7 +193,6 @@
         /// <returns>Workplace breakdowns and visitor count </returns>
         public override PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level)
         {
-            PrefabEmployStruct output;
             int[] array;
             int minWorkers;
 
@@ -211,7 +208,7 @@
                 minWorkers = 4;
             }
 
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, minWorkers, ref array, out output);
+            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, minWorkers, ref array, out PrefabEmployStruct output);
 
             return output;
         }
@@ -231,10 +228,8 @@
         /// <returns>Workplace breakdowns and visitor count </returns>
         public override PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level)
         {
-            PrefabEmployStruct output;
-
             int[] array = OfficeBuildingAIMod.GetArray(buildingPrefab, level);
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 10, ref array, out output);
+            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 10, ref array, out PrefabEmployStruct output);
 
             return output;
         }

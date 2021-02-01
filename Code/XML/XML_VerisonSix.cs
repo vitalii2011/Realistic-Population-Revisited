@@ -22,7 +22,7 @@ namespace RealisticPopulationRevisited
         private const string productionNodeName = "production";
 
         /// <param name="doc"></param>
-        public override void readXML(XmlDocument doc)
+        public override void ReadXML(XmlDocument doc)
         {
             XmlElement root = doc.DocumentElement;
             try
@@ -94,7 +94,7 @@ namespace RealisticPopulationRevisited
 
         /// <param name="fullPathFileName"></param>
         /// <returns></returns>
-        public override bool writeXML(string fullPathFileName)
+        public override bool WriteXML(string fullPathFileName)
         {
             XmlDocument xmlDoc = new XmlDocument();
 
@@ -177,8 +177,7 @@ namespace RealisticPopulationRevisited
                 XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
                 meshNameNode.InnerXml = SecurityElement.Escape(name);
                 attribute = xmlDoc.CreateAttribute("value");
-                int value = 1;
-                DataStore.householdCache.TryGetValue(name, out value);
+                DataStore.householdCache.TryGetValue(name, out int value);
                 attribute.Value = Convert.ToString(value);
                 meshNameNode.Attributes.Append(attribute);
                 overrideHouseholdNode.AppendChild(meshNameNode);
@@ -195,8 +194,7 @@ namespace RealisticPopulationRevisited
                 XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
                 meshNameNode.InnerXml = data;
                 attribute = xmlDoc.CreateAttribute("value");
-                int value = 1;
-                DataStore.housePrintOutCache.TryGetValue(data, out value);
+                DataStore.housePrintOutCache.TryGetValue(data, out int value);
                 attribute.Value = Convert.ToString(value);
                 meshNameNode.Attributes.Append(attribute);
                 printHouseholdNode.AppendChild(meshNameNode);
@@ -237,8 +235,7 @@ namespace RealisticPopulationRevisited
             {
                 XmlNode meshNameNode = xmlDoc.CreateElement(meshName);
                 meshNameNode.InnerXml = SecurityElement.Escape(name);
-                int value = 1;
-                DataStore.workerCache.TryGetValue(name, out value);
+                DataStore.workerCache.TryGetValue(name, out int value);
                 attribute = xmlDoc.CreateAttribute("value");
                 attribute.Value = Convert.ToString(value);
                 meshNameNode.Attributes.Append(attribute);
@@ -325,7 +322,7 @@ namespace RealisticPopulationRevisited
             rootNode.AppendChild(comment);
             comment = xmlDoc.CreateComment("calc = model or plot. To calculate the base using either the building model, or by the land size");
             rootNode.AppendChild(comment);
-            comment = xmlDoc.CreateComment("visit_mult = The number of visitors as a multiple of workers to 1 decimal place. This is used for commercial only");
+            //comment = xmlDoc.CreateComment("visit_mult = The number of visitors as a multiple of workers to 1 decimal place. This is used for commercial only");
             //            rootNode.AppendChild(comment);
             comment = xmlDoc.CreateComment("lvl_0 ... lvl_3 = Proportional values between the education levels (uneducated, educated, well educated, highly educated). Does not need to be percentages.");
             rootNode.AppendChild(comment);
@@ -412,7 +409,7 @@ namespace RealisticPopulationRevisited
             XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
 
             XmlAttribute attribute = xmlDoc.CreateAttribute("space_pp");
-            attribute.Value = Convert.ToString(TransformPopulationModifier(buildingType, level, array[DataStore.PEOPLE], true));
+            attribute.Value = Convert.ToString(TransformPopulationModifier(buildingType, array[DataStore.PEOPLE], true));
             node.Attributes.Append(attribute);
 
             attribute = xmlDoc.CreateAttribute("level_height");
@@ -544,14 +541,13 @@ namespace RealisticPopulationRevisited
         /// <param name="pollutionNode"></param>
         private void ReadPollutionNode(XmlNode pollutionNode)
         {
-            string name = "";
             foreach (XmlNode node in pollutionNode.ChildNodes)
             {
                 try
                 {
                     // Extract power, water, sewage, garbage and wealth
                     string[] attr = node.Name.Split(new char[] { '_' });
-                    name = attr[0];
+                    string name = attr[0];
                     int level = Convert.ToInt32(attr[1]) - 1;
                     int ground = Convert.ToInt32(node.Attributes["ground"].InnerText);
                     int noise = Convert.ToInt32(node.Attributes["noise"].InnerText);
@@ -674,7 +670,7 @@ namespace RealisticPopulationRevisited
                         {
                             temp = 100;  // Bad person trying to give negative or div0 error. 
                         }
-                        array[DataStore.PEOPLE] = TransformPopulationModifier(name, level, temp, false);
+                        array[DataStore.PEOPLE] = TransformPopulationModifier(name, temp, false);
 
                     }
                     catch (Exception e)
@@ -727,11 +723,10 @@ namespace RealisticPopulationRevisited
 
 
         /// <param name="name"></param>
-        /// <param name="level"></param>
         /// <param name="value"></param>
         /// <param name="toXML">Transformation into XML value</param>
         /// <returns></returns>
-        private int TransformPopulationModifier(string name, int level, int value, bool toXML)
+        private int TransformPopulationModifier(string name, int value, bool toXML)
         {
             int dividor = 1;
 
@@ -780,7 +775,7 @@ namespace RealisticPopulationRevisited
             foreach (XmlNode node in parent.ChildNodes)
             {
                 string name = node.InnerText;
-                int overrideValue = 1;
+                int overrideValue;
                 if (node.Name.Equals(meshName) && (name.Length > 0))
                 {
                     try
@@ -833,7 +828,7 @@ namespace RealisticPopulationRevisited
             foreach (XmlNode node in parent.ChildNodes)
             {
                 string name = node.InnerText;
-                int overrideValue = 5;
+                int overrideValue;
                 if (node.Name.Equals(meshName) && (name.Length > 0))
                 {
                     try

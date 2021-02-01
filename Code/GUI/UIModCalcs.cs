@@ -609,7 +609,7 @@ namespace RealisticPopulationRevisited
         private UISlider AddSliderWithMultipler(UIComponent parent, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
         {
             // Add slider component.
-            UISlider newSlider = UIControls.AddSlider(parent, text, min, max, step, defaultValue, eventCallback, width);
+            UISlider newSlider = UIControls.AddSlider(parent, text, min, max, step, defaultValue, width);
             UIPanel sliderPanel = (UIPanel)newSlider.parent;
 
             // Value label.

@@ -62,7 +62,7 @@ namespace RealisticPopulationRevisited
                         File.Copy(DataStore.currentFileLocation, DataStore.currentFileLocation + ".ver4", true);
                         return;
                     }
-                    reader.readXML(doc);
+                    reader.ReadXML(doc);
                 }
                 catch (Exception e)
                 {
@@ -88,7 +88,7 @@ namespace RealisticPopulationRevisited
                 try
                 {
                     WG_XMLBaseVersion xml = new XML_VersionSix();
-                    xml.writeXML(DataStore.currentFileLocation);
+                    xml.WriteXML(DataStore.currentFileLocation);
                 }
                 catch (Exception e)
                 {

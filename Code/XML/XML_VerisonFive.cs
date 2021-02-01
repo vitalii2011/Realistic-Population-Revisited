@@ -16,7 +16,7 @@ namespace RealisticPopulationRevisited
         private const string productionNodeName = "production";
 
         /// <param name="doc"></param>
-        public override void readXML(XmlDocument doc)
+        public override void ReadXML(XmlDocument doc)
         {
             XmlElement root = doc.DocumentElement;
             try
@@ -35,31 +35,31 @@ namespace RealisticPopulationRevisited
                 {
                     if (node.Name.Equals(popNodeName))
                     {
-                        readPopulationNode(node);
+                        ReadPopulationNode(node);
                     }
                     else if (node.Name.Equals(consumeNodeName))
                     {
-                        readConsumptionNode(node);
+                        ReadConsumptionNode(node);
                     }
                     else if (node.Name.Equals(visitNodeName))
                     {
-                        readVisitNode(node);
+                        ReadVisitNode(node);
                     }
                     else if (node.Name.Equals(pollutionNodeName))
                     {
-                        readPollutionNode(node);
+                        ReadPollutionNode(node);
                     }
                     else if (node.Name.Equals(productionNodeName))
                     {
-                        readProductionNode(node);
+                        ReadProductionNode(node);
                     }
                     else if (node.Name.Equals(bonusHouseName))
                     {
-                        readBonusHouseNode(node);
+                        ReadBonusHouseNode(node);
                     }
                     else if (node.Name.Equals(bonusWorkName))
                     {
-                        readBonusWorkers(node);
+                        ReadBonusWorkers(node);
                     }
                 }
                 catch (Exception e)
@@ -72,250 +72,23 @@ namespace RealisticPopulationRevisited
 
         /// <param name="fullPathFileName"></param>
         /// <returns></returns>
-        public override bool writeXML(string fullPathFileName)
+        public override bool WriteXML(string fullPathFileName)
         {
             // Should not be called now
             return false;
         } // end writeXML
 
 
-        /// <param name="xmlDoc"></param>
-        /// <param name="rootNode"></param>
-        private void createPopulationNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
-        {
-            XmlComment comment = xmlDoc.CreateComment("space_pp = Square metres per person");
-            rootNode.AppendChild(comment);
-            comment = xmlDoc.CreateComment("level_height = Height of a floor. The height of chimneys have been taken into account");
-            rootNode.AppendChild(comment);
-            comment = xmlDoc.CreateComment("calc = model or plot. To calculate the base using either the building model, or by the land size");
-            rootNode.AppendChild(comment);
-            comment = xmlDoc.CreateComment("visit_mult = The number of visitors as a multiple of workers to 1 decimal place. This is used for commercial only");
-            //            rootNode.AppendChild(comment);
-            comment = xmlDoc.CreateComment("lvl_0 ... lvl_3 = Proportional values between the education levels (uneducated, educated, well educated, highly educated). Does not need to be percentages.");
-            rootNode.AppendChild(comment);
-        }
-
-
-        /// <param name="xmlDoc"></param>
-        /// <param name="rootNode"></param>
-        private void createConsumptionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
-        {
-            XmlComment comment = xmlDoc.CreateComment("Consumption values are per household, or per production unit");
-            rootNode.AppendChild(comment);
-        }
-
-        /// <param name="xmlDoc"></param>
-        /// <param name="rootNode"></param>
-        private void createVisitNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
-        {
-            XmlComment comment = xmlDoc.CreateComment("Visitor Values are multiplies of 100th of a person per cell.");
-            rootNode.AppendChild(comment);
-        }
-
-        /// <param name="xmlDoc"></param>
-        /// <param name="rootNode"></param>
-        private void createPollutionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
-        {
-            XmlComment comment = xmlDoc.CreateComment("Ground pollution is not used by residential, commercial and offices.");
-            rootNode.AppendChild(comment);
-            comment = xmlDoc.CreateComment("Noise pollution is not spread over the land by residential or offices.");
-            rootNode.AppendChild(comment);
-        }
-
-
-        /// <param name="xmlDoc"></param>
-        /// <param name="rootNode"></param>
-        private void createProductionNodeComment(XmlDocument xmlDoc, XmlNode rootNode)
-        {
-            XmlComment comment = xmlDoc.CreateComment("Production for offices is number of employees per production unit.");
-            rootNode.AppendChild(comment);
-            comment = xmlDoc.CreateComment("For industry, it used as hundredths of a unit per cell block.");
-            rootNode.AppendChild(comment);
-        }
-
-
-        /// <param name="xmlDoc"></param>
-        /// <param name="buildingType"></param>
-        /// <param name="array"></param>
-        /// <param name="rootPopNode"></param>
-        /// <param name="consumNode"></param>
         /// <param name="pollutionNode"></param>
-        private void makeNodes(XmlDocument xmlDoc, String buildingType, int[][] array, XmlNode rootPopNode, XmlNode consumNode, XmlNode visitNode, XmlNode pollutionNode, XmlNode productionNode)
+        private void ReadPollutionNode(XmlNode pollutionNode)
         {
-            for (int i = 0; i < array.GetLength(0); i++)
-            {
-                makeNodes(xmlDoc, buildingType, array[i], i, rootPopNode, consumNode, visitNode, pollutionNode, productionNode);
-            }
-        }
-
-
-        /// <param name="xmlDoc"></param>
-        /// <param name="buildingType"></param>
-        /// <param name="array"></param>
-        /// <param name="level"></param>
-        /// <param name="rootPopNode"></param>
-        /// <param name="consumNode"></param>
-        /// <param name="pollutionNode"></param>
-        private void makeNodes(XmlDocument xmlDoc, String buildingType, int[] array, int level, XmlNode rootPopNode, XmlNode consumNode, XmlNode visitNode, XmlNode pollutionNode, XmlNode productionNode)
-        {
-            makePopNode(rootPopNode, xmlDoc, buildingType, level, array);
-            makeConsumeNode(consumNode, xmlDoc, buildingType, level, array[DataStore.POWER], array[DataStore.WATER], array[DataStore.SEWAGE], array[DataStore.GARBAGE], array[DataStore.INCOME]);
-            makeVisitNode(visitNode, xmlDoc, buildingType, level, array);
-            makePollutionNode(pollutionNode, xmlDoc, buildingType, level, array[DataStore.GROUND_POLLUTION], array[DataStore.NOISE_POLLUTION]);
-            makeProductionNode(productionNode, xmlDoc, buildingType, level, array[DataStore.PRODUCTION]);
-        }
-
-
-        /// <param name="root"></param>
-        /// <param name="xmlDoc"></param>
-        /// <param name="buildingType"></param>
-        /// <param name="level"></param>
-        /// <param name="array"></param>
-        private void makePopNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int[] array)
-        {
-            XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
-
-            XmlAttribute attribute = xmlDoc.CreateAttribute("space_pp");
-            attribute.Value = Convert.ToString(transformPopulationModifier(buildingType, level, array[DataStore.PEOPLE], true));
-            node.Attributes.Append(attribute);
-
-            attribute = xmlDoc.CreateAttribute("level_height");
-            attribute.Value = Convert.ToString(array[DataStore.LEVEL_HEIGHT]);
-            node.Attributes.Append(attribute);
-
-            attribute = xmlDoc.CreateAttribute("calc");
-            attribute.Value = array[DataStore.CALC_METHOD] == 0 ? "model" : "plot";
-            node.Attributes.Append(attribute);
-
-            if (array[DataStore.WORK_LVL0] >= 0)
-            {
-                attribute = xmlDoc.CreateAttribute("ground_mult");
-                attribute.Value = Convert.ToString(array[DataStore.DENSIFICATION]);
-                node.Attributes.Append(attribute);
-
-                for (int i = 0; i < 4; i++)
-                {
-                    attribute = xmlDoc.CreateAttribute("lvl_" + i);
-                    attribute.Value = Convert.ToString(array[DataStore.WORK_LVL0 + i]);
-                    node.Attributes.Append(attribute);
-                }
-            }
-
-            root.AppendChild(node);
-        }
-
-
-        /// <param name="root"></param>
-        /// <param name="xmlDoc"></param>
-        /// <param name="buildingType"></param>
-        /// <param name="level"></param>
-        /// <param name="array"></param>
-        private void makeVisitNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int[] array)
-        {
-            if (array[DataStore.VISIT] >= 0)
-            {
-                XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
-
-                XmlAttribute attribute = xmlDoc.CreateAttribute("visit");
-                attribute.Value = Convert.ToString(array[DataStore.VISIT]);
-                node.Attributes.Append(attribute);
-
-                root.AppendChild(node);
-            }
-        }
-
-
-        /// <param name="root"></param>
-        /// <param name="xmlDoc"></param>
-        /// <param name="buildingType"></param>
-        /// <param name="level"></param>
-        /// <param name="power"></param>
-        /// <param name="water"></param>
-        /// <param name="sewage"></param>
-        /// <param name="garbage"></param>
-        /// <param name="wealth"></param>
-        private void makeConsumeNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int power, int water, int sewage, int garbage, int wealth)
-        {
-            XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
-
-            XmlAttribute attribute = xmlDoc.CreateAttribute("power");
-            attribute.Value = Convert.ToString(power);
-            node.Attributes.Append(attribute);
-
-            attribute = xmlDoc.CreateAttribute("water");
-            attribute.Value = Convert.ToString(water);
-            node.Attributes.Append(attribute);
-
-            attribute = xmlDoc.CreateAttribute("sewage");
-            attribute.Value = Convert.ToString(sewage);
-            node.Attributes.Append(attribute);
-
-            attribute = xmlDoc.CreateAttribute("garbage");
-            attribute.Value = Convert.ToString(garbage);
-            node.Attributes.Append(attribute);
-
-            attribute = xmlDoc.CreateAttribute("wealth");
-            attribute.Value = Convert.ToString(wealth);
-            node.Attributes.Append(attribute);
-
-            root.AppendChild(node);
-        }
-
-
-        /// <param name="root"></param>
-        /// <param name="root"></param>
-        /// <param name="xmlDoc"></param>
-        /// <param name="buildingType"></param>
-        /// <param name="level"></param>
-        /// <param name="ground"></param>
-        /// <param name="noise"></param>
-        private void makePollutionNode(XmlNode root, XmlDocument xmlDoc, String buildingType, int level, int ground, int noise)
-        {
-            XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
-
-            XmlAttribute attribute = xmlDoc.CreateAttribute("ground");
-            attribute.Value = Convert.ToString(ground);
-            node.Attributes.Append(attribute);
-
-            attribute = xmlDoc.CreateAttribute("noise");
-            attribute.Value = Convert.ToString(noise);
-            node.Attributes.Append(attribute);
-
-            root.AppendChild(node);
-        }
-
-
-        /// <param name="root"></param>
-        /// <param name="xmlDoc"></param>
-        /// <param name="buildingType"></param>
-        /// <param name="level"></param>
-        /// <param name="production"></param>
-        private void makeProductionNode(XmlNode root, XmlDocument xmlDoc, string buildingType, int level, int production)
-        {
-            if (production >= 0)
-            {
-                XmlNode node = xmlDoc.CreateElement(buildingType + "_" + (level + 1));
-
-                XmlAttribute attribute = xmlDoc.CreateAttribute("production");
-                attribute.Value = Convert.ToString(production);
-                node.Attributes.Append(attribute);
-
-                root.AppendChild(node);
-            }
-        }
-
-
-        /// <param name="pollutionNode"></param>
-        private void readPollutionNode(XmlNode pollutionNode)
-        {
-            string name = "";
             foreach (XmlNode node in pollutionNode.ChildNodes)
             {
                 try
                 {
                     // Extract power, water, sewage, garbage and wealth
                     string[] attr = node.Name.Split(new char[] { '_' });
-                    name = attr[0];
+                    string name = attr[0];
                     int level = Convert.ToInt32(attr[1]) - 1;
                     int ground = Convert.ToInt32(node.Attributes["ground"].InnerText);
                     int noise = Convert.ToInt32(node.Attributes["noise"].InnerText);
@@ -323,51 +96,51 @@ namespace RealisticPopulationRevisited
                     switch (name)
                     {
                         case "ResidentialLow":
-                            setPollutionRates(DataStore.residentialLow[level], ground, noise);
+                            SetPollutionRates(DataStore.residentialLow[level], ground, noise);
                             break;
 
                         case "ResidentialHigh":
-                            setPollutionRates(DataStore.residentialHigh[level], ground, noise);
+                            SetPollutionRates(DataStore.residentialHigh[level], ground, noise);
                             break;
 
                         case "CommercialLow":
-                            setPollutionRates(DataStore.commercialLow[level], ground, noise);
+                            SetPollutionRates(DataStore.commercialLow[level], ground, noise);
                             break;
 
                         case "CommercialHigh":
-                            setPollutionRates(DataStore.commercialHigh[level], ground, noise);
+                            SetPollutionRates(DataStore.commercialHigh[level], ground, noise);
                             break;
 
                         case "CommercialTourist":
-                            setPollutionRates(DataStore.commercialTourist[level], ground, noise);
+                            SetPollutionRates(DataStore.commercialTourist[level], ground, noise);
                             break;
 
                         case "CommercialLeisure":
-                            setPollutionRates(DataStore.commercialLeisure[level], ground, noise);
+                            SetPollutionRates(DataStore.commercialLeisure[level], ground, noise);
                             break;
 
                         case "Office":
-                            setPollutionRates(DataStore.office[level], ground, noise);
+                            SetPollutionRates(DataStore.office[level], ground, noise);
                             break;
 
                         case "Industry":
-                            setPollutionRates(DataStore.industry[level], ground, noise);
+                            SetPollutionRates(DataStore.industry[level], ground, noise);
                             break;
 
                         case "IndustryOre":
-                            setPollutionRates(DataStore.industry_ore[level], ground, noise);
+                            SetPollutionRates(DataStore.industry_ore[level], ground, noise);
                             break;
 
                         case "IndustryOil":
-                            setPollutionRates(DataStore.industry_oil[level], ground, noise);
+                           SetPollutionRates(DataStore.industry_oil[level], ground, noise);
                             break;
 
                         case "IndustryForest":
-                            setPollutionRates(DataStore.industry_forest[level], ground, noise);
+                            SetPollutionRates(DataStore.industry_forest[level], ground, noise);
                             break;
 
                         case "IndustryFarm":
-                            setPollutionRates(DataStore.industry_farm[level], ground, noise);
+                            SetPollutionRates(DataStore.industry_farm[level], ground, noise);
                             break;
                     }
                 }
@@ -380,7 +153,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <param name="consumeNode"></param>
-        private void readConsumptionNode(XmlNode consumeNode)
+        private void ReadConsumptionNode(XmlNode consumeNode)
         {
             foreach (XmlNode node in consumeNode.ChildNodes)
             {
@@ -395,9 +168,9 @@ namespace RealisticPopulationRevisited
                     int sewage = Convert.ToInt32(node.Attributes["sewage"].InnerText);
                     int garbage = Convert.ToInt32(node.Attributes["garbage"].InnerText);
                     int wealth = Convert.ToInt32(node.Attributes["wealth"].InnerText);
-                    int[] array = getArray(name, level, "readConsumptionNode");
+                    int[] array = GetArray(name, level, "readConsumptionNode");
 
-                    setConsumptionRates(array, power, water, sewage, garbage, wealth);
+                    SetConsumptionRates(array, power, water, sewage, garbage, wealth);
                 }
                 catch (Exception e)
                 {
@@ -408,7 +181,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <param name="popNode"></param>
-        private void readPopulationNode(XmlNode popNode)
+        private void ReadPopulationNode(XmlNode popNode)
         {
             try
             {
@@ -424,11 +197,11 @@ namespace RealisticPopulationRevisited
                 // TODO - These two to be removed in Jan 2017
                 if (node.Name.Equals(bonusHouseName))
                 {
-                    readBonusHouseNode(node);
+                    ReadBonusHouseNode(node);
                 }
                 else if (node.Name.Equals(bonusWorkName))
                 {
-                    readBonusWorkers(node);
+                    ReadBonusWorkers(node);
                 }
                 else
                 {
@@ -439,7 +212,7 @@ namespace RealisticPopulationRevisited
 
                     try
                     {
-                        array = getArray(name, level, "readPopulationNode");
+                        array = GetArray(name, level, "readPopulationNode");
                         int temp = Convert.ToInt32(node.Attributes["level_height"].InnerText);
                         array[DataStore.LEVEL_HEIGHT] = temp > 0 ? temp : 10;
 
@@ -448,7 +221,7 @@ namespace RealisticPopulationRevisited
                         {
                             temp = 100;  // Bad person trying to give negative or div0 error. 
                         }
-                        array[DataStore.PEOPLE] = transformPopulationModifier(name, level, temp, false);
+                        array[DataStore.PEOPLE] = TransformPopulationModifier(name, temp, false);
 
                     }
                     catch (Exception e)
@@ -501,11 +274,10 @@ namespace RealisticPopulationRevisited
 
 
         /// <param name="name"></param>
-        /// <param name="level"></param>
         /// <param name="value"></param>
         /// <param name="toXML">Transformation into XML value</param>
         /// <returns></returns>
-        private int transformPopulationModifier(string name, int level, int value, bool toXML)
+        private int TransformPopulationModifier(string name, int value, bool toXML)
         {
             int dividor = 1;
 
@@ -529,7 +301,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <param name="node"></param>
-        private void readBonusHouseNode(XmlNode parent)
+        private void ReadBonusHouseNode(XmlNode parent)
         {
             try
             {
@@ -574,7 +346,7 @@ namespace RealisticPopulationRevisited
         }
 
         /// <param name="node"></param>
-        private void readBonusWorkers(XmlNode parent)
+        private void ReadBonusWorkers(XmlNode parent)
         {
             try
             {
@@ -619,7 +391,7 @@ namespace RealisticPopulationRevisited
         }
 
         /// <param name="produceNode"></param>
-        private void readVisitNode(XmlNode produceNode)
+        private void ReadVisitNode(XmlNode produceNode)
         {
             foreach (XmlNode node in produceNode.ChildNodes)
             {
@@ -629,7 +401,7 @@ namespace RealisticPopulationRevisited
                     string[] attr = node.Name.Split(new char[] { '_' });
                     string name = attr[0];
                     int level = Convert.ToInt32(attr[1]) - 1;
-                    int[] array = getArray(name, level, "readVisitNode");
+                    int[] array = GetArray(name, level, "readVisitNode");
 
                     array[DataStore.VISIT] = Convert.ToInt32(node.Attributes["visit"].InnerText);
                     if (array[DataStore.VISIT] <= 0)
@@ -646,7 +418,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <param name="produceNode"></param>
-        private void readProductionNode(XmlNode produceNode)
+        private void ReadProductionNode(XmlNode produceNode)
         {
             foreach (XmlNode node in produceNode.ChildNodes)
             {
@@ -656,7 +428,7 @@ namespace RealisticPopulationRevisited
                     string[] attr = node.Name.Split(new char[] { '_' });
                     string name = attr[0];
                     int level = Convert.ToInt32(attr[1]) - 1;
-                    int[] array = getArray(name, level, "readProductionNode");
+                    int[] array = GetArray(name, level, "readProductionNode");
 
                     array[DataStore.PRODUCTION] = Convert.ToInt32(node.Attributes["production"].InnerText);
                     if (array[DataStore.PRODUCTION] <= 0)
@@ -676,7 +448,7 @@ namespace RealisticPopulationRevisited
         /// <param name="level"></param>
         /// <param name="callingFunction">For debug purposes</param>
         /// <returns></returns>
-        private static int[] getArray(string name, int level, string callingFunction)
+        private static int[] GetArray(string name, int level, string callingFunction)
         {
             int[] array = new int[14];
 
@@ -744,7 +516,7 @@ namespace RealisticPopulationRevisited
         /// <param name="sewage"></param>
         /// <param name="garbage"></param>
         /// <param name="wealth"></param>
-        private void setConsumptionRates(int[] p, int power, int water, int sewage, int garbage, int wealth)
+        private void SetConsumptionRates(int[] p, int power, int water, int sewage, int garbage, int wealth)
         {
             p[DataStore.POWER] = power;
             p[DataStore.WATER] = water;
@@ -757,7 +529,7 @@ namespace RealisticPopulationRevisited
         /// <param name="p"></param>
         /// <param name="ground"></param>
         /// <param name="noise"></param>
-        private void setPollutionRates(int[] p, int ground, int noise)
+        private void SetPollutionRates(int[] p, int ground, int noise)
         {
             p[DataStore.GROUND_POLLUTION] = ground;
             p[DataStore.NOISE_POLLUTION] = noise;

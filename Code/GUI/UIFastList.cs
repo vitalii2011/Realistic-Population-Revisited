@@ -3,13 +3,16 @@ using ColossalFramework.UI;
 using System;
 
 
+#pragma warning disable IDE1006 // Naming Styles
+
+
 namespace RealisticPopulationRevisited
 {
     /// <summary>
     /// From SamSamTS's work with Building Themes mod, via AJ3D's Ploppable RICO.
     /// Code and comments are unchanged, except for FindBuilding() added by algernon.
     /// </summary>
-    public interface UIFastListRow
+    public interface IUIFastListRow
     {
         #region Methods to implement
         /// <summary>
@@ -77,7 +80,7 @@ namespace RealisticPopulationRevisited
         #region Private members
         private UIPanel m_panel;
         private UIScrollbar m_scrollbar;
-        private FastList<UIFastListRow> m_rows;
+        private FastList<IUIFastListRow> m_rows;
         private FastList<object> m_rowsData;
 
         private Type m_rowType;
@@ -104,7 +107,7 @@ namespace RealisticPopulationRevisited
         /// <param name="parent"></param>
         /// <returns></returns>
         public static UIFastList Create<T>(UIComponent parent)
-            where T : UIPanel, UIFastListRow
+            where T : UIPanel, IUIFastListRow
         {
             UIFastList list = parent.AddUIComponent<UIFastList>();
             list.m_rowType = typeof(T);
@@ -483,7 +486,7 @@ namespace RealisticPopulationRevisited
 
             if (m_rows == null)
             {
-                m_rows = new FastList<UIFastListRow>();
+                m_rows = new FastList<IUIFastListRow>();
                 m_rows.SetCapacity(nbRows);
             }
 
@@ -492,7 +495,7 @@ namespace RealisticPopulationRevisited
                 // Adding missing rows
                 for (int i = m_rows.m_size; i < nbRows; i++)
                 {
-                    m_rows.Add(m_panel.AddUIComponent(m_rowType) as UIFastListRow);
+                    m_rows.Add(m_panel.AddUIComponent(m_rowType) as IUIFastListRow);
                     if (m_canSelect && !selectOnMouseEnter) m_rows[i].eventClick += OnRowClicked;
                     else if (m_canSelect) m_rows[i].eventMouseEnter += OnRowClicked;
                 }
@@ -528,7 +531,6 @@ namespace RealisticPopulationRevisited
                 m_scrollbar.isVisible = isVisible;
             }
 
-            float H = m_rowHeight * m_rowsData.m_size;
             float scrollSize = height * height / (m_rowHeight * m_rowsData.m_size);
             float amount = stepSize * height / (m_rowHeight * m_rowsData.m_size);
 
@@ -612,3 +614,5 @@ namespace RealisticPopulationRevisited
         #endregion
     }
 }
+
+#pragma warning restore IDE1006 // Naming Styles

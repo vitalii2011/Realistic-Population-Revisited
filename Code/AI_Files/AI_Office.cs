@@ -4,22 +4,23 @@ using UnityEngine;
 using HarmonyLib;
 
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
+
 namespace RealisticPopulationRevisited
 {
     [HarmonyPatch(typeof(OfficeBuildingAI))]
     [HarmonyPatch("CalculateWorkplaceCount")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticOfficeWorkplaceCount
+    public static class RealisticOfficeWorkplaceCount
     {
-        static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        public static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
-            ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;
 
-            PrefabEmployStruct output;
             // If not seen prefab, calculate
-            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out output))
+            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out PrefabEmployStruct output))
             {
                 output = PopData.instance.Workplaces(item, (int)level);
 
@@ -42,11 +43,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetConsumptionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticOfficeConsumption
+    public static class RealisticOfficeConsumption
     {
-        static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        public static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
-            ItemClass item = __instance.m_info.m_class;
             int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             electricityConsumption = array[DataStore.POWER];
@@ -75,11 +75,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetPollutionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(int), typeof(DistrictPolicies.CityPlanning), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticOfficePollution
+    public static class RealisticOfficePollution
     {
-        static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        public static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
-            ItemClass @class = __instance.m_info.m_class;
             int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int) level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
@@ -94,16 +93,14 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(typeof(OfficeBuildingAI))]
     [HarmonyPatch("CalculateProductionCapacity")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    class RealisticOfficeProduction
+    public static class RealisticOfficeProduction
     {
 
-        static bool Prefix(ref int __result, OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        public static bool Prefix(ref int __result, OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
-            ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;
-            PrefabEmployStruct worker;
 
-            if (DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out worker))
+            if (DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out PrefabEmployStruct worker))
             {
                 // Employment is available
                 int workers = worker.level0 + worker.level1 + worker.level2 + worker.level3;
@@ -125,7 +122,7 @@ namespace RealisticPopulationRevisited
     }
 
 
-    class OfficeBuildingAIMod : OfficeBuildingAI
+    public class OfficeBuildingAIMod : OfficeBuildingAI
     {
         public static int[] GetArray(BuildingInfo item, int level)
         {
@@ -158,3 +155,5 @@ namespace RealisticPopulationRevisited
         }
     }
 }
+
+#pragma warning restore IDE0060 // Remove unused parameter

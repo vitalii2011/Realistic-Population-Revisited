@@ -16,7 +16,7 @@ namespace RealisticPopulationRevisited
 
 
         // Label constants.
-        private string[] subServiceLables =
+        private readonly string[] subServiceLables =
         {
             "RPR_CAT_OFF",
             "RPR_CAT_ITC"

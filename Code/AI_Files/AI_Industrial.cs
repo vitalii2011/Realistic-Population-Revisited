@@ -4,22 +4,23 @@ using UnityEngine;
 using HarmonyLib;
 
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
+
 namespace RealisticPopulationRevisited
 {
     [HarmonyPatch(typeof(IndustrialBuildingAI))]
     [HarmonyPatch("CalculateWorkplaceCount")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticIndustrialWorkplaceCount
+    public static class RealisticIndustrialWorkplaceCount
     {
-        static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        public static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
-            ulong seed = r.seed;
             BuildingInfo item = __instance.m_info;
 
-            PrefabEmployStruct output;
             // If not seen prefab, calculate
-            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out output))
+            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out PrefabEmployStruct output))
             {
                 output = PopData.instance.Workplaces(item, (int)level);
 
@@ -42,11 +43,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetConsumptionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticIndustrialConsumption
+    public static class RealisticIndustrialConsumption
     {
-        static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        public static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
-            ItemClass item = __instance.m_info.m_class;
             int[] array = IndustrialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             electricityConsumption = array[DataStore.POWER];
@@ -75,14 +75,11 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch("GetPollutionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(int), typeof(DistrictPolicies.CityPlanning), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
-    class RealisticIndustrialPollution
+    public static class RealisticIndustrialPollution
     {
 
-        static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        public static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
-            ItemClass @class = __instance.m_info.m_class;
-            groundPollution = 0;
-            noisePollution = 0;
             int[] array = IndustrialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             groundPollution = (productionRate * array[DataStore.GROUND_POLLUTION]) / 100;
@@ -97,11 +94,10 @@ namespace RealisticPopulationRevisited
     [HarmonyPatch(typeof(IndustrialBuildingAI))]
     [HarmonyPatch("CalculateProductionCapacity")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    class RealisticIndustrialProduction
+    public static class RealisticIndustrialProduction
     {
-        static bool Prefix(ref int __result, IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        public static bool Prefix(ref int __result, IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
-            ItemClass @class = __instance.m_info.m_class;
             int[] array = IndustrialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
             // Original method return value.
@@ -111,13 +107,13 @@ namespace RealisticPopulationRevisited
             return false;
         }
     }
-    
-    
-    class IndustrialBuildingAIMod
+
+
+    public static class IndustrialBuildingAIMod
     {
         public static int[] GetArray(BuildingInfo item, int level)
         {
-            int tempLevel = 0;
+            int tempLevel;
             int[][] array = DataStore.industry;
 
             try
@@ -160,3 +156,5 @@ namespace RealisticPopulationRevisited
         }
     }
 }
+
+#pragma warning restore IDE0060 // Remove unused parameter
