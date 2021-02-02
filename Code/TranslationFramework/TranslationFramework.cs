@@ -48,7 +48,7 @@ namespace RealisticPopulationRevisited
 
 
         /// <summary>
-        /// The current language index number (equals the index number of the language names list provied by LanguageList).
+        /// The current language index number (equals the index number of the language names list provied bye LanguageList).
         /// Useful for easy automatic drop-down language selection menus, working in conjunction with LanguageList:
         /// Set to set the language to the equivalent LanguageList index.
         /// Get to return the LanguageList index of the current languge.
@@ -193,16 +193,24 @@ namespace RealisticPopulationRevisited
                 // Check that the current key is included in the translation.
                 if (currentLanguage.translationDictionary.ContainsKey(key))
                 {
-                    // All good!  Return translation.
-                    return currentLanguage.translationDictionary[key];
+                    string translation = currentLanguage.translationDictionary[key];
+
+                    if (!string.IsNullOrEmpty(translation))
+                    {
+                        // All good!  Return translation.
+                        return currentLanguage.translationDictionary[key];
+                    }
+
+                    // If we got here, there's a null key.
+                    Logging.Error("null or empty shortened fallback translation for key ", key);
                 }
                 else
                 {
                     Logging.Message("no translation for language ", currentLanguage.uniqueName, " found for key " + key);
-
-                    // Attempt fallack translation.
-                    return FallbackTranslation(currentLanguage.uniqueName, key);
                 }
+
+                // Attempt fallack translation.
+                return FallbackTranslation(currentLanguage.uniqueName, key);
             }
             else
             {
@@ -316,8 +324,16 @@ namespace RealisticPopulationRevisited
                     Language fallbackLanguage = languages[newName];
                     if (fallbackLanguage.translationDictionary.ContainsKey(key))
                     {
-                        // All good!  Return translation.
-                        return fallbackLanguage.translationDictionary[key];
+                        string fallback = fallbackLanguage.translationDictionary[key];
+
+                        if (!string.IsNullOrEmpty(fallback))
+                        {
+                            // All good!  Return translation.
+                            return fallbackLanguage.translationDictionary[key];
+                        }
+
+                        // If we got here, there's a null key.
+                        Logging.Error("null or empty shortened fallback translation for key ", key);
                     }
                 }
             }
@@ -327,8 +343,16 @@ namespace RealisticPopulationRevisited
             {
                 if (systemLanguage.translationDictionary.ContainsKey(key))
                 {
-                    // All good!  Return translation.
-                    return systemLanguage.translationDictionary[key];
+                    string fallback = systemLanguage.translationDictionary[key];
+
+                    if (!string.IsNullOrEmpty(fallback))
+                    {
+                        // All good!  Return translation.
+                        return systemLanguage.translationDictionary[key];
+                    }
+
+                    // If we got here, there's a null key.
+                    Logging.Error("null or empty system fallback translation for key ", key);
                 }
             }
 
@@ -336,7 +360,16 @@ namespace RealisticPopulationRevisited
             try
             {
                 Language fallbackLanguage = languages[defaultLanguage];
-                return fallbackLanguage.translationDictionary[key];
+                string fallback = fallbackLanguage.translationDictionary.ContainsKey(key) ? fallbackLanguage.translationDictionary[key] : null;
+
+                if (!string.IsNullOrEmpty(fallback))
+                {
+                    // All good!  Return translation.
+                    return systemLanguage.translationDictionary[key];
+                }
+
+                // If we got here, there's a null key.
+                Logging.Error("null or empty default fallback translation for key ", key);
             }
             catch (Exception e)
             {
@@ -387,7 +420,7 @@ namespace RealisticPopulationRevisited
                 }
                 else
                 {
-                    Logging.Message("translations directory not found");
+                    Logging.Error("translations directory not found");
                 }
             }
             else
