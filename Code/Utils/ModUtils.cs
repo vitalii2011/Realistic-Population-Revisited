@@ -119,7 +119,7 @@ namespace RealisticPopulationRevisited
         /// </summary>
         /// <param name="prefab">Prefab to check</param>
         /// <returns>True if Ploppable RICO is managing this prefab, false otherwise.</returns>
-        internal static bool CheckRICO(BuildingInfo prefab)
+        internal static bool CheckRICOPopControl(BuildingInfo prefab)
         {
             // If we haven't got the RICO method by reflection, the answer is always false.
             if (ricoPopManaged != null)

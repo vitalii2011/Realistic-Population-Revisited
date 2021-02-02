@@ -162,6 +162,8 @@
     <Translation ID="RPR_CAL_FLR_M" String="Floor mod" />
     <Translation ID="RPR_CAL_FLR" String="Calculated floors:" />
     <Translation ID="RPR_CAL_M2" String="Calculated area:" />
+    <Translation ID="RPR_CAL_OVR" String="(Overridden)" />
+    <Translation ID="RPR_CAL_OVM" String="Population calculation is overriden by manual setting" />
     <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited is controlling the figures for this building." />
     <Translation ID="RPR_CAL_CAP_OVR" String="Custom capacity multiplier" />
     <Translation ID="RPR_CAL_CAP_DEF" String="Default multiplier:" />

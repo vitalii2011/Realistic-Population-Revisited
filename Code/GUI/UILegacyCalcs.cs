@@ -268,7 +268,7 @@ namespace RealisticPopulationRevisited
             }
 
             // Check to see if Ploppable RICO Revisited is controlling this building's population.
-            if (ModUtils.CheckRICO(building))
+            if (ModUtils.CheckRICOPopControl(building))
             {
                 messageLabel.text = Translations.Translate("RPR_CAL_RICO");
                 messageLabel.Show();
