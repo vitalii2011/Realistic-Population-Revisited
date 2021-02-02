@@ -329,7 +329,7 @@ namespace RealisticPopulationRevisited
                         if (!string.IsNullOrEmpty(fallback))
                         {
                             // All good!  Return translation.
-                            return fallbackLanguage.translationDictionary[key];
+                            return fallback;
                         }
 
                         // If we got here, there's a null key.
@@ -348,7 +348,7 @@ namespace RealisticPopulationRevisited
                     if (!string.IsNullOrEmpty(fallback))
                     {
                         // All good!  Return translation.
-                        return systemLanguage.translationDictionary[key];
+                        return fallback;
                     }
 
                     // If we got here, there's a null key.
@@ -365,7 +365,7 @@ namespace RealisticPopulationRevisited
                 if (!string.IsNullOrEmpty(fallback))
                 {
                     // All good!  Return translation.
-                    return systemLanguage.translationDictionary[key];
+                    return fallback;
                 }
 
                 // If we got here, there's a null key.
