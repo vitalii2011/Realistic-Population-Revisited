@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// XML serialization/deserialization utilities class.

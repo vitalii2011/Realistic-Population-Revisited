@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Logging utility class.

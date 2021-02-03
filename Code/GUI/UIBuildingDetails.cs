@@ -6,7 +6,7 @@ using ColossalFramework;
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Buidling details panel manager static class.

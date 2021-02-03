@@ -3,7 +3,7 @@ using ICities;
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class UIModCalcs : UIPanel
     {

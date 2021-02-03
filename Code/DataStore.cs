@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class DataStore
     {

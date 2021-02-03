@@ -9,7 +9,7 @@ using ColossalFramework.Plugins;
 using ColossalFramework.Globalization;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Static class to provide translation interface.

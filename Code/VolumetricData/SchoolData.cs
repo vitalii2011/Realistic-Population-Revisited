@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Simple class to store original school stats (for reversion to if needed).

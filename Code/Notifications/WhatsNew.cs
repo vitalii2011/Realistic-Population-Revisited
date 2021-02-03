@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using System.Collections.Generic;
-using RealisticPopulationRevisited.MessageBox;
+using RealPop2.MessageBox;
 
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// "What's new" message box.  Based on macsergey's code in Intersection Marking Tool (Node Markup) mod.

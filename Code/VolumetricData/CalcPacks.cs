@@ -1,4 +1,4 @@
-﻿namespace RealisticPopulationRevisited
+﻿namespace RealPop2
 {
     public enum DataVersion
     {

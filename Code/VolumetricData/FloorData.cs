@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Centralised store and management of floor calculation data.

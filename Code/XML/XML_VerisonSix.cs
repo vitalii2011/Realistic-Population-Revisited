@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml;
 using System.Security;
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class XML_VersionSix : WG_XMLBaseVersion
     {

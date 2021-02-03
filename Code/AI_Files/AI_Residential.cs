@@ -7,7 +7,7 @@ using HarmonyLib;
 #pragma warning disable IDE0060 // Remove unused parameter
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     [HarmonyPatch(typeof(ResidentialBuildingAI))]
     [HarmonyPatch("CalculateHomeCount")]

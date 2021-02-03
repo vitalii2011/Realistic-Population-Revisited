@@ -2,7 +2,7 @@
 using ColossalFramework;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class RealisticCitizenUnits
     {

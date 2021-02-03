@@ -2,7 +2,7 @@
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Index numbers for building category filter buttons.

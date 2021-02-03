@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// XML language class - from BloodyPenguin's translation framework.

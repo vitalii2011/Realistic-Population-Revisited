@@ -2,7 +2,7 @@
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Base class for options panel consumption settings (sub-)tabs (new configuration).

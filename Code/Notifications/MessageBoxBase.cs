@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace RealisticPopulationRevisited.MessageBox
+namespace RealPop2.MessageBox
 {
     /// <summary>
     /// Base class for displaying modal message boxes.

@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using ICities;
-using RealisticPopulationRevisited.MessageBox;
+using RealPop2.MessageBox;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class Loading : LoadingExtensionBase
     {

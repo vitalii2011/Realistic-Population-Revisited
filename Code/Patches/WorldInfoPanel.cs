@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Harmony Postfix patch to toggle Realistic Population building info panel button visibility when building selection changes.

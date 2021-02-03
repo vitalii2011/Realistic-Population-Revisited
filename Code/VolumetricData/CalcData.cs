@@ -3,7 +3,7 @@ using ColossalFramework;
 using ColossalFramework.Math;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Static data management utility class.

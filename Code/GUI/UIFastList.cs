@@ -6,7 +6,7 @@ using System;
 #pragma warning disable IDE1006 // Naming Styles
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// From SamSamTS's work with Building Themes mod, via AJ3D's Ploppable RICO.

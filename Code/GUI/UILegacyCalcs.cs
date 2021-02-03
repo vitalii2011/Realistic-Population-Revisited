@@ -3,7 +3,7 @@ using ColossalFramework.UI;
 using UnityEngine;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Different mod calculations shown (in text labels) by this panel.

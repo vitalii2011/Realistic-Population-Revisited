@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     internal class AI_Utils
     {

@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Harmony patch for realistic student counts.

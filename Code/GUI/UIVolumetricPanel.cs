@@ -5,7 +5,7 @@ using ColossalFramework.Globalization;
 using System.Collections.Generic;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Panel to display volumetric calculations.

@@ -3,7 +3,7 @@ using UnityEngine;
 using ICities;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class UIThreading : ThreadingExtensionBase
     {

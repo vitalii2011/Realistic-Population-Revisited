@@ -1,4 +1,4 @@
-﻿namespace RealisticPopulationRevisited
+﻿namespace RealPop2
 {
     /// <summary>
     /// Static class to hold global mod settings.

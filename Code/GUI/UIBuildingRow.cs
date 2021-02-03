@@ -2,7 +2,7 @@
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// An individual row in the list of buildings.

@@ -2,7 +2,7 @@ using System;
 using System.Xml;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class XML_VersionFive : WG_XMLBaseVersion
     {

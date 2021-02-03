@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Centralised store and management of employment calculation data.

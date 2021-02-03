@@ -2,7 +2,7 @@
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Titlebar for the building details screen.

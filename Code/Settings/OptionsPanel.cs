@@ -4,7 +4,7 @@ using ColossalFramework.UI;
 using ColossalFramework.Globalization;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Class to handle the mod settings options panel.

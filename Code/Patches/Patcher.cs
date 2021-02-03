@@ -2,7 +2,7 @@
 using CitiesHarmony.API;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Class to manage the mod's Harmony patches.

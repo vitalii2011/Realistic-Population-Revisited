@@ -4,7 +4,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 
     
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
 
     /// <summary>

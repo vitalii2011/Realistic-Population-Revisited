@@ -3,7 +3,7 @@ using ColossalFramework.UI;
 using CitiesHarmony.API;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public class RealPopMod : IUserMod
     {

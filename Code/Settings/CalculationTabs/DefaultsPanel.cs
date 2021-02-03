@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Options panel for setting default calculation packs.

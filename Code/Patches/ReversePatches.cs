@@ -6,7 +6,7 @@ using HarmonyLib;
 #pragma warning disable IDE0060 // Remove unused parameter
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     ///  Harmony reverse patches.

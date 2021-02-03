@@ -5,7 +5,7 @@ using ColossalFramework;
 using ColossalFramework.IO;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Handles savegame data saving and loading.

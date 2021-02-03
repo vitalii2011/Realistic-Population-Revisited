@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace RealisticPopulationRevisited.MessageBox
+namespace RealPop2.MessageBox
 {
     /// <summary>
     /// 'What's new' message box.

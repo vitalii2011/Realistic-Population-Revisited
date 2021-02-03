@@ -1,4 +1,4 @@
-﻿namespace RealisticPopulationRevisited
+﻿namespace RealPop2
 {
     /// <summary>
     /// Class for mapping serives to DataStore structures.

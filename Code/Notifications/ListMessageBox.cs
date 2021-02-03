@@ -2,7 +2,7 @@
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited.MessageBox
+namespace RealPop2.MessageBox
 {
     /// <summary>
     /// Simple message box with separate pargaraphs and/or lists of dot points.

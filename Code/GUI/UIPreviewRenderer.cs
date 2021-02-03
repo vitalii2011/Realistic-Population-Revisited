@@ -3,7 +3,7 @@ using UnityEngine;
 using ColossalFramework;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Render a 3d image of a given mesh.

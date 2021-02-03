@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     public abstract class WG_XMLBaseVersion
     {

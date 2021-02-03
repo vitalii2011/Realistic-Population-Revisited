@@ -3,7 +3,7 @@ using ColossalFramework;
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Utilities for Options Panel UI.

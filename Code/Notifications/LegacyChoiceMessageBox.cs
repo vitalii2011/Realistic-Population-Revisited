@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited.MessageBox
+namespace RealPop2.MessageBox
 {
     /// <summary>
     /// Message box prompting the user to chose between legacy and new calculations for this save file.

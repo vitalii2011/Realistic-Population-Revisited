@@ -3,7 +3,7 @@ using UnityEngine;
 using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Options panel for creating and editing calculation packs.

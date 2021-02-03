@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
 
 
-namespace RealisticPopulationRevisited.MessageBox
+namespace RealPop2.MessageBox
 {
     /// <summary>
     /// Message box with separate pargaraphs and/or lists of dot points, with 'close' and 'dont show again' buttons.

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-
-
-namespace RealisticPopulationRevisited
+﻿namespace RealPop2
 {
     /// <summary>
     /// External interfaces that can be used by other mods.

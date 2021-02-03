@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ColossalFramework.Plugins;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Class that manages interactions with other mods, including compatibility and functionality checks.

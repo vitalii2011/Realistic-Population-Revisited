@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using ColossalFramework.Math;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Class for XML configuration file utility methods.

@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 
 
-namespace RealisticPopulationRevisited
+namespace RealPop2
 {
     /// <summary>
     /// Defines the XML configuration file.
