@@ -91,7 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Changelog.txt" />
-    <Content Include="Images\PreviewImage.png" />
+    <Content Include="Images\PreviewImage_old.png" />
+    <Content Include="Images\PreviewImage_Beta.png" />
     <Content Include="Images\PreviewImage_WG.png" />
     <Content Include="Images\Screen_1x1HRes.jpg" />
     <Content Include="Images\Screen_CustomHCom.jpg" />
