@@ -27,12 +27,11 @@ namespace RealPop2
         private const float Row5 = Row4 + RowHeight;
         private const float Row6 = Row5 + RowHeight;
         private const float Row7 = Row6 + RowHeight;
-        private const float MessageX = Row7 + RowHeight + Margin;
-        private const float FloorListX = MessageX + 30f;
+        private const float MessageY = Row7 + RowHeight + Margin;
+        private const float FloorListY = MessageY + 30f;
 
 
         // Panel components.
-        private UIPanel floorsPanel;
         private UIFastList floorsList;
         private UILabel numFloorsLabel, floorAreaLabel, totalLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
         private UILabel emptyAreaLabel, emptyPercentLabel, perLabel;
@@ -44,7 +43,7 @@ namespace RealPop2
         /// <summary>
         /// Create the panel; we no longer use Start() as that's not sufficiently reliable (race conditions), and is no longer needed, with the new create/destroy process.
         /// </summary>
-        public void Setup()
+        internal void Setup()
         {
             // Generic setup.
             isVisible = true;
@@ -82,26 +81,31 @@ namespace RealPop2
             ignoreFirstCheckBox.Disable();
 
             // Message label.
-            messageLabel = UIControls.AddLabel(this, Margin, MessageX, string.Empty);
+            messageLabel = UIControls.AddLabel(this, Margin, MessageY, string.Empty);
 
-            // Floor panel.
-            floorsPanel = this.AddUIComponent<UIPanel>();
-            floorsPanel.relativePosition = new Vector3(0, FloorListX);
-            floorsPanel.width = this.width;
-            floorsPanel.height = this.height - FloorListX;
+            // Floor list - attached to root panel as scrolling and interactivity can be unreliable otherwise.
+            floorsList = UIFastList.Create<UIFloorRow>(BuildingDetailsPanel.Panel);
 
-            // Floor list.
-            floorsList = UIFastList.Create<UIFloorRow>(floorsPanel);
+            // Set relative position.
+            float xPos = this.relativePosition.x + parent.relativePosition.x;
+            float yPos = this.relativePosition.y + parent.relativePosition.y + FloorListY;
+            floorsList.relativePosition = new Vector2(xPos, yPos);
+
+            // Size, appearance and behaviour.
             floorsList.backgroundSprite = "UnlockingPanel";
-            floorsList.width = floorsPanel.width;
-            floorsList.height = floorsPanel.height;
+            floorsList.width = this.width;
+            floorsList.height = this.height - FloorListY;
             floorsList.isInteractive = true;
             floorsList.canSelect = false;
             floorsList.rowHeight = 20;
             floorsList.autoHideScrollbar = true;
-            floorsList.relativePosition = Vector3.zero;
+
+            // Data.
             floorsList.rowsData = new FastList<object>();
             floorsList.selectedIndex = -1;
+
+            // Toggle floorsList visibility on this panel's visibility change (because floorsList is attached to root panel).
+            this.eventVisibilityChanged += (control, isVisible) => floorsList.isVisible = isVisible;
         }
 
 

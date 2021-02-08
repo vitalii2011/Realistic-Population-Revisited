@@ -90,7 +90,7 @@ namespace RealPop2
             messageLabel.autoSize = false;
             messageLabel.autoHeight = true;
             messageLabel.wordWrap = true;
-            messageLabel.width = 270;
+            messageLabel.width = this.width - (LeftPadding * 2);
             messageLabel.text = "No message to display";
             messageLabel.isVisible = false;
         }
