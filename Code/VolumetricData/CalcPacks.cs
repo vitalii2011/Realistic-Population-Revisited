@@ -126,7 +126,19 @@
         /// <param name="level">Building level</param>
         /// <param name="multiplier">Population multiplier</param>
         /// <returns>Population</returns>
-        public override int Population(BuildingInfo buildingPrefab, int level, float multiplier) => PopData.instance.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[level], (FloorDataPack)FloorData.instance.ActivePack(buildingPrefab), multiplier);
+        public override int Population(BuildingInfo buildingPrefab, int level, float multiplier)
+        {
+            // Bounds check for building level (zero-based).
+            int thisLevel = level;
+            if (thisLevel >= levels.Length)
+            {
+                Logging.Error("Building level out of range: ", level.ToString());
+                
+                // Set level to maximum (zero-based, so subtract one from levels.Length).
+                thisLevel = levels.Length - 1;
+            }
+            return PopData.instance.VolumetricPopulation(buildingPrefab.m_generatedInfo, levels[thisLevel], (FloorDataPack)FloorData.instance.ActivePack(buildingPrefab), multiplier);
+        }
 
 
         /// <summary>

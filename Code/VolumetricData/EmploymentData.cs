@@ -49,58 +49,6 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Returns the workplace distribution for the given service/subservice/level combination.
-        /// </summary>
-        /// <param name="service">Service</param>
-        /// <param name="subService">Sub-service</param>
-        /// <param name="level">Level (ignored if a single-level service/subservice combination has been provided)</param>
-        /// <returns>Workplace distribution by level as an array of four percentages (cumulative 100%)</returns>
-        private static int[] WorkplaceDistribution(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
-        {
-            switch (service)
-            {
-                case ItemClass.Service.Office:
-                    if (subService == ItemClass.SubService.OfficeHightech)
-                    {
-                        return officeHightech;
-                    }
-                    // Default is generic office.
-                    return office[(int)level];
-                case ItemClass.Service.Industrial:
-                    switch (subService)
-                    {
-                        case ItemClass.SubService.IndustrialForestry:
-                            return industryForest[(int)level];
-                        case ItemClass.SubService.IndustrialFarming:
-                            return industryFarm[(int)level];
-                        case ItemClass.SubService.IndustrialOil:
-                            return industryOil[(int)level];
-                        case ItemClass.SubService.IndustrialOre:
-                            return industryOre[(int)level];
-                        default:
-                            // Default is generic industry.
-                            return industry[(int)level];
-                    }
-                default:
-                    // Default is commercial.
-                    switch (subService)
-                    {
-                        case ItemClass.SubService.CommercialHigh:
-                            return commercialHigh[(int)level];
-                        case ItemClass.SubService.CommercialLeisure:
-                            return commercialLeisure;
-                        case ItemClass.SubService.CommercialTourist:
-                            return commercialTourist;
-                        case ItemClass.SubService.CommercialEco:
-                            return commercialEco;
-                        default:
-                            // Default is commercial low.
-                            return commercialLow[(int)level];
-                    }
-            }
-        }
-
-        /// <summary>
         /// Initialises arrays with default values.
         /// First four values are employment percentages by education level, the fifth (index 4) value is VisitCount loading (from vanilla), the sixth value is vanilla population loading (we have it here for visit count conversion; zero means unused).
         /// </summary>
@@ -165,6 +113,84 @@ namespace RealPop2
             commercialLeisure = new int[] { 15, 40, 35, 10, 250, 100 };
 
             officeHightech = new int[] { 1, 2, 3, 94, 0, 0 };
+        }
+
+
+        /// <summary>
+        /// Returns the workplace distribution for the given service/subservice/level combination.
+        /// </summary>
+        /// <param name="service">Service</param>
+        /// <param name="subService">Sub-service</param>
+        /// <param name="level">Level (ignored if a single-level service/subservice combination has been provided)</param>
+        /// <returns>Workplace distribution by level as an array of four percentages (cumulative 100%)</returns>
+        private static int[] WorkplaceDistribution(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
+        {
+            // Maximum levels for generic workplaces and specialized industry (zero-based).
+            const int MaxWorkplaceLevel = 2;
+            const int MaxSpecIndLevel = 1;
+
+            switch (service)
+            {
+                case ItemClass.Service.Office:
+                    if (subService == ItemClass.SubService.OfficeHightech)
+                    {
+                        return officeHightech;
+                    }
+                    // Default is generic office.
+                    return office[CheckBuildingLevel(level, MaxWorkplaceLevel)];
+                case ItemClass.Service.Industrial:
+                    switch (subService)
+                    {
+
+                        case ItemClass.SubService.IndustrialForestry:
+                            return industryForest[CheckBuildingLevel(level, MaxSpecIndLevel)];
+                        case ItemClass.SubService.IndustrialFarming:
+                            return industryFarm[CheckBuildingLevel(level, MaxSpecIndLevel)];
+                        case ItemClass.SubService.IndustrialOil:
+                            return industryOil[CheckBuildingLevel(level, MaxSpecIndLevel)];
+                        case ItemClass.SubService.IndustrialOre:
+                            return industryOre[CheckBuildingLevel(level, MaxSpecIndLevel)];
+                        default:
+                            // Default is generic industry.
+                            return industry[CheckBuildingLevel(level, MaxWorkplaceLevel)];
+                    }
+                default:
+                    // Default is commercial.
+                    switch (subService)
+                    {
+                        case ItemClass.SubService.CommercialHigh:
+                            return commercialHigh[CheckBuildingLevel(level, MaxWorkplaceLevel)];
+                        case ItemClass.SubService.CommercialLeisure:
+                            return commercialLeisure;
+                        case ItemClass.SubService.CommercialTourist:
+                            return commercialTourist;
+                        case ItemClass.SubService.CommercialEco:
+                            return commercialEco;
+                        default:
+                            // Default is commercial low.
+                            return commercialLow[CheckBuildingLevel(level, MaxWorkplaceLevel)];
+                    }
+            }
+        }
+
+
+        /// <summary>
+        /// Checks the level of a building to make sure it's valid.
+        /// </summary>
+        /// <param name="level">Building level to check</param>
+        /// <param name="maxLevel">Maximum level permitted</param>
+        /// <returns>Minimum of provided building level or maximem level permitted</returns>
+        private static int CheckBuildingLevel(ItemClass.Level level, int maxLevel)
+        {
+            int checkedLevel = (int)level;
+
+            if (checkedLevel > maxLevel)
+            {
+                Logging.Error("invalid workplace building level ", level.ToString());
+                checkedLevel = maxLevel;
+            }
+
+            return checkedLevel;
         }
     }
 }
