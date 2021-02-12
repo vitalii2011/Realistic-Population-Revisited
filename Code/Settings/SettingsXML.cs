@@ -93,6 +93,10 @@ namespace RealPop2
         // Default school capacity multiplier.
         [XmlElement("DefaultSchoolMultiplier")]
         public float DefaultSchoolModifier { get => ModSettings.DefaultSchoolMult; set => ModSettings.DefaultSchoolMult = value; }
+
+        // Crime rate multiplier.
+        [XmlElement("CrimeRateMultiplier")]
+        public float CrimeRateMultiplier { get => ModSettings.crimeMultiplier; set => ModSettings.crimeMultiplier = value; }
     }
 
 
