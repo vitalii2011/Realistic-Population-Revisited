@@ -119,7 +119,7 @@ namespace RealPop2
 
         // Available packs arrays.
         readonly PopDataPack[][] availablePopPacks;
-        readonly DataPack[] availableFloorPacks;
+        DataPack[] availableFloorPacks;
 
         // Instance reference.
         internal static DefaultsPanel instance;
@@ -270,6 +270,7 @@ namespace RealPop2
 
                 // Get available packs for this service/subservice combination.
                 availablePopPacks[i] = PopData.instance.GetPacks(services[i]);
+                availableFloorPacks = FloorData.instance.Packs;
 
                 // Get current and default packs for this item
                 DataPack currentPopPack = PopData.instance.CurrentDefaultPack(services[i], subServices[i]);

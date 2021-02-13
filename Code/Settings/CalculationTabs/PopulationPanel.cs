@@ -163,9 +163,6 @@ namespace RealPop2
                     // Update currently selected pack with information from the panel.
                     UpdatePack((VolumetricPopPack)packList[packDropDown.selectedIndex]);
 
-                    // Update selected menu item in case the name has changed.
-                    packDropDown.items[packDropDown.selectedIndex] = packList[packDropDown.selectedIndex].displayName ?? packList[packDropDown.selectedIndex].name;
-
                     // Save configuration file.
                     ConfigUtils.SaveSettings();
 
@@ -289,6 +286,12 @@ namespace RealPop2
                 // Checkboxes.
                 pack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
             }
+
+            // Update selected menu item in case the name has changed.
+            packDropDown.items[packDropDown.selectedIndex] = pack.displayName ?? pack.name;
+
+            // Update defaults panel menus.
+            DefaultsPanel.instance.UpdateMenus();
         }
 
 
