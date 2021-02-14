@@ -18,9 +18,7 @@ namespace RealPop2
         internal static void IntTextFilter(UITextField control, string value)
         {
             // If it's not blank and isn't an integer, remove the last character and set selection to end.
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            if (!value.IsNullOrWhiteSpace() && !int.TryParse(value, out int result))
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            if (!value.IsNullOrWhiteSpace() && !int.TryParse(value, out int _))
             {
                 control.text = value.Substring(0, value.Length - 1);
                 control.MoveSelectionPointRight();
@@ -36,9 +34,7 @@ namespace RealPop2
         internal static void FloatTextFilter(UITextField control, string value)
         {
             // If it's not blank and isn't an integer, remove the last character and set selection to end.
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            if (!value.IsNullOrWhiteSpace() && !float.TryParse(value, out float result))
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            if (!value.IsNullOrWhiteSpace() && !float.TryParse(value, out float _))
             {
                 control.text = value.Substring(0, value.Length - 1);
                 control.MoveSelectionPointRight();
@@ -156,8 +152,8 @@ namespace RealPop2
         /// <param name="baseY">Y position of base of label/param>
         /// <param name="width">Width of reference item (for centering)</param>
         /// <param name="text">Label text</param>
-        /// <param name="scale">Label text size (default 0.8)</param>
-        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, float scale = 0.8f)
+        /// <param name="scale">Label text size (default 0.7)</param>
+        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, float scale = 0.7f)
         {
             // Basic setup.
             UILabel columnLabel = panel.AddUIComponent<UILabel>();

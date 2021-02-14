@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using ColossalFramework.UI;
 
@@ -11,7 +12,9 @@ namespace RealPop2
     internal class PopulationPanel : CalculationPanelBase
     {
         // Constants.
-        protected const float EmptyAreaX = FirstItem;
+        protected const float PopCheckX = FirstItem;
+        protected const float FixedPopX = PopCheckX + ColumnWidth;
+        protected const float EmptyAreaX = FixedPopX + ColumnWidth;
         protected const float EmptyPercentX = EmptyAreaX + ColumnWidth;
         protected const float AreaPerX = EmptyPercentX + ColumnWidth;
         protected const float MultiFloorX = AreaPerX + ColumnWidth;
@@ -23,8 +26,8 @@ namespace RealPop2
         private readonly int[] maxLevels = { 5, 3, 3, 3, 2 };
 
         // Textfield arrays.
-        protected UITextField[] emptyAreaFields, emptyPercentFields, areaPerFields;
-        protected UICheckBox[] multiFloorCheck;
+        protected UITextField[] emptyAreaFields, emptyPercentFields, fixedPopFields, areaPerFields;
+        protected UICheckBox[] fixedPopChecks, multiFloorChecks;
         protected UILabel[] rowLabels;
 
         // Panel components.
@@ -49,8 +52,10 @@ namespace RealPop2
             // Initialise arrays
             emptyAreaFields = new UITextField[5];
             emptyPercentFields = new UITextField[5];
+            fixedPopChecks = new UICheckBox[5];
+            fixedPopFields = new UITextField[5];
             areaPerFields = new UITextField[5];
-            multiFloorCheck = new UICheckBox[5];
+            multiFloorChecks = new UICheckBox[5];
             rowLabels = new UILabel[5];
 
             // Service selection dropdown.
@@ -64,6 +69,8 @@ namespace RealPop2
             // Headings.
             PanelUtils.ColumnLabel(panel, EmptyAreaX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_EMP"), 1.0f);
             PanelUtils.ColumnLabel(panel, EmptyPercentX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_EPC"), 1.0f);
+            PanelUtils.ColumnLabel(panel, PopCheckX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FXP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FixedPopX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_UNI"), 1.0f);
             PanelUtils.ColumnLabel(panel, AreaPerX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_APU"), 1.0f);
             PanelUtils.ColumnLabel(panel, MultiFloorX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_MFU"), 1.0f);
 
@@ -79,10 +86,20 @@ namespace RealPop2
                 emptyPercentFields[i] = UIControls.AddTextField(panel, EmptyPercentX + Margin, currentY, width: TextFieldWidth);
                 emptyPercentFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
 
+                // Fixed pop checkboxes - ensure i is saved as objectUserData for use by event handler.  Starts unchecked by default.
+                fixedPopChecks[i] = AddCheckBox(panel, PopCheckX + (ColumnWidth / 2), currentY);
+                fixedPopChecks[i].objectUserData = i;
+                fixedPopChecks[i].eventCheckChanged += FixedPopCheckChanged;
+
+                // Fixed population fields start hidden by default.
+                fixedPopFields[i] = UIControls.AddTextField(panel, FixedPopX + Margin, currentY, width: TextFieldWidth);
+                fixedPopFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
+                fixedPopFields[i].Hide();
+
                 areaPerFields[i] = UIControls.AddTextField(panel, AreaPerX + Margin, currentY, width: TextFieldWidth);
                 areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
-                multiFloorCheck[i] = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);
+                multiFloorChecks[i] = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);
 
                 // Move to next row.
                 currentY += RowHeight;
@@ -234,7 +251,7 @@ namespace RealPop2
         /// Shows/hides textfields according to the provided maximum level to show.
         /// </summary>
         /// <param name="maxLevel">Maximum number of levels to show</param>
-        public void TextfieldVisibility(int maxLevel)
+        private void TextfieldVisibility(int maxLevel)
         {
             // Iterate through all fields.
             for (int i = 0; i < 5; ++i)
@@ -243,23 +260,55 @@ namespace RealPop2
                 if (i < maxLevel)
                 {
                     rowLabels[i].Show();
-                    emptyAreaFields[i].Show();
-                    emptyPercentFields[i].Show();
-                    areaPerFields[i].Show();
-                    multiFloorCheck[i].Show();
+                    fixedPopChecks[i].Show();
+
+                    // Arear per or fixed population, depending on fixed pop check state.
+                    if (fixedPopChecks[i].isChecked)
+                    {
+                        fixedPopFields[i].Show();
+                    }
+                    else
+                    {
+                        emptyAreaFields[i].Show();
+                        emptyPercentFields[i].Show();
+                        areaPerFields[i].Show();
+                        multiFloorChecks[i].Show();
+                    }
                 }
                 else
                 {
                     // Otherwise, hide.
                     rowLabels[i].Hide();
+                    fixedPopChecks[i].Hide();
+
+                    fixedPopFields[i].Hide();
                     emptyAreaFields[i].Hide();
                     emptyPercentFields[i].Hide();
                     areaPerFields[i].Hide();
-                    multiFloorCheck[i].Hide();
+                    multiFloorChecks[i].Hide();
                 }
             }
         }
 
+
+        /// <summary>
+        /// Event handler for fixed populaton checkboxes.
+        /// Updates fixed population/area per textfield visibility based on state.
+        /// </summary>
+        /// <param name="control">Calling UIComponent</param>
+        /// <param name="isChecked">New isChecked state</param>
+        private void FixedPopCheckChanged(UIComponent control, bool isChecked)
+        {
+            // Get stored index of calling checkbox.
+            int index = (int)control.objectUserData;
+
+            fixedPopFields[index].isVisible = isChecked;
+
+            emptyAreaFields[index].isVisible = !isChecked;
+            emptyPercentFields[index].isVisible = !isChecked;
+            areaPerFields[index].isVisible = !isChecked;
+            multiFloorChecks[index].isVisible = !isChecked;
+        }
 
 
         /// <summary>
@@ -281,10 +330,23 @@ namespace RealPop2
                 // Textfields.
                 PanelUtils.ParseFloat(ref pack.levels[i].emptyArea, emptyAreaFields[i].text);
                 PanelUtils.ParseInt(ref pack.levels[i].emptyPercent, emptyPercentFields[i].text);
-                PanelUtils.ParseFloat(ref pack.levels[i].areaPer, areaPerFields[i].text);
+
+                // Look at fixed population checkbox state to work out if we're doing fixed population or area per.
+                if (fixedPopChecks[i].isChecked)
+                {
+                    // Using fixed pop: negate the 'area per' number to denote fixed population.
+                    int pop = 0;
+                    PanelUtils.ParseInt(ref pop, fixedPopFields[i].text);
+                    pack.levels[i].areaPer = 0 - pop;
+                }
+                else
+                {
+                    // Area per unit.
+                    PanelUtils.ParseFloat(ref pack.levels[i].areaPer, areaPerFields[i].text);
+                }
 
                 // Checkboxes.
-                pack.levels[i].multiFloorUnits = multiFloorCheck[i].isChecked;
+                pack.levels[i].multiFloorUnits = multiFloorChecks[i].isChecked;
             }
 
             // Update selected menu item in case the name has changed.
@@ -328,8 +390,10 @@ namespace RealPop2
                 // Populate controls.
                 emptyAreaFields[i].text = level.emptyArea.ToString();
                 emptyPercentFields[i].text = level.emptyPercent.ToString();
-                areaPerFields[i].text = level.areaPer.ToString();
-                multiFloorCheck[i].isChecked = level.multiFloorUnits;
+                fixedPopChecks[i].isChecked = level.areaPer < 0;
+                areaPerFields[i].text = Math.Abs(level.areaPer).ToString();
+                fixedPopFields[i].text = Math.Abs(level.areaPer).ToString();
+                multiFloorChecks[i].isChecked = level.multiFloorUnits;
             }
         }
 

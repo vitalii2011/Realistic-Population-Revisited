@@ -141,6 +141,8 @@
     <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
     <Translation ID="RPR_CAL_VOL_FMN" String="First floor height min" />
     <Translation ID="RPR_CAL_VOL_FMX" String="First floor extra height" />
+    <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
+    <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
     <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
     <Translation ID="RPR_CAL_VOL_MFU" String="Multi-floor units" />

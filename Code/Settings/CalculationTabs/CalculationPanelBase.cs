@@ -11,11 +11,11 @@ namespace RealPop2
     internal class CalculationPanelBase
     {
         // Constants.
-        protected const float Margin = 10f;
-        protected const float TextFieldWidth = 90f;
+        protected const float Margin = 5f;
+        protected const float TextFieldWidth = 85f;
         protected const float ColumnWidth = TextFieldWidth + (Margin * 2);
         protected const float LeftItem = 75f;
-        protected const float FirstItem = 120f;
+        protected const float FirstItem = 110f;
         protected const float RowHeight = 27f;
 
         // Panel components.
