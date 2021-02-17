@@ -17,7 +17,7 @@ namespace RealPop2
         private float currentRotation;
         private float currentZoom;
         private Material _material;
-        
+
         // Rendering sub-components.
         private List<BuildingInfo.MeshInfo> subMeshes;
         private List<BuildingInfo.SubInfo> subBuildings;
@@ -204,8 +204,6 @@ namespace RealPop2
                 return;
             }
 
-            int vertexCount;
-
             // Use skybox background.
             renderCamera.clearFlags = CameraClearFlags.Skybox;
 
@@ -239,15 +237,9 @@ namespace RealPop2
             currentBounds = new Bounds(Vector3.zero, Vector3.zero);
             Vector3[] vertices;
 
-            // Set our model rotation parameters, so we look at it obliquely.
-            const float xRotation = -20f;
-
-            // Apply model rotation with our camnera rotation into a quaternion.
-            Quaternion modelRotation = Quaternion.Euler(xRotation, 0f, 0f) * Quaternion.Euler(0f, currentRotation, 0f);
-
             // Set default model position.
             // We render at +100 Y to avoid garbage left at 0,0 by certain shaders and renderers (and we only rotate around the Y axis so will never see the origin).
-            Vector3 modelPosition = new Vector3(0f, 100f, 0f);
+            Vector3 modelPosition = new Vector3(0f, 0f, 0f);
 
             // Add our main mesh, if any (some are null, because they only 'appear' through subbuildings - e.g. Boston Residence Garage).
             if (currentMesh != null && _material != null)
@@ -278,11 +270,8 @@ namespace RealPop2
                         minZ = vertices[i].z;
                 }
 
-                // Adjust model position so it's dead centre.
-                modelPosition += (modelRotation * -currentBounds.center);
-
                 // Calculate rendering matrix and add mesh to scene.
-                Matrix4x4 matrix = Matrix4x4.TRS(modelPosition, modelRotation, Vector3.one);
+                Matrix4x4 matrix = Matrix4x4.TRS(modelPosition, Quaternion.Euler(Vector3.zero), Vector3.one);
 
                 // Floor preview rendering, if set to do so and we have a valid floor calculation pack set.
                 if (renderFloors && floorDataPack != null)
@@ -303,13 +292,12 @@ namespace RealPop2
                     List<Vector3> vectorList = new List<Vector3>();
                     List<int> triList = new List<int>();
                     List<Vector2> uvList = new List<Vector2>();
-;
+                    ;
                     // Draw ground floor.
                     AddFloor(left, right, front, back, 0f, vectorList, triList, uvList);
 
                     // Draw top of first floor, using transformation matrix to position floor.
                     float floorHeight = floorDataPack.firstFloorMin + floorDataPack.firstFloorExtra;
-                    //AddFloor(left, right, front, back, floorHeight, vectorList, triList, uvList);
 
                     // Draw addtional floors, incrementing transformation matrix, until we reach the top of the building.  Increment height once at start to avoid fencepost error.
                     while (floorHeight <= currentBounds.max.y - floorDataPack.floorHeight)
@@ -347,10 +335,10 @@ namespace RealPop2
                         // We need to rotate the submesh before we apply the model rotation.
                         // Note that the order of multiplication (relative to the angle of operation) is reversed in the code, because of the way Unity overloads the multiplication operator.
                         // Note also that the submesh angle needs to be inverted to rotate correctly around the Y axis in our space.
-                        Quaternion relativeRotation = modelRotation * Quaternion.AngleAxis((subMesh.m_angle * -1), Vector3.up);
+                        Quaternion relativeRotation = Quaternion.AngleAxis((subMesh.m_angle * -1), Vector3.up);
 
                         // Calculate relative position of mesh given its starting position and our model rotation.
-                        Vector3 relativePosition = modelRotation * subMesh.m_position;
+                        Vector3 relativePosition = subMesh.m_position;
 
                         // Put it all together into our rendering matrix.
                         Matrix4x4 matrix = Matrix4x4.TRS(relativePosition + modelPosition, relativeRotation, Vector3.one);
@@ -387,10 +375,10 @@ namespace RealPop2
                         // Calculate the relative rotation.
                         // We need to rotate the subbuilding before we apply the model rotation.
                         // Note that the order of multiplication (relative to the angle of operation) is reversed in the code, because of the way Unity overloads the multiplication operator.
-                        Quaternion relativeRotation = modelRotation * Quaternion.AngleAxis(subBuilding.m_angle, Vector3.up);
+                        Quaternion relativeRotation = Quaternion.AngleAxis(subBuilding.m_angle, Vector3.up);
 
                         // Recalculate our matrix based on our submesh position.
-                        Vector3 relativePosition = modelRotation * subBuilding.m_position;
+                        Vector3 relativePosition = subBuilding.m_position;
                         Matrix4x4 matrix = Matrix4x4.TRS(relativePosition + modelPosition, relativeRotation, Vector3.one);
 
                         // Add subbuilding to scene.
@@ -419,9 +407,11 @@ namespace RealPop2
             renderCamera.nearClipPlane = Mathf.Max(clipCenter - clipExtent, 0.01f);
             renderCamera.farClipPlane = clipCenter + clipExtent;
 
-            // Camera position and rotation - directly behind the model, facing forward.
-            renderCamera.transform.position = (-Vector3.forward * clipCenter) + new Vector3(0f, 100f, 0f);
-            renderCamera.transform.rotation = Quaternion.identity;
+            // Camera position and rotation - directly behind the model, facing the centre of the model's bounds.
+            renderCamera.transform.position = (-Vector3.forward * clipCenter) + currentBounds.center;
+            renderCamera.transform.RotateAround(currentBounds.center, Vector3.right, 20f);
+            renderCamera.transform.RotateAround(currentBounds.center, Vector3.up, -currentRotation);
+            renderCamera.transform.LookAt(currentBounds.center);
 
             // If game is currently in nighttime, enable sun and disable moon lighting.
             if (gameMainLight == DayNightProperties.instance.moonLightSource)
@@ -431,7 +421,7 @@ namespace RealPop2
             }
 
             // Light settings.
-            renderLight.transform.eulerAngles = new Vector3(55f + xRotation, 0f, 0f);
+            renderLight.transform.eulerAngles = new Vector3(55f, -currentRotation, 0f);
             renderLight.intensity = 2f;
             renderLight.color = Color.white;
 
