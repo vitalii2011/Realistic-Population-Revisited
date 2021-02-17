@@ -124,6 +124,7 @@
     <Compile Include="Code\Notifications\ListMessageBox.cs" />
     <Compile Include="Code\Notifications\WhatsNew.cs" />
     <Compile Include="Code\Notifications\WhatsNewMessageBox.cs" />
+    <Compile Include="Code\Patches\BuildingUpgraded.cs" />
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
     <Compile Include="Code\Patches\Patcher.cs" />
     <Compile Include="Code\Patches\ReversePatches.cs" />
