@@ -10,7 +10,7 @@ namespace RealPop2
     public static class Patcher
     {
         // Unique harmony identifier.
-        private const string harmonyID = "com.github.algernon-A.csl.bob";
+        private const string harmonyID = "com.github.algernon-A.csl.realpop2";
 
         // Flag.
         internal static bool Patched => _patched;

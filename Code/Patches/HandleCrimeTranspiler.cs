@@ -6,7 +6,6 @@ using HarmonyLib;
     
 namespace RealPop2
 {
-
     /// <summary>
     /// Transpiler to patch CommonBuildingAI.HandleCrime.
     /// This implements the mods custom crime settings.
@@ -15,7 +14,6 @@ namespace RealPop2
     [HarmonyPatch("HandleCrime")]
     public static class HandleCrimeTranspiler
     {
-
         // Inserting a call to our custom replacement method after these instructions (normally at the start of the method):
         /* // if (crimeAccumulation != 0)
          * IL_0000: ldarg.3
