@@ -191,5 +191,44 @@ namespace RealPop2
             // If we got here, we were unsuccessful.
             Logging.Message("Ploppable RICO Revisited not found");
         }
+
+
+        /// <summary>
+        /// Uses reflection to find the LevelUtils.CustomBuildingUpgraded method of Advanced Building Level Control.
+        /// </summary>
+        /// <returns>LevelUtils.CustomBuildingUpgraded method of Advanced Building Level Control (null if not found)</returns>
+        internal static MethodInfo ABLCCustomUpgraded()
+        {
+            // Iterate through each loaded plugin assembly.
+            foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
+            {
+                foreach (Assembly assembly in plugin.GetAssemblies())
+                {
+                    if (assembly.GetName().Name.Equals("AdvancedBuildingLevelControl") && plugin.isEnabled)
+                    {
+                        Logging.Message("Found Advanced Building Level Control");
+
+                        // Found AdvancedBuildingLevelControl.dll that's part of an enabled plugin; try to get its Interfaces class.
+                        Type ablcLevelUtils = assembly.GetType("ABLC.LevelUtils");
+
+                        if (ablcLevelUtils != null)
+                        {
+                            // Try to get ABLCCustomUpgraded method.
+                            MethodInfo ablcCustomUpgraded = ablcLevelUtils.GetMethod("CustomBuildingUpgraded", BindingFlags.NonPublic | BindingFlags.Static);
+                            if (ablcCustomUpgraded != null)
+                            {
+                                // Success!
+                                Logging.Message("found CustomBuildingUpgraded");
+                                return ablcCustomUpgraded;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // If we got here, we were unsuccessful.
+            Logging.Message("AdvancedBuildingLevelControl CustomBuildingUpgraded not found");
+            return null;
+        }
     }
 }

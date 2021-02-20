@@ -1,11 +1,12 @@
-﻿using ColossalFramework.Math;
+﻿using System.Reflection;
+using ColossalFramework.Math;
 using HarmonyLib;
 
 
 namespace RealPop2
 {
 	/// <summary>
-	/// Harmony Postfix patch to handle *reductions* in homecounts when a building upgrades.
+	/// Harmony Postfix patch to handle *reductions* in homecounts when a building upgrades, applied to base game PrivateBuildingAI.BuildingUpgraded.
 	/// </summary>
 	[HarmonyPatch(typeof(PrivateBuildingAI))]
 	[HarmonyPatch("BuildingUpgraded")]
@@ -32,5 +33,22 @@ namespace RealPop2
 				RealisticCitizenUnits.RemoveHouseHold(ref data, homeCount);
 			}
 		}
+	}
+
+
+	/// <summary>
+	/// Harmony Postfix patch to handle *reductions* in homecounts when a building upgrades, applied to Advanced Building Level Control's custom BuildingUpgraded method.
+	/// Needs to be manually applied after all mods are instantiated (otherwise there's a race condition whereby if this mod is instantiated first it won't see ABLC).
+	/// So, best to call from OnCreated instead of OnEnabled.
+	/// </summary>
+	public static class ABLCBuildingUpgradedPatch
+    {
+		/// <summary>
+		/// Harmony Postfix patch to handle *reductions* in homecounts when a building upgrades.
+		/// </summary>
+		/// <param name="buildingAI">Building AI instance</param>
+		/// <param name="buildingID">Building instance ID</param>
+		/// <param name="data">Building data</param>
+		public static void Postfix(PrivateBuildingAI buildingAI, ushort buildingID, ref Building data) => BuildingUpgradedPatch.Postfix(buildingAI, buildingID, ref data);
 	}
 }

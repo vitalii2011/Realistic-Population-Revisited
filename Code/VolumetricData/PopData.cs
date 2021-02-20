@@ -15,6 +15,10 @@ namespace RealPop2
         // Dictionary of manual population count overrides.
         private readonly Dictionary<string, int> overrides;
 
+        // Household and workplace calculation result caches (so we don't have to do the full calcs every SimulationStep for every building....).
+        internal readonly Dictionary<BuildingInfo, int[]> householdCache;
+        internal readonly Dictionary<BuildingInfo, PrefabEmployStruct[]> workplaceCache;
+
 
         /// <summary>
         /// Returns the workplace breakdowns and visitor count for the given building prefab and level.
@@ -23,6 +27,66 @@ namespace RealPop2
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
         internal PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level) => ((PopDataPack)ActivePack(buildingPrefab)).Workplaces(buildingPrefab, level);
+
+
+        /// <summary>
+        /// Adds or updates cached housholds for the specified building prefab and level.
+        /// </summary>
+        /// <param name="info">BuildingInfo to cache for</param>
+        /// <param name="level">Building level to cache for</param>
+        /// <returns>Calculated population</returns>
+        internal int CacheHouseholds(BuildingInfo info, int level)
+        {
+            Logging.Message("caching households for ", info.name, ", level ", (level + 1).ToString());
+
+            // Check if key is already in cache.
+            if (!householdCache.ContainsKey(info))
+            {
+                // No - create new record with five building levels.
+                householdCache.Add(info, new int[5]);
+            }
+
+            // Calculate poupulation for this building at this level and add to cache.
+            int population = Population(info, level);
+            householdCache[info][level] = population;
+
+            return population;
+        }
+
+
+        /// <summary>
+        /// Returns the cached workplaces for the specified building prefab and level, adding to the cache if the record isn't already there.
+        /// </summary>
+        /// <param name="info">BuildingInfo to cache for</param>
+        /// <param name="level">Building level to cache for</param>
+        /// <returns>Calculated workplaces</returns>
+        internal PrefabEmployStruct WorkplaceCache(BuildingInfo info, int level)
+        {
+            // Check if key is already in cache.
+            if (!workplaceCache.ContainsKey(info))
+            {
+                Logging.Message("caching workplaces for ", info.name, ", level ", (level + 1).ToString());
+
+                // No - create new record with three building levels.
+                workplaceCache.Add(info, new PrefabEmployStruct[3]);
+
+                // Calculate results for each of the three levels.
+                workplaceCache[info][0] = Workplaces(info, 0);
+                workplaceCache[info][1] = Workplaces(info, 1);
+                workplaceCache[info][2] = Workplaces(info, 2);
+            }
+
+            // Bounds check, just in case.
+            int thisLevel = level;
+            if (thisLevel > 2)
+            {
+                Logging.Error("illegal workplace builidng level ", level.ToString(), " passed for prefab ", info.name, "; setting to 2");
+                thisLevel = 2;
+            }
+
+            // Return record relevant to level.
+            return workplaceCache[info][thisLevel];
+        }
 
 
         /// <summary>
@@ -201,6 +265,10 @@ namespace RealPop2
         /// </summary>
         public PopData()
         {
+            // Create caches.
+            householdCache = new Dictionary<BuildingInfo, int[]>();
+            workplaceCache = new Dictionary<BuildingInfo, PrefabEmployStruct[]>();
+
             // Legacy residential.
             LegacyResPack resWG = new LegacyResPack
             {

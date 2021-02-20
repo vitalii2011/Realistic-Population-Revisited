@@ -8,6 +8,7 @@ namespace RealPop2
     /// </summary>
     internal static class EmploymentData
     {
+        // Arrays for employment percentages by eduction level.
         private static int[][] commercialLow, commercialHigh, office, industry, industryFarm, industryForest, industryOre, industryOil;
         private static int[] commercialEco, commercialLeisure, commercialTourist, officeHightech;
 

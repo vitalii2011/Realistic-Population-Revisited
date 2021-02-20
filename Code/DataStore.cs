@@ -337,8 +337,8 @@ namespace RealPop2
         };
 
         // Prefab stores
-        public static Dictionary<int, int> prefabHouseHolds = new Dictionary<int, int>(512);
-        public static Dictionary<int, PrefabEmployStruct> prefabWorkerVisit = new Dictionary<int, PrefabEmployStruct>(1024);
+        //public static Dictionary<int, int> prefabHouseHolds = new Dictionary<int, int>(512);
+        //public static Dictionary<int, PrefabEmployStruct> prefabWorkerVisit = new Dictionary<int, PrefabEmployStruct>(1024);
         public static Dictionary<ulong, ushort> seedToId = new Dictionary<ulong, ushort>();
 
         public static void ClearCache()
@@ -349,8 +349,8 @@ namespace RealPop2
             bonusHouseholdCache.Clear();
             workerPrintOutCache.Clear();
             housePrintOutCache.Clear();
-            prefabWorkerVisit.Clear();
-            prefabHouseHolds.Clear();
+            //prefabWorkerVisit.Clear();
+            //prefabHouseHolds.Clear();
             seedToId.Clear();
 
             printResidentialNames = false;

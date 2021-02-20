@@ -23,46 +23,6 @@
 
 
         /// <summary>
-        /// Sets the customised number of households for a given prefab.
-        /// If a record doesn't already exist, a new one will be created.
-        /// </summary>
-        /// <param name="prefab">The prefab (BuildingInfo) to set</param>
-        /// <param name="houses">The updated households</param>
-        public static void SetResidential(BuildingInfo prefab, int houses)
-        {
-            // Update or add entry to configuration file cache.
-            if (DataStore.householdCache.ContainsKey(prefab.name))
-            {
-                // Prefab already has a record; update.
-                DataStore.householdCache[prefab.name] = houses;
-            }
-            else
-            {
-                // Prefab doesn't already have a record; create.
-                DataStore.householdCache.Add(prefab.name, houses);
-            }
-
-            // Save the updated configuration files.
-            ConfigUtils.SaveSettings();
-
-            // Get current building hash (for updating prefab dictionary).
-            var prefabHash = prefab.gameObject.GetHashCode();
-
-            // Update entry in 'live' settings.
-            if (DataStore.prefabHouseHolds.ContainsKey(prefabHash))
-            {
-                // Prefab already has a record; update.
-                DataStore.prefabHouseHolds[prefabHash] = houses;
-            }
-            else
-            {
-                // Prefab doesn't already have a record; create.
-                DataStore.prefabHouseHolds.Add(prefabHash, houses);
-            }
-        }
-
-
-        /// <summary>
         /// Removes the custom household record (if any) for a given prefab.
         /// </summary>
         /// <param name="prefab">The prefab (BuildingInfo) to remove the record from</param>
@@ -76,7 +36,7 @@
             ConfigUtils.SaveSettings();
 
             // Remove current building's record from 'live' dictionary.
-            DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
+            PopData.instance.householdCache.Remove(prefab);
         }
 
         /// <summary>
@@ -118,24 +78,8 @@
             // Save the updated configuration files.
             ConfigUtils.SaveSettings();
 
-            // Get current building hash (for updating prefab dictionary).
-            var prefabHash = prefab.gameObject.GetHashCode();
-
-            // Calculate employment breakdown.
-            int[] array = CommercialBuildingAIMod.GetArray(prefab, (int)prefab.GetClassLevel());
-            AI_Utils.CalculateprefabWorkerVisit(prefab.GetWidth(), prefab.GetLength(), ref prefab, 4, ref array, out PrefabEmployStruct output);
-
-            // Update entry in 'live' settings.
-            if (DataStore.prefabWorkerVisit.ContainsKey(prefabHash))
-            {
-                // Prefab already has a record; update.
-                DataStore.prefabWorkerVisit[prefabHash] = output;
-            }
-            else
-            {
-                // Prefab doesn't already have a record; create.
-                DataStore.prefabWorkerVisit.Add(prefabHash, output);
-            }
+            // Remove current building's record from 'live' dictionary.
+            PopData.instance.workplaceCache.Remove(prefab);
         }
 
 
@@ -153,7 +97,7 @@
             ConfigUtils.SaveSettings();
 
             // Remove current building's record from 'live' dictionary.
-            DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
+            PopData.instance.workplaceCache.Remove(prefab);
         }
     }
 }

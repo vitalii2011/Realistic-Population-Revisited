@@ -426,7 +426,7 @@ namespace RealPop2
             if (prefab.GetService() == ItemClass.Service.Residential)
             {
                 // Remove from household cache.
-                DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
+                PopData.instance.householdCache.Remove(prefab);
 
                 // Update household counts for existing instances of this building - only needed for residential buildings.
                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
@@ -435,7 +435,7 @@ namespace RealPop2
             else
             {
                 // Remove from workplace cache.
-                DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
+                PopData.instance.workplaceCache.Remove(prefab);
 
                 // Force RICO refresh, if we're using Ploppable RICO Revisited.
                 if (ModUtils.ricoClearWorkplace != null)

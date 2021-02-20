@@ -75,7 +75,7 @@ namespace RealPop2
             ApplySubService(DataStore.resEcoHigh, HighEcoRes);
 
             // Clear cached values.
-            DataStore.prefabHouseHolds.Clear();
+            PopData.instance.householdCache.Clear();
 
             // Save new settings.
             ConfigUtils.SaveSettings();

@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.Reflection;
+using HarmonyLib;
 using CitiesHarmony.API;
 
 
@@ -43,6 +44,9 @@ namespace RealPop2
         }
 
 
+        /// <summary>
+        /// Remove all Harmony patches.
+        /// </summary>
         public static void UnpatchAll()
         {
             // Only unapply if patches appplied.
@@ -54,6 +58,27 @@ namespace RealPop2
                 Harmony harmonyInstance = new Harmony(harmonyID);
                 harmonyInstance.UnpatchAll(harmonyID);
                 _patched = false;
+            }
+        }
+
+
+        /// <summary>
+        /// Patch Advanced Building Level Control's 'CustomBuildingUpgraded' method.
+        /// </summary>
+        internal static void PatchABLC()
+        {
+            // Ensure Harmony is ready before patching.
+            if (HarmonyHelper.IsHarmonyInstalled)
+            {
+                // Try to get ABLC method.
+                MethodInfo ablcCustomUpgraded = ModUtils.ABLCCustomUpgraded();
+                if (ablcCustomUpgraded != null)
+                {
+                    // Got method - apply patch.
+                    Logging.Message("patching ABLC.LevelUtils.CustomBuildingUpgraded");
+                    Harmony harmonyInstance = new Harmony(harmonyID);
+                    harmonyInstance.Patch(ablcCustomUpgraded, postfix: new HarmonyMethod(typeof(ABLCBuildingUpgradedPatch).GetMethod("Postfix")));
+                }
             }
         }
     }

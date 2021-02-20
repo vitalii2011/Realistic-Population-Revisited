@@ -36,8 +36,8 @@
                 if (value != thisSaveLegacy)
                 {
                     // Yes - clear caches.
-                    DataStore.prefabHouseHolds.Clear();
-                    DataStore.prefabWorkerVisit.Clear();
+                    PopData.instance.householdCache.Clear();
+                    PopData.instance.workplaceCache.Clear();
 
                     // Clear RICO cache too.
                     if (ModUtils.ricoClearAllWorkplaces != null)

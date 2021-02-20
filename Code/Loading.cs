@@ -74,6 +74,9 @@ namespace RealPop2
 
                 // Initialize data.
                 DataUtils.Setup();
+
+                // Apply any needed Advanced Building Level Control Harmony patches.
+                Patcher.PatchABLC();
             }
         }
 
