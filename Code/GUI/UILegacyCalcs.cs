@@ -139,7 +139,7 @@ namespace RealPop2
 
                 // Set customised homes label and get value (if any).
                 homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_HOM_CUST");
-                customHomeJobs = ExternalCalls.GetResidential(building);
+                customHomeJobs = OverrideUtils.GetResidential(building);
 
                 // Applied homes is what's actually being returned by the CaclulateHomeCount call to this building AI.
                 // It differs from calculated homes if there's an override value for that building with this mod, or if another mod is overriding.
@@ -181,7 +181,7 @@ namespace RealPop2
 
                 // Set customised jobs label and get value (if any).
                 homesJobsCustomLabel.text = Translations.Translate("RPR_CAL_JOB_CUST") + " ";
-                customHomeJobs = ExternalCalls.GetWorker(building);
+                customHomeJobs = OverrideUtils.GetWorker(building);
 
                 // Applied jobs is what's actually being returned by the CalculateWorkplaceCount call to this building AI.
                 // It differs from calculated jobs if there's an override value for that building with this mod, or if another mod is overriding.

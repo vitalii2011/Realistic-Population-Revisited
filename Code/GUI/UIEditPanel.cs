@@ -272,8 +272,8 @@ namespace RealPop2
                 PopData.instance.DeleteOverride(currentSelection);
 
                 // Remove any legacy file settings to avoid conflicts.
-                ExternalCalls.RemoveResidential(currentSelection);
-                ExternalCalls.RemoveWorker(currentSelection);
+                OverrideUtils.RemoveResidential(currentSelection);
+                OverrideUtils.RemoveWorker(currentSelection);
             }
 
             // Are we doing floor overrides?
@@ -343,7 +343,7 @@ namespace RealPop2
             if (currentSelection.GetService() == ItemClass.Service.Residential)
             {
                 // Residential building - remove any legacy settings to avoid conflicts.
-                ExternalCalls.RemoveResidential(currentSelection);
+                OverrideUtils.RemoveResidential(currentSelection);
 
                 // Update household counts for existing instances of this building - only needed for residential buildings.
                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
@@ -352,7 +352,7 @@ namespace RealPop2
             else
             {
                 // Employment building - remove any legacy settings to avoid conflicts.
-                ExternalCalls.RemoveWorker(currentSelection);
+                OverrideUtils.RemoveWorker(currentSelection);
             }
 
             // Refresh the display so that all panels reflect the updated settings.
