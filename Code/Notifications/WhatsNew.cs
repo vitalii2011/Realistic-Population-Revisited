@@ -16,6 +16,16 @@ namespace RealPop2
         private static Dictionary<Version, List<string>> Versions => new Dictionary<Version, List<String>>
         {
             {
+                // Beta message version is 0.
+                new Version("0.0"),
+                new List<string>
+                {
+                    "New population caching system that fully recognises multiple levels for the same building prefab (historical buildings)",
+                    "Implement handling for reductions in residential homecounts when buildings upgrade",
+                    "Fix building settings panel not opening when target building doesn't have a valid mesh material"
+                }
+            },
+            {
                 new Version("2.0"),
                 new List<string>
                 {
@@ -38,13 +48,13 @@ namespace RealPop2
         /// Close button action.
         /// </summary>
         /// <returns>True (always)</returns>
-        public static bool Confirm() => true;
+        internal static bool Confirm() => true;
 
         /// <summary>
         /// 'Don't show again' button action.
         /// </summary>
         /// <returns>True (always)</returns>
-        public static bool DontShowAgain()
+        internal static bool DontShowAgain()
         {
             // Save current version to settings file.
             ModSettings.whatsNewVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();

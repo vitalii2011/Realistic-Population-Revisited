@@ -27,8 +27,8 @@ namespace RealPop2.MessageBox
                 // Add spacer below.
                 AddSpacer();
 
-                // Hide version messages that have already been notified.
-                if (message.Key <= lastNotifiedVersion)
+                // Hide version messages that have already been notified, except for Beta messages.
+                if (message.Key <= lastNotifiedVersion && message.Key.Major != 0)
                 {
                     versionMessage.IsCollapsed = true;
                 }
@@ -91,8 +91,8 @@ namespace RealPop2.MessageBox
             /// <param name="messageKeys">Message text as list of translation keys for individual points</param>
             public void SetText(Version version, List<string> messageKeys)
             {
-                // Set version header and message text.
-                versionTitle = RealPopMod.ModName + " " + version.ToString();
+                // Set version header and message text (if major version is zero, display Beta string instead of version number).
+                versionTitle = RealPopMod.ModName + " " + (version.Major == 0 ? RealPopMod.Beta : version.ToString());
 
                 // Add messages as separate list items.
                 foreach (string messageKey in messageKeys)
