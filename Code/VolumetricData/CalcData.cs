@@ -51,7 +51,7 @@ namespace RealPop2
     /// <summary>
     /// Centralised store and management of floor calculation data.
     /// </summary>
-    public abstract class CalcData
+    internal abstract class CalcData
     {
         // List of data definition packs.
         internal List<DataPack> calcPacks;
@@ -71,7 +71,7 @@ namespace RealPop2
         /// <summary>
         /// Constructor - initializes inbuilt default calculation packs and performs other setup tasks.
         /// </summary>
-        public CalcData()
+        internal CalcData()
         {
             // Initialise list of data packs.
             calcPacks = new List<DataPack>();
@@ -154,6 +154,12 @@ namespace RealPop2
                 return null;
             }
         }
+
+
+        /// <summary>
+        /// Clears all default pack overrides (effectively restoring default settings).
+        /// </summary>
+        internal void ClearDefaultPacks() => defaultsDict.Clear();
 
 
         /// <summary>

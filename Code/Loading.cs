@@ -5,6 +5,9 @@ using RealPop2.MessageBox;
 
 namespace RealPop2
 {
+    /// <summary>
+    /// Main loading class: the mod runs from here.
+    /// </summary>
     public class Loading : LoadingExtensionBase
     {
         private static bool isModEnabled = false;
