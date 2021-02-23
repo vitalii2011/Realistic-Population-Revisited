@@ -35,7 +35,7 @@ namespace RealPop2
         /// <param name="info">BuildingInfo to cache for</param>
         /// <param name="level">Building level to cache for</param>
         /// <returns>Calculated population</returns>
-        internal int CacheHouseholds(BuildingInfo info, int level)
+        internal int HouseholdCache(BuildingInfo info, int level)
         {
             Logging.Message("caching households for ", info.name, ", level ", (level + 1).ToString());
 
@@ -44,13 +44,25 @@ namespace RealPop2
             {
                 // No - create new record with five building levels.
                 householdCache.Add(info, new int[5]);
+
+                // Calculate results for each of the five levels.
+                householdCache[info][0] = Population(info, 0);
+                householdCache[info][1] = Population(info, 1);
+                householdCache[info][2] = Population(info, 2);
+                householdCache[info][3] = Population(info, 3);
+                householdCache[info][4] = Population(info, 4);
             }
 
-            // Calculate poupulation for this building at this level and add to cache.
-            int population = Population(info, level);
-            householdCache[info][level] = population;
+            // Bounds check, just in case.
+            int thisLevel = level;
+            if (thisLevel > 4)
+            {
+                Logging.Error("illegal residential builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 5");
+                thisLevel = 4;
+            }
 
-            return population;
+            // Return record relevant to level.
+            return householdCache[info][thisLevel];
         }
 
 
@@ -80,7 +92,7 @@ namespace RealPop2
             int thisLevel = level;
             if (thisLevel > 2)
             {
-                Logging.Error("illegal workplace builidng level ", level.ToString(), " passed for prefab ", info.name, "; setting to 2");
+                Logging.Error("illegal workplace builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 3");
                 thisLevel = 2;
             }
 

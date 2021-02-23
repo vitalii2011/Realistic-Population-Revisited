@@ -26,28 +26,14 @@ namespace RealPop2
         /// <returns>Always false (don't execute base game method after this)</returns>
         public static bool Prefix(ref int __result, ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
-            // BuildingInfo prefab for this building.
-            BuildingInfo info = __instance.m_info;
+            // Get population value from cache.
+            __result = PopData.instance.HouseholdCache(__instance.m_info, (int)level);
 
-            // Check to see if there's a record for this prefab in the population cache.
-            if (PopData.instance.householdCache.ContainsKey(info))
+            // Always set at least one.
+            if (__result < 0)
             {
-                // Yes - get cached value for this level for this prefab.
-                int returnValue = PopData.instance.householdCache[info][(int)level];
-
-                // Check to see if a valid cached (non-zero) result was returned.
-                if (returnValue != 0)
-                {
-                    // Valid return value - set original method return value to this.
-                    __result = returnValue;
-
-                    // Return, and don't execute base method after this.
-                    return false;
-                }
+                __result = 1;
             }
-
-            // If we got here, there was no valid record in cache - add new cache record and assign original method return value.
-            __result = PopData.instance.CacheHouseholds(info, (int)level);
 
             // Don't execute base method after this.
             return false;
