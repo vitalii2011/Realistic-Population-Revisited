@@ -20,6 +20,9 @@ namespace RealPop2
                 new Version("0.0"),
                 new List<string>
                 {
+                    "Changes to default calculation packs now only take effect via a new 'Save and Apply' button",
+                    "Redo residential population caching to better handle buildings with invalid levels",
+                    "BETA 6 updates:",
                     "New population caching system that fully recognises multiple levels for the same building prefab (historical buildings)",
                     "Implement handling for reductions in residential homecounts when buildings upgrade",
                     "Fix building settings panel not opening when target building doesn't have a valid mesh material"
