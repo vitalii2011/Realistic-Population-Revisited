@@ -57,7 +57,7 @@ namespace RealPop2
             int thisLevel = level;
             if (thisLevel > 4)
             {
-                Logging.Error("illegal residential builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 5");
+                Logging.Error("invalid residential builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 5");
                 thisLevel = 4;
             }
 
@@ -92,7 +92,7 @@ namespace RealPop2
             int thisLevel = level;
             if (thisLevel > 2)
             {
-                Logging.Error("illegal workplace builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 3");
+                Logging.Error("invalid workplace builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 3");
                 thisLevel = 2;
             }
 
