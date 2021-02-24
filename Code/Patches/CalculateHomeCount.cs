@@ -30,8 +30,9 @@ namespace RealPop2
             __result = PopData.instance.HouseholdCache(__instance.m_info, (int)level);
 
             // Always set at least one.
-            if (__result < 0)
+            if (__result < 1)
             {
+                Logging.Error("invalid homecount result ", __result.ToString(), " for ", __instance.m_info.name, "; setting to 1");
                 __result = 1;
             }
 
