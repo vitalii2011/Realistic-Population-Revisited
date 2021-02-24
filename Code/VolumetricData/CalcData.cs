@@ -51,7 +51,7 @@ namespace RealPop2
     /// <summary>
     /// Centralised store and management of floor calculation data.
     /// </summary>
-    public abstract class CalcData
+    internal abstract class CalcData
     {
         // List of data definition packs.
         internal List<DataPack> calcPacks;
@@ -71,7 +71,7 @@ namespace RealPop2
         /// <summary>
         /// Constructor - initializes inbuilt default calculation packs and performs other setup tasks.
         /// </summary>
-        public CalcData()
+        internal CalcData()
         {
             // Initialise list of data packs.
             calcPacks = new List<DataPack>();
@@ -154,6 +154,12 @@ namespace RealPop2
                 return null;
             }
         }
+
+
+        /// <summary>
+        /// Clears all default pack overrides (effectively restoring default settings).
+        /// </summary>
+        internal void ClearDefaultPacks() => defaultsDict.Clear();
 
 
         /// <summary>
@@ -426,7 +432,7 @@ namespace RealPop2
             if (prefab.GetService() == ItemClass.Service.Residential)
             {
                 // Remove from household cache.
-                DataStore.prefabHouseHolds.Remove(prefab.gameObject.GetHashCode());
+                PopData.instance.householdCache.Remove(prefab);
 
                 // Update household counts for existing instances of this building - only needed for residential buildings.
                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
@@ -435,7 +441,7 @@ namespace RealPop2
             else
             {
                 // Remove from workplace cache.
-                DataStore.prefabWorkerVisit.Remove(prefab.gameObject.GetHashCode());
+                PopData.instance.workplaceCache.Remove(prefab);
 
                 // Force RICO refresh, if we're using Ploppable RICO Revisited.
                 if (ModUtils.ricoClearWorkplace != null)

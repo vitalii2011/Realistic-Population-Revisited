@@ -269,7 +269,7 @@ namespace RealPop2
             bool doFloors = renderFloors && !hideFloors;
 
             // If the selected building has colour variations, temporarily set the colour to the default for rendering.
-            if (currentSelection.m_useColorVariations)
+            if (currentSelection.m_useColorVariations && currentSelection.m_material != null)
             {
                 Color originalColor = currentSelection.m_material.color;
                 currentSelection.m_material.color = currentSelection.m_color0;

@@ -5,6 +5,7 @@ Version 2.0 -
 - Major new feature: selectable configuration presets for each service type
 - Major new feature: optional realistic student capacity calculations for elementary and high schools
 - Major new feature: adjust crime rate
+- Support different building levels for the same building prefab (historical buildings)
 - Save status flag to savegame to track which calculations (new or legacy) should be used by default for that save
 - Rearrange options panel layout and add sub-tabs as required
 - Enable preview of calculated building floors in building preview

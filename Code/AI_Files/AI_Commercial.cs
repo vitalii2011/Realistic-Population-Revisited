@@ -10,36 +10,6 @@ using HarmonyLib;
 namespace RealPop2
 {
     [HarmonyPatch(typeof(CommercialBuildingAI))]
-    [HarmonyPatch("CalculateWorkplaceCount")]
-    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
-        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    public static class RealisticCommercialWorkplaceCount
-    {
-        public static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
-        {
-            BuildingInfo item = __instance.m_info;
-
-            // If not seen prefab, calculate
-            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out PrefabEmployStruct output))
-            {
-                output = PopData.instance.Workplaces(item, (int)level);
-
-                // Store values in cache.
-                DataStore.prefabWorkerVisit.Add(item.gameObject.GetHashCode(), output);
-            }
-
-            level0 = output.level0;
-            level1 = output.level1;
-            level2 = output.level2;
-            level3 = output.level3;
-
-            // Don't execute base method after this.
-            return false;
-        }
-    }
-
-
-    [HarmonyPatch(typeof(CommercialBuildingAI))]
     [HarmonyPatch("GetConsumptionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
@@ -103,13 +73,18 @@ namespace RealPop2
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
     public static class RealisticCommercialVisits
     {
-        public static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        public static bool Prefix(ref int __result, PrivateBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
         {
             // All commercial places will need visitors. CalcWorkplaces is normally called first, redirected above to include a calculation of worker visits (CalculateprefabWorkerVisit).
             // However, there is a problem with some converted assets that don't come through the "front door" (i.e. Ploppable RICO - see below).
 
+            // BuildingInfo prefab for this building.
+            BuildingInfo info = __instance.m_info;
+
             // Try to retrieve previously calculated value.
-            if (!DataStore.prefabWorkerVisit.TryGetValue(__instance.m_info.gameObject.GetHashCode(), out PrefabEmployStruct visitors))
+            PrefabEmployStruct visitors = PopData.instance.WorkplaceCache(info, (int)level);
+
+            if (visitors.visitors == 0)
             {
                 // If we didn't get a value, most likely it was because the prefab wasn't properly initialised.
                 // This can happen with Ploppable RICO when the underlying asset class isn't 'Default' (for example, where Ploppable RICO assets are originally Parks, Plazas or Monuments).
@@ -121,9 +96,8 @@ namespace RealPop2
 
                 int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
                 AI_Utils.CalculateprefabWorkerVisit(width, length, ref __instance.m_info, 4, ref array, out visitors);
-                DataStore.prefabWorkerVisit.Add(__instance.m_info.gameObject.GetHashCode(), visitors);
 
-                // Log this to help identify specific issues.  Should only occur once per prefab.
+                // Log this to help identify specific issues.
                 Logging.Message("CalculateprefabWorkerVisit redux: ", __instance.m_info.name);
             }
 

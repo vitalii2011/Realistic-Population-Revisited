@@ -5,6 +5,9 @@ using RealPop2.MessageBox;
 
 namespace RealPop2
 {
+    /// <summary>
+    /// Main loading class: the mod runs from here.
+    /// </summary>
     public class Loading : LoadingExtensionBase
     {
         private static bool isModEnabled = false;
@@ -74,6 +77,9 @@ namespace RealPop2
 
                 // Initialize data.
                 DataUtils.Setup();
+
+                // Apply any needed Advanced Building Level Control Harmony patches.
+                Patcher.PatchABLC();
             }
         }
 

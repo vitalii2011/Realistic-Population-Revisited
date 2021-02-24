@@ -78,10 +78,6 @@
     <Translation ID="RPR_PCK_SVC_DES" String="Scaling according to the vanilla community school" />
     <Translation ID="RPR_PCK_SVA_NAM" String="Vanilla art school" />
     <Translation ID="RPR_PCK_SVA_DES" String="Scaling according to the vanilla art school" />
-    <Translation ID="RPR_CAT_RES" String="Residential" />
-    <Translation ID="RPR_CAT_RLO" String="Residential low" />
-    <Translation ID="RPR_CAT_RHI" String="Residential high" />
-    <Translation ID="RPR_CAT_COM" String="Commercial" />
     <Translation ID="RPR_CAT_ALL" String="All categories" />
     <Translation ID="RPR_CAT_RES" String="Residential" />
     <Translation ID="RPR_CAT_RLO" String="Residential low" />

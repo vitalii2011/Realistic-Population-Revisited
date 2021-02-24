@@ -139,7 +139,7 @@ namespace RealPop2
 
 
             // Y position indicator.
-            float currentY = 10f;
+            float currentY = 5f;
 
 
             // Add tab and helper.
@@ -154,7 +154,7 @@ namespace RealPop2
             floorMenus = new UIDropDown[subServiceNames.Length];
 
             // Add 'Use legacy by default' checkboxes.
-            UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate("RPR_DEF_LEG"));
+            UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate("RPR_DEF_LEG"), textScale: 0.9f);
             currentY += legacyLabel.height + 5f;
 
             UICheckBox legacyThisSaveCheck = UIControls.AddCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LTS"));
@@ -183,7 +183,7 @@ namespace RealPop2
             };
 
             // Reset current Y to fixed state.
-            currentY = 95f;
+            currentY = 75f;
 
             // Add titles.
             UILabel popLabel = UIControls.AddLabel(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), 220f);
@@ -206,12 +206,6 @@ namespace RealPop2
                     // Retrieve stored index.
                     int serviceIndex = (int)control.objectUserData;
 
-                    // Update service dictionary.
-                    PopData.instance.ChangeDefault(services[serviceIndex], subServices[serviceIndex], availablePopPacks[serviceIndex][index]);
-
-                    // Save settings.
-                    ConfigUtils.SaveSettings();
-
                     // Hide floor menu if we've selected legacy calcs, otherwise show it.
                     if (availablePopPacks[serviceIndex][index].version == (int)DataVersion.legacy)
                     {
@@ -226,28 +220,27 @@ namespace RealPop2
                 // Floor pack dropdown.
                 floorMenus[i] = UIControls.AddDropDown(panel, RightColumn, currentY + 3f);
 
-                // Save current index in object user data.
-                floorMenus[i].objectUserData = i;
-
-                // Event handler.
-                floorMenus[i].eventSelectedIndexChanged += (control, index) =>
-                {
-                    // Retrieve stored index.
-                    int serviceIndex = (int)control.objectUserData;
-
-                    // Update service dictionary.
-                    FloorData.instance.ChangeDefault(services[serviceIndex], subServices[serviceIndex], availableFloorPacks[index]);
-
-                    // Save settings.
-                    ConfigUtils.SaveSettings();
-                };
-
                 // Header and icon.
                 PanelUtils.RowHeaderIcon(panel, ref currentY, subServiceNames[i], iconNames[i], atlasNames[i]);
 
                 // Extra space.
                 currentY += 3f;
             }
+
+            // Add buttons- add extra space.
+            currentY += Margin;
+
+            // Reset button.
+            UIButton resetButton = UIControls.AddButton(panel, Margin, currentY, Translations.Translate("RPR_OPT_RTD"), 150f);
+            resetButton.eventClicked += ResetDefaults;
+
+            // Revert button.
+            UIButton revertToSaveButton = UIControls.AddButton(panel, (Margin * 2) + 150f, currentY, Translations.Translate("RPR_OPT_RTS"), 150f);
+            revertToSaveButton.eventClicked += (component, clickEvent) => UpdateMenus();
+
+            // Save button.
+            UIButton saveButton = UIControls.AddButton(panel, (Margin * 3) + 300f, currentY, Translations.Translate("RPR_OPT_SAA"), 150f);
+            saveButton.eventClicked += Apply;
 
             // Populate menus.
             UpdateMenus();
@@ -272,7 +265,7 @@ namespace RealPop2
                 availablePopPacks[i] = PopData.instance.GetPacks(services[i]);
                 availableFloorPacks = FloorData.instance.Packs;
 
-                // Get current and default packs for this item
+                // Get current and default packs for this item.
                 DataPack currentPopPack = PopData.instance.CurrentDefaultPack(services[i], subServices[i]);
                 DataPack defaultPopPack = PopData.instance.BaseDefaultPack(services[i], subServices[i]);
                 DataPack currentFloorPack = FloorData.instance.CurrentDefaultPack(services[i], subServices[i]);
@@ -302,7 +295,7 @@ namespace RealPop2
                     }
                 }
 
-                // Iterate throiugh each item in floor menu.
+                // Iterate through each item in floor menu.
                 for (int j = 0; j < floorMenus[i].items.Length; ++j)
                 {
                     // Set menu item text.
@@ -322,6 +315,83 @@ namespace RealPop2
                     }
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 'Revert to defaults' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        private void ResetDefaults(UIComponent control, UIMouseEventParameter mouseEvent)
+        {
+            // Iterate through each sub-service menu.
+            for (int i = 0; i < subServiceNames.Length; ++i)
+            {
+                // Get current and default packs for this item.
+                DataPack defaultPopPack = PopData.instance.BaseDefaultPack(services[i], subServices[i]);
+                DataPack defaultFloorPack = FloorData.instance.BaseDefaultPack(services[i], subServices[i]);
+
+                // Iterate through each item in pop menu.
+                for (int j = 0; j < popMenus[i].items.Length; ++j)
+                {
+                    // Check for deefault name match.
+                    if (availablePopPacks[i][j].name.Equals(defaultPopPack.name))
+                    {
+                        // Match - set selection to this one.
+                        popMenus[i].selectedIndex = j;
+                    }
+                }
+
+                // Iterate through each item in floor menu.
+                for (int j = 0; j < floorMenus[i].items.Length; ++j)
+                {
+                    // Check for deefault name match.
+                    if (availableFloorPacks[j].name.Equals(defaultFloorPack.name))
+                    {
+                        // Match - set selection to this one.
+                        floorMenus[i].selectedIndex = j;
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 'Save and apply' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        private void Apply(UIComponent control, UIMouseEventParameter mouseEvent)
+        {
+            // Iterate through each sub-service menu.
+            for (int i = 0; i < subServiceNames.Length; ++i)
+            {
+                // Get population pack menu selected index.
+                int popIndex = popMenus[i].selectedIndex;
+
+                // Update default population dictionary for this subservice.
+                PopData.instance.ChangeDefault(services[i], subServices[i], availablePopPacks[i][popIndex]);
+
+                // Update floor data pack if we're not using legacy calculations.
+                if (availablePopPacks[i][popIndex].version != (int)DataVersion.legacy)
+                {
+                    FloorData.instance.ChangeDefault(services[i], subServices[i], availableFloorPacks[floorMenus[i].selectedIndex]);
+                }
+            }
+
+            // Clear population caches.
+            PopData.instance.householdCache.Clear();
+            PopData.instance.workplaceCache.Clear();
+
+            // Clear RICO cache.
+            if (ModUtils.ricoClearAllWorkplaces != null)
+            {
+                ModUtils.ricoClearAllWorkplaces.Invoke(null, null);
+            }
+
+            // Save settings.
+            ConfigUtils.SaveSettings();
         }
     }
 }

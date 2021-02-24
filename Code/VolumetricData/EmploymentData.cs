@@ -8,6 +8,7 @@ namespace RealPop2
     /// </summary>
     internal static class EmploymentData
     {
+        // Arrays for employment percentages by eduction level.
         private static int[][] commercialLow, commercialHigh, office, industry, industryFarm, industryForest, industryOre, industryOil;
         private static int[] commercialEco, commercialLeisure, commercialTourist, officeHightech;
 
@@ -126,8 +127,8 @@ namespace RealPop2
         private static int[] WorkplaceDistribution(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
         {
             // Maximum levels for generic workplaces and specialized industry (zero-based).
-            const int MaxWorkplaceLevel = 2;
-            const int MaxSpecIndLevel = 1;
+            const ItemClass.Level MaxWorkplaceLevel = ItemClass.Level.Level3;
+            const ItemClass.Level MaxSpecIndLevel = ItemClass.Level.Level2;
 
             switch (service)
             {
@@ -141,7 +142,6 @@ namespace RealPop2
                 case ItemClass.Service.Industrial:
                     switch (subService)
                     {
-
                         case ItemClass.SubService.IndustrialForestry:
                             return industryForest[CheckBuildingLevel(level, MaxSpecIndLevel)];
                         case ItemClass.SubService.IndustrialFarming:
@@ -180,17 +180,17 @@ namespace RealPop2
         /// <param name="level">Building level to check</param>
         /// <param name="maxLevel">Maximum level permitted</param>
         /// <returns>Minimum of provided building level or maximem level permitted</returns>
-        private static int CheckBuildingLevel(ItemClass.Level level, int maxLevel)
+        private static int CheckBuildingLevel(ItemClass.Level level, ItemClass.Level maxLevel)
         {
-            int checkedLevel = (int)level;
+            ItemClass.Level checkedLevel = level;
 
             if (checkedLevel > maxLevel)
             {
-                Logging.Error("invalid workplace building level ", level.ToString());
+                Logging.Error("invalid building level ", level.ToString(), " for workplace with maximum level ", maxLevel.ToString());
                 checkedLevel = maxLevel;
             }
 
-            return checkedLevel;
+            return (int)checkedLevel;
         }
     }
 }

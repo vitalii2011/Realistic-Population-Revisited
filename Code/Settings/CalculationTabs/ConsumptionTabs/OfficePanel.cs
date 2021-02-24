@@ -82,7 +82,7 @@ namespace RealPop2
             ApplySubService(DataStore.officeHighTech, HighTech);
 
             // Clear cached values.
-            DataStore.prefabWorkerVisit.Clear();
+            PopData.instance.workplaceCache.Clear();
 
             // Save new settings.
             ConfigUtils.SaveSettings();

@@ -13,11 +13,31 @@ namespace RealPop2
     internal static class WhatsNew
     {
         // List of versions and associated update message lines (as translation keys).
-        private static Dictionary<Version, List<string>> Versions => new Dictionary<Version, List<String>>
+        private static Dictionary<Version, string[]> Versions => new Dictionary<Version, string[]>
         {
             {
+                // Beta message version is 99.
+                new Version("99.0.7"),
+                new string[]
+                {
+                    "2.0 BETA 7 updates",
+                    "Changes to default calculation packs now only take effect via a new 'Save and Apply' button",
+                    "Redo residential population caching to better handle buildings with invalid levels"
+                }
+            },
+            {
+                new Version("99.0.6"),
+                new string[]
+                {
+                    "2.0 BETA 6 updates",
+                    "New population caching system that fully recognises multiple levels for the same building prefab (historical buildings)",
+                    "Implement handling for reductions in residential homecounts when buildings upgrade",
+                    "Fix building settings panel not opening when target building doesn't have a valid mesh material"
+                }
+            },
+            {
                 new Version("2.0"),
-                new List<string>
+                new string[]
                 {
                     "RPR_200_0",
                     "RPR_200_1",
@@ -38,13 +58,13 @@ namespace RealPop2
         /// Close button action.
         /// </summary>
         /// <returns>True (always)</returns>
-        public static bool Confirm() => true;
+        internal static bool Confirm() => true;
 
         /// <summary>
         /// 'Don't show again' button action.
         /// </summary>
         /// <returns>True (always)</returns>
-        public static bool DontShowAgain()
+        internal static bool DontShowAgain()
         {
             // Save current version to settings file.
             ModSettings.whatsNewVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();

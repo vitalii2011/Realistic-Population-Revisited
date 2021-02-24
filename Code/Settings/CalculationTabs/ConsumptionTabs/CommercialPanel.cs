@@ -100,7 +100,7 @@ namespace RealPop2
             ApplySubService(DataStore.commercialTourist, Tourist);
 
             // Clear cached values.
-            DataStore.prefabWorkerVisit.Clear();
+            PopData.instance.workplaceCache.Clear();
 
             // Save new settings.
             ConfigUtils.SaveSettings();

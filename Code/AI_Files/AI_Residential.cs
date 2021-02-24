@@ -10,32 +10,6 @@ using HarmonyLib;
 namespace RealPop2
 {
     [HarmonyPatch(typeof(ResidentialBuildingAI))]
-    [HarmonyPatch("CalculateHomeCount")]
-    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    public static class RealisticHomeCount
-    {
-        public static bool Prefix(ref int __result, ResidentialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
-        {
-            BuildingInfo item = __instance.m_info;
-
-            if (!DataStore.prefabHouseHolds.TryGetValue(item.gameObject.GetHashCode(), out int returnValue))
-            {
-                returnValue = PopData.instance.Population(item, (int)level);
-
-                // Store values in cache.
-                DataStore.prefabHouseHolds.Add(item.gameObject.GetHashCode(), returnValue);
-            }
-
-            // Original method return value.
-            __result = returnValue;
-
-            // Don't execute base method after this.
-            return false;
-        }
-    }
-
-
-    [HarmonyPatch(typeof(ResidentialBuildingAI))]
     [HarmonyPatch("GetConsumptionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]

@@ -10,36 +10,6 @@ using HarmonyLib;
 namespace RealPop2
 {
     [HarmonyPatch(typeof(IndustrialExtractorAI))]
-    [HarmonyPatch("CalculateWorkplaceCount")]
-    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
-        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
-    public static class RealisticExtractorWorkplaceCount
-    {
-        public static bool Prefix(IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
-        {
-            BuildingInfo item = __instance.m_info;
-
-            // If not seen prefab, calculate
-            if (!DataStore.prefabWorkerVisit.TryGetValue(item.gameObject.GetHashCode(), out PrefabEmployStruct output))
-            {
-                output = PopData.instance.Workplaces(item, (int)level);
-
-                // Store values in cache.
-                DataStore.prefabWorkerVisit.Add(item.gameObject.GetHashCode(), output);
-            }
-
-            level0 = output.level0;
-            level1 = output.level1;
-            level2 = output.level2;
-            level3 = output.level3;
-
-            // Don't execute base method after this.
-            return false;
-        }
-    }
-
-
-    [HarmonyPatch(typeof(IndustrialExtractorAI))]
     [HarmonyPatch("GetConsumptionRates")]
     [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) },
       new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
