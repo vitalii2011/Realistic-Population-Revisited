@@ -13,16 +13,23 @@ namespace RealPop2
     internal static class WhatsNew
     {
         // List of versions and associated update message lines (as translation keys).
-        private static Dictionary<Version, List<string>> Versions => new Dictionary<Version, List<String>>
+        private static Dictionary<Version, string[]> Versions => new Dictionary<Version, string[]>
         {
             {
-                // Beta message version is 0.
-                new Version("0.0"),
-                new List<string>
+                // Beta message version is 99.
+                new Version("99.0.7"),
+                new string[]
                 {
+                    "2.0 BETA 7 updates",
                     "Changes to default calculation packs now only take effect via a new 'Save and Apply' button",
-                    "Redo residential population caching to better handle buildings with invalid levels",
-                    "BETA 6 updates:",
+                    "Redo residential population caching to better handle buildings with invalid levels"
+                }
+            },
+            {
+                new Version("99.0.6"),
+                new string[]
+                {
+                    "2.0 BETA 6 updates",
                     "New population caching system that fully recognises multiple levels for the same building prefab (historical buildings)",
                     "Implement handling for reductions in residential homecounts when buildings upgrade",
                     "Fix building settings panel not opening when target building doesn't have a valid mesh material"
@@ -30,7 +37,7 @@ namespace RealPop2
             },
             {
                 new Version("2.0"),
-                new List<string>
+                new string[]
                 {
                     "RPR_200_0",
                     "RPR_200_1",
