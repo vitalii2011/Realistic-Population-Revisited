@@ -37,8 +37,6 @@ namespace RealPop2
         /// <returns>Calculated population</returns>
         internal int HouseholdCache(BuildingInfo info, int level)
         {
-            Logging.Message("caching households for ", info.name, ", level ", (level + 1).ToString());
-
             // Check if key is already in cache.
             if (!householdCache.ContainsKey(info))
             {
@@ -51,6 +49,8 @@ namespace RealPop2
                 householdCache[info][2] = Population(info, 2);
                 householdCache[info][3] = Population(info, 3);
                 householdCache[info][4] = Population(info, 4);
+
+                Logging.Message("caching households for ", info.name);
             }
 
             // Bounds check, just in case.
