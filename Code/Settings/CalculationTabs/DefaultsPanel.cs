@@ -220,8 +220,8 @@ namespace RealPop2
                 // Floor pack dropdown.
                 floorMenus[i] = UIControls.AddDropDown(panel, RightColumn, currentY + 3f);
 
-                // Header and icon.
-                PanelUtils.RowHeaderIcon(panel, ref currentY, subServiceNames[i], iconNames[i], atlasNames[i]);
+                // Row icon and label.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, subServiceNames[i], iconNames[i], atlasNames[i], 220f);
 
                 // Extra space.
                 currentY += 3f;

@@ -117,7 +117,8 @@ namespace RealPop2
         /// <param name="yPos">Reference Y positions</param>
         /// <param name="text">Tooltip text</param>
         /// <param name="icon">Icon name</param>
-        internal static void RowHeaderIcon(UIPanel panel, ref float yPos, string text, string icon, string atlas)
+        /// <param name="maxWidth">Maximum label width (scale text down to fit); 0 (default) to ignore</param>
+        internal static void RowHeaderIcon(UIPanel panel, ref float yPos, string text, string icon, string atlas, float maxWidth = 0f)
         {
             // UI layout constants.
             const float Margin = 5f;
@@ -138,6 +139,19 @@ namespace RealPop2
             lineLabel.text = text;
             lineLabel.relativePosition = new Vector3(LeftTitle, yPos + 7);
             lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
+
+            // If a maximum width has been provided, iteratively reduce text scale as required to fit within that limit.
+            if (maxWidth > 0)
+            {
+                lineLabel.autoSize = true;
+                lineLabel.PerformLayout();
+                Logging.Message("lineLabel width ", lineLabel.width.ToString());
+                while (lineLabel.width > maxWidth)
+                {
+                    lineLabel.textScale -= 0.05f;
+                    lineLabel.PerformLayout();
+                }
+            }
 
             // Increment our current height.
             yPos += 30f;
