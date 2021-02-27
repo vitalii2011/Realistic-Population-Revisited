@@ -29,34 +29,40 @@ namespace RealPop2
 
             if (num > 0 && num2 > 0)
             {
-                Vector3 v = item.m_size;
-                int floorSpace = CalcBase(width, length, ref array, v);
-                int floorCount = Mathf.Max(1, Mathf.FloorToInt(v.y / array[DataStore.LEVEL_HEIGHT])) + array[DataStore.DENSIFICATION];
-                value = (floorSpace * floorCount) / array[DataStore.PEOPLE];
-
-                if ((array[DataStore.CALC_METHOD] == 0)) // Plot only will ignore any over ride or bonus
+                // First, check for volumetric population override - that trumps everything else.
+                value = PopData.instance.GetOverride(item.name);
+                if (value == 0)
                 {
-                    // Check over ride
-                    string name = item.gameObject.name;
-                    if (DataStore.workerCache.TryGetValue(name, out int outValue))
+                    // No volumetric override - use legacy approach.
+                    Vector3 v = item.m_size;
+                    int floorSpace = CalcBase(width, length, ref array, v);
+                    int floorCount = Mathf.Max(1, Mathf.FloorToInt(v.y / array[DataStore.LEVEL_HEIGHT])) + array[DataStore.DENSIFICATION];
+                    value = (floorSpace * floorCount) / array[DataStore.PEOPLE];
+
+                    if ((array[DataStore.CALC_METHOD] == 0)) // Plot only will ignore any over ride or bonus
                     {
-                        value = outValue;
-                    }
-                    else if (DataStore.bonusWorkerCache.TryGetValue(name, out outValue))
-                    {
-                        value += outValue;
-                        DataStore.workerCache.Add(name, value);
-                        DataStore.bonusWorkerCache.Remove(name);
-                    }
-                    else if (DataStore.printEmploymentNames)
-                    {
-                        try
+                        // Check over ride
+                        string name = item.gameObject.name;
+                        if (DataStore.workerCache.TryGetValue(name, out int outValue))
                         {
-                            DataStore.workerPrintOutCache.Add(item.gameObject.name, value);
+                            value = outValue;
                         }
-                        catch (ArgumentException)
+                        else if (DataStore.bonusWorkerCache.TryGetValue(name, out outValue))
                         {
-                            // Don't care
+                            value += outValue;
+                            DataStore.workerCache.Add(name, value);
+                            DataStore.bonusWorkerCache.Remove(name);
+                        }
+                        else if (DataStore.printEmploymentNames)
+                        {
+                            try
+                            {
+                                DataStore.workerPrintOutCache.Add(item.gameObject.name, value);
+                            }
+                            catch (ArgumentException)
+                            {
+                                // Don't care
+                            }
                         }
                     }
                 }

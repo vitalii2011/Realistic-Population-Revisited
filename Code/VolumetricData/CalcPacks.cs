@@ -165,8 +165,16 @@
         /// <returns>Population</returns>
         public override int Population(BuildingInfo buildingPrefab, int level, float multiplier)
         {
-            int[] array = ResidentialBuildingAIMod.GetArray(buildingPrefab, (int)level);
-            return AI_Utils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array);
+            // First, check for volumetric population override - that trumps everything else.
+            int value = PopData.instance.GetOverride(buildingPrefab.name);
+            if (value == 0)
+            {
+                // No volumetric override - use legacy calcs.
+                int[] array = ResidentialBuildingAIMod.GetArray(buildingPrefab, (int)level);
+                return AI_Utils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array);
+            }
+
+            return value;
         }
     }
 
