@@ -57,15 +57,19 @@ namespace RealPop2
 
             // Add level textfields.
             floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth);
+            floorHeightField.tooltip = Translations.Translate("RPR_CAL_VOL_FLH_TIP");
             floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
             firstMinField = UIControls.AddTextField(panel, FirstMinX + Margin, currentY, width: TextFieldWidth);
+            firstMinField.tooltip = Translations.Translate("RPR_CAL_VOL_FMN_TIP");
             firstMinField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
             firstExtraField = UIControls.AddTextField(panel, FirstMaxX + Margin, currentY, width: TextFieldWidth);
+            firstExtraField.tooltip = Translations.Translate("RPR_CAL_VOL_FMX_TIP");
             firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
 
             firstEmptyCheck = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);
+            firstEmptyCheck.tooltip = Translations.Translate("RPR_CAL_VOL_IGF_TIP");
 
             // Move to next row.
             currentY += RowHeight;

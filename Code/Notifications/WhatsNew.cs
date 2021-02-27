@@ -17,6 +17,16 @@ namespace RealPop2
         {
             {
                 // Beta message version is 99.
+                new Version("99.0.8"),
+                new string[]
+                {
+                    "2.0 BETA 8 updates",
+                    "Fix new-style population overrides not being recognised by legacy calculations",
+                    "Add tooltips for population and floor calculation panel fields"
+                }
+            },
+            {
+                // Beta message version is 99.
                 new Version("99.0.7"),
                 new string[]
                 {
