@@ -166,8 +166,9 @@ namespace RealPop2
         /// <param name="baseY">Y position of base of label/param>
         /// <param name="width">Width of reference item (for centering)</param>
         /// <param name="text">Label text</param>
+        /// <param name="tooltip">Tooltip text</param>
         /// <param name="scale">Label text size (default 0.7)</param>
-        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, float scale = 0.7f)
+        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, string tooltip, float scale = 0.7f)
         {
             // Basic setup.
             UILabel columnLabel = panel.AddUIComponent<UILabel>();
@@ -180,6 +181,7 @@ namespace RealPop2
             columnLabel.width = width;
 
             columnLabel.text = text;
+            columnLabel.tooltip = tooltip;
 
             // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
             columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), baseY - columnLabel.height);

@@ -45,16 +45,15 @@ namespace RealPop2
             firstExtraField = new UITextField();
             firstEmptyCheck = new UICheckBox();
 
-
             // Pack selection dropdown.
             packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
             packDropDown.parent.relativePosition = new Vector3(20f, PackMenuY);
 
             // Headings.
-            PanelUtils.ColumnLabel(panel, FloorHeightX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMinX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMaxX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FloorHeightX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), Translations.Translate("RPR_CAL_VOL_FLH_TIP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FirstMinX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), Translations.Translate("RPR_CAL_VOL_FMN_TIP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FirstMaxX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), Translations.Translate("RPR_CAL_VOL_FMX_TIP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), Translations.Translate("RPR_CAL_VOL_IGF_TIP"), 1.0f);
 
             // Add level textfields.
             floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth);

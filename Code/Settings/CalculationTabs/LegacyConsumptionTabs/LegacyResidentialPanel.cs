@@ -52,13 +52,13 @@ namespace RealPop2
 
             // Create residential per-person area textfields and labels.
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RLO"), "ZoningResidentialLow", "Thumbnails");
-            AddSubService(panel, true, LowRes);
+            AddSubService(panel, LowRes);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RHI"), "ZoningResidentialHigh", "Thumbnails");
-            AddSubService(panel, true, HighRes);
+            AddSubService(panel, HighRes);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERL"), "IconPolicySelfsufficient", "Ingame");
-            AddSubService(panel, true, LowEcoRes);
+            AddSubService(panel, LowEcoRes);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERH"), "IconPolicySelfsufficient", "Ingame");
-            AddSubService(panel, true, HighEcoRes);
+            AddSubService(panel, HighEcoRes);
 
             // Populate initial values.
             PopulateFields();

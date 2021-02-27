@@ -133,15 +133,25 @@
     <Translation ID="RPR_CAL_VOL_TFA" String="Total floor area" />
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />
     <Translation ID="RPR_CAL_VOL_FLH" String="Floor height" />
-    <Translation ID="RPR_CAL_VOL_EMP" String="Empty area (fixed)" />
-    <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
+    <Translation ID="RPR_CAL_VOL_FLH_TIP" String="The typical floor-to-floor height, in meters, of each story in this building (the first floor has additional options below)." />
     <Translation ID="RPR_CAL_VOL_FMN" String="First floor height min" />
+    <Translation ID="RPR_CAL_VOL_FMN_TIP" String="The minimum building height required for an area of the building to count as having at least one story." />
     <Translation ID="RPR_CAL_VOL_FMX" String="First floor extra height" />
-    <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
-    <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
-    <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
+    <Translation ID="RPR_CAL_VOL_FMX_TIP" String="The first floor height will be extended upwards by this many meters (on top of the typical floor height above) before additional floors are added above." />
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
+    <Translation ID="RPR_CAL_VOL_IGF_TIP" String="If this is selected, the first floor of the building is treated as empty space (e.g. a lobby or foyer area) with no households or wokers." />
+    <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
+    <Translation ID="RPR_CAL_VOL_EPC_TIP" String="This percentage of each floor area will be treated as empty space and will not be included when calculating households or worker counts." />
+    <Translation ID="RPR_CAL_VOL_EMP" String="Empty area (fixed)" />
+    <Translation ID="RPR_CAL_VOL_EMP_TIP" String="A fixed amount of space that will be deducted from each floor area before households or workers are calculated (treated as empty area)." />
+    <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
+    <Translation ID="RPR_CAL_VOL_FXP_TIP" String="If this is checked, use a fixed figure for household or worker counts, regardless of building size (e.g. one household per building)." />
+    <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
+    <Translation ID="RPR_CAL_VOL_UNI_TIP" String="Number of households or workers per building" />
+    <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
+    <Translation ID="RPR_CAL_VOL_APU_TIP" String="The area (in square meters) required for each household or worker (after empty space has been deducted)." />
     <Translation ID="RPR_CAL_VOL_MFU" String="Multi-floor units" />
+    <Translation ID="RPR_CAL_VOL_MFU_TIP" String="If this is not selected, then household or worker counts will be calculated for each individual floor in the building.  Selecting this will mean that only the building total will be used to calculate household or worker counts." />
     <Translation ID="RPR_CAL_VOL_HOU" String="homes" />
     <Translation ID="RPR_CAL_VOL_WOR" String="workers" />
     <Translation ID="RPR_CAL_VOL_STU" String="students" />
@@ -173,7 +183,7 @@
     <Translation ID="RPR_OPT_PRS" String="Press any key" />
     <Translation ID="RPR_OPT_LEG" String="Legacy" />
     <Translation ID="RPR_OPT_CON" String="Consumption" />
-    <Translation ID="RPR_OPT_STO" String="Stories" />
+    <Translation ID="RPR_OPT_STO" String="Floors" />
     <Translation ID="RPR_OPT_LVL" String="Level" />
     <Translation ID="RPR_OPT_PERW" String="Amounts per worker" />
     <Translation ID="RPR_OPT_PERH" String="Amounts per household" />

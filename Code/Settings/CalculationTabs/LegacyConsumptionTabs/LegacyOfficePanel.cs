@@ -54,9 +54,9 @@ namespace RealPop2
 
             // Create residential per-person area textfields and labels.
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Office]), "ZoningOffice", "Thumbnails");
-            AddSubService(panel, true, Office);
+            AddSubService(panel, Office);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[HighTech]), "IconPolicyHightech", "Ingame");
-            AddSubService(panel, false, HighTech, label: Translations.Translate(subServiceLables[HighTech]));
+            AddSubService(panel, HighTech, label: Translations.Translate(subServiceLables[HighTech]));
 
             // Populate initial values.
             PopulateFields();
