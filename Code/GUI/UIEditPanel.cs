@@ -63,8 +63,8 @@ namespace RealPop2
             title.height = 30;
 
             // Checkboxes.
-            popCheck = UIControls.AddCheckBox(this, 20f, PopCheckY, Translations.Translate("RPR_EDT_POP"), textScale: 1.0f);
-            floorCheck = UIControls.AddCheckBox(this, 20f, FloorCheckY, Translations.Translate("RPR_EDT_FLR"), textScale: 1.0f);
+            popCheck = UIControls.LabelledCheckBox(this, 20f, PopCheckY, Translations.Translate("RPR_EDT_POP"), textScale: 1.0f);
+            floorCheck = UIControls.LabelledCheckBox(this, 20f, FloorCheckY, Translations.Translate("RPR_EDT_FLR"), textScale: 1.0f);
 
             // Text fields.
             homeJobsCount = AddLabelledTextfield(HomeJobY, "RPR_LBL_HOM");

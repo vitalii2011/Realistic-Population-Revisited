@@ -157,7 +157,7 @@ namespace RealPop2
             UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate("RPR_DEF_LEG"), textScale: 0.9f);
             currentY += legacyLabel.height + 5f;
 
-            UICheckBox legacyThisSaveCheck = UIControls.AddCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LTS"));
+            UICheckBox legacyThisSaveCheck = UIControls.LabelledCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LTS"));
             legacyThisSaveCheck.label.wordWrap = true;
             legacyThisSaveCheck.label.autoSize = false;
             legacyThisSaveCheck.label.width = 710f;
@@ -170,7 +170,7 @@ namespace RealPop2
             };
             currentY += 20f;
 
-            UICheckBox legacyNewSaveCheck = UIControls.AddCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LAS"));
+            UICheckBox legacyNewSaveCheck = UIControls.LabelledCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LAS"));
             legacyNewSaveCheck.label.wordWrap = true;
             legacyNewSaveCheck.label.autoSize = false;
             legacyNewSaveCheck.label.width = 710f;

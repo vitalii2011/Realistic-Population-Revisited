@@ -145,7 +145,6 @@ namespace RealPop2
             {
                 lineLabel.autoSize = true;
                 lineLabel.PerformLayout();
-                Logging.Message("lineLabel width ", lineLabel.width.ToString());
                 while (lineLabel.width > maxWidth)
                 {
                     lineLabel.textScale -= 0.05f;
@@ -180,8 +179,10 @@ namespace RealPop2
             columnLabel.wordWrap = true;
             columnLabel.width = width;
 
+            // Text and tooltip.
             columnLabel.text = text;
             columnLabel.tooltip = tooltip;
+            columnLabel.tooltipBox = TooltipUtils.TooltipBox;
 
             // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
             columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), baseY - columnLabel.height);

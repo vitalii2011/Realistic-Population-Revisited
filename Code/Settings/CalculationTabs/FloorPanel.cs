@@ -56,20 +56,20 @@ namespace RealPop2
             PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), Translations.Translate("RPR_CAL_VOL_IGF_TIP"), 1.0f);
 
             // Add level textfields.
-            floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth);
-            floorHeightField.tooltip = Translations.Translate("RPR_CAL_VOL_FLH_TIP");
+            floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FLH_TIP"));
             floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+            floorHeightField.tooltipBox = TooltipUtils.TooltipBox;
 
-            firstMinField = UIControls.AddTextField(panel, FirstMinX + Margin, currentY, width: TextFieldWidth);
-            firstMinField.tooltip = Translations.Translate("RPR_CAL_VOL_FMN_TIP");
+            firstMinField = UIControls.AddTextField(panel, FirstMinX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FMN_TIP"));
             firstMinField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+            firstMinField.tooltipBox = TooltipUtils.TooltipBox;
 
-            firstExtraField = UIControls.AddTextField(panel, FirstMaxX + Margin, currentY, width: TextFieldWidth);
-            firstExtraField.tooltip = Translations.Translate("RPR_CAL_VOL_FMX_TIP");
+            firstExtraField = UIControls.AddTextField(panel, FirstMaxX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FMX_TIP"));
             firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+            firstExtraField.tooltipBox = TooltipUtils.TooltipBox;
 
-            firstEmptyCheck = AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY);
-            firstEmptyCheck.tooltip = Translations.Translate("RPR_CAL_VOL_IGF_TIP");
+            firstEmptyCheck = UIControls.AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY, tooltip: Translations.Translate("RPR_CAL_VOL_IGF_TIP"));
+            firstEmptyCheck.tooltipBox = TooltipUtils.TooltipBox;
 
             // Move to next row.
             currentY += RowHeight;

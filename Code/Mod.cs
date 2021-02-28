@@ -59,7 +59,7 @@ namespace RealPop2
             // This establishes the correct priority (new over legacy).
             XMLUtilsWG.ReadFromXML();
 
-            // Check to see if UIView is ready.
+            // Attaching options panel event hook - check to see if UIView is ready.
             if (UIView.GetAView() != null)
             {
                 // It's ready - attach the hook now.

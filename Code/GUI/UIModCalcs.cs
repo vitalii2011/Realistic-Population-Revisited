@@ -194,7 +194,7 @@ namespace RealPop2
             multSlider.parent.Hide();
 
             // Muliplier checkbox.
-            multCheck = UIControls.AddCheckBox(schoolPanel, RightColumnX, 18f, Translations.Translate("RPR_CAL_CAP_OVR"));
+            multCheck = UIControls.LabelledCheckBox(schoolPanel, RightColumnX, 18f, Translations.Translate("RPR_CAL_CAP_OVR"));
 
             // Multiplier default label.
             multDefaultLabel = UIControls.AddLabel(schoolPanel, RightColumnX + 21f, 40f, Translations.Translate("RPR_CAL_CAP_DEF") + " x" + ModSettings.DefaultSchoolMult, textScale: 0.8f);

@@ -141,15 +141,15 @@
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
     <Translation ID="RPR_CAL_VOL_IGF_TIP" String="If this is selected, the first floor of the building is treated as empty space (e.g. a lobby or foyer area) with no households or wokers." />
     <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
-    <Translation ID="RPR_CAL_VOL_EPC_TIP" String="This percentage of each floor area will be treated as empty space and will not be included when calculating households or worker counts." />
+    <Translation ID="RPR_CAL_VOL_EPC_TIP" String="This percentage of each floor area will be treated as empty area and will not be included when calculating households or worker counts." />
     <Translation ID="RPR_CAL_VOL_EMP" String="Empty area (fixed)" />
     <Translation ID="RPR_CAL_VOL_EMP_TIP" String="A fixed amount of space that will be deducted from each floor area before households or workers are calculated (treated as empty area)." />
     <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
     <Translation ID="RPR_CAL_VOL_FXP_TIP" String="If this is checked, use a fixed figure for household or worker counts, regardless of building size (e.g. one household per building)." />
     <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
-    <Translation ID="RPR_CAL_VOL_UNI_TIP" String="Number of households or workers per building" />
+    <Translation ID="RPR_CAL_VOL_UNI_TIP" String="Fixed number of households or workers per building." />
     <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
-    <Translation ID="RPR_CAL_VOL_APU_TIP" String="The area (in square meters) required for each household or worker (after empty space has been deducted)." />
+    <Translation ID="RPR_CAL_VOL_APU_TIP" String="The area (in square meters) required for each household or worker (after empty area has been deducted)." />
     <Translation ID="RPR_CAL_VOL_MFU" String="Multi-floor units" />
     <Translation ID="RPR_CAL_VOL_MFU_TIP" String="If this is not selected, then household or worker counts will be calculated for each individual floor in the building.  Selecting this will mean that only the building total will be used to calculate household or worker counts." />
     <Translation ID="RPR_CAL_VOL_HOU" String="homes" />

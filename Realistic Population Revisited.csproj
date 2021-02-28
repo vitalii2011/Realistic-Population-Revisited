@@ -149,6 +149,7 @@
     <Compile Include="Code\Settings\CalculationTabs\DefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\PopulationPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
+    <Compile Include="Code\Utils\TooltipUtils.cs" />
     <Compile Include="Code\Utils\UIControls.cs" />
     <Compile Include="Code\VolumetricData\CalcData.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />

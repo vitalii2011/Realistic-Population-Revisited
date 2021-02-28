@@ -96,38 +96,32 @@ namespace RealPop2
                 // Row label.
                 rowLabels[i] = RowLabel(panel, currentY, Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString());
 
-                emptyPercentFields[i] = UIControls.AddTextField(panel, EmptyPercentX + Margin, currentY, width: TextFieldWidth);
+                emptyPercentFields[i] = UIControls.AddTextField(panel, EmptyPercentX + Margin, currentY, width: TextFieldWidth, tooltip: emptyPercentTip);
                 emptyPercentFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
-                emptyPercentFields[i].tooltip = emptyPercentTip;
-                emptyPercentFields[i].tooltipBox.width = 200f;
+                emptyPercentFields[i].tooltipBox = TooltipUtils.TooltipBox;
 
-                emptyAreaFields[i] = UIControls.AddTextField(panel, EmptyAreaX + Margin, currentY, width: TextFieldWidth);
+                emptyAreaFields[i] = UIControls.AddTextField(panel, EmptyAreaX + Margin, currentY, width: TextFieldWidth, tooltip: emptyAreaTip);
                 emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-                emptyAreaFields[i].tooltip = emptyAreaTip;
-                emptyAreaFields[i].tooltipBox.width = 200f;
+                emptyAreaFields[i].tooltipBox = TooltipUtils.TooltipBox;
 
                 // Fixed pop checkboxes - ensure i is saved as objectUserData for use by event handler.  Starts unchecked by default.
-                fixedPopChecks[i] = AddCheckBox(panel, PopCheckX + (ColumnWidth / 2), currentY);
-                fixedPopChecks[i].tooltip = useFixedPopTip;
-                fixedPopChecks[i].tooltipBox.width = 200f;
+                fixedPopChecks[i] = UIControls.AddCheckBox(panel, PopCheckX + (ColumnWidth / 2), currentY, tooltip: useFixedPopTip);
                 fixedPopChecks[i].objectUserData = i;
                 fixedPopChecks[i].eventCheckChanged += FixedPopCheckChanged;
+                fixedPopChecks[i].tooltipBox = TooltipUtils.TooltipBox;
 
                 // Fixed population fields start hidden by default.
-                fixedPopFields[i] = UIControls.AddTextField(panel, FixedPopX + Margin, currentY, width: TextFieldWidth);
+                fixedPopFields[i] = UIControls.AddTextField(panel, FixedPopX + Margin, currentY, width: TextFieldWidth, tooltip: fixedPopTip);
                 fixedPopFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
-                fixedPopFields[i].tooltip = fixedPopTip;
-                fixedPopFields[i].tooltipBox.width = 200f;
+                fixedPopFields[i].tooltipBox = TooltipUtils.TooltipBox;
                 fixedPopFields[i].Hide();
 
-                areaPerFields[i] = UIControls.AddTextField(panel, AreaPerX + Margin, currentY, width: TextFieldWidth);
+                areaPerFields[i] = UIControls.AddTextField(panel, AreaPerX + Margin, currentY, width: TextFieldWidth, tooltip: areaPerTip);
                 areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-                areaPerFields[i].tooltip = areaPerTip;
-                areaPerFields[i].tooltipBox.width = 200f;
+                areaPerFields[i].tooltipBox = TooltipUtils.TooltipBox;
 
-                multiFloorChecks[i] = AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY);
-                multiFloorChecks[i].tooltip = multiFloorTip;
-                multiFloorChecks[i].tooltipBox.width = 200f;
+                multiFloorChecks[i] = UIControls.AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY, multiFloorTip);
+                multiFloorChecks[i].tooltipBox = TooltipUtils.TooltipBox;
 
                 // Move to next row.
                 currentY += RowHeight;

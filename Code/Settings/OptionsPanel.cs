@@ -118,7 +118,7 @@ namespace RealPop2
             }
             catch (Exception e)
             {
-                Logging.LogException(e, "exception creting options panel");
+                Logging.LogException(e, "exception creating options panel");
             }
         }
 

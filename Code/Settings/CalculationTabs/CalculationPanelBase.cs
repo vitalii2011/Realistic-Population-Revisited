@@ -74,27 +74,5 @@ namespace RealPop2
 
             return lineLabel;
         }
-
-
-        /// <summary>
-        /// Adds checkbox at the specified coordinates.
-        /// </summary>
-        /// <param name="textField">Textfield object</param>
-        /// <param name="panel">panel to add to</param>
-        /// <param name="posX">Relative X postion</param>
-        /// <param name="posY">Relative Y position</param>
-        /// <param name="tooltip">Tooltip, if any</param>
-        protected UICheckBox AddCheckBox(UIPanel panel, float posX, float posY, string tooltip = null)
-        {
-            UICheckBox checkBox = UIControls.AddCheckBox(panel, posX, posY);
-
-            // Add tooltip.
-            if (tooltip != null)
-            {
-                checkBox.tooltip = tooltip;
-            }
-
-            return checkBox;
-        }
     }
 }
