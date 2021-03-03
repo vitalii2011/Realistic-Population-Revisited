@@ -53,7 +53,7 @@ namespace RealPop2
             };
 
             UISprite sprite = panel.AddUIComponent<UISprite>();
-            sprite.atlas = GetAtlas(atlas);
+            sprite.atlas = TextureUtils.GetTextureAtlas(atlas);
             sprite.spriteName = uncheckedSprite;
             sprite.size = checkBox.size;
             sprite.relativePosition = Vector3.zero;
@@ -99,24 +99,6 @@ namespace RealPop2
                 icon.height = maxSize.y;
                 icon.width = maxSize.y * ratio;
             }
-        }
-
-
-        public static UITextureAtlas[] s_atlases;
-
-
-        public static UITextureAtlas GetAtlas(string name)
-        {
-            if (s_atlases == null)
-                s_atlases = Resources.FindObjectsOfTypeAll(typeof(UITextureAtlas)) as UITextureAtlas[];
-
-            for (int i = 0; i < s_atlases.Length; i++)
-            {
-                if (s_atlases[i].name == name)
-                    return s_atlases[i];
-            }
-
-            return UIView.GetAView().defaultAtlas;
         }
     }
 }

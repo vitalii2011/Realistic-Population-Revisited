@@ -111,6 +111,48 @@ namespace RealPop2
 
 
         /// <summary>
+        /// Adds a tab to a UI tabstrip.
+        /// </summary>
+        /// <param name="tabStrip">UIT tabstrip to add to</param>
+        /// <param name="tabName">Name of this tab</param>
+        /// <param name="tabIndex">Index number of this tab</param>
+        /// <returns>UIHelper instance for the new tab panel</returns>
+        internal static UIPanel AddTab(UITabstrip tabStrip, string tabName, int tabIndex, out UIButton button, bool autoLayout = false)
+        {
+            // Create tab.
+            UIButton tabButton = tabStrip.AddTab(tabName);
+
+            // Sprites.
+            tabButton.normalBgSprite = "SubBarButtonBase";
+            tabButton.disabledBgSprite = "SubBarButtonBaseDisabled";
+            tabButton.focusedBgSprite = "SubBarButtonBaseFocused";
+            tabButton.hoveredBgSprite = "SubBarButtonBaseHovered";
+            tabButton.pressedBgSprite = "SubBarButtonBasePressed";
+
+            // Tooltip.
+            tabButton.tooltip = tabName;
+
+            tabStrip.selectedIndex = tabIndex;
+
+            // Force width.
+            tabButton.width = 120;
+
+            // Get tab root panel.
+            UIPanel rootPanel = tabStrip.tabContainer.components[tabIndex] as UIPanel;
+
+            // Panel setup.
+            rootPanel.autoLayout = autoLayout;
+            rootPanel.autoLayoutDirection = LayoutDirection.Vertical;
+            rootPanel.autoLayoutPadding.top = 5;
+            rootPanel.autoLayoutPadding.left = 10;
+
+            button = tabButton;
+
+            return rootPanel;
+        }
+
+
+        /// <summary>
         /// Adds a row header icon label at the current Y position.
         /// </summary>
         /// <param name="panel">UI panel</param>
@@ -130,7 +172,7 @@ namespace RealPop2
             thumbSprite.relativePosition = new Vector3(Margin, yPos - 2.5f);
             thumbSprite.width = 35f;
             thumbSprite.height = 35f;
-            thumbSprite.atlas = UIUtils.GetAtlas(atlas);
+            thumbSprite.atlas = TextureUtils.GetTextureAtlas(atlas);
             thumbSprite.spriteName = icon;
 
             // Text label.

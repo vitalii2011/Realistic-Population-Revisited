@@ -114,7 +114,7 @@ namespace RealPop2
 
                 // Add our new pack to our list of packs and update defaults panel menus.
                 FloorData.instance.AddCalculationPack(newPack);
-                DefaultsPanel.instance.UpdateMenus();
+                CalculationsPanel.instance.UpdateDefaultMenus();
 
                 // Save configuration file. 
                 ConfigUtils.SaveSettings();
@@ -208,7 +208,7 @@ namespace RealPop2
             packDropDown.items[packDropDown.selectedIndex] = pack.displayName ?? pack.name;
 
             // Update defaults panel menus.
-            DefaultsPanel.instance.UpdateMenus();
+            CalculationsPanel.instance.UpdateDefaultMenus();
         }
 
 

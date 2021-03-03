@@ -302,11 +302,13 @@ namespace RealPop2
         /// <param name="yPos">Relative y position</param>
         /// <param name="text">Text label</param>
         /// <param name="width">Dropdown menu width, excluding label (default 220f)</param>
+        /// <param name="accomodateLabel">True (default) to move menu to accomoate text label width, false otherwise</param>
+        /// <param name="tooltip">Tooltip, if any</param>
         /// <returns>New dropdown menu with an attached text label and enclosing panel</returns>
-        public static UIDropDown AddLabelledDropDown(UIComponent parent, float xPos, float yPos, string text, float width = 220f)
+        public static UIDropDown AddLabelledDropDown(UIComponent parent, float xPos, float yPos, string text, float width = 220f, bool accomodateLabel = true, string tooltip = null)
         {
             // Create dropdown.
-            UIDropDown dropDown = AddDropDown(parent, xPos, yPos, width);
+            UIDropDown dropDown = AddDropDown(parent, xPos, yPos, width, tooltip);
 
             // Add label.
             UILabel label = dropDown.AddUIComponent<UILabel>();
@@ -318,8 +320,11 @@ namespace RealPop2
 
             label.relativePosition = new Vector3(-labelWidth, 6f);
 
-            // Move dropdown to accomodate label.
-            dropDown.relativePosition += new Vector3(labelWidth, 0f);
+            // Move dropdown to accomodate label if that setting is set.
+            if (accomodateLabel)
+            {
+                dropDown.relativePosition += new Vector3(labelWidth, 0f);
+            }
 
             return dropDown;
         }
@@ -332,8 +337,9 @@ namespace RealPop2
         /// <param name="xPos">Relative x position (default 20)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
         /// <param name="width">Dropdown menu width, excluding label (default 220f)</param>
+        /// <param name="tooltip">Tooltip, if any</param>
         /// <returns>New dropdown menu *without* an attached text label or enclosing panel</returns>
-        public static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f)
+        public static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f, string tooltip = null)
         {
             // Constants.
             const float Height = 25f;
@@ -385,6 +391,12 @@ namespace RealPop2
             button.verticalAlignment = UIVerticalAlignment.Middle;
             button.zOrder = 0;
 
+            // Add tooltip.
+            if (tooltip != null)
+            {
+                dropDown.tooltip = tooltip;
+            }
+
             return dropDown;
         }
 
@@ -419,7 +431,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Adds a slider with a descriptive text label above and an automatically updating value label immediately to the right.
+        /// Adds a slider with a descriptive text label above.
         /// </summary>
         /// <param name="parent">Panel to add the control to</param>
         /// <param name="text">Descriptive label text</param>

@@ -14,7 +14,8 @@
         // Status flags.
         internal static bool isRealPop2Save = false;
         private static float defaultSchoolMult = 1f;
-        private static bool thisSaveLegacy = false;
+        private static bool thisSaveLegacyRes = false;
+        private static bool thisSaveLegacyWrk = false;
 
         // What's new notification version.
         internal static string whatsNewVersion = "0.0";
@@ -22,31 +23,54 @@
 
 
         /// <summary>
-        /// Handles current 'use legacy by default' option changes.
+        /// Handles current 'use legacy by default for residential' option changes.
         /// </summary>
-        internal static bool ThisSaveLegacy
+        internal static bool ThisSaveLegacyRes
         {
             // Simple getter.
-            get => thisSaveLegacy;
+            get => thisSaveLegacyRes;
 
             // Setter needs to clear out DataStore cache if the setting has changed (to force calculation of new values).
             set
             {
                 // Has setting changed?
-                if (value != thisSaveLegacy)
+                if (value != thisSaveLegacyRes)
                 {
                     // Yes - clear caches.
                     PopData.instance.householdCache.Clear();
+
+                    // Update flag.
+                    thisSaveLegacyRes = value;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Handles current 'use legacy by default for workplaces' option changes.
+        /// </summary>
+        internal static bool ThisSaveLegacyWrk
+        {
+            // Simple getter.
+            get => thisSaveLegacyWrk;
+
+            // Setter needs to clear out DataStore cache if the setting has changed (to force calculation of new values).
+            set
+            {
+                // Has setting changed?
+                if (value != thisSaveLegacyWrk)
+                {
+                    // Yes - clear caches.
                     PopData.instance.workplaceCache.Clear();
 
                     // Clear RICO cache too.
                     if (ModUtils.ricoClearAllWorkplaces != null)
                     {
                         ModUtils.ricoClearAllWorkplaces.Invoke(null, null);
-                    }    
+                    }
 
                     // Update flag.
-                    thisSaveLegacy = value;
+                    thisSaveLegacyWrk = value;
                 }
             }
         }

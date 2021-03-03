@@ -65,7 +65,7 @@ namespace RealPop2
             UISprite thumbSprite = thumbPanel.AddUIComponent<UISprite>();
             thumbSprite.relativePosition = Vector3.zero;
             thumbSprite.size = thumbPanel.size;
-            thumbSprite.atlas = UIUtils.GetAtlas("Ingame");
+            thumbSprite.atlas = TextureUtils.GetTextureAtlas("Ingame");
             thumbSprite.spriteName = icon;
         }
 

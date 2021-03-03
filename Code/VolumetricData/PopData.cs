@@ -739,76 +739,93 @@ namespace RealPop2
         {
             string defaultName;
 
-            // Are we using legacy by default?
-            if (ModSettings.ThisSaveLegacy)
+            // Residential or otherwise?
+            if (service == ItemClass.Service.Residential)
             {
-                switch (service)
+                // Residential - legacy defaults or new?
+                if (ModSettings.ThisSaveLegacyRes)
                 {
-                    case ItemClass.Service.Residential:
-                        defaultName = "resWG";
-                        break;
-                    case ItemClass.Service.Industrial:
-                        defaultName = "indWG";
-                        break;
-                    case ItemClass.Service.Office:
-                        defaultName = "offWG";
-                        break;
-                    case ItemClass.Service.Education:
-                        // No legacy equivalent for school packs.
-                        defaultName = "schoolsub";
-                        break;
-                    default:
-                        defaultName = "comWG";
-                        break;
+                    // Legacy.
+                    defaultName = "resWG";
+                }
+                else
+                {
+                    // Volumetric.
+                    switch (subService)
+                    {
+                        case ItemClass.SubService.ResidentialHigh:
+                            defaultName = "reshighUS";
+                            break;
+                        case ItemClass.SubService.ResidentialHighEco:
+                            defaultName = "resEUmod";
+                            break;
+                        default:
+                            defaultName = "reslow";
+                            break;
+                    }
                 }
             }
             else
             {
-                // Not using legacy calcs; provide default volumetric packs.
-                switch (service)
+
+                // Non-residential - are we using legacy by default?
+                if (ModSettings.ThisSaveLegacyWrk)
                 {
-                    case ItemClass.Service.Residential:
-                        switch (subService)
-                        {
-                            case ItemClass.SubService.ResidentialHigh:
-                                defaultName = "reshighUS";
-                                break;
-                            case ItemClass.SubService.ResidentialHighEco:
-                                defaultName = "resEUmod";
-                                break;
-                            default:
-                                defaultName = "reslow";
-                                break;
-                        }
-                        break;
-                    case ItemClass.Service.Industrial:
-                        defaultName = "factory";
-                        break;
-                    case ItemClass.Service.Office:
-                        defaultName = "offcorp";
-                        break;
-                    case ItemClass.Service.Education:
-                        defaultName = "schoolsub";
-                        break;
-                    default:
-                        // Default is commercial.
-                        switch (subService)
-                        {
-                            case ItemClass.SubService.CommercialHigh:
-                                defaultName = "comUK";
-                                break;
-                            case ItemClass.SubService.CommercialTourist:
-                                defaultName = "hotel";
-                                break;
-                            case ItemClass.SubService.CommercialLeisure:
-                                defaultName = "restaurant";
-                                break;
-                            default:
-                                // Default is low-density commercial.
-                                defaultName = "comUS";
-                                break;
-                        }
-                        break;
+                    // Legacy defaults.
+                    switch (service)
+                    {
+                        case ItemClass.Service.Residential:
+                            defaultName = "resWG";
+                            break;
+                        case ItemClass.Service.Industrial:
+                            defaultName = "indWG";
+                            break;
+                        case ItemClass.Service.Office:
+                            defaultName = "offWG";
+                            break;
+                        case ItemClass.Service.Education:
+                            // No legacy equivalent for school packs.
+                            defaultName = "schoolsub";
+                            break;
+                        default:
+                            defaultName = "comWG";
+                            break;
+                    }
+                }
+                else
+                {
+                    // Not using legacy calcs; provide default volumetric packs.
+                    switch (service)
+                    {
+                        case ItemClass.Service.Industrial:
+                            defaultName = "factory";
+                            break;
+                        case ItemClass.Service.Office:
+                            defaultName = "offcorp";
+                            break;
+                        case ItemClass.Service.Education:
+                            defaultName = "schoolsub";
+                            break;
+                        default:
+                            // Default is commercial.
+                            switch (subService)
+                            {
+                                case ItemClass.SubService.CommercialHigh:
+                                    defaultName = "comUK";
+                                    break;
+                                case ItemClass.SubService.CommercialTourist:
+                                    defaultName = "hotel";
+                                    break;
+                                case ItemClass.SubService.CommercialLeisure:
+                                    defaultName = "restaurant";
+                                    break;
+                                default:
+                                    // Default is low-density commercial.
+                                    defaultName = "comUS";
+                                    break;
+                            }
+                            break;
+                    }
                 }
             }
 

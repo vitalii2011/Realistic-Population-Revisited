@@ -195,37 +195,42 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Updates the household numbers of already existing (placed/grown) residential building instances to the current prefab value.
-        /// Called after updating a residential prefab's household count in order to apply changes to existing buildings.
+        /// Updates the household numbers of already existing (placed/grown) residential building instances of the specified prefab, or all residential buildings if prefab is null.
+        /// Called after updating a residential prefab's household count, or when applying new default calculations, in order to apply changes to existing buildings.
         /// </summary>
-        /// <param name="prefabName">The (raw BuildingInfo) name of the prefab</param>
+        /// <param name="prefabName">The (raw BuildingInfo) name of the prefab (null for *all* residential buildings)</param>
         internal void UpdateHouseholds(string prefabName)
         {
-            // Get building manager instance.
-            var instance = Singleton<BuildingManager>.instance;
+            // Get building manager buffer.
+            Building[] buildingBuffer = Singleton<BuildingManager>.instance?.m_buildings?.m_buffer;
+
+            // DOn't do anything if we couldn't get the building buffer or if we're not in-game.
+            if (buildingBuffer == null || Singleton<ToolManager>.instance?.m_properties?.m_mode != ItemClass.Availability.Game)
+            {
+                return;
+            }
 
             // Iterate through each building in the scene.
-            for (ushort i = 0; i < instance.m_buildings.m_buffer.Length; i++)
+            for (ushort i = 0; i < buildingBuffer.Length; i++)
             {
                 // Get current building instance.
-                Building thisBuilding = instance.m_buildings.m_buffer[i];
+                Building thisBuilding = buildingBuffer[i];
 
                 // Only interested in residential buildings.
-                BuildingAI thisAI = thisBuilding.Info?.GetAI() as ResidentialBuildingAI;
-                if (thisAI != null)
+                if (thisBuilding.Info?.GetAI() is ResidentialBuildingAI residentialAI)
                 {
-                    // Residential building; check for name match.
-                    if (thisBuilding.Info.name.Equals(prefabName))
+                    // Residential building; check that either the supplier prefab name is null or it matches this building's prefab.
+                    if (prefabName == null || thisBuilding.Info.name.Equals(prefabName))
                     {
                         // Got one!  Recalculate home and visit counts.
-                        int homeCount = ((ResidentialBuildingAI)thisAI).CalculateHomeCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
-                        int visitCount = ((ResidentialBuildingAI)thisAI).CalculateVisitplaceCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
+                        int homeCount = residentialAI.CalculateHomeCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
+                        int visitCount = residentialAI.CalculateVisitplaceCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
 
                         // Apply changes via call to EnsureCitizenUnits reverse patch.
-                        ReversePatches.EnsureCitizenUnits(thisAI, i, ref thisBuilding, homeCount, 0, visitCount, 0);
+                        ReversePatches.EnsureCitizenUnits(residentialAI, i, ref thisBuilding, homeCount, 0, visitCount, 0);
 
                         // Remove any extra households.
-                        RealisticCitizenUnits.RemoveHouseHold(ref instance.m_buildings.m_buffer[i], homeCount);
+                        RealisticCitizenUnits.RemoveHouseHold(ref buildingBuffer[i], homeCount);
                     }
                 }
             }

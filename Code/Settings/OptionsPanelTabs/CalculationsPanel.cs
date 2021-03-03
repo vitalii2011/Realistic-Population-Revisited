@@ -9,6 +9,13 @@ namespace RealPop2
     /// </summary>
     internal class CalculationsPanel
     {
+        // Instance reference.
+        internal static CalculationsPanel instance;
+
+        // Components.
+        private readonly ResDefaultsPanel resDefaults;
+        private readonly EmpDefaultsPanel empDefaults;
+
         /// <summary>
         /// Adds education options tab to tabstrip.
         /// </summary>
@@ -32,11 +39,13 @@ namespace RealPop2
             childTabStrip.tabPages = tabContainer;
 
             // Add child tabs.
-            new DefaultsPanel(childTabStrip, 0);
-            new PopulationPanel(childTabStrip, 1);
-            new FloorPanel(childTabStrip, 2);
-            new ConsumptionPanel(childTabStrip, 3);
-            new LegacyPanel(childTabStrip, 4);
+            int tab = 0;
+            resDefaults = new ResDefaultsPanel(childTabStrip, tab++);
+            empDefaults = new EmpDefaultsPanel(childTabStrip, tab++);
+            new PopulationPanel(childTabStrip, tab++);
+            new FloorPanel(childTabStrip, tab++);
+            new ConsumptionPanel(childTabStrip, tab++);
+            new LegacyPanel(childTabStrip, tab);
 
             // Change tab size and text scale (to differentiate from 'main' tabstrip).
             foreach (UIButton button in childTabStrip.components)
@@ -44,6 +53,17 @@ namespace RealPop2
                 button.textScale = 0.8f;
                 button.width = 100f;
             }
+        }
+
+
+        /// <summary>
+        /// Updates default calculation pack selection menu options.
+        /// </summary>
+        internal void UpdateDefaultMenus()
+        {
+            // Update for each defaults panel.
+            resDefaults.UpdateMenus();
+            empDefaults.UpdateMenus();
         }
     }
 }
