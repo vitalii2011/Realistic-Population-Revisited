@@ -133,15 +133,25 @@
     <Translation ID="RPR_CAL_VOL_TFA" String="Общая площадь этажа" />
     <Translation ID="RPR_CAL_VOL_UTS" String="Всего units" />
     <Translation ID="RPR_CAL_VOL_FLH" String="Высота этажа" />
-    <Translation ID="RPR_CAL_VOL_EMP" String="Пустая площадь (fixed)" />
-    <Translation ID="RPR_CAL_VOL_EPC" String="Пустая площадь (%)" />
+    <Translation ID="RPR_CAL_VOL_FLH_TIP" String="Типичная высота, в метрах, каждого этажа в этом здании (первый этаж имеет дополнительные варианты ниже)." />
     <Translation ID="RPR_CAL_VOL_FMN" String="Высота первого этажа мин." />
+    <Translation ID="RPR_CAL_VOL_FMN_TIP" String="Минимальная высота здания, чтобы рассчитать как минимум один этаж." />
     <Translation ID="RPR_CAL_VOL_FMX" String="Доп. высота первого этажа" />
-    <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
-    <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
-    <Translation ID="RPR_CAL_VOL_APU" String="Площадь на unit" />
+    <Translation ID="RPR_CAL_VOL_FMX_TIP" String="Высота первого этажа будет выше (выше типичной высоты этажей сверху) перед добавлением дополнительных этажей." />
     <Translation ID="RPR_CAL_VOL_IGF" String="Игнорировать первый этаж" />
+    <Translation ID="RPR_CAL_VOL_IGF_TIP" String="Если это выбрано, первый этаж здания рассматривается как пустое место (например, лобби или фойевая зона) без квартир или рабочих мест." />
+    <Translation ID="RPR_CAL_VOL_EPC" String="Пустая площадь (%)" />
+    <Translation ID="RPR_CAL_VOL_EPC_TIP" String="Этот процент каждой области каждого этажа будет рассматриваться как пустое пространство и не будет учитываться при расчёте количества семей или работников." />
+    <Translation ID="RPR_CAL_VOL_EMP" String="Пустая площадь (фикс.)" />
+    <Translation ID="RPR_CAL_VOL_EMP_TIP" String="Фиксированный объем пространства, который будет вычтен из каждой площади, перед расчётом семей и рабочих мест (рассматривается как пустое место)." />
+    <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
+    <Translation ID="RPR_CAL_VOL_FXP_TIP" String="Если флажок установлен, используется фиксированный показатель для расчёта семей или рабочих мест, независимо от размера здания (например, одна семья в здании) ." />
+    <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
+    <Translation ID="RPR_CAL_VOL_UNI_TIP" String="Количество семей или работников в здании" />
+    <Translation ID="RPR_CAL_VOL_APU" String="Площадь на unit" />
+    <Translation ID="RPR_CAL_VOL_APU_TIP" String="Площадь (в квадратных метрах), необходимая для каждой семьи или работника (после того, как пустое пространство будет вычтено)." />
     <Translation ID="RPR_CAL_VOL_MFU" String="Многоэтажные блоки" />
+    <Translation ID="RPR_CAL_VOL_MFU_TIP" String="Если это не выбрано, то семьи или работники будут рассчитаны для каждого отдельного этажа в здании. Если выбрано, то для расчёта семей или работников будет использоваться всё здание." />
     <Translation ID="RPR_CAL_VOL_HOU" String="дома" />
     <Translation ID="RPR_CAL_VOL_WOR" String="работников" />
     <Translation ID="RPR_CAL_VOL_STU" String="студентов" />
