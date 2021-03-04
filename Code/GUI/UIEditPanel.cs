@@ -251,7 +251,7 @@ namespace RealPop2
                         {
                             // Update household counts for existing instances of this building - only needed for residential buildings.
                             // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                            PopData.instance.UpdateHouseholds(currentSelection.name);
+                            PopData.instance.UpdateHouseholds(currentSelection.name, currentSelection.GetSubService());
                         }
 
                         // Repopulate field with parsed value.
@@ -347,7 +347,7 @@ namespace RealPop2
 
                 // Update household counts for existing instances of this building - only needed for residential buildings.
                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                PopData.instance.UpdateHouseholds(currentSelection.name);
+                PopData.instance.UpdateHouseholds(currentSelection.name, currentSelection.GetSubService());
             }
             else
             {

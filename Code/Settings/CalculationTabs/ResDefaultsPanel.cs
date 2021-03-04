@@ -223,12 +223,17 @@ namespace RealPop2
         /// <param name="mouseEvent">Mouse event (unused)</param>
         private void ApplyToAll(UIComponent control, UIMouseEventParameter mouseEvent)
         {
-            // Apply any changed settings.
-            ApplyToNew(control, mouseEvent);
+            // Extract subservice index from this control's object user data.
+            if (control.objectUserData is int subServiceIndex)
+            {
+                // Apply any changed settings.
+                ApplyToNew(control, mouseEvent);
 
-            // Update existing households.
-            Logging.Message("new residential defaults applied; updating populations of all existing residential buildings");
-            PopData.instance.UpdateHouseholds(null);
+                // Update existing households.
+                ItemClass.SubService subService = subServices[subServiceIndex];
+                Logging.Message("new residential defaults applied; updating populations of all existing residential buildings with subservice ", subService.ToString());
+                PopData.instance.UpdateHouseholds(null, subService);
+            }
         }
     }
 }

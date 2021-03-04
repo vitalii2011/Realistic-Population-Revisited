@@ -195,11 +195,12 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Updates the household numbers of already existing (placed/grown) residential building instances of the specified prefab, or all residential buildings if prefab is null.
+        /// Updates the household numbers of already existing (placed/grown) residential building instances of the specified prefab, or all residential buildings of the specified subservices if prefab name is null.
         /// Called after updating a residential prefab's household count, or when applying new default calculations, in order to apply changes to existing buildings.
         /// </summary>
-        /// <param name="prefabName">The (raw BuildingInfo) name of the prefab (null for *all* residential buildings)</param>
-        internal void UpdateHouseholds(string prefabName)
+        /// <param name="prefabName">The (raw BuildingInfo) name of the prefab (null to ignore name match)</param>
+        /// <param name="subService">The subservice to apply to (null for *all* residential buildings)</param>
+        internal void UpdateHouseholds(string prefabName, ItemClass.SubService subService)
         {
             // Get building manager buffer.
             Building[] buildingBuffer = Singleton<BuildingManager>.instance?.m_buildings?.m_buffer;
@@ -220,7 +221,7 @@ namespace RealPop2
                 if (thisBuilding.Info?.GetAI() is ResidentialBuildingAI residentialAI)
                 {
                     // Residential building; check that either the supplier prefab name is null or it matches this building's prefab.
-                    if (prefabName == null || thisBuilding.Info.name.Equals(prefabName))
+                    if ((prefabName == null || thisBuilding.Info.name.Equals(prefabName)) && thisBuilding.Info.GetSubService() == subService)
                     {
                         // Got one!  Recalculate home and visit counts.
                         int homeCount = residentialAI.CalculateHomeCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
@@ -441,7 +442,7 @@ namespace RealPop2
 
                 // Update household counts for existing instances of this building - only needed for residential buildings.
                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                UpdateHouseholds(prefab.name);
+                UpdateHouseholds(prefab.name, prefab.GetSubService());
             }
             else
             {
