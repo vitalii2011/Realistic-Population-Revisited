@@ -202,10 +202,11 @@ namespace RealPop2
         /// <param name="subService">The subservice to apply to (null for *all* residential buildings)</param>
         internal void UpdateHouseholds(string prefabName, ItemClass.SubService subService)
         {
-            // Get building manager buffer.
+            // Local references.
+            CitizenManager citizenManager = Singleton<CitizenManager>.instance;
             Building[] buildingBuffer = Singleton<BuildingManager>.instance?.m_buildings?.m_buffer;
 
-            // DOn't do anything if we couldn't get the building buffer or if we're not in-game.
+            // Don't do anything if we couldn't get the building buffer or if we're not in-game.
             if (buildingBuffer == null || Singleton<ToolManager>.instance?.m_properties?.m_mode != ItemClass.Availability.Game)
             {
                 return;
@@ -232,9 +233,14 @@ namespace RealPop2
 
                         // Remove any extra households.
                         RealisticCitizenUnits.RemoveHouseHold(ref buildingBuffer[i], homeCount);
+
+                        // Log changes.
+                        Logging.Message("Reset CitizenUnits for building ", i.ToString(), " (", thisBuilding.Info.name,"); CitizenUnit count is now ", citizenManager.m_unitCount.ToString());
                     }
                 }
             }
+
+            Logging.Message("CitizenUnit count is now ", citizenManager.m_unitCount.ToString());
         }
 
 
