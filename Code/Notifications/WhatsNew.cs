@@ -17,6 +17,18 @@ namespace RealPop2
         {
             {
                 // Beta message version is 99.
+                new Version("99.0.9"),
+                new string[]
+                {
+                    "2.0 BETA 9 updates",
+                    "Separate residential and workplace default option panels, and allow 'use legacy by default' to be toggled separately for each",
+                    "Trial use of icons instead of text for defaults panel tabs",
+                    "Add buttons in residential defaults panel to apply changes in default packs to existing residential buildings",
+                    "Update savegame serialization",
+                }
+            },
+            {
+                // Beta message version is 99.
                 new Version("99.0.8"),
                 new string[]
                 {
