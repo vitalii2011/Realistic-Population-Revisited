@@ -10,8 +10,10 @@
     <Translation ID="RPR_PCK_LEG_DES" String="Старые расчёты, использованные в версиях 1.x этого мода и оригинальном моде Realistic Population and Consumption mod от Whitefang Greytail." />
     <Translation ID="RPR_PCK_RLS_NAM" String="Отдельные дома" />
     <Translation ID="RPR_PCK_RLS_DES" String="Здание на одну семью." />
-    <Translation ID="RPR_PCK_RUH_NAM" String="Высотные здания в США" />
-    <Translation ID="RPR_PCK_RUH_DES" String="Средние квартиры и кондоминиумы в США." />
+    <Translation ID="RPR_PCK_RLD_NAM" String="Дуплексы" />
+    <Translation ID="RPR_PCK_RLD_DES" String="Здания на две семьи." />
+    <Translation ID="RPR_PCK_RUH_NAM" String="Небоскрёбы США" />
+    <Translation ID="RPR_PCK_RUH_DES" String="Стандартные апартаменты и квартиры США." />
     <Translation ID="RPR_PCK_REM_NAM" String="Европейские апартаменты (современные)" />
     <Translation ID="RPR_PCK_REM_DES" String="Европейские среднеэтажные здания со свободной планировкой квартир (средней плотности; современные здания)." />
     <Translation ID="RPR_PCK_REO_NAM" String="Европейские апартаменты (старые)" />
@@ -224,7 +226,8 @@
     <Translation ID="RPR_OPT_NEW" String="Добавить новый" />
     <Translation ID="RPR_OPT_DEL" String="Удалить пакет" />
     <Translation ID="RPR_OPT_NPK" String="Новый пакет" />
-    <Translation ID="RPR_DEF_LEG" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию:" />
+    <Translation ID="RPR_DEF_LGR" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для жилых зданий:" />
+    <Translation ID="RPR_DEF_LGW" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для зданий с рабочими местами:" />
     <Translation ID="RPR_DEF_LTS" String="Это сохранение" />
     <Translation ID="RPR_DEF_LAS" String="Новое сохранение" />
     <Translation ID="TRN_CHOICE" String="Установить язык" />
