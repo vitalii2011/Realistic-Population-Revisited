@@ -46,7 +46,7 @@ namespace RealPop2
         internal DefaultsPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Layout constants.
-            const float TabIconSize = 20f;
+            const float TabIconSize = 23f;
             const float TabWidth = 100f;
 
 
@@ -64,7 +64,7 @@ namespace RealPop2
             for (int i = 0; i < TabIcons.Length; ++i)
             {
                 UISprite thumbSprite = tabButton.AddUIComponent<UISprite>();
-                thumbSprite.relativePosition = new Vector2(2.5f + (spriteOffset * i), 2.5f);
+                thumbSprite.relativePosition = new Vector2(2.5f + (spriteOffset * i), 1f);
                 thumbSprite.width = TabIconSize;
                 thumbSprite.height = TabIconSize;
                 thumbSprite.atlas = TextureUtils.GetTextureAtlas(AtlasNames[TabIcons[i]]);

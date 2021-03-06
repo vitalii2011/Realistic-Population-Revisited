@@ -10,6 +10,8 @@
     <Translation ID="RPR_PCK_LEG_DES" String="Old calculations used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod." />
     <Translation ID="RPR_PCK_RLS_NAM" String="Single dwellings" />
     <Translation ID="RPR_PCK_RLS_DES" String="One household per building." />
+    <Translation ID="RPR_PCK_RLD_NAM" String="Duplexes" />
+    <Translation ID="RPR_PCK_RLD_DES" String="Two households per building." />
     <Translation ID="RPR_PCK_RUH_NAM" String="US highrise" />
     <Translation ID="RPR_PCK_RUH_DES" String="Average US apartments and condos." />
     <Translation ID="RPR_PCK_REM_NAM" String="European apartments (modern)" />

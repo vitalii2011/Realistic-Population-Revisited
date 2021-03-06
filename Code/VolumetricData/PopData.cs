@@ -342,6 +342,23 @@ namespace RealPop2
             newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -1f, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
+            // Duplexes.
+            newPack = new VolumetricPopPack
+            {
+                name = "duplex",
+                displayName = Translations.Translate("RPR_PCK_RLD_NAM"),
+                description = Translations.Translate("RPR_PCK_RLD_DES"),
+                version = (int)DataVersion.one,
+                service = ItemClass.Service.Residential,
+                levels = new LevelData[5]
+            };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[3] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            calcPacks.Add(newPack);
+
             // European apartments (modern).
             newPack = new VolumetricPopPack
             {
