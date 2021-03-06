@@ -96,6 +96,8 @@ namespace RealPop2
         /// <returns></returns>
         public override bool WriteXML(string fullPathFileName)
         {
+            Logging.Message("writing legacy XML");
+
             XmlDocument xmlDoc = new XmlDocument();
 
             XmlNode rootNode = xmlDoc.CreateElement("WG_CityMod");
