@@ -34,10 +34,10 @@ namespace RealPop2
         // Panel components.
         private UIFastList floorsList;
         private UILabel numFloorsLabel, floorAreaLabel, totalLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
-        private UILabel emptyAreaLabel, emptyPercentLabel, perLabel;
+        private UILabel emptyAreaLabel, emptyPercentLabel, perLabel, unitsLabel;
         private UILabel schoolWorkerLabel, costLabel;
         private UILabel messageLabel;
-        private UICheckBox multiFloorCheckBox, ignoreFirstCheckBox;
+        private UICheckBox fixedPopCheckBox, multiFloorCheckBox, ignoreFirstCheckBox;
 
 
         /// <summary>
@@ -64,14 +64,21 @@ namespace RealPop2
             floorHeightLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), RightColumn, Row4);
             firstMinLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), RightColumn, Row5);
             firstExtraLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), RightColumn, Row6);
-            emptyAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row1);
-            emptyPercentLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row2);
-            perLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row3);
+            emptyAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row2);
+            emptyPercentLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row3);
+            unitsLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_UNI"), LeftColumn, Row2);
+            unitsLabel.Hide();
+            perLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row4);
             schoolWorkerLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_SCH_WKR"), LeftColumn, Row6);
             costLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_SCH_CST"), LeftColumn, Row7);
 
+            // Fixed population checkbox.
+            fixedPopCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_FXP"), LeftColumn, Row1);
+            fixedPopCheckBox.isInteractive = false;
+            fixedPopCheckBox.Disable();
+
             // Multi-floor units checkbox.
-            multiFloorCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_MFU"), LeftColumn, Row4);
+            multiFloorCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_MFU"), LeftColumn, Row5);
             multiFloorCheckBox.isInteractive = false;
             multiFloorCheckBox.Disable();
 
@@ -115,12 +122,20 @@ namespace RealPop2
         /// <param name="levelData">LevelData record to summarise</param>
         internal void UpdatePopText(LevelData levelData)
         {
-            // Set textfield values.
+            // Update and display text labels depending on 'use fixed pop' setting.
+            bool fixedPop = levelData.areaPer < 0;
+            fixedPopCheckBox.isChecked = fixedPop;
+            emptyAreaLabel.isVisible = !fixedPop;
+            emptyPercentLabel.isVisible = !fixedPop;
+            perLabel.isVisible = !fixedPop;
+            multiFloorCheckBox.isVisible = !fixedPop;
+            unitsLabel.isVisible = fixedPop;
+
+            // Set values.
             emptyAreaLabel.text = levelData.emptyArea.ToString();
             emptyPercentLabel.text = levelData.emptyPercent.ToString();
             perLabel.text = levelData.areaPer.ToString();
-
-            // Set checkbox.
+            unitsLabel.text = (levelData.areaPer * -1).ToString();
             multiFloorCheckBox.isChecked = levelData.multiFloorUnits;
         }
 
