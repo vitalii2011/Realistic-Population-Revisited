@@ -131,6 +131,9 @@
     <Translation ID="RPR_CAL_BFL" String="Building floors" />
     <Translation ID="RPR_CAL_FOV" String="Using custom override" />
     <Translation ID="RPR_CAL_FLG" String="Floor calculation selection is not available when using legacy calculations" />
+    <Translation ID="RPR_CAL_SAT" String="Save and apply to:" />
+    <Translation ID="RPR_CAL_NBD" String="New buildings only" />
+    <Translation ID="RPR_CAL_ABD" String="All buildings" />
     <Translation ID="RPR_CAL_VOL_FLR" String="Floors" />
     <Translation ID="RPR_CAL_VOL_TFA" String="Total floor area" />
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />

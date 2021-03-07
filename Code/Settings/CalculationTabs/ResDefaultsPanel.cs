@@ -102,7 +102,7 @@ namespace RealPop2
                 PanelUtils.RowHeaderIcon(panel, ref currentY, SubServiceNames[i], IconNames[i], AtlasNames[i]);
 
                 // Apply button label.
-                UIControls.AddLabel(panel, ButtonX, currentY - 20f, "Save and apply to:");
+                UIControls.AddLabel(panel, ButtonX, currentY - 20f, Translations.Translate("RPR_CAL_SAT"));
 
                 // Pop pack dropdown.
                 popMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), MenuWidth, false);
@@ -128,7 +128,7 @@ namespace RealPop2
                 };
 
                 // Add 'apply to new buildings' button level with population pack dropdown.
-                UIButton applyNewButton = UIControls.AddButton(panel, ButtonX, currentY, "New buildings only", 200f, ButtonHeight, 0.8f);
+                UIButton applyNewButton = UIControls.AddButton(panel, ButtonX, currentY, Translations.Translate("RPR_CAL_NBD"), 200f, ButtonHeight, 0.8f);
                 applyNewButton.objectUserData = i;
                 applyNewButton.eventClicked += ApplyToNew;
 
@@ -139,7 +139,7 @@ namespace RealPop2
                 floorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, false);
 
                 // Add 'apply to existing buildings' button level with floor pack dropdown.
-                UIButton applyExistButton = UIControls.AddButton(panel, ButtonX, currentY, "All buildings", 200f, ButtonHeight, 0.8f);
+                UIButton applyExistButton = UIControls.AddButton(panel, ButtonX, currentY, Translations.Translate("RPR_CAL_ABD"), 200f, ButtonHeight, 0.8f);
                 applyExistButton.objectUserData = i;
                 applyExistButton.eventClicked += ApplyToAll;
 
