@@ -37,6 +37,9 @@ namespace RealPop2
         // Translation key for legacy settings label.
         protected abstract string LegacyCheckLabel { get; }
 
+        // Tab width.
+        protected virtual float TabWidth => 100f;
+
 
         /// <summary>
         /// Constructor - adds default options tab to tabstrip.
@@ -47,15 +50,13 @@ namespace RealPop2
         {
             // Layout constants.
             const float TabIconSize = 23f;
-            const float TabWidth = 100f;
 
 
             // Y position indicator.
             float currentY = 5f;
 
-
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton);
+            UIPanel panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton, TabWidth);
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = false;
 
@@ -154,7 +155,7 @@ namespace RealPop2
                     // Set menu item text.
                     popMenus[i].items[j] = availablePopPacks[i][j].displayName;
 
-                    // Check for deefault name match.
+                    // Check for default name match.
                     if (availablePopPacks[i][j].name.Equals(defaultPopPack.name))
                     {
                         // Match - add default postscript.
@@ -200,24 +201,22 @@ namespace RealPop2
         protected virtual float SetUpMenus(UIPanel panel)
         {
             // Layout constants.
-            const float LeftColumn = 270f;
-            const float RightColumn = 510f;
+            const float LeftColumn = 200f;
+            const float RowHeight = 30f;
+            const float MenuWidth = 300f;
+            const float ButtonX = LeftColumn + MenuWidth + (Margin * 2);
 
             // Starting y position.
-            float currentY = 75f;
-
-
-            // Add titles.
-            UILabel popLabel = UIControls.AddLabel(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), 220f);
-            UILabel floorLabel = UIControls.AddLabel(panel, RightColumn, currentY, Translations.Translate("RPR_CAL_BFL"), 220f);
-            popLabel.textAlignment = UIHorizontalAlignment.Center;
-            floorLabel.textAlignment = UIHorizontalAlignment.Center;
-            currentY += 25f;
+            float currentY = 90f;
 
             for (int i = 0; i < SubServiceNames.Length; ++i)
             {
+
+                // Row icon and label.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, SubServiceNames[i], IconNames[i], AtlasNames[i]);
+
                 // Pop pack dropdown.
-                popMenus[i] = UIControls.AddDropDown(panel, LeftColumn, currentY + 3f);
+                popMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), MenuWidth, false);
 
                 // Save current index in object user data.
                 popMenus[i].objectUserData = i;
@@ -239,14 +238,15 @@ namespace RealPop2
                     }
                 };
 
+                // Floor pack on next row.
+                currentY += RowHeight;
+
                 // Floor pack dropdown.
-                floorMenus[i] = UIControls.AddDropDown(panel, RightColumn, currentY + 3f);
+                floorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, false);
 
-                // Row icon and label.
-                PanelUtils.RowHeaderIcon(panel, ref currentY, SubServiceNames[i], IconNames[i], AtlasNames[i], 220f);
 
-                // Extra space.
-                currentY += 3f;
+                // Next row.
+                currentY += RowHeight + Margin;
             }
 
             // Return finishing Y position.

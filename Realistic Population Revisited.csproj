@@ -134,6 +134,7 @@
     <Compile Include="Code\Patches\WorldInfoPanel.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ComDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\CommercialPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ConsumptionPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\IndustrialPanel.cs" />
@@ -142,7 +143,10 @@
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ResidentialPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\DefaultsPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\FloorPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\IndDefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\OffDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ResDefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\SchDefaultsPanel.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionPanel.cs" />

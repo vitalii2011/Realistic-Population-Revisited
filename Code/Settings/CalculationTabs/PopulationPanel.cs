@@ -34,37 +34,20 @@ namespace RealPop2
         private readonly UIDropDown serviceDropDown;
 
 
+        // Tab sprite name and tooltip key.
+        protected override string TabSprite => "SubBarMonumentModderPackFocused";
+        protected override string TabTooltipKey => "RPR_OPT_POP";
+
+
         /// <summary>
         /// Adds editing options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal PopulationPanel(UITabstrip tabStrip, int tabIndex)
+        internal PopulationPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Layout constants.
-            const float TabIconSize = 23f;
-            const float TabWidth = 100f;
-
-
             // Y position indicator.
             float currentY = DetailY;
-
-            // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton);
-            UIHelper helper = new UIHelper(panel);
-            panel.autoLayout = false;
-
-            // Add tab sprite.
-            UISprite thumbSprite = tabButton.AddUIComponent<UISprite>();
-            thumbSprite.relativePosition = new Vector2((TabWidth - TabIconSize) / 2f, 1f);
-            thumbSprite.width = TabIconSize;
-            thumbSprite.height = TabIconSize;
-            thumbSprite.atlas = TextureUtils.InGameAtlas;
-            thumbSprite.spriteName = "SubBarMonumentModderPackFocused";
-
-            // Set tooltip.
-            tabButton.tooltip = Translations.Translate("RPR_OPT_POP");
-
 
             // Initialise arrays
             emptyAreaFields = new UITextField[5];

@@ -8,7 +8,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for creating and editing calculation packs.
     /// </summary>
-    internal class CalculationPanelBase
+    internal abstract class CalculationPanelBase
     {
         // Constants.
         protected const float Margin = 5f;
@@ -25,6 +25,40 @@ namespace RealPop2
 
         // List of packs.
         protected List<DataPack> packList;
+
+        // Panel reference.
+        protected readonly UIPanel panel;
+
+        // Tab sprite name and tooltip key.
+        protected abstract string TabSprite { get; }
+        protected abstract string TabTooltipKey { get; }
+
+
+        /// Constructor - dds editing options tab to tabstrip.
+        /// </summary>
+        /// <param name="tabStrip">Tab strip to add to</param>
+        /// <param name="tabIndex">Index number of tab</param>
+        internal CalculationPanelBase(UITabstrip tabStrip, int tabIndex)
+        {
+            // Layout constants.
+            const float TabIconSize = 23f;
+            const float TabWidth = 50f;
+
+            // Add tab and helper.
+            panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton, TabWidth);
+            panel.autoLayout = false;
+
+            // Add tab sprite.
+            UISprite thumbSprite = tabButton.AddUIComponent<UISprite>();
+            thumbSprite.relativePosition = new Vector2((TabWidth - TabIconSize) / 2f, 1f);
+            thumbSprite.width = TabIconSize;
+            thumbSprite.height = TabIconSize;
+            thumbSprite.atlas = TextureUtils.InGameAtlas;
+            thumbSprite.spriteName = TabSprite;
+
+            // Set tooltip.
+            tabButton.tooltip = Translations.Translate(TabTooltipKey);
+        }
 
 
         /// <summary>

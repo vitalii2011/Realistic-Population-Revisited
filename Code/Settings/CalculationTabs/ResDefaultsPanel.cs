@@ -201,9 +201,8 @@ namespace RealPop2
                 // Did we make a change?
                 if (isDirty)
                 {
-                    // Yes - clear population caches.
+                    // Yes - clear population cache.
                     PopData.instance.householdCache.Clear();
-                    PopData.instance.workplaceCache.Clear();
 
                     // Save settings.
                     ConfigUtils.SaveSettings();

@@ -116,8 +116,11 @@ namespace RealPop2
         /// <param name="tabStrip">UIT tabstrip to add to</param>
         /// <param name="tabName">Name of this tab</param>
         /// <param name="tabIndex">Index number of this tab</param>
+        /// <param name="button">Tab button instance references</param>
+        /// <param name="width">Tab width</param>
+        /// <param name="autoLayout">Default autoLayout setting</param>
         /// <returns>UIHelper instance for the new tab panel</returns>
-        internal static UIPanel AddTab(UITabstrip tabStrip, string tabName, int tabIndex, out UIButton button, bool autoLayout = false)
+        internal static UIPanel AddTab(UITabstrip tabStrip, string tabName, int tabIndex, out UIButton button, float width = 120f, bool autoLayout = false)
         {
             // Create tab.
             UIButton tabButton = tabStrip.AddTab(tabName);
@@ -135,7 +138,7 @@ namespace RealPop2
             tabStrip.selectedIndex = tabIndex;
 
             // Force width.
-            tabButton.width = 120;
+            tabButton.width = width;
 
             // Get tab root panel.
             UIPanel rootPanel = tabStrip.tabContainer.components[tabIndex] as UIPanel;

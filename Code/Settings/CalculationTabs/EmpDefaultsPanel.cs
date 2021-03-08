@@ -6,107 +6,8 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default employment calculation packs.
     /// </summary>
-    internal class EmpDefaultsPanel : DefaultsPanel
+    internal abstract class EmpDefaultsPanel : DefaultsPanel
     {
-        // Service/subservice arrays.
-        private readonly string[] subServiceNames =
-        {
-            Translations.Translate("RPR_CAT_CLO"),
-            Translations.Translate("RPR_CAT_CHI"),
-            Translations.Translate("RPR_CAT_ORG"),
-            Translations.Translate("RPR_CAT_LEI"),
-            Translations.Translate("RPR_CAT_TOU"),
-            Translations.Translate("RPR_CAT_OFF"),
-            Translations.Translate("RPR_CAT_ITC"),
-            Translations.Translate("RPR_CAT_IND"),
-            Translations.Translate("RPR_CAT_FAR"),
-            Translations.Translate("RPR_CAT_FOR"),
-            Translations.Translate("RPR_CAT_OIL"),
-            Translations.Translate("RPR_CAT_ORE"),
-            Translations.Translate("RPR_CAT_SCH")
-        };
-
-        private readonly ItemClass.Service[] services =
-        {
-            ItemClass.Service.Commercial,
-            ItemClass.Service.Commercial,
-            ItemClass.Service.Commercial,
-            ItemClass.Service.Commercial,
-            ItemClass.Service.Commercial,
-            ItemClass.Service.Office,
-            ItemClass.Service.Office,
-            ItemClass.Service.Industrial,
-            ItemClass.Service.Industrial,
-            ItemClass.Service.Industrial,
-            ItemClass.Service.Industrial,
-            ItemClass.Service.Industrial,
-            ItemClass.Service.Education
-        };
-
-        private readonly ItemClass.SubService[] subServices =
-        {
-            ItemClass.SubService.CommercialLow,
-            ItemClass.SubService.CommercialHigh,
-            ItemClass.SubService.CommercialEco,
-            ItemClass.SubService.CommercialLeisure,
-            ItemClass.SubService.CommercialTourist,
-            ItemClass.SubService.OfficeGeneric,
-            ItemClass.SubService.OfficeHightech,
-            ItemClass.SubService.IndustrialGeneric,
-            ItemClass.SubService.IndustrialFarming,
-            ItemClass.SubService.IndustrialForestry,
-            ItemClass.SubService.IndustrialOil,
-            ItemClass.SubService.IndustrialOre,
-            ItemClass.SubService.None
-        };
-
-        private readonly string[] iconNames =
-        {
-            "ZoningCommercialLow",
-            "ZoningCommercialHigh",
-            "IconPolicyOrganic",
-            "IconPolicyLeisure",
-            "IconPolicyTourist",
-            "ZoningOffice",
-            "IconPolicyHightech",
-            "ZoningIndustrial",
-            "IconPolicyFarming",
-            "IconPolicyForest",
-            "IconPolicyOil",
-            "IconPolicyOre",
-            "ToolbarIconEducation"
-        };
-
-        private readonly string[] atlasNames =
-        {
-            "Thumbnails",
-            "Thumbnails",
-            "Ingame",
-            "Ingame",
-            "Ingame",
-            "Thumbnails",
-            "Ingame",
-            "Thumbnails",
-            "Ingame",
-            "Ingame",
-            "Ingame",
-            "Ingame",
-            "Ingame"
-        };
-
-        private readonly int[] tabIconIndexes =
-        {
-            0, 1, 5, 7
-        };
-
-        protected override string[] SubServiceNames => subServiceNames;
-        protected override ItemClass.Service[] Services => services;
-        protected override ItemClass.SubService[] SubServices => subServices;
-        protected override string[] IconNames => iconNames;
-        protected override string[] AtlasNames => atlasNames;
-        protected override int[] TabIcons => tabIconIndexes;
-
-
         // Legacy settings link.
         protected override bool LegacyCategory { get => ModSettings.ThisSaveLegacyWrk; set => ModSettings.ThisSaveLegacyWrk = value; }
 
@@ -170,7 +71,6 @@ namespace RealPop2
             }
 
             // Clear population caches.
-            PopData.instance.householdCache.Clear();
             PopData.instance.workplaceCache.Clear();
 
             // Clear RICO cache.

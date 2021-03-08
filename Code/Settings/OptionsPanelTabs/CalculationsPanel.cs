@@ -14,7 +14,7 @@ namespace RealPop2
 
         // Components.
         private readonly ResDefaultsPanel resDefaults;
-        private readonly EmpDefaultsPanel empDefaults;
+        private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults, schDefaults;
 
         /// <summary>
         /// Adds education options tab to tabstrip.
@@ -41,18 +41,14 @@ namespace RealPop2
             // Add child tabs.
             int tab = 0;
             resDefaults = new ResDefaultsPanel(childTabStrip, tab++);
-            empDefaults = new EmpDefaultsPanel(childTabStrip, tab++);
+            comDefaults = new ComDefaultsPanel(childTabStrip, tab++);
+            offDefaults = new OffDefaultsPanel(childTabStrip, tab++);
+            indDefaults = new IndDefaultsPanel(childTabStrip, tab++);
+            schDefaults = new SchDefaultsPanel(childTabStrip, tab++);
             new PopulationPanel(childTabStrip, tab++);
             new FloorPanel(childTabStrip, tab++);
             new ConsumptionPanel(childTabStrip, tab++);
             new LegacyPanel(childTabStrip, tab);
-
-            // Change tab size and text scale (to differentiate from 'main' tabstrip).
-            foreach (UIButton button in childTabStrip.components)
-            {
-                button.textScale = 0.8f;
-                button.width = 100f;
-            }
         }
 
 
@@ -63,7 +59,10 @@ namespace RealPop2
         {
             // Update for each defaults panel.
             resDefaults.UpdateMenus();
-            empDefaults.UpdateMenus();
+            comDefaults.UpdateMenus();
+            offDefaults.UpdateMenus();
+            indDefaults.UpdateMenus();
+            schDefaults.UpdateMenus();
         }
     }
 }
