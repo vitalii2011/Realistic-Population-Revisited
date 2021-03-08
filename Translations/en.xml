@@ -137,6 +137,7 @@
     <Translation ID="RPR_CAL_VOL_FLR" String="Floors" />
     <Translation ID="RPR_CAL_VOL_TFA" String="Total floor area" />
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />
+    <Translation ID="RPR_CAL_VOL_VIS" String="Visitor count" />
     <Translation ID="RPR_CAL_VOL_FLH" String="Floor height" />
     <Translation ID="RPR_CAL_VOL_FLH_TIP" String="The typical floor-to-floor height, in meters, of each story in this building (the first floor has additional options below)." />
     <Translation ID="RPR_CAL_VOL_FMN" String="First floor height min" />

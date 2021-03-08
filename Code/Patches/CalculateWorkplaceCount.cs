@@ -4,6 +4,7 @@ using ColossalFramework.Math;
 using HarmonyLib;
 
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0060 // Remove unused parameter
 
 
@@ -47,11 +48,8 @@ namespace RealPop2
         /// <returns></returns>
         public static bool Prefix(PrivateBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
-            // BuildingInfo prefab for this building.
-            BuildingInfo info = __instance.m_info;
-
             // Get cached workplace count.
-            PrefabEmployStruct workplaces = PopData.instance.WorkplaceCache(info, (int)level);
+            PrefabEmployStruct workplaces = PopData.instance.WorkplaceCache(__instance.m_info, (int)level);
 
             // Set return values.
             level0 = workplaces.level0;
@@ -66,3 +64,4 @@ namespace RealPop2
 }
 
 #pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0079 // Remove unnecessary suppression

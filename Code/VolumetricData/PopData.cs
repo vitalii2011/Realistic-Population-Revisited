@@ -37,32 +37,40 @@ namespace RealPop2
         /// <returns>Calculated population</returns>
         internal int HouseholdCache(BuildingInfo info, int level)
         {
-            // Check if key is already in cache.
-            if (!householdCache.ContainsKey(info))
+            // Null check for safety.
+            if (info?.name != null)
             {
-                // No - create new record with five building levels.
-                householdCache.Add(info, new int[5]);
+                // Check if key is already in cache.
+                if (!householdCache.ContainsKey(info))
+                {
+                    // No - create new record with five building levels.
+                    householdCache.Add(info, new int[5]);
 
-                // Calculate results for each of the five levels.
-                householdCache[info][0] = Population(info, 0);
-                householdCache[info][1] = Population(info, 1);
-                householdCache[info][2] = Population(info, 2);
-                householdCache[info][3] = Population(info, 3);
-                householdCache[info][4] = Population(info, 4);
+                    // Calculate results for each of the five levels.
+                    householdCache[info][0] = Population(info, 0);
+                    householdCache[info][1] = Population(info, 1);
+                    householdCache[info][2] = Population(info, 2);
+                    householdCache[info][3] = Population(info, 3);
+                    householdCache[info][4] = Population(info, 4);
 
-                Logging.Message("caching households for ", info.name);
+                    Logging.Message("caching households for ", info.name);
+                }
+
+                // Bounds check, just in case.
+                int thisLevel = level;
+                if (thisLevel > 4)
+                {
+                    Logging.Error("invalid residential builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 5");
+                    thisLevel = 4;
+                }
+
+                // Return record relevant to level.
+                return householdCache[info][thisLevel];
             }
 
-            // Bounds check, just in case.
-            int thisLevel = level;
-            if (thisLevel > 4)
-            {
-                Logging.Error("invalid residential builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 5");
-                thisLevel = 4;
-            }
-
-            // Return record relevant to level.
-            return householdCache[info][thisLevel];
+            // If we got here, something went wrong; return 1.
+            Logging.Error("null prefab passed to HouseholdCache");
+            return 1;
         }
 
 
@@ -74,30 +82,45 @@ namespace RealPop2
         /// <returns>Calculated workplaces</returns>
         internal PrefabEmployStruct WorkplaceCache(BuildingInfo info, int level)
         {
-            // Check if key is already in cache.
-            if (!workplaceCache.ContainsKey(info))
+            // Null check for safety.
+            if (info?.name != null)
             {
-                Logging.Message("caching workplaces for ", info.name, ", level ", (level + 1).ToString());
+                // Check if key is already in cache.
+                if (!workplaceCache.ContainsKey(info))
+                {
+                    Logging.Message("caching workplaces for ", info.name, ", level ", (level + 1).ToString());
 
-                // No - create new record with three building levels.
-                workplaceCache.Add(info, new PrefabEmployStruct[3]);
+                    // No - create new record with three building levels.
+                    workplaceCache.Add(info, new PrefabEmployStruct[3]);
 
-                // Calculate results for each of the three levels.
-                workplaceCache[info][0] = Workplaces(info, 0);
-                workplaceCache[info][1] = Workplaces(info, 1);
-                workplaceCache[info][2] = Workplaces(info, 2);
+                    // Calculate results for each of the three levels.
+                    workplaceCache[info][0] = Workplaces(info, 0);
+                    workplaceCache[info][1] = Workplaces(info, 1);
+                    workplaceCache[info][2] = Workplaces(info, 2);
+                }
+
+                // Bounds check, just in case.
+                int thisLevel = level;
+                if (thisLevel > 2)
+                {
+                    Logging.Error("invalid workplace builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 3");
+                    thisLevel = 2;
+                }
+
+                // Return record relevant to level.
+                return workplaceCache[info][thisLevel];
             }
 
-            // Bounds check, just in case.
-            int thisLevel = level;
-            if (thisLevel > 2)
+            // If we got here, something went wrong; return 1.
+            Logging.Error("null prefab passed to WorkplaceCache");
+            return new PrefabEmployStruct
             {
-                Logging.Error("invalid workplace builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 3");
-                thisLevel = 2;
-            }
-
-            // Return record relevant to level.
-            return workplaceCache[info][thisLevel];
+                level0 = 1,
+                level1 = 0,
+                level2 = 0,
+                level3 = 0,
+                visitors = -1
+            };
         }
 
 

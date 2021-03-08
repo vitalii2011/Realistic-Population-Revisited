@@ -126,6 +126,7 @@
     <Compile Include="Code\Notifications\WhatsNewMessageBox.cs" />
     <Compile Include="Code\Patches\BuildingUpgraded.cs" />
     <Compile Include="Code\Patches\CalculateHomeCount.cs" />
+    <Compile Include="Code\Patches\CalculateVisitplaceCount.cs" />
     <Compile Include="Code\Patches\CalculateWorkplaceCount.cs" />
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
     <Compile Include="Code\Patches\Patcher.cs" />

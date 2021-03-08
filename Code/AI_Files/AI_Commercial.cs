@@ -4,6 +4,7 @@ using UnityEngine;
 using HarmonyLib;
 
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0060 // Remove unused parameter
 
 
@@ -61,48 +62,6 @@ namespace RealPop2
                     noisePollution /= 2;
                 }
             }
-
-            // Don't execute base method after this.
-            return false;
-        }
-    }
-
-
-    [HarmonyPatch(typeof(CommercialBuildingAI))]
-    [HarmonyPatch("CalculateVisitplaceCount")]
-    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    public static class RealisticCommercialVisits
-    {
-        public static bool Prefix(ref int __result, PrivateBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
-        {
-            // All commercial places will need visitors. CalcWorkplaces is normally called first, redirected above to include a calculation of worker visits (CalculateprefabWorkerVisit).
-            // However, there is a problem with some converted assets that don't come through the "front door" (i.e. Ploppable RICO - see below).
-
-            // BuildingInfo prefab for this building.
-            BuildingInfo info = __instance.m_info;
-
-            // Try to retrieve previously calculated value.
-            PrefabEmployStruct visitors = PopData.instance.WorkplaceCache(info, (int)level);
-
-            if (visitors.visitors == 0)
-            {
-                // If we didn't get a value, most likely it was because the prefab wasn't properly initialised.
-                // This can happen with Ploppable RICO when the underlying asset class isn't 'Default' (for example, where Ploppable RICO assets are originally Parks, Plazas or Monuments).
-                // When that happens, the above line returns zero, which sets the building to 'Not Operating Properly'.
-                // So, if the call returns false, we force a recalculation of workplace visits to make sure.
-
-                // If it's still zero after this, then we'll just return a "legitimate" zero.
-                visitors.visitors = 0;
-
-                int[] array = CommercialBuildingAIMod.GetArray(__instance.m_info, (int)level);
-                AI_Utils.CalculateprefabWorkerVisit(width, length, ref __instance.m_info, 4, ref array, out visitors);
-
-                // Log this to help identify specific issues.
-                Logging.Message("CalculateprefabWorkerVisit redux: ", __instance.m_info.name);
-            }
-
-            // Original method return value.
-            __result = visitors.visitors;
 
             // Don't execute base method after this.
             return false;
@@ -175,3 +134,4 @@ namespace RealPop2
 }
 
 #pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0079 // Remove unnecessary suppression

@@ -27,13 +27,14 @@ namespace RealPop2
         private const float Row5 = Row4 + RowHeight;
         private const float Row6 = Row5 + RowHeight;
         private const float Row7 = Row6 + RowHeight;
-        private const float MessageY = Row7 + RowHeight + Margin;
+        private const float Row8 = Row7 + RowHeight;
+        private const float MessageY = Row8 + RowHeight + Margin;
         private const float FloorListY = MessageY + 30f;
 
 
         // Panel components.
         private UIFastList floorsList;
-        private UILabel numFloorsLabel, floorAreaLabel, totalLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
+        private UILabel numFloorsLabel, floorAreaLabel, totalLabel, visitCountLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
         private UILabel emptyAreaLabel, emptyPercentLabel, perLabel, unitsLabel;
         private UILabel schoolWorkerLabel, costLabel;
         private UILabel messageLabel;
@@ -58,16 +59,17 @@ namespace RealPop2
             clipChildren = true;
 
             // Labels.
-            numFloorsLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FLR"), RightColumn, Row1);
-            floorAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_TFA"), RightColumn, Row2);
-            totalLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_UTS"), RightColumn, Row3);
-            floorHeightLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), RightColumn, Row4);
-            firstMinLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), RightColumn, Row5);
-            firstExtraLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), RightColumn, Row6);
-            emptyAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row2);
-            emptyPercentLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row3);
+            floorHeightLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), RightColumn, Row1);
+            firstMinLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), RightColumn, Row2);
+            firstExtraLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), RightColumn, Row3);
+            numFloorsLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FLR"), RightColumn, Row5);
+            floorAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_TFA"), RightColumn, Row6);
+            totalLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_UTS"), RightColumn, Row7);
+            visitCountLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_VIS"), RightColumn, Row8);
             unitsLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_UNI"), LeftColumn, Row2);
             unitsLabel.Hide();
+            emptyAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row2);
+            emptyPercentLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row3);
             perLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row4);
             schoolWorkerLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_SCH_WKR"), LeftColumn, Row6);
             costLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_SCH_CST"), LeftColumn, Row7);
@@ -83,7 +85,7 @@ namespace RealPop2
             multiFloorCheckBox.Disable();
 
             // Ignore first floor checkbox.
-            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), RightColumn, Row7);
+            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), RightColumn, Row4);
             ignoreFirstCheckBox.isInteractive = false;
             ignoreFirstCheckBox.Disable();
 
@@ -281,6 +283,18 @@ namespace RealPop2
             
             // Display total unit calculation result.
             totalLabel.text = totalUnits.ToString("N0", LocaleManager.cultureInfo);
+
+            // Display commercial visit count, or hide the label if not commercial.
+            if (building.GetAI() is CommercialBuildingAI commercialAI)
+            {
+                visitCountLabel.Show();
+                visitCountLabel.text = commercialAI.CalculateVisitplaceCount(building.GetClassLevel(), new ColossalFramework.Math.Randomizer(), building.GetWidth(), building.GetLength()).ToString();
+            }
+            else
+            {
+                visitCountLabel.Hide();
+            }
+
 
             // Append 'overriden' label to total label and display explanatory message if pop value is overriden.
             if (ModUtils.CheckRICOPopControl(building))

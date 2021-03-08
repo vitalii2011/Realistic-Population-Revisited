@@ -2,6 +2,7 @@
 using HarmonyLib;
 
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0060 // Remove unused parameter
 
 

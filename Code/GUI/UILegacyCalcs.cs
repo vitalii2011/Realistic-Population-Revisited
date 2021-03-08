@@ -36,9 +36,8 @@ namespace RealPop2
         private UILabel messageLabel;
 
         // Special-purpose labels used to display either jobs or households as appropriate.
-        private UILabel homesJobsCalcLabel;
-        private UILabel homesJobsCustomLabel;
-        private UILabel homesJobsActualLabel;
+        private UILabel homesJobsCalcLabel, homesJobsCustomLabel, homesJobsActualLabel;
+        private UILabel visitCountLabel;
 
 
         /// <summary>
@@ -83,9 +82,14 @@ namespace RealPop2
             homesJobsActualLabel.width = 270;
             homesJobsActualLabel.textAlignment = UIHorizontalAlignment.Left;
 
+            visitCountLabel = this.AddUIComponent<UILabel>();
+            visitCountLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 5) * LineHeight);
+            visitCountLabel.width = 270;
+            visitCountLabel.textAlignment = UIHorizontalAlignment.Left;
+
             // Message label (initially hidden).
             messageLabel = this.AddUIComponent<UILabel>();
-            messageLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 6) * LineHeight);
+            messageLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 7) * LineHeight);
             messageLabel.textAlignment = UIHorizontalAlignment.Left;
             messageLabel.autoSize = false;
             messageLabel.autoHeight = true;
@@ -189,6 +193,17 @@ namespace RealPop2
                 buildingAI.CalculateWorkplaceCount(building.GetClassLevel(), new Randomizer(0), building.GetWidth(), building.GetLength(), out jobs[0], out jobs[1], out jobs[2], out jobs[3]);
                 appliedCount = jobs[0] + jobs[1] + jobs[2] + jobs[3];
                 homesJobsActualLabel.text = Translations.Translate("RPR_CAL_JOB_APPL") + " " + appliedCount;
+
+                // Show visitor count for commercial buildings.
+                if (buildingAI is CommercialBuildingAI commercialAI)
+                {
+                    visitCountLabel.Show();
+                    visitCountLabel.text = Translations.Translate("RPR_CAL_VOL_VIS") + " " + commercialAI.CalculateVisitplaceCount(building.GetClassLevel(), new Randomizer(), building.GetWidth(), building.GetLength());
+                }
+                else
+                {
+                    visitCountLabel.Hide();
+                }
             }
 
             // Reproduce CalcBase calculations to get building area.
