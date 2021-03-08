@@ -144,10 +144,12 @@ namespace RealPop2
             legacyPanel.Setup();
             legacyPanel.Hide();
 
-            // Floor dropdown panel.
+            // Floor dropdown panel - set size manually to avoid invisible overlap of calculations panel (preventing e.g. tooltips).
             floorPanel = this.AddUIComponent<UIPanel>();
             floorPanel.relativePosition = new Vector2(RightColumnX, MenuY);
-            floorPanel.autoSize = true;
+            floorPanel.autoSize = false;
+            floorPanel.width = RightColumnX - this.width;
+            floorPanel.height = BaseCalcY - MenuY;
             floorPanel.autoLayout = false;
             floorPanel.clipChildren = false;
             floorPanel.Show();
