@@ -49,13 +49,13 @@ namespace RealPop2
         public static bool Prefix(PrivateBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
         {
             // Get cached workplace count.
-            PrefabEmployStruct workplaces = PopData.instance.WorkplaceCache(__instance.m_info, (int)level);
+            int[] workplaces = PopData.instance.WorkplaceCache(__instance.m_info, (int)level);
 
             // Set return values.
-            level0 = workplaces.level0;
-            level1 = workplaces.level1;
-            level2 = workplaces.level2;
-            level3 = workplaces.level3;
+            level0 = workplaces[0];
+            level1 = workplaces[1];
+            level2 = workplaces[2];
+            level3 = workplaces[3];
 
             // Don't execute base method after this.
             return false;

@@ -70,16 +70,16 @@ namespace RealPop2
         {
             BuildingInfo item = __instance.m_info;
 
-            PrefabEmployStruct employStruct = PopData.instance.WorkplaceCache(item, (int)level);
-            int workers = employStruct.level0 + employStruct.level1 + employStruct.level2 + employStruct.level3;
+            int[] workplaces = PopData.instance.WorkplaceCache(item, (int)level);
+            int totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
 
-            if (workers > 0)
+            if (totalWorkers > 0)
             {
                 // Employment is available
                 int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
                 // Original method return value.
-                __result = Mathf.Max(1, workers / array[DataStore.PRODUCTION]);
+                __result = Mathf.Max(1, totalWorkers / array[DataStore.PRODUCTION]);
             }
             else
             {

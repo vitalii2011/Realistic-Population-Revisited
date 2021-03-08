@@ -65,7 +65,7 @@
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        public virtual PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level) => new PrefabEmployStruct();
+        public virtual int[] Workplaces(BuildingInfo buildingPrefab, int level) => new int[4];
     }
 
 
@@ -147,7 +147,7 @@
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        public override PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level) => EmploymentData.CalculateWorkplaces(buildingPrefab, level);
+        public override int[] Workplaces(BuildingInfo buildingPrefab, int level) => EmploymentData.CalculateWorkplaces(buildingPrefab, level);
     }
 
 
@@ -190,10 +190,10 @@
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        public override PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level)
+        public override int[] Workplaces(BuildingInfo buildingPrefab, int level)
         {
             int[] array = CommercialBuildingAIMod.GetArray(buildingPrefab, level);
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 4, ref array, out PrefabEmployStruct output);
+            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 4, ref array, out int[] output);
 
             return output;
         }
@@ -211,7 +211,7 @@
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        public override PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level)
+        public override int[] Workplaces(BuildingInfo buildingPrefab, int level)
         {
             int[] array;
             int minWorkers;
@@ -228,7 +228,7 @@
                 minWorkers = 4;
             }
 
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, minWorkers, ref array, out PrefabEmployStruct output);
+            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, minWorkers, ref array, out int[] output);
 
             return output;
         }
@@ -246,10 +246,10 @@
         /// <param name="buildingPrefab">Building prefab record</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        public override PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level)
+        public override int[] Workplaces(BuildingInfo buildingPrefab, int level)
         {
             int[] array = OfficeBuildingAIMod.GetArray(buildingPrefab, level);
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 10, ref array, out PrefabEmployStruct output);
+            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 10, ref array, out int[] output);
 
             return output;
         }

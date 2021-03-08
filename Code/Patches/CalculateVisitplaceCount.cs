@@ -31,8 +31,8 @@ namespace RealPop2
             BuildingInfo info = __instance.m_info;
 
             // Get cached workplace count and calculate total workplaces.
-            PrefabEmployStruct workplaces = PopData.instance.WorkplaceCache(info, (int)level);
-            float totalWorkers = workplaces.level0 + workplaces.level1 + workplaces.level2 + workplaces.level3;
+            int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
+            float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
             float multiplier;
 
             switch (info.GetSubService())

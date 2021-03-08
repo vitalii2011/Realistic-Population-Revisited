@@ -363,17 +363,6 @@ namespace RealPop2
         }
     } // end DataStore
 
-    /// <summary>
-    /// Struct for caching prefab worker values
-    /// </summary>
-    public struct PrefabEmployStruct
-    {
-        public int level0;
-        public int level1;
-        public int level2;
-        public int level3;
-        public int visitors;
-    }
 
     /// <summary>
     /// Struct for caching building's consumption values

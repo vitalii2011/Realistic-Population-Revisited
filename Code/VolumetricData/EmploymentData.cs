@@ -19,33 +19,23 @@ namespace RealPop2
         /// <param name="prefab">Building prefab</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        internal static PrefabEmployStruct CalculateWorkplaces(BuildingInfo prefab, int level)
+        internal static int[] CalculateWorkplaces(BuildingInfo prefab, int level)
         {
-            PrefabEmployStruct employStruct;
+            int[] workplaces = new int[4];
 
             // Get total jobs and distribution.
             int totalJobs = PopData.instance.Population(prefab, level);
             int[] distribution = WorkplaceDistribution(prefab.GetService(), prefab.GetSubService(), (ItemClass.Level)level);
 
             // Allocate jobs according to distribution (percentages).  Division after multiplication to reduce intermediate rounding errors.
-            employStruct.level1 = (totalJobs * distribution[1]) / 100;
-            employStruct.level2 = (totalJobs * distribution[2]) / 100;
-            employStruct.level3 = (totalJobs * distribution[3]) / 100;
+            workplaces[1]= (totalJobs * distribution[1]) / 100;
+            workplaces[2] = (totalJobs * distribution[2]) / 100;
+            workplaces[3] = (totalJobs * distribution[3]) / 100;
 
             // Level 0 is the remainder.
-            employStruct.level0 = totalJobs - employStruct.level1 - employStruct.level2 - employStruct.level3;
+            workplaces[0] = totalJobs - workplaces[1] - workplaces[2] - workplaces[3];
 
-            // Visit count - vanilla calculation, but using number of jobs multiplied by vanilla jobs:visitor ratio.
-            if (distribution[5] != 0)
-            {
-                employStruct.visitors = Mathf.Max(200, (totalJobs * distribution[4]) / distribution[5]) / 100;
-            }
-            else
-            {
-                employStruct.visitors = 0;
-            }
-
-            return employStruct;
+            return workplaces;
         }
 
 

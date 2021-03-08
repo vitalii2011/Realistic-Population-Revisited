@@ -17,7 +17,7 @@ namespace RealPop2
 
         // Household and workplace calculation result caches (so we don't have to do the full calcs every SimulationStep for every building....).
         internal readonly Dictionary<BuildingInfo, int[]> householdCache;
-        internal readonly Dictionary<BuildingInfo, PrefabEmployStruct[]> workplaceCache;
+        internal readonly Dictionary<BuildingInfo, int[][]> workplaceCache;
 
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace RealPop2
         /// <param name="prefab">Building prefab</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        internal PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level) => ((PopDataPack)ActivePack(buildingPrefab)).Workplaces(buildingPrefab, level);
+        internal int[] Workplaces(BuildingInfo buildingPrefab, int level) => ((PopDataPack)ActivePack(buildingPrefab)).Workplaces(buildingPrefab, level);
 
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace RealPop2
         /// <param name="info">BuildingInfo to cache for</param>
         /// <param name="level">Building level to cache for</param>
         /// <returns>Calculated workplaces</returns>
-        internal PrefabEmployStruct WorkplaceCache(BuildingInfo info, int level)
+        internal int[] WorkplaceCache(BuildingInfo info, int level)
         {
             // Null check for safety.
             if (info?.name != null)
@@ -91,7 +91,7 @@ namespace RealPop2
                     Logging.Message("caching workplaces for ", info.name, ", level ", (level + 1).ToString());
 
                     // No - create new record with three building levels.
-                    workplaceCache.Add(info, new PrefabEmployStruct[3]);
+                    workplaceCache.Add(info, new int[3][]);
 
                     // Calculate results for each of the three levels.
                     workplaceCache[info][0] = Workplaces(info, 0);
@@ -113,13 +113,12 @@ namespace RealPop2
 
             // If we got here, something went wrong; return 1.
             Logging.Error("null prefab passed to WorkplaceCache");
-            return new PrefabEmployStruct
+            return new int[4]
             {
-                level0 = 1,
-                level1 = 0,
-                level2 = 0,
-                level3 = 0,
-                visitors = -1
+                1,
+                0,
+                0,
+                0
             };
         }
 
@@ -302,7 +301,7 @@ namespace RealPop2
         {
             // Create caches.
             householdCache = new Dictionary<BuildingInfo, int[]>();
-            workplaceCache = new Dictionary<BuildingInfo, PrefabEmployStruct[]>();
+            workplaceCache = new Dictionary<BuildingInfo, int[][]>();
 
             // Legacy residential.
             LegacyResPack resWG = new LegacyResPack

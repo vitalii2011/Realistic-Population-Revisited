@@ -15,11 +15,11 @@ namespace RealPop2
         /// <param name="minWorkers"></param>
         /// <param name="array"></param>
         /// <param name="output"></param>
-        internal static void CalculateprefabWorkerVisit(int width, int length, ref BuildingInfo item, int minWorkers, ref int[] array, out PrefabEmployStruct output)
+        internal static void CalculateprefabWorkerVisit(int width, int length, ref BuildingInfo item, int minWorkers, ref int[] array, out int[] output)
         {
             // Prefabs are tied to a level
 
-            int value = 0;
+            int value;
             int num = array[DataStore.PEOPLE];
             int level0 = array[DataStore.WORK_LVL0];
             int level1 = array[DataStore.WORK_LVL1];
@@ -69,22 +69,33 @@ namespace RealPop2
 
                 num = Mathf.Max(minWorkers, value);
 
-                output.level3 = (num * level3) / num2;
-                output.level2 = (num * level2) / num2;
-                output.level1 = (num * level1) / num2;
-                output.level0 = Mathf.Max(0, num - output.level3 - output.level2 - output.level1);  // Whatever is left
+                output = new int[4]
+                {
+                    0,
+                    (num * level1) / num2,
+                    (num * level2) / num2,
+                    (num * level3) / num2,
+                };
+
+                output[0] = Mathf.Max(0, num - output[1] - output[2] - output[3]);  // Whatever is left
             }
             else
             {
-                output.level0 = output.level1 = output.level2 = output.level3 = 1;  // Allocate 1 for every level, to stop div by 0
+                output = new int[4]
+                {
+                    1,
+                    0,
+                    0,
+                    0
+                };
             }
 
             // Set the visitors here since we're calculating
-            if (num != 0)
-            {
-                value = Mathf.Max(200, width * length * array[DataStore.VISIT]) / 100;
-            }
-            output.visitors = value;
+            //if (num != 0)
+            //{
+                //value = Mathf.Max(200, width * length * array[DataStore.VISIT]) / 100;
+            //}
+            //output.visitors = value;
         } // end calculateprefabWorkerVisit
 
 
