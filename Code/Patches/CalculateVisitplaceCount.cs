@@ -35,51 +35,62 @@ namespace RealPop2
             float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
             float multiplier;
 
-            switch (info.GetSubService())
+            // New or old calculations?
+            if (ModSettings.comVisitsMode == 0)
             {
-                case ItemClass.SubService.CommercialLow:
-                    switch (info.GetClassLevel())
-                    {
-                        case ItemClass.Level.Level1:
-                            multiplier = 1.8f;
-                            break;
-                        case ItemClass.Level.Level2:
-                            multiplier = 1.333333333f;
-                            break;
-                        default:
-                            multiplier = 1.1f;
-                            break;
-                    }
-                    break;
+                // New settings, based on population.
+                switch (info.GetSubService())
+                {
+                    case ItemClass.SubService.CommercialLow:
+                        switch (info.GetClassLevel())
+                        {
+                            case ItemClass.Level.Level1:
+                                multiplier = 1.8f;
+                                break;
+                            case ItemClass.Level.Level2:
+                                multiplier = 1.333333333f;
+                                break;
+                            default:
+                                multiplier = 1.1f;
+                                break;
+                        }
+                        break;
 
-                case ItemClass.SubService.CommercialHigh:
-                    switch (info.GetClassLevel())
-                    {
-                        case ItemClass.Level.Level1:
-                            multiplier = 2.666666667f;
-                            break;
-                        case ItemClass.Level.Level2:
-                            multiplier = 3f;
-                            break;
-                        default:
-                            multiplier = 3.2f;
-                            break;
-                    }
-                    break;
+                    case ItemClass.SubService.CommercialHigh:
+                        switch (info.GetClassLevel())
+                        {
+                            case ItemClass.Level.Level1:
+                                multiplier = 2.666666667f;
+                                break;
+                            case ItemClass.Level.Level2:
+                                multiplier = 3f;
+                                break;
+                            default:
+                                multiplier = 3.2f;
+                                break;
+                        }
+                        break;
 
-                case ItemClass.SubService.CommercialLeisure:
-                case ItemClass.SubService.CommercialTourist:
-                    multiplier = 2.5f;
-                    break;
+                    case ItemClass.SubService.CommercialLeisure:
+                    case ItemClass.SubService.CommercialTourist:
+                        multiplier = 2.5f;
+                        break;
 
-                default:
-                    // Commercial eco.
-                    multiplier = 1f;
-                    break;
+                    default:
+                        // Commercial eco.
+                        multiplier = 1f;
+                        break;
+                }
+
+                // Multiply total workers by multipler to get result.
+                __result = (int)(totalWorkers * multiplier);
             }
-
-            // Multiply total workers by multipler to get result.
-            __result = (int)(totalWorkers * multiplier);
+            else
+            {
+                // Old settings, based on lot size.
+                // Just go to default game method.
+                return true;
+            }
 
             // Always set at least two.
             if (__result < 1)
@@ -89,6 +100,7 @@ namespace RealPop2
             }
 
             Logging.Message("calculated visitors of ", __result.ToString(), " for prefab ", (info?.name) ?? "null");
+
             // Don't execute base method after this.
             return false;
         }

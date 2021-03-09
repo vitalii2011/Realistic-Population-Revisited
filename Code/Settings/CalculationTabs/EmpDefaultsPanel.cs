@@ -21,11 +21,10 @@ namespace RealPop2
         /// <summary>
         /// Adds footer buttons to the panel.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position for buttons</param>
-        protected override void FooterButtons(UIPanel panel, float yPos)
+        protected override void FooterButtons(float yPos)
         {
-            base.FooterButtons(panel, yPos);
+            base.FooterButtons(yPos);
 
             // Save button.
             UIButton saveButton = UIControls.AddButton(panel, (Margin * 3) + 300f, yPos, Translations.Translate("RPR_OPT_SAA"), 150f);
@@ -38,7 +37,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
         /// <param name="mouseEvent">Mouse event (unused)</param>
-        private void Apply(UIComponent control, UIMouseEventParameter mouseEvent)
+        protected virtual void Apply(UIComponent control, UIMouseEventParameter mouseEvent)
         {
             // Iterate through each sub-service menu.
             for (int i = 0; i < SubServiceNames.Length; ++i)

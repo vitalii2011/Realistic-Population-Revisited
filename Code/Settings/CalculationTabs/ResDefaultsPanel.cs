@@ -76,10 +76,8 @@ namespace RealPop2
         /// <summary>
         /// Sets up the defaults dropdown menus.
         /// </summary>
-        /// <param name="panel">Parent panel</param>
-        /// <param name="currentY">Current Y position</param>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected override float SetUpMenus(UIPanel panel)
+        protected override float SetUpMenus()
         {
             // Layout constants.
             const float LeftColumn = 200f;

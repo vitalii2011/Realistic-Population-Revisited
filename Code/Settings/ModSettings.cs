@@ -15,6 +15,9 @@
         internal static bool newSaveLegacyInd = false;
         internal static bool newSaveLegacyOff = false;
 
+        // VistPlace calculations (0 is new, 1 is legacy).
+        internal static int comVisitsMode = 0;
+
         // Enable additional features.
         internal static bool enableSchoolPop = true;
         internal static bool enableSchoolProperties = true;

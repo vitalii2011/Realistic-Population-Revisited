@@ -106,6 +106,11 @@ namespace RealPop2
         public bool DefaultLegacyOff { get => ModSettings.newSaveLegacyOff; set => ModSettings.newSaveLegacyOff = value; }
 
 
+        // Commercial visitor calculations - clamp to 0 or 1 at this stage.
+        [XmlElement("CommericalVisitsMode")]
+        public int CommericalVisitsMode { get => ModSettings.comVisitsMode; set => ModSettings.comVisitsMode = Math.Max(0, Math.Min(value, 1)); }
+
+
         // Realistic education.
         [XmlElement("EnableSchoolPop")]
         public bool EnableSchools { get => ModSettings.enableSchoolPop; set => ModSettings.enableSchoolPop = value; }

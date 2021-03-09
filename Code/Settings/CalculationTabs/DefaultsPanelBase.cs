@@ -76,10 +76,13 @@ namespace RealPop2
             floorMenus = new UIDropDown[SubServiceNames.Length];
 
             // Add menus.
-            float currentY = SetUpMenus(panel);
+            float currentY = SetUpMenus();
+
+            // Add any additional components.
+            currentY = AddAdditional(currentY);
 
             // Add buttons- add extra space.
-            FooterButtons(panel, currentY + Margin);
+            FooterButtons(currentY + Margin);
 
             // Populate menus.
             UpdateMenus();
@@ -162,16 +165,13 @@ namespace RealPop2
         /// <summary>
         /// Sets up the defaults dropdown menus.
         /// </summary>
-        /// <param name="panel">Parent panel</param>
-        /// <param name="currentY">Current Y position</param>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected virtual float SetUpMenus(UIPanel panel)
+        protected virtual float SetUpMenus()
         {
             // Layout constants.
             const float LeftColumn = 200f;
             const float RowHeight = 30f;
             const float MenuWidth = 300f;
-            const float ButtonX = LeftColumn + MenuWidth + (Margin * 2);
 
             // Starting y position.
             float currentY = 90f;
@@ -224,9 +224,8 @@ namespace RealPop2
         /// <summary>
         /// Adds footer buttons to the panel.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position for buttons</param>
-        protected virtual void FooterButtons(UIPanel panel, float yPos)
+        protected virtual void FooterButtons(float yPos)
         {
             // Reset button.
             UIButton resetButton = UIControls.AddButton(panel, Margin, yPos, Translations.Translate("RPR_OPT_RTD"), 150f);
@@ -235,6 +234,17 @@ namespace RealPop2
             // Revert button.
             UIButton revertToSaveButton = UIControls.AddButton(panel, (Margin * 2) + 150f, yPos, Translations.Translate("RPR_OPT_RTS"), 150f);
             revertToSaveButton.eventClicked += (component, clickEvent) => UpdateMenus();
+        }
+
+
+        /// <summary>
+        /// Adds any additional controls below the menu arrays but above button footers.
+        /// </summary>
+        /// <param name="yPos">Relative Y position</param>
+        /// <returns>Relative Y coordinate below the finished setup</returns>
+        protected virtual float AddAdditional(float yPos)
+        {
+            return yPos;
         }
 
 
