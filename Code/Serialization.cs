@@ -15,7 +15,7 @@ namespace RealPop2
     {
         // Unique data ID.
         private readonly string dataID = "RealisticPopulation";
-        internal const int CurrentDataVersion = 2;
+        internal const int CurrentDataVersion = 3;
 
 
         /// <summary>
@@ -80,8 +80,10 @@ namespace RealPop2
                 {
                     Logging.KeyMessage("new game detected");
                     // New game - set this game's legacy save settings to the new game defaults, and set the savegame flag.
-                    ModSettings.ThisSaveLegacyRes = ModSettings.newSaveLegacy;
-                    ModSettings.ThisSaveLegacyWrk = ModSettings.newSaveLegacy;
+                    ModSettings.ThisSaveLegacyRes = ModSettings.newSaveLegacyRes;
+                    ModSettings.ThisSaveLegacyCom = ModSettings.newSaveLegacyCom;
+                    ModSettings.ThisSaveLegacyInd = ModSettings.newSaveLegacyInd;
+                    ModSettings.ThisSaveLegacyOff = ModSettings.newSaveLegacyOff;
                     ModSettings.isRealPop2Save = true;
                 }
             }
@@ -107,7 +109,9 @@ namespace RealPop2
 
             // Write 'using legacy' flags.
             serializer.WriteBool(ModSettings.ThisSaveLegacyRes);
-            serializer.WriteBool(ModSettings.ThisSaveLegacyWrk);
+            serializer.WriteBool(ModSettings.ThisSaveLegacyCom);
+            serializer.WriteBool(ModSettings.ThisSaveLegacyInd);
+            serializer.WriteBool(ModSettings.ThisSaveLegacyOff);
         }
 
 
@@ -132,7 +136,23 @@ namespace RealPop2
 
                     // Read 'using legacy' flags for residential and workplace buildings, in order.
                     ModSettings.ThisSaveLegacyRes = serializer.ReadBool();
-                    ModSettings.ThisSaveLegacyWrk = serializer.ReadBool();
+                    ModSettings.ThisSaveLegacyCom = serializer.ReadBool();
+                    ModSettings.ThisSaveLegacyInd = serializer.ReadBool();
+                    ModSettings.ThisSaveLegacyOff = serializer.ReadBool();
+
+                    // Record that we've successfully deserialized savegame data.
+                    ModSettings.isRealPop2Save = true;
+                }
+                else if (dataVersion == 2)
+                {
+                    // Legacy data version with residential and workplace legacy settings.
+
+                    // Read 'using legacy' flags.
+                    ModSettings.ThisSaveLegacyRes = serializer.ReadBool();
+                    bool thisSaveLegacyWrk = serializer.ReadBool();
+                    ModSettings.ThisSaveLegacyCom = thisSaveLegacyWrk;
+                    ModSettings.ThisSaveLegacyInd = thisSaveLegacyWrk;
+                    ModSettings.ThisSaveLegacyOff = thisSaveLegacyWrk;
 
                     // Record that we've successfully deserialized savegame data.
                     ModSettings.isRealPop2Save = true;
@@ -144,7 +164,12 @@ namespace RealPop2
                     // Read 'using legacy' flag.
                     bool thisSaveLegacy = serializer.ReadBool();
                     ModSettings.ThisSaveLegacyRes = thisSaveLegacy;
-                    ModSettings.ThisSaveLegacyWrk = thisSaveLegacy;
+                    ModSettings.ThisSaveLegacyCom = thisSaveLegacy;
+                    ModSettings.ThisSaveLegacyInd = thisSaveLegacy;
+                    ModSettings.ThisSaveLegacyOff = thisSaveLegacy;
+
+                    // Record that we've successfully deserialized savegame data.
+                    ModSettings.isRealPop2Save = true;
                 }
             }
             catch

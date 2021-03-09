@@ -146,6 +146,7 @@
     <Compile Include="Code\Settings\CalculationTabs\IndDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\OffDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ResDefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\RICODefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\SchDefaultsPanel.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />

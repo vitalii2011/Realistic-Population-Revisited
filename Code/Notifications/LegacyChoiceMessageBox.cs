@@ -39,7 +39,9 @@ namespace RealPop2.MessageBox
         private void ChoseLegacy()
         {
             ModSettings.ThisSaveLegacyRes = true;
-            ModSettings.ThisSaveLegacyWrk = true;
+            ModSettings.ThisSaveLegacyCom = true;
+            ModSettings.ThisSaveLegacyInd = true;
+            ModSettings.ThisSaveLegacyOff = true;
             Close();
         }
 
@@ -50,7 +52,9 @@ namespace RealPop2.MessageBox
         private void ChoseNew()
         {
             ModSettings.ThisSaveLegacyRes = false;
-            ModSettings.ThisSaveLegacyWrk = false;
+            ModSettings.ThisSaveLegacyCom = false;
+            ModSettings.ThisSaveLegacyInd = false;
+            ModSettings.ThisSaveLegacyOff = false;
             Close();
         }
     }

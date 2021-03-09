@@ -5,8 +5,17 @@
     /// </summary>
     internal static class ModSettings
     {
-        // User settings.
-        internal static bool newSaveLegacy = false;
+        // Legacy settings.
+        private static bool thisSaveLegacyRes = false;
+        private static bool thisSaveLegacyCom = false;
+        private static bool thisSaveLegacyInd = false;
+        private static bool thisSaveLegacyOff = false;
+        internal static bool newSaveLegacyRes = false;
+        internal static bool newSaveLegacyCom = false;
+        internal static bool newSaveLegacyInd = false;
+        internal static bool newSaveLegacyOff = false;
+
+        // Enable additional features.
         internal static bool enableSchoolPop = true;
         internal static bool enableSchoolProperties = true;
         internal static float crimeMultiplier = 50f;
@@ -14,8 +23,6 @@
         // Status flags.
         internal static bool isRealPop2Save = false;
         private static float defaultSchoolMult = 1f;
-        private static bool thisSaveLegacyRes = false;
-        private static bool thisSaveLegacyWrk = false;
 
         // What's new notification version.
         internal static string whatsNewVersion = "0.0";
@@ -47,30 +54,69 @@
 
 
         /// <summary>
-        /// Handles current 'use legacy by default for workplaces' option changes.
+        /// Handles current 'use legacy by default for commercial' option changes.
         /// </summary>
-        internal static bool ThisSaveLegacyWrk
+        internal static bool ThisSaveLegacyCom
         {
             // Simple getter.
-            get => thisSaveLegacyWrk;
+            get => thisSaveLegacyCom;
 
             // Setter needs to clear out DataStore cache if the setting has changed (to force calculation of new values).
             set
             {
                 // Has setting changed?
-                if (value != thisSaveLegacyWrk)
+                if (value != thisSaveLegacyCom)
                 {
                     // Yes - clear caches.
-                    PopData.instance.workplaceCache.Clear();
-
-                    // Clear RICO cache too.
-                    if (ModUtils.ricoClearAllWorkplaces != null)
-                    {
-                        ModUtils.ricoClearAllWorkplaces.Invoke(null, null);
-                    }
-
+                    ClearWorkplaceCaches();
                     // Update flag.
-                    thisSaveLegacyWrk = value;
+                    thisSaveLegacyCom = value;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Handles current 'use legacy by default for industiral' option changes.
+        /// </summary>
+        internal static bool ThisSaveLegacyInd
+        {
+            // Simple getter.
+            get => thisSaveLegacyInd;
+
+            // Setter needs to clear out DataStore cache if the setting has changed (to force calculation of new values).
+            set
+            {
+                // Has setting changed?
+                if (value != thisSaveLegacyInd)
+                {
+                    // Yes - clear caches.
+                    ClearWorkplaceCaches();
+                    // Update flag.
+                    thisSaveLegacyInd = value;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Handles current 'use legacy by default for industiral' option changes.
+        /// </summary>
+        internal static bool ThisSaveLegacyOff
+        {
+            // Simple getter.
+            get => thisSaveLegacyOff;
+
+            // Setter needs to clear out DataStore cache if the setting has changed (to force calculation of new values).
+            set
+            {
+                // Has setting changed?
+                if (value != thisSaveLegacyOff)
+                {
+                    // Yes - clear caches.
+                    ClearWorkplaceCaches();
+                    // Update flag.
+                    thisSaveLegacyOff = value;
                 }
             }
         }
@@ -92,6 +138,22 @@
                 {
                     SchoolData.instance.UpdateSchools();
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Clears all workplace caches.
+        /// </summary>
+        private static void ClearWorkplaceCaches()
+        {
+            //Clear workplace cache.
+            PopData.instance.workplaceCache.Clear();
+
+            // Clear RICO cache too.
+            if (ModUtils.ricoClearAllWorkplaces != null)
+            {
+                ModUtils.ricoClearAllWorkplaces.Invoke(null, null);
             }
         }
     }

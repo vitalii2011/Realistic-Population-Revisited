@@ -49,11 +49,10 @@ namespace RealPop2
         protected override float TabWidth => 50f;
 
 
-        // Legacy settings link.
-        protected override bool LegacyCategory { get => ModSettings.ThisSaveLegacyWrk; set => ModSettings.ThisSaveLegacyWrk = value; }
-
-        // Translation key for legacy settings label.
-        protected override string LegacyCheckLabel => "RPR_DEF_LGW";
+        // Legacy settings references.
+        protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyOff; set => ModSettings.newSaveLegacyOff = value; }
+        protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyOff; set => ModSettings.ThisSaveLegacyOff = value; }
+        protected override string LegacyCheckLabel => "RPR_DEF_LGO";
 
 
         /// <summary>

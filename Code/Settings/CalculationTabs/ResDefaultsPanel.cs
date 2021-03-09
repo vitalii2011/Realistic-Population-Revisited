@@ -7,7 +7,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default calculation packs.
     /// </summary>
-    internal class ResDefaultsPanel : DefaultsPanel
+    internal class ResDefaultsPanel : RICODefaultsPanel
     {
         // Service/subservice arrays.
         private readonly string[] subServiceNames =
@@ -56,8 +56,10 @@ namespace RealPop2
         protected override string[] IconNames => iconNames;
         protected override string[] AtlasNames => atlasNames;
 
-        // Legacy settings link.
-        protected override bool LegacyCategory { get => ModSettings.ThisSaveLegacyRes; set => ModSettings.ThisSaveLegacyRes = value; }
+
+        // Legacy settings references.
+        protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyRes; set => ModSettings.newSaveLegacyRes = value; }
+        protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyRes; set => ModSettings.ThisSaveLegacyRes = value; }
         protected override string LegacyCheckLabel => "RPR_DEF_LGR";
 
 

@@ -61,11 +61,10 @@ namespace RealPop2
         protected override string[] AtlasNames => atlasNames;
 
 
-        // Legacy settings link.
-        protected override bool LegacyCategory { get => ModSettings.ThisSaveLegacyWrk; set => ModSettings.ThisSaveLegacyWrk = value; }
-
-        // Translation key for legacy settings label.
-        protected override string LegacyCheckLabel => "RPR_DEF_LGW";
+        // Legacy settings references.
+        protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyCom; set => ModSettings.newSaveLegacyCom = value; }
+        protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyCom; set => ModSettings.ThisSaveLegacyCom = value; }
+        protected override string LegacyCheckLabel => "RPR_DEF_LGC";
 
 
         /// <summary>

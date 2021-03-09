@@ -19,8 +19,9 @@ namespace RealPop2
         protected readonly PopDataPack[][] availablePopPacks;
         protected DataPack[] availableFloorPacks;
 
-        // Instance reference.
+        // Instance references.
         internal static DefaultsPanel instance;
+        protected UIPanel panel;
 
 
         // Service/subservice arrays.
@@ -29,12 +30,6 @@ namespace RealPop2
         protected abstract ItemClass.SubService[] SubServices { get; }
         protected abstract string[] IconNames { get; }
         protected abstract string[] AtlasNames { get; }
-
-        // Legacy settings link.
-        protected abstract bool LegacyCategory { get; set; }
-
-        // Translation key for legacy settings label.
-        protected abstract string LegacyCheckLabel { get; }
 
         // Tab width.
         protected virtual float TabWidth => 100f;
@@ -51,12 +46,8 @@ namespace RealPop2
             const float TabIconSize = 23f;
 
 
-            // Y position indicator.
-            float currentY = 5f;
-
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton, TabWidth);
-            UIHelper helper = new UIHelper(panel);
+            panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton, TabWidth);
             panel.autoLayout = false;
 
             // Add tab sprites.
@@ -84,37 +75,8 @@ namespace RealPop2
             popMenus = new UIDropDown[SubServiceNames.Length];
             floorMenus = new UIDropDown[SubServiceNames.Length];
 
-            // Add 'Use legacy by default' checkboxes.
-            UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate(LegacyCheckLabel), textScale: 0.9f);
-            currentY += legacyLabel.height + 5f;
-
-            UICheckBox legacyThisSaveCheck = UIControls.LabelledCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LTS"));
-            legacyThisSaveCheck.label.wordWrap = true;
-            legacyThisSaveCheck.label.autoSize = false;
-            legacyThisSaveCheck.label.width = 710f;
-            legacyThisSaveCheck.label.autoHeight = true;
-            legacyThisSaveCheck.isChecked = LegacyCategory;
-            legacyThisSaveCheck.eventCheckChanged += (control, isChecked) =>
-            {
-                LegacyCategory = isChecked;
-                UpdateMenus();
-            };
-            currentY += 20f;
-
-            UICheckBox legacyNewSaveCheck = UIControls.LabelledCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LAS"));
-            legacyNewSaveCheck.label.wordWrap = true;
-            legacyNewSaveCheck.label.autoSize = false;
-            legacyNewSaveCheck.label.width = 710f;
-            legacyNewSaveCheck.label.autoHeight = true;
-            legacyNewSaveCheck.isChecked = ModSettings.newSaveLegacy;
-            legacyNewSaveCheck.eventCheckChanged += (control, isChecked) =>
-            {
-                ModSettings.newSaveLegacy = isChecked;
-                UpdateMenus();
-            };
-
             // Add menus.
-            currentY = SetUpMenus(panel);
+            float currentY = SetUpMenus(panel);
 
             // Add buttons- add extra space.
             FooterButtons(panel, currentY + Margin);
@@ -193,6 +155,8 @@ namespace RealPop2
                 }
             }
         }
+
+
 
 
         /// <summary>

@@ -6,15 +6,8 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default employment calculation packs.
     /// </summary>
-    internal abstract class EmpDefaultsPanel : DefaultsPanel
+    internal abstract class EmpDefaultsPanel : RICODefaultsPanel
     {
-        // Legacy settings link.
-        protected override bool LegacyCategory { get => ModSettings.ThisSaveLegacyWrk; set => ModSettings.ThisSaveLegacyWrk = value; }
-
-        // Translation key for legacy settings label.
-        protected override string LegacyCheckLabel => "RPR_DEF_LGW";
-
-
         /// <summary>
         /// Constructor.
         /// </summary>

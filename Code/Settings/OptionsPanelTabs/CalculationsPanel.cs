@@ -14,7 +14,8 @@ namespace RealPop2
 
         // Components.
         private readonly ResDefaultsPanel resDefaults;
-        private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults, schDefaults;
+        private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults;
+        private readonly SchDefaultsPanel schDefaults;
 
         /// <summary>
         /// Adds education options tab to tabstrip.
