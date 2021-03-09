@@ -17,6 +17,19 @@ namespace RealPop2
         {
             {
                 // Beta message version is 99.
+                new Version("99.0.10"),
+                new string[]
+                {
+                    "2.0 BETA 10 updates",
+                    "Overhaul commercial building visitor (customer) count code and add options for new (workforce-base) or old (building lot size-based) calculations",
+                    "Expose commercial building visitor counts in calculations display panels",
+                    "Split workplace defaults panel into separate commercial, office, industrial and school panels, with separate 'legacy as default' selections fof each",
+                    "Overhaul volumetric calculations display panel and add tooltips",
+                    "Overhaul custom pack editing code"
+                }
+            },
+            {
+                // Beta message version is 99.
                 new Version("99.0.9"),
                 new string[]
                 {
