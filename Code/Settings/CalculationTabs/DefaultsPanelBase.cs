@@ -29,7 +29,6 @@ namespace RealPop2
         protected abstract ItemClass.SubService[] SubServices { get; }
         protected abstract string[] IconNames { get; }
         protected abstract string[] AtlasNames { get; }
-        protected abstract int[] TabIcons { get; }
 
         // Legacy settings link.
         protected abstract bool LegacyCategory { get; set; }
@@ -60,16 +59,20 @@ namespace RealPop2
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = false;
 
-            // Add tab sprites - TabIcons is the array with the indexes of the icons to use.
-            float spriteOffset = (TabWidth - 5f) / TabIcons.Length;
-            for (int i = 0; i < TabIcons.Length; ++i)
+            // Add tab sprites.
+            float spriteBase = (TabWidth - 2f) / IconNames.Length;
+            float spriteOffset = (spriteBase - TabIconSize) / 2f;
+            for (int i = 0; i < IconNames.Length; ++i)
             {
                 UISprite thumbSprite = tabButton.AddUIComponent<UISprite>();
-                thumbSprite.relativePosition = new Vector2(2.5f + (spriteOffset * i), 1f);
+                thumbSprite.relativePosition = new Vector2(1f + (spriteBase * i) + spriteOffset, 1f);
                 thumbSprite.width = TabIconSize;
                 thumbSprite.height = TabIconSize;
-                thumbSprite.atlas = TextureUtils.GetTextureAtlas(AtlasNames[TabIcons[i]]);
-                thumbSprite.spriteName = IconNames[TabIcons[i]];
+                thumbSprite.atlas = TextureUtils.GetTextureAtlas(AtlasNames[i]);
+                thumbSprite.spriteName = IconNames[i];
+
+                // Put later sprites behind earlier sprites, for clarity.
+                thumbSprite.SendToBack();
             }
 
             // Set tooltip.

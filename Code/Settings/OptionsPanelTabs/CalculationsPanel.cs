@@ -42,8 +42,8 @@ namespace RealPop2
             int tab = 0;
             resDefaults = new ResDefaultsPanel(childTabStrip, tab++);
             comDefaults = new ComDefaultsPanel(childTabStrip, tab++);
-            offDefaults = new OffDefaultsPanel(childTabStrip, tab++);
             indDefaults = new IndDefaultsPanel(childTabStrip, tab++);
+            offDefaults = new OffDefaultsPanel(childTabStrip, tab++);
             schDefaults = new SchDefaultsPanel(childTabStrip, tab++);
             new PopulationPanel(childTabStrip, tab++);
             new FloorPanel(childTabStrip, tab++);

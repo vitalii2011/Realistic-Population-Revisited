@@ -50,17 +50,11 @@ namespace RealPop2
             "Ingame"
         };
 
-        private readonly int[] tabIconIndexes =
-        {
-            0, 1, 2, 3
-        };
-
         protected override string[] SubServiceNames => subServiceNames;
         protected override ItemClass.Service[] Services => services;
         protected override ItemClass.SubService[] SubServices => subServices;
         protected override string[] IconNames => iconNames;
         protected override string[] AtlasNames => atlasNames;
-        protected override int[] TabIcons => tabIconIndexes;
 
         // Legacy settings link.
         protected override bool LegacyCategory { get => ModSettings.ThisSaveLegacyRes; set => ModSettings.ThisSaveLegacyRes = value; }

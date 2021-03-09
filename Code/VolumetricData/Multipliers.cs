@@ -77,7 +77,11 @@ namespace RealPop2
             // Currently only accepting multipliers for school buildings.
             if (prefab.GetService() != ItemClass.Service.Education)
             {
-                Logging.Error("attempting to set multiplier for non-education building " + buildingName);
+                // Warn if an attempt was made to set a mulitplier other than one.
+                if (multiplier != 1f)
+                {
+                    Logging.Error("attempting to set multiplier ", multiplier.ToString()," for non-education building " + buildingName);
+                }
                 return;
             }
 
