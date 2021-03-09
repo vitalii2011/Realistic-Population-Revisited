@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ColossalFramework;
 using ColossalFramework.UI;
 
 
@@ -127,31 +128,29 @@ namespace RealPop2
                 currentY += RowHeight;
             }
 
-            // Additional space before name textfield.
-            currentY += RowHeight;
-
-            // Pack name textfield.
-            packNameField = UIControls.BigTextField(panel, 140f, currentY);
-            packNameField.isEnabled = false;
-            UILabel packNameLabel = UIControls.AddLabel(packNameField, -100f, (packNameField.height - 18f) / 2, Translations.Translate("RPR_OPT_EDT_NAM"));
-
-            // Space for buttons.
-            currentY += 50f;
-
-            // 'Add new' button.
-            UIButton addNewButton = UIControls.AddButton(panel, 20f, currentY, Translations.Translate("RPR_OPT_NEW"));
-            addNewButton.eventClicked += AddPack;
-
-            // Save pack button.
-            saveButton = UIControls.AddButton(panel, 250f, currentY, Translations.Translate("RPR_OPT_SAA"));
-            saveButton.eventClicked += SavePack;
-
-            // Delete pack button.
-            deleteButton = UIControls.AddButton(panel, 480f, currentY, Translations.Translate("RPR_OPT_DEL"));
-            deleteButton.eventClicked += DeletePack;
+            // Add footer controls.
+            PanelFooter(currentY);
 
             // Set service menu to initial state (residential), which will also update textfield visibility via event handler.
             serviceDropDown.selectedIndex = 0;
+        }
+
+
+        /// <summary>
+        /// Save button event handler.
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        /// </summary>
+        protected override void Save(UIComponent control, UIMouseEventParameter mouseEvent)
+        {
+            // Basic sanity check - need a valid name to proceed.
+            if (!packNameField.text.IsNullOrWhiteSpace())
+            {
+                base.Save(control, mouseEvent);
+
+                // Apply update.
+                FloorData.instance.CalcPackChanged(packList[packDropDown.selectedIndex]);
+            }
         }
 
 
@@ -160,9 +159,8 @@ namespace RealPop2
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
         /// <param name="mouseEvent">Mouse event (unused)</param>
-        private void AddPack(UIComponent control, UIMouseEventParameter mouseEvent)
+        protected override void AddPack(UIComponent control, UIMouseEventParameter mouseEvent)
         {
-
             // Default new pack name.
             string basePackName = Translations.Translate("RPR_OPT_NPK");
             string newPackName = basePackName;
@@ -183,18 +181,20 @@ namespace RealPop2
             // We now have a unique name; set the textfield.
             packNameField.text = newPackName;
 
-            // New pack to add.
-            VolumetricPopPack newPack = new VolumetricPopPack();
+            // Add new pack with basic values (deails will be populated later).
+            VolumetricPopPack newPack = new VolumetricPopPack
+            {
+                version = (int)DataVersion.customOne,
+                service = services[serviceDropDown.selectedIndex],
+                levels = new LevelData[maxLevels[serviceDropDown.selectedIndex]]
+            };
 
             // Update pack with information from the panel.
             UpdatePack(newPack);
 
             // Add our new pack to our list of packs and update defaults panel menus.
             PopData.instance.AddCalculationPack(newPack);
-            CalculationsPanel.instance.UpdateDefaultMenus();
-
-            // Save configuration file. 
-            ConfigUtils.SaveSettings();
+            CalculationsPanel.Instance.UpdateDefaultMenus();
 
             // Update pack menu.
             packDropDown.items = PackList(currentService);
@@ -202,35 +202,16 @@ namespace RealPop2
             // Set pack selection by iterating through each pack in the menu and looking for a match.
             for (int i = 0; i < packDropDown.items.Length; ++i)
             {
-                if (packDropDown.items[i].Equals(packNameField.text))
+                if (packDropDown.items[i].Equals(newPack.displayName))
                 {
                     // Got a match; apply selected index and stop looping.
                     packDropDown.selectedIndex = i;
                     break;
                 }
             }
-        }
 
-
-        /// <summary>
-        /// 'Save and apply' button event handler.
-        /// </summary>
-        /// <param name="control">Calling component (unused)</param>
-        /// <param name="mouseEvent">Mouse event (unused)</param>
-        private void SavePack(UIComponent control, UIMouseEventParameter mouseEvent)
-        {
-            // Basic sanity checks - need a valid name and service to proceed.
-            if (packNameField.text != null && serviceDropDown.selectedIndex >= 0)
-            {
-                // Update currently selected pack with information from the panel.
-                UpdatePack((VolumetricPopPack)packList[packDropDown.selectedIndex]);
-
-                // Save configuration file.
-                ConfigUtils.SaveSettings();
-
-                // Apply update.
-                PopData.instance.CalcPackChanged(packList[packDropDown.selectedIndex]);
-            }
+            // Save configuration file. 
+            ConfigUtils.SaveSettings();
         }
 
 
@@ -239,7 +220,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
         /// <param name="mouseEvent">Mouse event (unused)</param>
-        private void DeletePack(UIComponent control, UIMouseEventParameter mouseEvent)
+        protected override void DeletePack(UIComponent control, UIMouseEventParameter mouseEvent)
         {
             // Make sure it's not an inbuilt pack before proceeding.
             if (packList[packDropDown.selectedIndex].version == (int)DataVersion.customOne)
@@ -252,6 +233,46 @@ namespace RealPop2
 
                 // Reset pack menu index.
                 packDropDown.selectedIndex = 0;
+            }
+        }
+
+
+        /// <summary>
+        /// Updates the given calculation pack with data from the panel.
+        /// </summary>
+        /// <param name="pack">Pack to update</param>
+        protected override void UpdatePack(DataPack pack)
+        {
+            if (pack is VolumetricPopPack popPack)
+            {
+                // Basic pack attributes.
+                pack.name = packNameField.text;
+                pack.displayName = packNameField.text;
+
+                // Iterate through each level, parsing input fields.
+                for (int i = 0; i < maxLevels[serviceDropDown.selectedIndex]; ++i)
+                {
+                    // Textfields.
+                    PanelUtils.ParseFloat(ref popPack.levels[i].emptyArea, emptyAreaFields[i].text);
+                    PanelUtils.ParseInt(ref popPack.levels[i].emptyPercent, emptyPercentFields[i].text);
+
+                    // Look at fixed population checkbox state to work out if we're doing fixed population or area per.
+                    if (fixedPopChecks[i].isChecked)
+                    {
+                        // Using fixed pop: negate the 'area per' number to denote fixed population.
+                        int pop = 0;
+                        PanelUtils.ParseInt(ref pop, fixedPopFields[i].text);
+                        popPack.levels[i].areaPer = 0 - pop;
+                    }
+                    else
+                    {
+                        // Area per unit.
+                        PanelUtils.ParseFloat(ref popPack.levels[i].areaPer, areaPerFields[i].text);
+                    }
+
+                    // Checkboxes.
+                    popPack.levels[i].multiFloorUnits = multiFloorChecks[i].isChecked;
+                }
             }
         }
 
@@ -300,15 +321,6 @@ namespace RealPop2
             // Update button states.
             ButtonStates(index);
         }
-
-
-
-
-        /// <summary>
-        /// Network type dropdown change handler.
-        /// </summary>
-        /// <param name="control">Calling component (unused)</param>
-        /// <param name="index">New selected index (unused)</param>
 
 
         /// <summary>
@@ -372,52 +384,6 @@ namespace RealPop2
             emptyPercentFields[index].isVisible = !isChecked;
             areaPerFields[index].isVisible = !isChecked;
             multiFloorChecks[index].isVisible = !isChecked;
-        }
-
-
-        /// <summary>
-        /// Updates the given calculation pack with data from the panel.
-        /// </summary>
-        /// <param name="pack">Pack to update</param>
-        private void UpdatePack(VolumetricPopPack pack)
-        {
-            // Basic pack attributes.
-            pack.name = packNameField.text;
-            pack.displayName = packNameField.text;
-            pack.version = (int)DataVersion.customOne;
-            pack.service = services[serviceDropDown.selectedIndex];
-            pack.levels = new LevelData[maxLevels[serviceDropDown.selectedIndex]];
-
-            // Iterate through each level, parsing input fields.
-            for (int i = 0; i < maxLevels[serviceDropDown.selectedIndex]; ++i)
-            {
-                // Textfields.
-                PanelUtils.ParseFloat(ref pack.levels[i].emptyArea, emptyAreaFields[i].text);
-                PanelUtils.ParseInt(ref pack.levels[i].emptyPercent, emptyPercentFields[i].text);
-
-                // Look at fixed population checkbox state to work out if we're doing fixed population or area per.
-                if (fixedPopChecks[i].isChecked)
-                {
-                    // Using fixed pop: negate the 'area per' number to denote fixed population.
-                    int pop = 0;
-                    PanelUtils.ParseInt(ref pop, fixedPopFields[i].text);
-                    pack.levels[i].areaPer = 0 - pop;
-                }
-                else
-                {
-                    // Area per unit.
-                    PanelUtils.ParseFloat(ref pack.levels[i].areaPer, areaPerFields[i].text);
-                }
-
-                // Checkboxes.
-                pack.levels[i].multiFloorUnits = multiFloorChecks[i].isChecked;
-            }
-
-            // Update selected menu item in case the name has changed.
-            packDropDown.items[packDropDown.selectedIndex] = pack.displayName ?? pack.name;
-
-            // Update defaults panel menus.
-            CalculationsPanel.instance.UpdateDefaultMenus();
         }
 
 

@@ -91,6 +91,7 @@ namespace RealPop2
             float currentY = yPos + 30f;
 
             visitDefaultMenu = UIControls.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate("RPR_DEF_VIS"), 300f, true, Translations.Translate("RPR_DEF_VIS_TIP"));
+            visitDefaultMenu.tooltipBox = TooltipUtils.TooltipBox;
             visitDefaultMenu.items = new string[]
             {
                 Translations.Translate("RPR_DEF_VNE"),

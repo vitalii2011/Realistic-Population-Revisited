@@ -10,12 +10,14 @@ namespace RealPop2
     internal class CalculationsPanel
     {
         // Instance reference.
-        internal static CalculationsPanel instance;
+        internal static CalculationsPanel Instance { get; private set; }
+
 
         // Components.
         private readonly ResDefaultsPanel resDefaults;
         private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults;
         private readonly SchDefaultsPanel schDefaults;
+
 
         /// <summary>
         /// Adds education options tab to tabstrip.
@@ -24,6 +26,9 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal CalculationsPanel(UITabstrip parentTabStrip, int tabIndex)
         {
+            // Instance reference.
+            Instance = this;
+
             // Add tab and helper.
             UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_PCK_NAM"), tabIndex);
             panel.autoLayout = false;
