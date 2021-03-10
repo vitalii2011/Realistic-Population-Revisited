@@ -99,8 +99,6 @@ namespace RealPop2
                 __result = 1;
             }
 
-            Logging.Message("calculated visitors of ", __result.ToString(), " for prefab ", (info?.name) ?? "null");
-
             // Don't execute base method after this.
             return false;
         }
