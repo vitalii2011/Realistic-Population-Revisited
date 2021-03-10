@@ -10,6 +10,8 @@
     <Translation ID="RPR_PCK_LEG_DES" String="Old calculations used by versions 1.x of this mod and Whitefang Greytail's original Realistic Population and Consumption mod." />
     <Translation ID="RPR_PCK_RLS_NAM" String="Single dwellings" />
     <Translation ID="RPR_PCK_RLS_DES" String="One household per building." />
+    <Translation ID="RPR_PCK_RLD_NAM" String="Duplexes" />
+    <Translation ID="RPR_PCK_RLD_DES" String="Two households per building." />
     <Translation ID="RPR_PCK_RUH_NAM" String="US highrise" />
     <Translation ID="RPR_PCK_RUH_DES" String="Average US apartments and condos." />
     <Translation ID="RPR_PCK_REM_NAM" String="European apartments (modern)" />
@@ -129,23 +131,44 @@
     <Translation ID="RPR_CAL_BFL" String="Building floors" />
     <Translation ID="RPR_CAL_FOV" String="Using custom override" />
     <Translation ID="RPR_CAL_FLG" String="Floor calculation selection is not available when using legacy calculations" />
+    <Translation ID="RPR_CAL_SAT" String="Save and apply to:" />
+    <Translation ID="RPR_CAL_NBD" String="New buildings only" />
+    <Translation ID="RPR_CAL_ABD" String="All buildings" />
     <Translation ID="RPR_CAL_VOL_FLR" String="Floors" />
+    <Translation ID="RPR_CAL_VOL_FLR_TIP" String="The number of floors (stories) for this building calculated using the above settings." />
     <Translation ID="RPR_CAL_VOL_TFA" String="Total floor area" />
+    <Translation ID="RPR_CAL_VOL_TFA_TIP" String="The total floor area for this building calculated using the above settings." />
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />
+    <Translation ID="RPR_CAL_VOL_UTS_TIP" String="The total population (households or workplaces) for this building calculated using the above settings." />
+    <Translation ID="RPR_CAL_VOL_VIS" String="Visitor count" />
+    <Translation ID="RPR_CAL_VOL_VIS_TIP" String="The number of customer visits supported by this building for each business cycle." />
     <Translation ID="RPR_CAL_VOL_FLH" String="Floor height" />
-    <Translation ID="RPR_CAL_VOL_EMP" String="Empty area (fixed)" />
-    <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
+    <Translation ID="RPR_CAL_VOL_FLH_TIP" String="The typical floor-to-floor height, in meters, of each story in this building (the first floor has additional options below)." />
     <Translation ID="RPR_CAL_VOL_FMN" String="First floor height min" />
+    <Translation ID="RPR_CAL_VOL_FMN_TIP" String="The minimum building height required for an area of the building to count as having at least one story." />
     <Translation ID="RPR_CAL_VOL_FMX" String="First floor extra height" />
-    <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
-    <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
-    <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
+    <Translation ID="RPR_CAL_VOL_FMX_TIP" String="The first floor height will be extended upwards by this many meters (on top of the typical floor height above) before additional floors are added above." />
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
+    <Translation ID="RPR_CAL_VOL_IGF_TIP" String="If this is set, the first floor of the building is treated as empty space (e.g. a lobby or foyer area) with no households or wokers." />
+    <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
+    <Translation ID="RPR_CAL_VOL_EPC_TIP" String="This percentage of each floor area will be treated as empty area and will not be included when calculating households or worker counts." />
+    <Translation ID="RPR_CAL_VOL_EMP" String="Empty area (fixed)" />
+    <Translation ID="RPR_CAL_VOL_EMP_TIP" String="A fixed amount of space that will be deducted from each floor area before households or workers are calculated (treated as empty area)." />
+    <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
+    <Translation ID="RPR_CAL_VOL_FXP_TIP" String="If this is set, a fixed figure for household or worker counts will be used, regardless of building size (e.g. one household per building)." />
+    <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
+    <Translation ID="RPR_CAL_VOL_HOU" String="Households" />
+    <Translation ID="RPR_CAL_VOL_WOR" String="Workplaces" />
+    <Translation ID="RPR_CAL_VOL_STU" String="Students" />
+    <Translation ID="RPR_CAL_VOL_UNI_TIP" String="Fixed number of households or workers per building." />
+    <Translation ID="RPR_CAL_VOL_APU" String="Area per unit" />
+    <Translation ID="RPR_CAL_VOL_APU_TIP" String="The area (in square meters) required for each household or worker (after empty area has been deducted)." />
     <Translation ID="RPR_CAL_VOL_MFU" String="Multi-floor units" />
-    <Translation ID="RPR_CAL_VOL_HOU" String="homes" />
-    <Translation ID="RPR_CAL_VOL_WOR" String="workers" />
-    <Translation ID="RPR_CAL_VOL_STU" String="students" />
+    <Translation ID="RPR_CAL_VOL_MFU_TIP" String="If this is not set, then household or worker counts will be calculated for each individual floor in the building.  If this is set, only the building total will be used to calculate household or worker counts." />
     <Translation ID="RPR_CAL_VOL_ARA" String="area" />
+    <Translation ID="RPR_CAL_UNI_HOU" String="homes" />
+    <Translation ID="RPR_CAL_UNI_WOR" String="workers" />
+    <Translation ID="RPR_CAL_UNI_STU" String="students" />
     <Translation ID="RPR_CAL_HOM_CALC" String="Calculated homes:" />
     <Translation ID="RPR_CAL_HOM_CUST" String="Customised homes:" />
     <Translation ID="RPR_CAL_HOM_APPL" String="Applied homes:" />
@@ -167,13 +190,15 @@
     <Translation ID="RPR_CAL_CAP_DEF" String="Default multiplier:" />
     <Translation ID="RPR_CAL_SCH_PRO" String="Staff and cost scaling" />
     <Translation ID="RPR_CAL_SCH_WKR" String="School workers" />
+    <Translation ID="RPR_CAL_SCH_WKR_TIP" String="The number and level of workplaces available at this school calculated using the above settings" />
     <Translation ID="RPR_CAL_SCH_CST" String="Cost/maintenance" />
+    <Translation ID="RPR_CAL_SCH_CST_TIP" String="The school's construction cost and weekly maintenance cost calculated using the above settings" />
     <Translation ID="RPR_OPT_MOD" String="Mod settings" />
     <Translation ID="RPR_OPT_KEY" String="Hotkey for building options screen" />
     <Translation ID="RPR_OPT_PRS" String="Press any key" />
     <Translation ID="RPR_OPT_LEG" String="Legacy" />
     <Translation ID="RPR_OPT_CON" String="Consumption" />
-    <Translation ID="RPR_OPT_STO" String="Stories" />
+    <Translation ID="RPR_OPT_STO" String="Floors" />
     <Translation ID="RPR_OPT_LVL" String="Level" />
     <Translation ID="RPR_OPT_PERW" String="Amounts per worker" />
     <Translation ID="RPR_OPT_PERH" String="Amounts per household" />
@@ -214,9 +239,16 @@
     <Translation ID="RPR_OPT_NEW" String="Add new" />
     <Translation ID="RPR_OPT_DEL" String="Delete pack" />
     <Translation ID="RPR_OPT_NPK" String="New pack" />
-    <Translation ID="RPR_DEF_LEG" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default:" />
+    <Translation ID="RPR_DEF_LGR" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for residential buildings:" />
+    <Translation ID="RPR_DEF_LGC" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for commercial buildings:" />
+    <Translation ID="RPR_DEF_LGI" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for industrial buildings:" />
+    <Translation ID="RPR_DEF_LGO" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for office buildings:" />
     <Translation ID="RPR_DEF_LTS" String="This save" />
     <Translation ID="RPR_DEF_LAS" String="New saves" />
+    <Translation ID="RPR_DEF_VIS" String="Customer (visitor) capacity calculations" />
+    <Translation ID="RPR_DEF_VNE" String="New method - based on workforce size" />
+    <Translation ID="RPR_DEF_VOL" String="Old method - based on building lot size" />
+    <Translation ID="RPR_DEF_VIS_TIP" String="The basis for calculating the number of customers this building can handle each business cycle.  The old method was to use the size of the building's lot, and the new method is to use the number of workplaces in the building." />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
     <Translation ID="MES_CLS" String="Close" />

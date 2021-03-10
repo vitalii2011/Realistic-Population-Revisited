@@ -60,15 +60,15 @@ namespace RealPop2
 
             // Create residential per-person area textfields and labels.
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
-            AddSubService(panel, true, Generic);
+            AddSubService(panel, Generic);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
-            AddSubService(panel, false, Farming, true);
+            AddSubService(panel, Farming, true);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
-            AddSubService(panel, false, Forestry, true);
+            AddSubService(panel, Forestry, true);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
-            AddSubService(panel, false, Oil, true);
+            AddSubService(panel, Oil, true);
             PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
-            AddSubService(panel, false, Ore, true);
+            AddSubService(panel, Ore, true);
 
             // Populate initial values.
             PopulateFields();

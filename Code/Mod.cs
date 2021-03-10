@@ -14,7 +14,7 @@ namespace RealPop2
         // Internal and private name and version components.
         internal static string ModName => "Realistic Population 2";
         internal static string Version => BaseVersion + " " + Beta;
-        internal static string Beta => "BETA 7";
+        internal static string Beta => "BETA 10";
         private static string BaseVersion => "2.0";
 
 
@@ -59,7 +59,7 @@ namespace RealPop2
             // This establishes the correct priority (new over legacy).
             XMLUtilsWG.ReadFromXML();
 
-            // Check to see if UIView is ready.
+            // Attaching options panel event hook - check to see if UIView is ready.
             if (UIView.GetAView() != null)
             {
                 // It's ready - attach the hook now.

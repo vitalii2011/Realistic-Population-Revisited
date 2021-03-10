@@ -78,9 +78,38 @@ namespace RealPop2
             }
         }
 
-        // Use legacy calculations by default.
+        // Use legacy calculations by default (deprecated all-in-one setting).
         [XmlElement("NewSavesLegacy")]
-        public bool DefaultLegacy { get => ModSettings.newSaveLegacy; set => ModSettings.newSaveLegacy = value; }
+        public bool DefaultLegacy
+        {
+            set
+            {
+                ModSettings.newSaveLegacyRes = value;
+                ModSettings.newSaveLegacyCom = value;
+                ModSettings.newSaveLegacyInd = value;
+                ModSettings.newSaveLegacyOff = value;
+            }
+        }
+
+
+        // Use legacy calculations by default (new granular setting).
+        [XmlElement("NewSavesLegacyRes")]
+        public bool DefaultLegacyRes { get => ModSettings.newSaveLegacyRes; set => ModSettings.newSaveLegacyRes = value; }
+
+        [XmlElement("NewSavesLegacyCom")]
+        public bool DefaultLegacyCom { get => ModSettings.newSaveLegacyCom; set => ModSettings.newSaveLegacyCom = value; }
+
+        [XmlElement("NewSavesLegacyInd")]
+        public bool DefaultLegacyInd { get => ModSettings.newSaveLegacyInd; set => ModSettings.newSaveLegacyInd = value; }
+
+        [XmlElement("NewSavesLegacyOff")]
+        public bool DefaultLegacyOff { get => ModSettings.newSaveLegacyOff; set => ModSettings.newSaveLegacyOff = value; }
+
+
+        // Commercial visitor calculations - clamp to 0 or 1 at this stage.
+        [XmlElement("CommericalVisitsMode")]
+        public int CommericalVisitsMode { get => ModSettings.comVisitsMode; set => ModSettings.comVisitsMode = Math.Max(0, Math.Min(value, 1)); }
+
 
         // Realistic education.
         [XmlElement("EnableSchoolPop")]

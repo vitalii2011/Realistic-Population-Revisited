@@ -17,8 +17,11 @@ namespace RealPop2
         internal ConsumptionPanel(UITabstrip parentTabStrip, int tabIndex)
         {
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex);
+            UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, out UIButton tabButton, 100f);
             panel.autoLayout = false;
+
+            // Button size and text scale.
+            tabButton.textScale = 0.7f;
 
             // Add tabstrip.
             UITabstrip childTabStrip = panel.AddUIComponent<UITabstrip>();

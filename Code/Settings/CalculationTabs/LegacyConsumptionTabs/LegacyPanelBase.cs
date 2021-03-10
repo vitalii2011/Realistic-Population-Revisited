@@ -83,8 +83,8 @@ namespace RealPop2
             wealthLabel = Translations.Translate("RPR_OPT_WEA");
 
             // Headings.
-            PanelUtils.ColumnLabel(panel, Column1, TitleHeight, Column1Width + Margin, areaLabel, 1.0f);
-            PanelUtils.ColumnLabel(panel, Column2, TitleHeight, ColumnWidth + Margin, floorLabel, 1.0f);
+            PanelUtils.ColumnLabel(panel, Column1, TitleHeight, Column1Width + Margin, areaLabel, areaLabel, 1.0f);
+            PanelUtils.ColumnLabel(panel, Column2, TitleHeight, ColumnWidth + Margin, floorLabel, floorLabel, 1.0f);
             ColumnIcon(panel, Column4, ColumnWidth, powerLabel, "ToolbarIconElectricity");
             ColumnIcon(panel, Column5, ColumnWidth, waterLabel, "ToolbarIconWaterAndSewage");
             ColumnIcon(panel, Column6, ColumnWidth, sewageLabel, "ToolbarIconWaterAndSewageDisabled");
@@ -94,7 +94,7 @@ namespace RealPop2
             // Bonus floors.
             if (notResidential)
             {
-                PanelUtils.ColumnLabel(panel, Column3, TitleHeight, ColumnWidth + Margin, extraFloorLabel, 0.8f);
+                PanelUtils.ColumnLabel(panel, Column3, TitleHeight, ColumnWidth + Margin, extraFloorLabel, extraFloorLabel, 0.8f);
             }
 
             // Consumption heading.
@@ -138,9 +138,7 @@ namespace RealPop2
         /// <param name="subService">Subservice reference number</param>
         /// <param name="isExtract">Set this to true (and label to null) to add extractor/processor labels (default false, which is plain level labels)</param>
         /// <param name="label">Text label base for each row; null (default) to use level numbers or extractor/prcessor</param>
-#pragma warning disable IDE0060 // Remove unused parameter
-        protected void AddSubService(UIPanel panel, bool addLevels, int subService, bool isExtract = false, string label = null)
-#pragma warning restore IDE0060 // Remove unused parameter
+        protected void AddSubService(UIPanel panel, int subService, bool isExtract = false, string label = null)
         {
             // Add a row for each level within this subservice.
             for (int i = 0; i < areaFields[subService].Length; ++i)

@@ -9,6 +9,16 @@ namespace RealPop2
     /// </summary>
     internal class CalculationsPanel
     {
+        // Instance reference.
+        internal static CalculationsPanel Instance { get; private set; }
+
+
+        // Components.
+        private readonly ResDefaultsPanel resDefaults;
+        private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults;
+        private readonly SchDefaultsPanel schDefaults;
+
+
         /// <summary>
         /// Adds education options tab to tabstrip.
         /// </summary>
@@ -16,6 +26,9 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal CalculationsPanel(UITabstrip parentTabStrip, int tabIndex)
         {
+            // Instance reference.
+            Instance = this;
+
             // Add tab and helper.
             UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_PCK_NAM"), tabIndex);
             panel.autoLayout = false;
@@ -32,18 +45,30 @@ namespace RealPop2
             childTabStrip.tabPages = tabContainer;
 
             // Add child tabs.
-            new DefaultsPanel(childTabStrip, 0);
-            new PopulationPanel(childTabStrip, 1);
-            new FloorPanel(childTabStrip, 2);
-            new ConsumptionPanel(childTabStrip, 3);
-            new LegacyPanel(childTabStrip, 4);
+            int tab = 0;
+            resDefaults = new ResDefaultsPanel(childTabStrip, tab++);
+            comDefaults = new ComDefaultsPanel(childTabStrip, tab++);
+            indDefaults = new IndDefaultsPanel(childTabStrip, tab++);
+            offDefaults = new OffDefaultsPanel(childTabStrip, tab++);
+            schDefaults = new SchDefaultsPanel(childTabStrip, tab++);
+            new PopulationPanel(childTabStrip, tab++);
+            new FloorPanel(childTabStrip, tab++);
+            new ConsumptionPanel(childTabStrip, tab++);
+            new LegacyPanel(childTabStrip, tab);
+        }
 
-            // Change tab size and text scale (to differentiate from 'main' tabstrip).
-            foreach (UIButton button in childTabStrip.components)
-            {
-                button.textScale = 0.8f;
-                button.width = 100f;
-            }
+
+        /// <summary>
+        /// Updates default calculation pack selection menu options.
+        /// </summary>
+        internal void UpdateDefaultMenus()
+        {
+            // Update for each defaults panel.
+            resDefaults.UpdateMenus();
+            comDefaults.UpdateMenus();
+            offDefaults.UpdateMenus();
+            indDefaults.UpdateMenus();
+            schDefaults.UpdateMenus();
         }
     }
 }

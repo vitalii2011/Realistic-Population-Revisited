@@ -15,11 +15,11 @@ namespace RealPop2
         /// <param name="minWorkers"></param>
         /// <param name="array"></param>
         /// <param name="output"></param>
-        internal static void CalculateprefabWorkerVisit(int width, int length, ref BuildingInfo item, int minWorkers, ref int[] array, out PrefabEmployStruct output)
+        internal static void CalculateprefabWorkerVisit(int width, int length, ref BuildingInfo item, int minWorkers, ref int[] array, out int[] output)
         {
             // Prefabs are tied to a level
 
-            int value = 0;
+            int value;
             int num = array[DataStore.PEOPLE];
             int level0 = array[DataStore.WORK_LVL0];
             int level1 = array[DataStore.WORK_LVL1];
@@ -29,56 +29,73 @@ namespace RealPop2
 
             if (num > 0 && num2 > 0)
             {
-                Vector3 v = item.m_size;
-                int floorSpace = CalcBase(width, length, ref array, v);
-                int floorCount = Mathf.Max(1, Mathf.FloorToInt(v.y / array[DataStore.LEVEL_HEIGHT])) + array[DataStore.DENSIFICATION];
-                value = (floorSpace * floorCount) / array[DataStore.PEOPLE];
-
-                if ((array[DataStore.CALC_METHOD] == 0)) // Plot only will ignore any over ride or bonus
+                // First, check for volumetric population override - that trumps everything else.
+                value = PopData.instance.GetOverride(item.name);
+                if (value == 0)
                 {
-                    // Check over ride
-                    string name = item.gameObject.name;
-                    if (DataStore.workerCache.TryGetValue(name, out int outValue))
+                    // No volumetric override - use legacy approach.
+                    Vector3 v = item.m_size;
+                    int floorSpace = CalcBase(width, length, ref array, v);
+                    int floorCount = Mathf.Max(1, Mathf.FloorToInt(v.y / array[DataStore.LEVEL_HEIGHT])) + array[DataStore.DENSIFICATION];
+                    value = (floorSpace * floorCount) / array[DataStore.PEOPLE];
+
+                    if ((array[DataStore.CALC_METHOD] == 0)) // Plot only will ignore any over ride or bonus
                     {
-                        value = outValue;
-                    }
-                    else if (DataStore.bonusWorkerCache.TryGetValue(name, out outValue))
-                    {
-                        value += outValue;
-                        DataStore.workerCache.Add(name, value);
-                        DataStore.bonusWorkerCache.Remove(name);
-                    }
-                    else if (DataStore.printEmploymentNames)
-                    {
-                        try
+                        // Check over ride
+                        string name = item.gameObject.name;
+                        if (DataStore.workerCache.TryGetValue(name, out int outValue))
                         {
-                            DataStore.workerPrintOutCache.Add(item.gameObject.name, value);
+                            value = outValue;
                         }
-                        catch (ArgumentException)
+                        else if (DataStore.bonusWorkerCache.TryGetValue(name, out outValue))
                         {
-                            // Don't care
+                            value += outValue;
+                            DataStore.workerCache.Add(name, value);
+                            DataStore.bonusWorkerCache.Remove(name);
+                        }
+                        else if (DataStore.printEmploymentNames)
+                        {
+                            try
+                            {
+                                DataStore.workerPrintOutCache.Add(item.gameObject.name, value);
+                            }
+                            catch (ArgumentException)
+                            {
+                                // Don't care
+                            }
                         }
                     }
                 }
 
                 num = Mathf.Max(minWorkers, value);
 
-                output.level3 = (num * level3) / num2;
-                output.level2 = (num * level2) / num2;
-                output.level1 = (num * level1) / num2;
-                output.level0 = Mathf.Max(0, num - output.level3 - output.level2 - output.level1);  // Whatever is left
+                output = new int[4]
+                {
+                    0,
+                    (num * level1) / num2,
+                    (num * level2) / num2,
+                    (num * level3) / num2,
+                };
+
+                output[0] = Mathf.Max(0, num - output[1] - output[2] - output[3]);  // Whatever is left
             }
             else
             {
-                output.level0 = output.level1 = output.level2 = output.level3 = 1;  // Allocate 1 for every level, to stop div by 0
+                output = new int[4]
+                {
+                    1,
+                    0,
+                    0,
+                    0
+                };
             }
 
             // Set the visitors here since we're calculating
-            if (num != 0)
-            {
-                value = Mathf.Max(200, width * length * array[DataStore.VISIT]) / 100;
-            }
-            output.visitors = value;
+            //if (num != 0)
+            //{
+                //value = Mathf.Max(200, width * length * array[DataStore.VISIT]) / 100;
+            //}
+            //output.visitors = value;
         } // end calculateprefabWorkerVisit
 
 

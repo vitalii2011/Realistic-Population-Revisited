@@ -38,7 +38,10 @@ namespace RealPop2.MessageBox
         /// </summary>
         private void ChoseLegacy()
         {
-            ModSettings.ThisSaveLegacy = true;
+            ModSettings.ThisSaveLegacyRes = true;
+            ModSettings.ThisSaveLegacyCom = true;
+            ModSettings.ThisSaveLegacyInd = true;
+            ModSettings.ThisSaveLegacyOff = true;
             Close();
         }
 
@@ -48,7 +51,10 @@ namespace RealPop2.MessageBox
         /// </summary>
         private void ChoseNew()
         {
-            ModSettings.ThisSaveLegacy = false;
+            ModSettings.ThisSaveLegacyRes = false;
+            ModSettings.ThisSaveLegacyCom = false;
+            ModSettings.ThisSaveLegacyInd = false;
+            ModSettings.ThisSaveLegacyOff = false;
             Close();
         }
     }

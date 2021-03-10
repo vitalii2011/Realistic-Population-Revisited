@@ -111,13 +111,59 @@ namespace RealPop2
 
 
         /// <summary>
+        /// Adds a tab to a UI tabstrip.
+        /// </summary>
+        /// <param name="tabStrip">UIT tabstrip to add to</param>
+        /// <param name="tabName">Name of this tab</param>
+        /// <param name="tabIndex">Index number of this tab</param>
+        /// <param name="button">Tab button instance references</param>
+        /// <param name="width">Tab width</param>
+        /// <param name="autoLayout">Default autoLayout setting</param>
+        /// <returns>UIHelper instance for the new tab panel</returns>
+        internal static UIPanel AddTab(UITabstrip tabStrip, string tabName, int tabIndex, out UIButton button, float width = 120f, bool autoLayout = false)
+        {
+            // Create tab.
+            UIButton tabButton = tabStrip.AddTab(tabName);
+
+            // Sprites.
+            tabButton.normalBgSprite = "SubBarButtonBase";
+            tabButton.disabledBgSprite = "SubBarButtonBaseDisabled";
+            tabButton.focusedBgSprite = "SubBarButtonBaseFocused";
+            tabButton.hoveredBgSprite = "SubBarButtonBaseHovered";
+            tabButton.pressedBgSprite = "SubBarButtonBasePressed";
+
+            // Tooltip.
+            tabButton.tooltip = tabName;
+
+            tabStrip.selectedIndex = tabIndex;
+
+            // Force width.
+            tabButton.width = width;
+
+            // Get tab root panel.
+            UIPanel rootPanel = tabStrip.tabContainer.components[tabIndex] as UIPanel;
+
+            // Panel setup.
+            rootPanel.autoLayout = autoLayout;
+            rootPanel.autoLayoutDirection = LayoutDirection.Vertical;
+            rootPanel.autoLayoutPadding.top = 5;
+            rootPanel.autoLayoutPadding.left = 10;
+
+            button = tabButton;
+
+            return rootPanel;
+        }
+
+
+        /// <summary>
         /// Adds a row header icon label at the current Y position.
         /// </summary>
         /// <param name="panel">UI panel</param>
         /// <param name="yPos">Reference Y positions</param>
         /// <param name="text">Tooltip text</param>
         /// <param name="icon">Icon name</param>
-        internal static void RowHeaderIcon(UIPanel panel, ref float yPos, string text, string icon, string atlas)
+        /// <param name="maxWidth">Maximum label width (scale text down to fit); 0 (default) to ignore</param>
+        internal static void RowHeaderIcon(UIPanel panel, ref float yPos, string text, string icon, string atlas, float maxWidth = 0f)
         {
             // UI layout constants.
             const float Margin = 5f;
@@ -129,7 +175,7 @@ namespace RealPop2
             thumbSprite.relativePosition = new Vector3(Margin, yPos - 2.5f);
             thumbSprite.width = 35f;
             thumbSprite.height = 35f;
-            thumbSprite.atlas = UIUtils.GetAtlas(atlas);
+            thumbSprite.atlas = TextureUtils.GetTextureAtlas(atlas);
             thumbSprite.spriteName = icon;
 
             // Text label.
@@ -138,6 +184,18 @@ namespace RealPop2
             lineLabel.text = text;
             lineLabel.relativePosition = new Vector3(LeftTitle, yPos + 7);
             lineLabel.verticalAlignment = UIVerticalAlignment.Middle;
+
+            // If a maximum width has been provided, iteratively reduce text scale as required to fit within that limit.
+            if (maxWidth > 0)
+            {
+                lineLabel.autoSize = true;
+                lineLabel.PerformLayout();
+                while (lineLabel.width > maxWidth)
+                {
+                    lineLabel.textScale -= 0.05f;
+                    lineLabel.PerformLayout();
+                }
+            }
 
             // Increment our current height.
             yPos += 30f;
@@ -152,8 +210,9 @@ namespace RealPop2
         /// <param name="baseY">Y position of base of label/param>
         /// <param name="width">Width of reference item (for centering)</param>
         /// <param name="text">Label text</param>
+        /// <param name="tooltip">Tooltip text</param>
         /// <param name="scale">Label text size (default 0.7)</param>
-        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, float scale = 0.7f)
+        internal static void ColumnLabel(UIPanel panel, float xPos, float baseY, float width, string text, string tooltip, float scale = 0.7f)
         {
             // Basic setup.
             UILabel columnLabel = panel.AddUIComponent<UILabel>();
@@ -165,7 +224,10 @@ namespace RealPop2
             columnLabel.wordWrap = true;
             columnLabel.width = width;
 
+            // Text and tooltip.
             columnLabel.text = text;
+            columnLabel.tooltip = tooltip;
+            columnLabel.tooltipBox = TooltipUtils.TooltipBox;
 
             // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
             columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), baseY - columnLabel.height);

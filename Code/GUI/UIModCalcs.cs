@@ -144,10 +144,12 @@ namespace RealPop2
             legacyPanel.Setup();
             legacyPanel.Hide();
 
-            // Floor dropdown panel.
+            // Floor dropdown panel - set size manually to avoid invisible overlap of calculations panel (preventing e.g. tooltips).
             floorPanel = this.AddUIComponent<UIPanel>();
             floorPanel.relativePosition = new Vector2(RightColumnX, MenuY);
-            floorPanel.autoSize = true;
+            floorPanel.autoSize = false;
+            floorPanel.width = RightColumnX - this.width;
+            floorPanel.height = BaseCalcY - MenuY;
             floorPanel.autoLayout = false;
             floorPanel.clipChildren = false;
             floorPanel.Show();
@@ -194,7 +196,7 @@ namespace RealPop2
             multSlider.parent.Hide();
 
             // Muliplier checkbox.
-            multCheck = UIControls.AddCheckBox(schoolPanel, RightColumnX, 18f, Translations.Translate("RPR_CAL_CAP_OVR"));
+            multCheck = UIControls.LabelledCheckBox(schoolPanel, RightColumnX, 18f, Translations.Translate("RPR_CAL_CAP_OVR"));
 
             // Multiplier default label.
             multDefaultLabel = UIControls.AddLabel(schoolPanel, RightColumnX + 21f, 40f, Translations.Translate("RPR_CAL_CAP_DEF") + " x" + ModSettings.DefaultSchoolMult, textScale: 0.8f);

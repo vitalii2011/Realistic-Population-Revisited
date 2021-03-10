@@ -19,7 +19,7 @@ namespace RealPop2
         private const float LeftColumn = LabelOffset;
         private const float RightColumn = ColumnWidth + LabelOffset;
         private const float RowTopMargin = Margin;
-        private const float RowHeight = 25f;
+        private const float RowHeight = 20f;
         private const float Row1 = RowTopMargin;
         private const float Row2 = Row1 + RowHeight;
         private const float Row3 = Row2 + RowHeight;
@@ -27,17 +27,19 @@ namespace RealPop2
         private const float Row5 = Row4 + RowHeight;
         private const float Row6 = Row5 + RowHeight;
         private const float Row7 = Row6 + RowHeight;
-        private const float MessageY = Row7 + RowHeight + Margin;
-        private const float FloorListY = MessageY + 30f;
+        private const float Row8 = Row7 + RowHeight;
+        private const float MessageY = Row8 + RowHeight + Margin;
+        private const float FloorListY = MessageY + RowHeight;
 
 
         // Panel components.
         private UIFastList floorsList;
-        private UILabel numFloorsLabel, floorAreaLabel, totalLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
-        private UILabel emptyAreaLabel, emptyPercentLabel, perLabel;
+        private UILabel numFloorsLabel, floorAreaLabel, visitCountLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
+        private UILabel emptyAreaLabel, emptyPercentLabel, perLabel, unitsLabel;
+        private UILabel totalHomesLabel, totalJobsLabel, totalStudentsLabel;
         private UILabel schoolWorkerLabel, costLabel;
         private UILabel messageLabel;
-        private UICheckBox multiFloorCheckBox, ignoreFirstCheckBox;
+        private UICheckBox fixedPopCheckBox, multiFloorCheckBox, ignoreFirstCheckBox;
 
 
         /// <summary>
@@ -58,25 +60,38 @@ namespace RealPop2
             clipChildren = true;
 
             // Labels.
-            numFloorsLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FLR"), RightColumn, Row1);
-            floorAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_TFA"), RightColumn, Row2);
-            totalLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_UTS"), RightColumn, Row3);
-            floorHeightLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FLH"), RightColumn, Row4);
-            firstMinLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMN"), RightColumn, Row5);
-            firstExtraLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_FMX"), RightColumn, Row6);
-            emptyAreaLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EMP"), LeftColumn, Row1);
-            emptyPercentLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_EPC"), LeftColumn, Row2);
-            perLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_VOL_APU"), LeftColumn, Row3);
-            schoolWorkerLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_SCH_WKR"), LeftColumn, Row6);
-            costLabel = AddVolumetricLabel(this, Translations.Translate("RPR_CAL_SCH_CST"), LeftColumn, Row7);
+            floorHeightLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_FLH", RightColumn, Row1, "RPR_CAL_VOL_FLH_TIP");
+            firstMinLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_FMN", RightColumn, Row2, "RPR_CAL_VOL_FMN_TIP");
+            firstExtraLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_FMX", RightColumn, Row3, "RPR_CAL_VOL_FMX_TIP");
+            numFloorsLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_FLR", RightColumn, Row5, "RPR_CAL_VOL_FLR_TIP");
+            floorAreaLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_TFA", RightColumn, Row6, "RPR_CAL_VOL_TFA_TIP");
+            totalHomesLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_HOU", RightColumn, Row7, "RPR_CAL_VOL_UTS_TIP");
+            totalJobsLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_WOR", RightColumn, Row7, "RPR_CAL_VOL_UTS_TIP");
+            totalStudentsLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_STU", RightColumn, Row7, "RPR_CAL_VOL_UTS_TIP");
+            visitCountLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_VIS", RightColumn, Row8, "RPR_CAL_VOL_VIS_TIP");
+            unitsLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_UNI", LeftColumn, Row2, "RPR_CAL_VOL_UNI_TIP");
+            emptyPercentLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_EPC", LeftColumn, Row2, "RPR_CAL_VOL_EPC_TIP");
+            emptyAreaLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_EMP", LeftColumn, Row3, "RPR_CAL_VOL_EMP_TIP");
+            perLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_APU", LeftColumn, Row4, "RPR_CAL_VOL_APU_TIP");
+            schoolWorkerLabel = AddVolumetricLabel(this, "RPR_CAL_SCH_WKR", LeftColumn, Row7, "RPR_CAL_SCH_WKR_TIP");
+            costLabel = AddVolumetricLabel(this, "RPR_CAL_SCH_CST", LeftColumn, Row8, "RPR_CAL_SCH_CST_TIP");
+
+            // Intially hidden (just to avoid ugliness if no building is selected).
+            totalHomesLabel.Hide();
+            totalStudentsLabel.Hide();
+
+            // Fixed population checkbox.
+            fixedPopCheckBox = CalcCheckBox(this, "RPR_CAL_VOL_FXP", LeftColumn, Row1, "RPR_CAL_VOL_FXP_TIP");
+            fixedPopCheckBox.isInteractive = false;
+            fixedPopCheckBox.Disable();
 
             // Multi-floor units checkbox.
-            multiFloorCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_MFU"), LeftColumn, Row4);
+            multiFloorCheckBox = CalcCheckBox(this, "RPR_CAL_VOL_MFU", LeftColumn, Row5, "RPR_CAL_VOL_MFU_TIP");
             multiFloorCheckBox.isInteractive = false;
             multiFloorCheckBox.Disable();
 
             // Ignore first floor checkbox.
-            ignoreFirstCheckBox = AddCheckBox(this, Translations.Translate("RPR_CAL_VOL_IGF"), RightColumn, Row7);
+            ignoreFirstCheckBox = CalcCheckBox(this, "RPR_CAL_VOL_IGF", RightColumn, Row4, "RPR_CAL_VOL_IGF_TIP");
             ignoreFirstCheckBox.isInteractive = false;
             ignoreFirstCheckBox.Disable();
 
@@ -86,19 +101,14 @@ namespace RealPop2
             // Floor list - attached to root panel as scrolling and interactivity can be unreliable otherwise.
             floorsList = UIFastList.Create<UIFloorRow>(BuildingDetailsPanel.Panel);
 
-            // Set relative position.
-            float xPos = this.relativePosition.x + parent.relativePosition.x;
-            float yPos = this.relativePosition.y + parent.relativePosition.y + FloorListY;
-            floorsList.relativePosition = new Vector2(xPos, yPos);
-
             // Size, appearance and behaviour.
             floorsList.backgroundSprite = "UnlockingPanel";
             floorsList.width = this.width;
-            floorsList.height = this.height - FloorListY;
             floorsList.isInteractive = true;
             floorsList.canSelect = false;
             floorsList.rowHeight = 20;
-            floorsList.autoHideScrollbar = true;
+            floorsList.autoHideScrollbar = true; ;
+            ResetFloorListPosition();
 
             // Data.
             floorsList.rowsData = new FastList<object>();
@@ -115,12 +125,20 @@ namespace RealPop2
         /// <param name="levelData">LevelData record to summarise</param>
         internal void UpdatePopText(LevelData levelData)
         {
-            // Set textfield values.
+            // Update and display text labels depending on 'use fixed pop' setting.
+            bool fixedPop = levelData.areaPer < 0;
+            fixedPopCheckBox.isChecked = fixedPop;
+            emptyAreaLabel.isVisible = !fixedPop;
+            emptyPercentLabel.isVisible = !fixedPop;
+            perLabel.isVisible = !fixedPop;
+            multiFloorCheckBox.isVisible = !fixedPop;
+            unitsLabel.isVisible = fixedPop;
+
+            // Set values.
             emptyAreaLabel.text = levelData.emptyArea.ToString();
             emptyPercentLabel.text = levelData.emptyPercent.ToString();
             perLabel.text = levelData.areaPer.ToString();
-
-            // Set checkbox.
+            unitsLabel.text = (levelData.areaPer * -1).ToString();
             multiFloorCheckBox.isChecked = levelData.multiFloorUnits;
         }
 
@@ -178,15 +196,15 @@ namespace RealPop2
             {
                 case ItemClass.Service.Residential:
                     // Residential - households.
-                    unitName = Translations.Translate("RPR_CAL_VOL_HOU");
+                    unitName = Translations.Translate("RPR_CAL_UNI_HOU");
                     break;
                 case ItemClass.Service.Education:
                     // Education - students.
-                    unitName = Translations.Translate("RPR_CAL_VOL_STU");
+                    unitName = Translations.Translate("RPR_CAL_UNI_STU");
                     break;
                 default:
                     // Default - workplaces.
-                    unitName = Translations.Translate("RPR_CAL_VOL_WOR");
+                    unitName = Translations.Translate("RPR_CAL_UNI_WOR");
                     break;
             }
 
@@ -248,12 +266,18 @@ namespace RealPop2
                 // And display school cost breakdown.
                 costLabel.Show();
                 costLabel.text = cost.ToString((!(displayMaint >= 10f)) ? Settings.moneyFormat : Settings.moneyFormatNoCents, LocaleManager.cultureInfo) + " / " + displayMaint.ToString((!(displayMaint >= 10f)) ? Settings.moneyFormat : Settings.moneyFormatNoCents, LocaleManager.cultureInfo);
+
+                // Enforce school floors list position.
+                ResetFloorListPosition();
             }
             else
             {
                 // No - hide school worker breakdown and cost labels.
                 schoolWorkerLabel.Hide();
                 costLabel.Hide();
+
+                // Enforce default floors list position.
+                ResetFloorListPosition();
             }
 
             // Allocate our new list of labels to the floors list (via an interim fastlist to avoid race conditions if we 'build' manually directly into floorsList).
@@ -263,23 +287,78 @@ namespace RealPop2
                 m_size = floorLabels.Count
             };
             floorsList.rowsData = fastList;
-            
+
             // Display total unit calculation result.
-            totalLabel.text = totalUnits.ToString("N0", LocaleManager.cultureInfo);
+            switch (building.GetService())
+            {
+                case ItemClass.Service.Residential:
+                    // Residential building.
+                    totalJobsLabel.Hide();
+                    totalStudentsLabel.Hide();
+                    totalHomesLabel.Show();
+                    totalHomesLabel.text = totalUnits.ToString("N0", LocaleManager.cultureInfo);
+                    break;
+
+                case ItemClass.Service.Education:
+                    // School building.
+                    totalHomesLabel.Hide();
+                    totalJobsLabel.Hide();
+                    totalStudentsLabel.Show();
+                    totalStudentsLabel.text = totalUnits.ToString("N0", LocaleManager.cultureInfo);
+                    break;
+
+                default:
+                    // Workplace building.
+                    totalHomesLabel.Hide();
+                    totalStudentsLabel.Hide();
+                    totalJobsLabel.Show();
+                    totalJobsLabel.text = totalUnits.ToString("N0", LocaleManager.cultureInfo);
+                    break;
+            }
+
+            // Display commercial visit count, or hide the label if not commercial.
+            if (building.GetAI() is CommercialBuildingAI commercialAI)
+            {
+                visitCountLabel.Show();
+                visitCountLabel.text = commercialAI.CalculateVisitplaceCount(building.GetClassLevel(), new ColossalFramework.Math.Randomizer(), building.GetWidth(), building.GetLength()).ToString();
+            }
+            else
+            {
+                visitCountLabel.Hide();
+            }
+
 
             // Append 'overriden' label to total label and display explanatory message if pop value is overriden.
             if (ModUtils.CheckRICOPopControl(building))
             {
                 // Overridden by Ploppable RICO Revisited.
-                totalLabel.text += " " + Translations.Translate("RPR_CAL_OVR");
+                totalHomesLabel.text += " " + Translations.Translate("RPR_CAL_OVR");
+                totalJobsLabel.text += " " + Translations.Translate("RPR_CAL_OVR");
                 messageLabel.text = Translations.Translate("RPR_CAL_RICO");
             }
             else if (PopData.instance.GetOverride(building.name) > 0)
             {
                 // Overriden by manual population override.
-                totalLabel.text += " " + Translations.Translate("RPR_CAL_OVR");
+                totalHomesLabel.text += " " + Translations.Translate("RPR_CAL_OVR");
+                totalJobsLabel.text += " " + Translations.Translate("RPR_CAL_OVR");
                 messageLabel.text = Translations.Translate("RPR_CAL_OVM");
             }
+        }
+
+
+        /// <summary>
+        /// Resets the floor list position relative to the volumetic calculations panel.
+        /// Needed when the volumetric calculations panel shifts its relative position (e.g. with schoolds), as the floor list is attached directly to the parent panel.
+        /// </summary>
+        private void ResetFloorListPosition()
+        {
+            // Enforce floors list position.
+            float xPos = this.relativePosition.x + parent.relativePosition.x;
+            float yPos = this.relativePosition.y + parent.relativePosition.y + FloorListY;
+            floorsList.relativePosition = new Vector2(xPos, yPos);
+
+            // Enforce height to match position within panel.
+            floorsList.height = floorsList.parent.height - yPos - UIBuildingDetails.BottomMargin;
         }
 
 
@@ -287,11 +366,12 @@ namespace RealPop2
         /// Adds a volumetric calculation text label.
         /// </summary>
         /// <param name="parent">Parent component</param>
+        /// <param name="textKey">Label text translation key</param
         /// <param name="yPos">Relative X position</param>
         /// <param name="yPos">Relative Y position</param>
-        /// <param name="text">Label text</param>
+        /// <param name="toolKey">Tooltip translation key</param>
         /// <returns>New UILabel</returns>
-        private UILabel AddVolumetricLabel(UIComponent parent, string text, float xPos, float yPos)
+        private UILabel AddVolumetricLabel(UIComponent parent, string textKey, float xPos, float yPos, string toolKey)
         {
             // Create new label.
             UILabel newLabel = parent.AddUIComponent<UILabel>();
@@ -301,7 +381,11 @@ namespace RealPop2
             newLabel.text = "Blank";
 
             // Add label title to the left.
-            AddLabelToComponent(newLabel, text);
+            AddLabelToComponent(newLabel, Translations.Translate(textKey));
+
+            // Add tooltip.
+            newLabel.tooltip = Translations.Translate(toolKey);
+            newLabel.tooltipBox = TooltipUtils.TooltipBox;
 
             return newLabel;
         }
@@ -311,11 +395,12 @@ namespace RealPop2
         /// Adds a checkbox with a text label to the left.
         /// </summary>
         /// <param name="parent">Parent component</param>
-        /// <param name="text">Label text</param>s
+        /// <param name="textKey">Label text translation key</param
         /// <param name="yPos">Relative X position</param>
         /// <param name="yPos">Relative Y position</param>
+        /// <param name="toolKey">Tooltip translation key</param>
         /// <returns>New checkbox with attached label to left</returns>
-        private UICheckBox AddCheckBox(UIComponent parent, string text, float xPos, float yPos)
+        private UICheckBox CalcCheckBox(UIComponent parent, string textKey, float xPos, float yPos, string toolKey)
         {
             // Create checkbox.
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
@@ -327,18 +412,22 @@ namespace RealPop2
 
             // Unselected sprite.
             UISprite sprite = checkBox.AddUIComponent<UISprite>();
-            sprite.spriteName = "ToggleBase";
+            //sprite.spriteName = "AchievementCheckedFalse";
             sprite.size = new Vector2(16f, 16f);
             sprite.relativePosition = Vector3.zero;
 
             // Selected sprite.
             checkBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
-            ((UISprite)checkBox.checkedBoxObject).spriteName = "ToggleBaseFocused";
+            ((UISprite)checkBox.checkedBoxObject).spriteName = "CheckDLCOwned";
             checkBox.checkedBoxObject.size = new Vector2(16f, 16f);
             checkBox.checkedBoxObject.relativePosition = Vector3.zero;
 
             // Text label.
-            AddLabelToComponent(checkBox, text);
+            AddLabelToComponent(checkBox, Translations.Translate(textKey));
+
+            // Add tooltip.
+            checkBox.tooltip = Translations.Translate(toolKey);
+            checkBox.tooltipBox = TooltipUtils.TooltipBox;
 
             return checkBox;
         }

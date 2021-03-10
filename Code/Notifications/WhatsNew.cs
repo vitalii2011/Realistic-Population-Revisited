@@ -17,6 +17,41 @@ namespace RealPop2
         {
             {
                 // Beta message version is 99.
+                new Version("99.0.10"),
+                new string[]
+                {
+                    "2.0 BETA 10 updates",
+                    "Overhaul commercial building visitor (customer) count code and add options for new (workforce-base) or old (building lot size-based) calculations",
+                    "Display commercial building visitor counts in calculations display panels",
+                    "Split workplace defaults panel into separate commercial, office, industrial and school panels, with separate 'legacy as default' selections fof each",
+                    "Overhaul volumetric calculations display panel and add tooltips",
+                    "Overhaul custom pack editing and saving code"
+                }
+            },
+            {
+                // Beta message version is 99.
+                new Version("99.0.9"),
+                new string[]
+                {
+                    "2.0 BETA 9 updates",
+                    "Separate residential and workplace default option panels, and allow 'use legacy by default' to be toggled separately for each",
+                    "Trial use of icons instead of text for calculations panel tabs",
+                    "Add buttons in residential defaults panel to apply changes in default packs to existing residential buildings",
+                    "Update savegame serialization",
+                }
+            },
+            {
+                // Beta message version is 99.
+                new Version("99.0.8"),
+                new string[]
+                {
+                    "2.0 BETA 8 updates",
+                    "Fix new-style population overrides not being recognised by legacy calculations",
+                    "Add tooltips for population and floor calculation panel fields"
+                }
+            },
+            {
+                // Beta message version is 99.
                 new Version("99.0.7"),
                 new string[]
                 {

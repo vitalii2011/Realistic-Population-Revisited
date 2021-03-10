@@ -168,8 +168,8 @@ namespace RealPop2
         private const float MiddleWidth = 250f;
         private const float RightWidth = 600f;
         private const float FilterHeight = 40f;
-        private const float PanelHeight = 550;
-        private const float BottomMargin = 10f;
+        private const float PanelHeight = 550f;
+        internal const float BottomMargin = 10f;
         private const float Spacing = 5f;
         internal const float TitleHeight = 40f;
         private const float CheckFilterHeight = 30f;

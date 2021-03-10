@@ -17,7 +17,7 @@ namespace RealPop2
 
         // Household and workplace calculation result caches (so we don't have to do the full calcs every SimulationStep for every building....).
         internal readonly Dictionary<BuildingInfo, int[]> householdCache;
-        internal readonly Dictionary<BuildingInfo, PrefabEmployStruct[]> workplaceCache;
+        internal readonly Dictionary<BuildingInfo, int[][]> workplaceCache;
 
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace RealPop2
         /// <param name="prefab">Building prefab</param>
         /// <param name="level">Building level</param>
         /// <returns>Workplace breakdowns and visitor count </returns>
-        internal PrefabEmployStruct Workplaces(BuildingInfo buildingPrefab, int level) => ((PopDataPack)ActivePack(buildingPrefab)).Workplaces(buildingPrefab, level);
+        internal int[] Workplaces(BuildingInfo buildingPrefab, int level) => ((PopDataPack)ActivePack(buildingPrefab)).Workplaces(buildingPrefab, level);
 
 
         /// <summary>
@@ -37,32 +37,40 @@ namespace RealPop2
         /// <returns>Calculated population</returns>
         internal int HouseholdCache(BuildingInfo info, int level)
         {
-            // Check if key is already in cache.
-            if (!householdCache.ContainsKey(info))
+            // Null check for safety.
+            if (info?.name != null)
             {
-                // No - create new record with five building levels.
-                householdCache.Add(info, new int[5]);
+                // Check if key is already in cache.
+                if (!householdCache.ContainsKey(info))
+                {
+                    // No - create new record with five building levels.
+                    householdCache.Add(info, new int[5]);
 
-                // Calculate results for each of the five levels.
-                householdCache[info][0] = Population(info, 0);
-                householdCache[info][1] = Population(info, 1);
-                householdCache[info][2] = Population(info, 2);
-                householdCache[info][3] = Population(info, 3);
-                householdCache[info][4] = Population(info, 4);
+                    // Calculate results for each of the five levels.
+                    householdCache[info][0] = Population(info, 0);
+                    householdCache[info][1] = Population(info, 1);
+                    householdCache[info][2] = Population(info, 2);
+                    householdCache[info][3] = Population(info, 3);
+                    householdCache[info][4] = Population(info, 4);
 
-                Logging.Message("caching households for ", info.name);
+                    Logging.Message("caching households for ", info.name);
+                }
+
+                // Bounds check, just in case.
+                int thisLevel = level;
+                if (thisLevel > 4)
+                {
+                    Logging.Error("invalid residential builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 5");
+                    thisLevel = 4;
+                }
+
+                // Return record relevant to level.
+                return householdCache[info][thisLevel];
             }
 
-            // Bounds check, just in case.
-            int thisLevel = level;
-            if (thisLevel > 4)
-            {
-                Logging.Error("invalid residential builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 5");
-                thisLevel = 4;
-            }
-
-            // Return record relevant to level.
-            return householdCache[info][thisLevel];
+            // If we got here, something went wrong; return 1.
+            Logging.Error("null prefab passed to HouseholdCache");
+            return 1;
         }
 
 
@@ -72,32 +80,46 @@ namespace RealPop2
         /// <param name="info">BuildingInfo to cache for</param>
         /// <param name="level">Building level to cache for</param>
         /// <returns>Calculated workplaces</returns>
-        internal PrefabEmployStruct WorkplaceCache(BuildingInfo info, int level)
+        internal int[] WorkplaceCache(BuildingInfo info, int level)
         {
-            // Check if key is already in cache.
-            if (!workplaceCache.ContainsKey(info))
+            // Null check for safety.
+            if (info?.name != null)
             {
-                Logging.Message("caching workplaces for ", info.name, ", level ", (level + 1).ToString());
+                // Check if key is already in cache.
+                if (!workplaceCache.ContainsKey(info))
+                {
+                    Logging.Message("caching workplaces for ", info.name, ", level ", (level + 1).ToString());
 
-                // No - create new record with three building levels.
-                workplaceCache.Add(info, new PrefabEmployStruct[3]);
+                    // No - create new record with three building levels.
+                    workplaceCache.Add(info, new int[3][]);
 
-                // Calculate results for each of the three levels.
-                workplaceCache[info][0] = Workplaces(info, 0);
-                workplaceCache[info][1] = Workplaces(info, 1);
-                workplaceCache[info][2] = Workplaces(info, 2);
+                    // Calculate results for each of the three levels.
+                    workplaceCache[info][0] = Workplaces(info, 0);
+                    workplaceCache[info][1] = Workplaces(info, 1);
+                    workplaceCache[info][2] = Workplaces(info, 2);
+                }
+
+                // Bounds check, just in case.
+                int thisLevel = level;
+                if (thisLevel > 2)
+                {
+                    Logging.Error("invalid workplace builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 3");
+                    thisLevel = 2;
+                }
+
+                // Return record relevant to level.
+                return workplaceCache[info][thisLevel];
             }
 
-            // Bounds check, just in case.
-            int thisLevel = level;
-            if (thisLevel > 2)
+            // If we got here, something went wrong; return 1.
+            Logging.Error("null prefab passed to WorkplaceCache");
+            return new int[4]
             {
-                Logging.Error("invalid workplace builidng level ", (level + 1).ToString(), " passed for prefab ", info.name, "; setting to level 3");
-                thisLevel = 2;
-            }
-
-            // Return record relevant to level.
-            return workplaceCache[info][thisLevel];
+                1,
+                0,
+                0,
+                0
+            };
         }
 
 
@@ -279,7 +301,7 @@ namespace RealPop2
         {
             // Create caches.
             householdCache = new Dictionary<BuildingInfo, int[]>();
-            workplaceCache = new Dictionary<BuildingInfo, PrefabEmployStruct[]>();
+            workplaceCache = new Dictionary<BuildingInfo, int[][]>();
 
             // Legacy residential.
             LegacyResPack resWG = new LegacyResPack
@@ -340,6 +362,23 @@ namespace RealPop2
             newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -1f, multiFloorUnits = true };
             newPack.levels[3] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -1f, multiFloorUnits = true };
             newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -1f, multiFloorUnits = true };
+            calcPacks.Add(newPack);
+
+            // Duplexes.
+            newPack = new VolumetricPopPack
+            {
+                name = "duplex",
+                displayName = Translations.Translate("RPR_PCK_RLD_NAM"),
+                description = Translations.Translate("RPR_PCK_RLD_DES"),
+                version = (int)DataVersion.one,
+                service = ItemClass.Service.Residential,
+                levels = new LevelData[5]
+            };
+            newPack.levels[0] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[1] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[2] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[3] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
+            newPack.levels[4] = new LevelData { emptyArea = 0f, emptyPercent = 0, areaPer = -2f, multiFloorUnits = true };
             calcPacks.Add(newPack);
 
             // European apartments (modern).
@@ -739,35 +778,18 @@ namespace RealPop2
         {
             string defaultName;
 
-            // Are we using legacy by default?
-            if (ModSettings.ThisSaveLegacy)
+            switch (service)
             {
-                switch (service)
-                {
-                    case ItemClass.Service.Residential:
+                case ItemClass.Service.Residential:
+                    // Residential - legacy defaults or new?
+                    if (ModSettings.ThisSaveLegacyRes)
+                    {
+                        // Legacy.
                         defaultName = "resWG";
-                        break;
-                    case ItemClass.Service.Industrial:
-                        defaultName = "indWG";
-                        break;
-                    case ItemClass.Service.Office:
-                        defaultName = "offWG";
-                        break;
-                    case ItemClass.Service.Education:
-                        // No legacy equivalent for school packs.
-                        defaultName = "schoolsub";
-                        break;
-                    default:
-                        defaultName = "comWG";
-                        break;
-                }
-            }
-            else
-            {
-                // Not using legacy calcs; provide default volumetric packs.
-                switch (service)
-                {
-                    case ItemClass.Service.Residential:
+                    }
+                    else
+                    {
+                        // Volumetric.
                         switch (subService)
                         {
                             case ItemClass.SubService.ResidentialHigh:
@@ -780,18 +802,32 @@ namespace RealPop2
                                 defaultName = "reslow";
                                 break;
                         }
-                        break;
-                    case ItemClass.Service.Industrial:
-                        defaultName = "factory";
-                        break;
-                    case ItemClass.Service.Office:
-                        defaultName = "offcorp";
-                        break;
-                    case ItemClass.Service.Education:
-                        defaultName = "schoolsub";
-                        break;
-                    default:
-                        // Default is commercial.
+                    }
+                    break;
+
+                case ItemClass.Service.Industrial:
+                    defaultName = ModSettings.ThisSaveLegacyInd ? "indWG" : "factory";
+                    break;
+
+                case ItemClass.Service.Office:
+                    defaultName = ModSettings.ThisSaveLegacyOff ? "offWG" : "offcorp";
+                    break;
+
+                case ItemClass.Service.Education:
+                    defaultName = "schoolsub";
+                    break;
+
+                default:
+                    // Default is commercial.
+
+                    if (ModSettings.ThisSaveLegacyCom)
+                    {
+                        // Legacy settings.
+                        defaultName = "comWG";
+                    }
+                    else
+                    {
+                        // New settings.
                         switch (subService)
                         {
                             case ItemClass.SubService.CommercialHigh:
@@ -808,8 +844,8 @@ namespace RealPop2
                                 defaultName = "comUS";
                                 break;
                         }
-                        break;
-                }
+                    }
+                    break;
             }
 
             // Match name to floorpack.

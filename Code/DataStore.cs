@@ -117,7 +117,7 @@ namespace RealPop2
         public static Dictionary<string, int> bonusHouseholdCache = new Dictionary<string, int>();
         public static Dictionary<string, int> housePrintOutCache = new Dictionary<string, int>();
         public static Dictionary<string, int> defaultHousehold = new Dictionary<string, int>()
-        {
+        {/*
             { "413694648.Tranquil Turquoise_Data", 36 },
             { "415635897.Highcliff from hongkong_Data", 92 },
             { "417797417.ZED68-PHOENIXTOWER-4x4HRL5_Data", 60 },
@@ -193,7 +193,7 @@ namespace RealPop2
             { "L2 2x3 Semi-detachedhouse01", 2 },
             { "L2 3x4 Semi-detachedhouse02a", 2 },
             { "L3 3x3 Semi-detachedhouse02", 2 },
-            { "L3 4x4 Semi-detachedhouse03a", 2 }
+            { "L3 4x4 Semi-detachedhouse03a", 2 }*/
         }; // end bonus households
 
 
@@ -203,7 +203,7 @@ namespace RealPop2
         public static Dictionary<string, int> bonusWorkerCache = new Dictionary<string, int>();
         public static Dictionary<string, int> workerPrintOutCache = new Dictionary<string, int>();
         public static Dictionary<string, int> defaultWorker = new Dictionary<string, int>()
-        {
+        {/*
             { "419078725.Barry Plaza_Data", 500 },
             { "422434231.Bank of America_Data", 520 },
             { "422472215.Lever Tower_Data", 180 },
@@ -333,7 +333,7 @@ namespace RealPop2
             { "1466001439.Australia Square tower_Data", 1000 },
             { "1470018515.Rama IX Super Tower_Data", 11000 },
             { "1495622576.The Center Remastered_Data", 3600 },
-            { "H2 4x3 BigFactory08", 20 }
+            { "H2 4x3 BigFactory08", 20 }*/
         };
 
         // Prefab stores
@@ -363,17 +363,6 @@ namespace RealPop2
         }
     } // end DataStore
 
-    /// <summary>
-    /// Struct for caching prefab worker values
-    /// </summary>
-    public struct PrefabEmployStruct
-    {
-        public int level0;
-        public int level1;
-        public int level2;
-        public int level3;
-        public int visitors;
-    }
 
     /// <summary>
     /// Struct for caching building's consumption values

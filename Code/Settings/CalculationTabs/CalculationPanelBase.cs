@@ -8,7 +8,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for creating and editing calculation packs.
     /// </summary>
-    internal class CalculationPanelBase
+    internal abstract class CalculationPanelBase
     {
         // Constants.
         protected const float Margin = 5f;
@@ -25,6 +25,95 @@ namespace RealPop2
 
         // List of packs.
         protected List<DataPack> packList;
+
+        // Panel reference.
+        protected readonly UIPanel panel;
+
+        // Tab sprite name and tooltip key.
+        protected abstract string TabSprite { get; }
+        protected abstract string TabTooltipKey { get; }
+
+
+
+        /// <summary>
+        /// 'Add new pack' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        protected abstract void AddPack(UIComponent control, UIMouseEventParameter mouseEvent);
+
+
+        /// <summary>
+        /// 'Delete pack' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        protected abstract void DeletePack(UIComponent control, UIMouseEventParameter mouseEvent);
+
+
+        /// <summary>
+        /// Updates the given calculation pack with data from the panel.
+        /// </summary>
+        /// <param name="pack">Pack to update</param>
+        protected abstract void UpdatePack(DataPack pack);
+
+
+        /// Constructor - adds editing options tab to tabstrip.
+        /// </summary>
+        /// <param name="tabStrip">Tab strip to add to</param>
+        /// <param name="tabIndex">Index number of tab</param>
+            internal CalculationPanelBase(UITabstrip tabStrip, int tabIndex)
+        {
+            // Layout constants.
+            const float TabIconSize = 23f;
+            const float TabWidth = 50f;
+
+            // Add tab and helper.
+            panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton, TabWidth);
+            panel.autoLayout = false;
+
+            // Add tab sprite.
+            UISprite thumbSprite = tabButton.AddUIComponent<UISprite>();
+            thumbSprite.relativePosition = new Vector2((TabWidth - TabIconSize) / 2f, 1f);
+            thumbSprite.width = TabIconSize;
+            thumbSprite.height = TabIconSize;
+            thumbSprite.atlas = TextureUtils.InGameAtlas;
+            thumbSprite.spriteName = TabSprite;
+
+            // Set tooltip.
+            tabButton.tooltip = Translations.Translate(TabTooltipKey);
+        }
+
+
+        /// <summary>
+        /// Adds panel footer controls (pack name textfield and buttons).
+        /// </summary>
+        /// <param name="yPos">Reference Y position</param>
+        protected void PanelFooter(float yPos)
+        {
+            // Additional space before name textfield.
+            float currentY = yPos + RowHeight;
+
+            // Pack name textfield.
+            packNameField = UIControls.BigTextField(panel, 140f, currentY);
+            packNameField.isEnabled = false;
+            UILabel packNameLabel = UIControls.AddLabel(packNameField, -100f, (packNameField.height - 18f) / 2, Translations.Translate("RPR_OPT_EDT_NAM"));
+
+            // Space for buttons.
+            currentY += 50f;
+
+            // 'Add new' button.
+            UIButton addNewButton = UIControls.AddButton(panel, 20f, currentY, Translations.Translate("RPR_OPT_NEW"));
+            addNewButton.eventClicked += AddPack;
+
+            // Save pack button.
+            saveButton = UIControls.AddButton(panel, 250f, currentY, Translations.Translate("RPR_OPT_SAA"));
+            saveButton.eventClicked += Save;
+
+            // Delete pack button.
+            deleteButton = UIControls.AddButton(panel, 480f, currentY, Translations.Translate("RPR_OPT_DEL"));
+            deleteButton.eventClicked += DeletePack;
+        }
 
 
         /// <summary>
@@ -77,24 +166,26 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Adds checkbox at the specified coordinates.
+        /// Save button event handler.
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
         /// </summary>
-        /// <param name="textField">Textfield object</param>
-        /// <param name="panel">panel to add to</param>
-        /// <param name="posX">Relative X postion</param>
-        /// <param name="posY">Relative Y position</param>
-        /// <param name="tooltip">Tooltip, if any</param>
-        protected UICheckBox AddCheckBox(UIPanel panel, float posX, float posY, string tooltip = null)
+        protected virtual void Save(UIComponent control, UIMouseEventParameter mouseEvent)
         {
-            UICheckBox checkBox = UIControls.AddCheckBox(panel, posX, posY);
+            // Update currently selected pack with information from the panel.
+            UpdatePack(packList[packDropDown.selectedIndex]);
 
-            // Add tooltip.
-            if (tooltip != null)
-            {
-                checkBox.tooltip = tooltip;
-            }
+            // Update selected menu item in case the name has changed.
+            packDropDown.items[packDropDown.selectedIndex] = packList[packDropDown.selectedIndex].displayName ?? packList[packDropDown.selectedIndex].name;
 
-            return checkBox;
+            // Update defaults panel menus.
+            CalculationsPanel.Instance.UpdateDefaultMenus();
+
+            // Save configuration file.
+            ConfigUtils.SaveSettings();
+
+            // Apply update.
+            FloorData.instance.CalcPackChanged(packList[packDropDown.selectedIndex]);
         }
     }
 }

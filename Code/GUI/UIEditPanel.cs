@@ -63,8 +63,8 @@ namespace RealPop2
             title.height = 30;
 
             // Checkboxes.
-            popCheck = UIControls.AddCheckBox(this, 20f, PopCheckY, Translations.Translate("RPR_EDT_POP"), textScale: 1.0f);
-            floorCheck = UIControls.AddCheckBox(this, 20f, FloorCheckY, Translations.Translate("RPR_EDT_FLR"), textScale: 1.0f);
+            popCheck = UIControls.LabelledCheckBox(this, 20f, PopCheckY, Translations.Translate("RPR_EDT_POP"), textScale: 1.0f);
+            floorCheck = UIControls.LabelledCheckBox(this, 20f, FloorCheckY, Translations.Translate("RPR_EDT_FLR"), textScale: 1.0f);
 
             // Text fields.
             homeJobsCount = AddLabelledTextfield(HomeJobY, "RPR_LBL_HOM");
@@ -251,7 +251,7 @@ namespace RealPop2
                         {
                             // Update household counts for existing instances of this building - only needed for residential buildings.
                             // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                            PopData.instance.UpdateHouseholds(currentSelection.name);
+                            PopData.instance.UpdateHouseholds(currentSelection.name, currentSelection.GetSubService());
                         }
 
                         // Repopulate field with parsed value.
@@ -347,7 +347,7 @@ namespace RealPop2
 
                 // Update household counts for existing instances of this building - only needed for residential buildings.
                 // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                PopData.instance.UpdateHouseholds(currentSelection.name);
+                PopData.instance.UpdateHouseholds(currentSelection.name, currentSelection.GetSubService());
             }
             else
             {

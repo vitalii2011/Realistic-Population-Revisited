@@ -111,7 +111,7 @@
     <Content Include="Images\Screen_Office.jpg" />
     <Content Include="Images\Screen_PloppableRICO.jpg" />
     <Content Include="Translations\en.xml" />
-    <Content Include="Translations\zh-tw.xml" />
+    <Content Include="Translations\ru.xml" />
     <Content Include="Translations\zh.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +126,7 @@
     <Compile Include="Code\Notifications\WhatsNewMessageBox.cs" />
     <Compile Include="Code\Patches\BuildingUpgraded.cs" />
     <Compile Include="Code\Patches\CalculateHomeCount.cs" />
+    <Compile Include="Code\Patches\CalculateVisitplaceCount.cs" />
     <Compile Include="Code\Patches\CalculateWorkplaceCount.cs" />
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
     <Compile Include="Code\Patches\Patcher.cs" />
@@ -133,21 +134,30 @@
     <Compile Include="Code\Patches\WorldInfoPanel.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ComDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\CommercialPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ConsumptionPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\IndustrialPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\OfficePanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\PanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ResidentialPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\DefaultsPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\FloorPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\IndDefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\OffDefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ResDefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\RICODefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\SchDefaultsPanel.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CalculationsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\LegacyPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\CrimePanel.cs" />
-    <Compile Include="Code\Settings\CalculationTabs\DefaultsPanel.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\EmpDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\PopulationPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
+    <Compile Include="Code\Utils\TextureUtils.cs" />
+    <Compile Include="Code\Utils\TooltipUtils.cs" />
     <Compile Include="Code\Utils\UIControls.cs" />
     <Compile Include="Code\VolumetricData\CalcData.cs" />
     <Compile Include="Code\VolumetricData\ConfigurationUtils.cs" />
