@@ -22,10 +22,10 @@ namespace RealPop2
                 {
                     "2.0 BETA 10 updates",
                     "Overhaul commercial building visitor (customer) count code and add options for new (workforce-base) or old (building lot size-based) calculations",
-                    "Expose commercial building visitor counts in calculations display panels",
+                    "Display commercial building visitor counts in calculations display panels",
                     "Split workplace defaults panel into separate commercial, office, industrial and school panels, with separate 'legacy as default' selections fof each",
                     "Overhaul volumetric calculations display panel and add tooltips",
-                    "Overhaul custom pack editing code"
+                    "Overhaul custom pack editing and saving code"
                 }
             },
             {
