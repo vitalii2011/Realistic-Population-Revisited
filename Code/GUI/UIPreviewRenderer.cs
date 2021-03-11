@@ -204,8 +204,9 @@ namespace RealPop2
                 return;
             }
 
-            // Use skybox background.
-            renderCamera.clearFlags = CameraClearFlags.Skybox;
+            // Use solid color background.
+            renderCamera.clearFlags = CameraClearFlags.SolidColor;
+            renderCamera.backgroundColor = new Color32(33, 151, 199, 255);
 
             // Back up current game InfoManager mode.
             InfoManager infoManager = Singleton<InfoManager>.instance;
@@ -421,7 +422,7 @@ namespace RealPop2
             }
 
             // Light settings.
-            renderLight.transform.eulerAngles = new Vector3(55f, -currentRotation, 0f);
+            renderLight.transform.eulerAngles = new Vector3(55f, -currentRotation-20f, 0f);
             renderLight.intensity = 2f;
             renderLight.color = Color.white;
 
