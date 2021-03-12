@@ -115,7 +115,6 @@ namespace RealPop2
         {
             // Record vistis mode calculations.
             ModSettings.comVisitsMode = visitDefaultMenu.selectedIndex;
-            SettingsUtils.SaveSettings();
 
             base.Apply(control, mouseEvent);
         }
