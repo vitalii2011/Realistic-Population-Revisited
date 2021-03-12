@@ -52,5 +52,54 @@ namespace RealPop2
         internal SchDefaultsPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
         }
+
+
+        /// <summary>
+        /// Adds footer buttons to the panel.
+        /// </summary>
+        /// <param name="yPos">Relative Y position for buttons</param>
+        protected override void FooterButtons(float yPos)
+        {
+            base.FooterButtons(yPos);
+
+            // Save button.
+            UIButton saveButton = UIControls.AddButton(panel, (Margin * 3) + 300f, yPos, Translations.Translate("RPR_OPT_SAA"), 150f);
+            saveButton.eventClicked += Apply;
+        }
+
+
+        /// <summary>
+        /// 'Save and apply' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        protected virtual void Apply(UIComponent control, UIMouseEventParameter mouseEvent)
+        {
+            // Iterate through each sub-service menu.
+            for (int i = 0; i < SubServiceNames.Length; ++i)
+            {
+                // Get population pack menu selected index.
+                int popIndex = popMenus[i].selectedIndex;
+
+                // Check to see if this is a change from the current default.
+                if (PopData.instance.CurrentDefaultPack(Services[i], SubServices[i]).name.Equals(availablePopPacks[i][popIndex].name))
+                {
+                    // No change - continue.
+                    continue;
+                }
+
+                // Update default population dictionary for this subservice.
+                PopData.instance.ChangeDefault(Services[i], SubServices[i], availablePopPacks[i][popIndex]);
+
+                // Update floor data pack if we're not using legacy calculations.
+                if (availablePopPacks[i][popIndex].version != (int)DataVersion.legacy)
+                {
+                    FloorData.instance.ChangeDefault(Services[i], SubServices[i], availableFloorPacks[floorMenus[i].selectedIndex]);
+                }
+            }
+
+            // Save settings.
+            ConfigUtils.SaveSettings();
+        }
     }
 }
