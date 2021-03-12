@@ -52,11 +52,12 @@ namespace RealPop2
             tipBox.pivot = UIPivotPoint.BottomLeft;
             tipBox.arbitraryPivotOffset = new Vector2(-3, 6);
 
-            // Need this to avoid random black squares in the middle of the screeen.
-            tipBox.transformPosition = new Vector3(-1.772222f, 0.9444444f);
-
             // Appearance.
             tipBox.backgroundSprite = "InfoDisplay";
+
+            // Start hidden and off to the side.
+            tipBox.transformPosition = new Vector3(-2f, -2f);
+            tipBox.isVisible = false;
 
             return tipBox;
         }
