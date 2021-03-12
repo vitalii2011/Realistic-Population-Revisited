@@ -42,6 +42,7 @@ namespace RealPop2.MessageBox
             ModSettings.ThisSaveLegacyCom = true;
             ModSettings.ThisSaveLegacyInd = true;
             ModSettings.ThisSaveLegacyOff = true;
+            ModSettings.comVisitMode = (int)ModSettings.ComVisitModes.legacy;
             Close();
         }
 
@@ -55,6 +56,7 @@ namespace RealPop2.MessageBox
             ModSettings.ThisSaveLegacyCom = false;
             ModSettings.ThisSaveLegacyInd = false;
             ModSettings.ThisSaveLegacyOff = false;
+            ModSettings.comVisitMode = (int)ModSettings.ComVisitModes.popCalcs;
             Close();
         }
     }

@@ -275,19 +275,36 @@ namespace RealPop2
         /// <param name="xPos">Relative x position)</param>
         /// <param name="yPos">Relative y position</param>
         /// <param name="text">Label text</param>
-        /// <param name="width">Label width (default 700)</param>
+        /// <param name="width">Label width (-1 for autosize) (default 700)</param>
         /// <param name="width">Text scale (default 1.0)</param>
         /// <returns>New text label</returns>
         public static UILabel AddLabel(UIComponent parent, float xPos, float yPos, string text, float width = 700f, float textScale = 1.0f)
         {
             // Add label.
             UILabel label = (UILabel)parent.AddUIComponent<UILabel>();
-            label.autoSize = false;
-            label.autoHeight = true;
-            label.wordWrap = true;
-            label.width = width;
+
+            // Set sizing options.
+            if (width > 0f)
+            {
+                // Fixed width.
+                label.autoSize = false;
+                label.width = width;
+                label.autoHeight = true;
+                label.wordWrap = true;
+            }
+            else
+            {
+                // Autosize.
+                label.autoSize = true;
+                label.autoHeight = false;
+                label.wordWrap = false;
+            }
+
+            // Text.
             label.textScale = textScale;
             label.text = text;
+
+            // Position.
             label.relativePosition = new Vector2(xPos, yPos);
 
             return label;

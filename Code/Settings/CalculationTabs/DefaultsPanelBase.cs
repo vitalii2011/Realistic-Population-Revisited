@@ -95,7 +95,7 @@ namespace RealPop2
         /// <summary>
         /// Updates pack selection menu items.
         /// </summary>
-        internal void UpdateMenus()
+        internal virtual void UpdateMenus()
         {
             for (int i = 0; i < SubServiceNames.Length; ++i)
             {
@@ -158,8 +158,6 @@ namespace RealPop2
                 }
             }
         }
-
-
 
 
         /// <summary>
@@ -233,7 +231,7 @@ namespace RealPop2
 
             // Revert button.
             UIButton revertToSaveButton = UIControls.AddButton(panel, (Margin * 2) + 150f, yPos, Translations.Translate("RPR_OPT_RTS"), 150f);
-            revertToSaveButton.eventClicked += (component, clickEvent) => UpdateMenus();
+            revertToSaveButton.eventClicked += ResetSaved;
         }
 
 
@@ -253,7 +251,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
         /// <param name="mouseEvent">Mouse event (unused)</param>
-        private void ResetDefaults(UIComponent control, UIMouseEventParameter mouseEvent)
+        protected virtual void ResetDefaults(UIComponent control, UIMouseEventParameter mouseEvent)
         {
             // Iterate through each sub-service menu.
             for (int i = 0; i < SubServiceNames.Length; ++i)
@@ -285,5 +283,12 @@ namespace RealPop2
                 }
             }
         }
+
+        /// <summary>
+        /// 'Revert to saved' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        protected virtual void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent) => UpdateMenus();
     }
 }

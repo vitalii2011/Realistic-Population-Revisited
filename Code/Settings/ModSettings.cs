@@ -5,6 +5,16 @@
     /// </summary>
     internal static class ModSettings
     {
+        // Commercial visits modes.
+        internal enum ComVisitModes
+        {
+            popCalcs = 0,
+            legacy
+        }
+
+        internal const float DefaultVisitMult = 0.4f;
+
+
         // Legacy settings.
         private static bool thisSaveLegacyRes = false;
         private static bool thisSaveLegacyCom = false;
@@ -16,7 +26,8 @@
         internal static bool newSaveLegacyOff = false;
 
         // VistPlace calculations (0 is new, 1 is legacy).
-        internal static int comVisitsMode = 0;
+        internal static int comVisitMode = (int)ComVisitModes.legacy;
+        internal static float comVisitMult = DefaultVisitMult;
 
         // Enable additional features.
         internal static bool enableSchoolPop = true;

@@ -36,7 +36,7 @@ namespace RealPop2
             float multiplier;
 
             // New or old calculations?
-            if (ModSettings.comVisitsMode == 0)
+            if (ModSettings.comVisitMode == (int)ModSettings.ComVisitModes.popCalcs)
             {
                 // New settings, based on population.
                 switch (info.GetSubService())
@@ -82,8 +82,8 @@ namespace RealPop2
                         break;
                 }
 
-                // Multiply total workers by multipler to get result.
-                __result = (int)(totalWorkers * multiplier);
+                // Multiply total workers by multipler and overall multiplier (from settings) to get result.
+                __result = (int)(totalWorkers * multiplier * ModSettings.comVisitMult);
             }
             else
             {

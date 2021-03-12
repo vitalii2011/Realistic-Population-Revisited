@@ -85,19 +85,22 @@ namespace RealPop2
                 UIPanel basePanel = optionsGameObject.AddComponent<UIPanel>();
                 basePanel.absolutePosition = optionsPanel.absolutePosition;
                 basePanel.width = optionsPanel.width;
-                basePanel.height = 725f;
+                basePanel.height = 735f;
+                basePanel.clipChildren = false;
 
                 // Add tabstrip.
                 UITabstrip tabStrip = basePanel.AddUIComponent<UITabstrip>();
                 tabStrip.relativePosition = new Vector3(0, 0);
                 tabStrip.width = basePanel.width;
                 tabStrip.height = basePanel.height;
+                tabStrip.clipChildren = false;
 
                 // Tab container (the panels underneath each tab).
                 UITabContainer tabContainer = basePanel.AddUIComponent<UITabContainer>();
                 tabContainer.relativePosition = new Vector3(0, 30f);
                 tabContainer.width = tabStrip.width;
                 tabContainer.height = tabStrip.height;
+                tabContainer.clipChildren = false;
                 tabStrip.tabPages = tabContainer;
 
                 // Initialize data.

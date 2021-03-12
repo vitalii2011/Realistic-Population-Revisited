@@ -108,7 +108,11 @@ namespace RealPop2
 
         // Commercial visitor calculations - clamp to 0 or 1 at this stage.
         [XmlElement("CommericalVisitsMode")]
-        public int CommericalVisitsMode { get => ModSettings.comVisitsMode; set => ModSettings.comVisitsMode = Math.Max(0, Math.Min(value, 1)); }
+        public int ComVisitMode { get => ModSettings.comVisitMode; set => ModSettings.comVisitMode = Math.Max(0, Math.Min(value, 1)); }
+
+        // Commercial visitor multiplier.
+        [XmlElement("CommericalVisitsMultiplier")]
+        public float ComVisitMult { get => ModSettings.comVisitMult; set => ModSettings.comVisitMult = Mathf.Max(0.1f, Mathf.Min(value, 1f)); }
 
 
         // Realistic education.
