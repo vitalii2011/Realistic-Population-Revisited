@@ -17,6 +17,19 @@ namespace RealPop2
         {
             {
                 // Beta message version is 99.
+                new Version("99.0.11"),
+                new string[]
+                {
+                    "2.0 BETA 11 updates",
+                    "Add configurable multiplier for new-style commercial customer (visit) calculations (in commercial defaults options panel), with initial default of 0.4",
+                    "Fix floor calculation pack changes not being saved if the population pack also wasn't changed",
+                    "Fix 'save and apply' for school calculations not showing",
+                    "Fix custom tooltip remaining visible at edge of main screen under some conditions",
+                    "Update building preview renderer and standardize background to plain sky blue"
+                }
+            },
+            {
+                // Beta message version is 99.
                 new Version("99.0.10"),
                 new string[]
                 {
