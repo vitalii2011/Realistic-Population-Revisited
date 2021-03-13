@@ -4,9 +4,10 @@ Version 2.0 -
 - Major overhaul: separate calculation presets for builidng floorspace and populaton, along with optional manual overrides
 - Major new feature: selectable configuration presets for each service type
 - Major new feature: optional realistic student capacity calculations for elementary and high schools
-- Major new feature: adjust crime rate
+- Major new feature: adjustable crime rate
+- Rebalance commercial building customer (visitor) counts in line with population and add selectable configuration
 - Support different building levels for the same building prefab (historical buildings)
-- Save status flag to savegame to track which calculations (new or legacy) should be used by default for that save
+- Save status flags to savegame to track which calculations (new or legacy) should be used by default for that save, separately selectable for each major service type
 - Rearrange options panel layout and add sub-tabs as required
 - Enable preview of calculated building floors in building preview
 - Add custom mouse button keybinding option
