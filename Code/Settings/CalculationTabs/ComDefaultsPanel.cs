@@ -97,7 +97,7 @@ namespace RealPop2
             // Reset visit multiplier menu selection, if control exists.
             if (visitDefaultMenu != null)
             {
-            visitDefaultMenu.selectedIndex = ThisLegacyCategory ? (int)ModSettings.ComVisitModes.legacy : (int)ModSettings.ComVisitModes.popCalcs;
+                visitDefaultMenu.selectedIndex = ModSettings.comVisitMode;
             }
         }
 
