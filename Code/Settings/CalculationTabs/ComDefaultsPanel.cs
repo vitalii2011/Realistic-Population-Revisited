@@ -63,8 +63,8 @@ namespace RealPop2
 
 
         // Panel components.
-        UIDropDown visitDefaultMenu;
-        UISlider visitMultSlider;
+        private UIDropDown[] visitDefaultMenus;
+        private UISlider[] visitMultSliders;
 
         // Legacy settings references.
         protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyCom; set => ModSettings.newSaveLegacyCom = value; }
@@ -88,121 +88,123 @@ namespace RealPop2
         {
             base.UpdateMenus();
 
-            // Reset visit multiplier slider value, if control exists.
-            if (visitMultSlider != null)
+            // Reset sliders and menus.
+            for (int i = 0; i < visitMultSliders.Length; ++i)
             {
-                visitMultSlider.value = ModSettings.comVisitMult;
-            }
+                // Reset visit multiplier slider value
+                visitMultSliders[i].value = RealisticVisitplaceCount.comVisitMults[subServices[i]];
 
-            // Reset visit multiplier menu selection, if control exists.
-            if (visitDefaultMenu != null)
-            {
-                visitDefaultMenu.selectedIndex = ModSettings.comVisitMode;
+                // Reset visit multiplier menu selection/
+                visitDefaultMenus[i].selectedIndex = RealisticVisitplaceCount.comVisitModes[subServices[i]];
             }
         }
 
 
         /// <summary>
-        /// Adds any additional controls below the menu arrays but above button footers.
+        /// Adds any additional controls to the right of each row.
         /// </summary>
-        /// <param name="yPos">Relative Y position</param>
-        /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected override float AddAdditional(float yPos)
+        /// <param name="yPos">Relative Y position at top of row items</param>
+        /// <param name="index">Index number of this row</param>
+        protected override void RowAdditions(float yPos, int index)
         {
             // Layout constants.
-            const float ControlX = 300f, ControlWidth = 300f;
             const float SliderPanelHeight = 20f;
             const float SliderHeight = 6f;
             const float OffsetX = (SliderPanelHeight - SliderHeight) / 2f;
+            float controlWidth = panel.width - RowAdditionX;
 
-            // Set y position.
-            float currentY = yPos + 10f;
+            // Header label.
+            UIControls.AddLabel(panel, RowAdditionX, yPos - 19f, Translations.Translate("RPR_DEF_VIS"), -1, 0.8f);
 
-            visitDefaultMenu = UIControls.AddLabelledDropDown(panel, ControlX, currentY, Translations.Translate("RPR_DEF_VIS"), ControlWidth, false, Translations.Translate("RPR_DEF_VIS_TIP"));
-            visitDefaultMenu.tooltipBox = TooltipUtils.TooltipBox;
-            visitDefaultMenu.items = new string[]
+            // RowAdditions is called as part of parent constructor, so we need to initialise them here if they aren't already.
+            if (visitDefaultMenus == null)
+            {
+                visitDefaultMenus = new UIDropDown[subServices.Length];
+                visitMultSliders = new UISlider[subServices.Length];
+            }
+
+            visitDefaultMenus[index] = UIControls.AddDropDown(panel, RowAdditionX, yPos, controlWidth, Translations.Translate("RPR_DEF_VIS_TIP"));
+            visitDefaultMenus[index].tooltipBox = TooltipUtils.TooltipBox;
+            visitDefaultMenus[index].objectUserData = index;
+            visitDefaultMenus[index].items = new string[]
             {
                 Translations.Translate("RPR_DEF_VNE"),
                 Translations.Translate("RPR_DEF_VOL")
             };
 
-            currentY += visitDefaultMenu.height + (Margin * 2f);
-
             // Mutiplier slider panel.
             UIPanel sliderPanel = panel.AddUIComponent<UIPanel>();
             sliderPanel.autoSize = false;
             sliderPanel.autoLayout = false;
-            sliderPanel.size = new Vector2(ControlWidth, SliderPanelHeight);
-            sliderPanel.relativePosition = new Vector2(ControlX, currentY);
+            sliderPanel.size = new Vector2(controlWidth, SliderPanelHeight);
+            sliderPanel.relativePosition = new Vector2(RowAdditionX, yPos + RowHeight);
 
             // Mutiplier slider value label.
             UILabel visitMult = sliderPanel.AddUIComponent<UILabel>();
             visitMult.verticalAlignment = UIVerticalAlignment.Middle;
             visitMult.textAlignment = UIHorizontalAlignment.Center;
             visitMult.textScale = 0.7f;
-            visitMult.text = ModSettings.comVisitMult.ToString();
+            visitMult.text = RealisticVisitplaceCount.comVisitMults[subServices[index]].ToString();
             visitMult.autoSize = false;
             visitMult.color = new Color32(91, 97, 106, 255);
             visitMult.size = new Vector2(38, 15);
             visitMult.relativePosition = new Vector2(sliderPanel.width - visitMult.width - Margin, (SliderPanelHeight - visitMult.height) / 2f);
 
             // Mutiplier slider control.
-            visitMultSlider = sliderPanel.AddUIComponent<UISlider>();
-            visitMultSlider.size = new Vector2(sliderPanel.width - visitMult.width - (Margin * 3), SliderHeight);
-            visitMultSlider.relativePosition = new Vector2(0f, OffsetX);
+            visitMultSliders[index] = sliderPanel.AddUIComponent<UISlider>();
+            visitMultSliders[index].size = new Vector2(sliderPanel.width - visitMult.width - (Margin * 3), SliderHeight);
+            visitMultSliders[index].relativePosition = new Vector2(0f, OffsetX);
+            visitMultSliders[index].objectUserData = index;
 
             // Mutiplier slider track.
-            UISlicedSprite sliderSprite = visitMultSlider.AddUIComponent<UISlicedSprite>();
+            UISlicedSprite sliderSprite = visitMultSliders[index].AddUIComponent<UISlicedSprite>();
             sliderSprite.autoSize = false;
-            sliderSprite.size = new Vector2(visitMultSlider.width, visitMultSlider.height);
+            sliderSprite.size = new Vector2(visitMultSliders[index].width, visitMultSliders[index].height);
             sliderSprite.relativePosition = new Vector2(0f, 0f);
             sliderSprite.atlas = TextureUtils.InGameAtlas;
             sliderSprite.spriteName = "ScrollbarTrack";
 
             // Mutiplier slider thumb.
-            UISlicedSprite sliderThumb = visitMultSlider.AddUIComponent<UISlicedSprite>();
+            UISlicedSprite sliderThumb = visitMultSliders[index].AddUIComponent<UISlicedSprite>();
             sliderThumb.atlas = TextureUtils.InGameAtlas;
             sliderThumb.spriteName = "ScrollbarThumb";
             sliderThumb.height = 20f;
             sliderThumb.width = 10f;
             sliderThumb.relativePosition = new Vector2(0f, -OffsetX);
-            visitMultSlider.thumbObject = sliderThumb;
+            visitMultSliders[index].thumbObject = sliderThumb;
 
             // Mutiplier slider values.
-            visitMultSlider.stepSize = 0.05f;
-            visitMultSlider.minValue = 0.1f;
-            visitMultSlider.maxValue = 1f;
-            visitMultSlider.value = ModSettings.comVisitMult;
+            visitMultSliders[index].stepSize = 0.05f;
+            visitMultSliders[index].minValue = 0.1f;
+            visitMultSliders[index].maxValue = 1f;
+            visitMultSliders[index].value = RealisticVisitplaceCount.comVisitMults[subServices[index]];
 
-            visitMultSlider.eventValueChanged += (control, value) =>
+            visitMultSliders[index].eventValueChanged += (control, value) =>
             {
                 visitMult.text = value.ToString();
             };
 
-            // Mutiplier slider label.
-            UILabel sliderLabel = UIControls.AddLabel(sliderPanel, Margin, currentY, Translations.Translate("RPR_DEF_VMU"), -1, 0.8f);
-            sliderLabel.relativePosition = new Vector2(-sliderLabel.width - Margin, (SliderPanelHeight - sliderLabel.height) / 2f);
-
             // Visit mode default event handler to show/hide multiplier slider.
-            visitDefaultMenu.eventSelectedIndexChanged += VisitDefaultIndexChanged;
+            visitDefaultMenus[index].eventSelectedIndexChanged += VisitDefaultIndexChanged;
 
             // Set visit mode initial selection.
-            visitDefaultMenu.selectedIndex = ModSettings.comVisitMode;
-
-            // Add vertical space after.
-            return currentY + visitMultSlider.parent.height + (Margin * 2f);
+            visitDefaultMenus[index].selectedIndex = RealisticVisitplaceCount.comVisitModes[subServices[index]];
         }
 
 
         /// <summary>
         /// Visit default menu index changed event handler.
-        /// <param name="control">Calling component (unused)</param>
+        /// <param name="control">Calling component</param>
         /// <param name="index">New selected index</param>
         /// </summary>
         private void VisitDefaultIndexChanged(UIComponent control, int index)
         {
-            // Toggle multiplier slider visibility based on current state.
-            visitMultSlider.parent.isVisible = index == (int)ModSettings.ComVisitModes.popCalcs;
+            // Extract subservice index from this control's object user data.
+            if (control.objectUserData is int subServiceIndex)
+            {
+                // Toggle multiplier slider visibility based on current state.
+                visitMultSliders[subServiceIndex].parent.isVisible = index == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
+            }
         }
 
 
@@ -213,11 +215,15 @@ namespace RealPop2
         /// <param name="mouseEvent">Mouse event (unused)</param>
         protected override void Apply(UIComponent control, UIMouseEventParameter mouseEvent)
         {
-            // Record vistis mode calculations.
-            ModSettings.comVisitMode = visitDefaultMenu.selectedIndex;
+            // Extract subservice index from this control's object user data.
+            for (int i = 0; i < subServices.Length; ++i)
+            {
+                // Record vist mode calculations.
+               RealisticVisitplaceCount.comVisitModes[subServices[i]] = visitDefaultMenus[i].selectedIndex;
 
-            // Record mutltiplier.
-            ModSettings.comVisitMult = visitMultSlider.value;
+                // Record mutltiplier.
+                RealisticVisitplaceCount.comVisitMults[subServices[i]] = visitMultSliders[i].value;
+            }
 
             base.Apply(control, mouseEvent);
         }
@@ -232,28 +238,15 @@ namespace RealPop2
         {
             base.ResetDefaults(control, mouseEvent);
 
-            // Reset visit multiplier slider value.
-            visitMultSlider.value = ModSettings.DefaultVisitMult;
+            // Reset sliders and menus.
+            for (int i = 0; i < visitMultSliders.Length; ++i)
+            {
+                // Reset visit multiplier slider value.
+                visitMultSliders[i].value = RealisticVisitplaceCount.DefaultVisitMult;
 
-            // Reset visit multiplier menu selection.
-            visitDefaultMenu.selectedIndex = ThisLegacyCategory ? (int)ModSettings.ComVisitModes.legacy : (int)ModSettings.ComVisitModes.popCalcs;
+                // Reset visit multiplier menu selection.
+                visitDefaultMenus[i].selectedIndex = ThisLegacyCategory ? (int)RealisticVisitplaceCount.ComVisitModes.legacy : (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
+            }
         }
-
-        /*
-        /// <summary>
-        /// 'Revert to saved' button event handler.
-        /// </summary>
-        /// <param name="control">Calling component (unused)</param>
-        /// <param name="mouseEvent">Mouse event (unused)</param>
-        protected override void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent)
-        {
-            base.ResetSaved(control, mouseEvent);
-
-            // Reset visit multiplier slider value.
-            visitMultSlider.value = ModSettings.comVisitMult;
-
-            // Reset visit multiplier menu selection.
-            visitDefaultMenu.selectedIndex = ModSettings.comVisitMode;
-        }*/
     }
 }

@@ -62,7 +62,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-            internal CalculationPanelBase(UITabstrip tabStrip, int tabIndex)
+        internal CalculationPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Layout constants.
             const float TabIconSize = 23f;

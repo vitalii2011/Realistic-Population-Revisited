@@ -1,20 +1,13 @@
-﻿namespace RealPop2
+﻿using System.Collections.Generic;
+
+
+namespace RealPop2
 {
     /// <summary>
     /// Static class to hold global mod settings.
     /// </summary>
     internal static class ModSettings
     {
-        // Commercial visits modes.
-        internal enum ComVisitModes
-        {
-            popCalcs = 0,
-            legacy
-        }
-
-        internal const float DefaultVisitMult = 0.4f;
-
-
         // Legacy settings.
         private static bool thisSaveLegacyRes = false;
         private static bool thisSaveLegacyCom = false;
@@ -24,10 +17,6 @@
         internal static bool newSaveLegacyCom = false;
         internal static bool newSaveLegacyInd = false;
         internal static bool newSaveLegacyOff = false;
-
-        // VistPlace calculations (0 is new, 1 is legacy).
-        internal static int comVisitMode = (int)ComVisitModes.legacy;
-        internal static float comVisitMult = DefaultVisitMult;
 
         // Enable additional features.
         internal static bool enableSchoolPop = true;
@@ -41,7 +30,6 @@
         // What's new notification version.
         internal static string whatsNewVersion = "0.0";
         internal static string whatsNewBeta = "";
-
 
         /// <summary>
         /// Handles current 'use legacy by default for residential' option changes.

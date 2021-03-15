@@ -245,9 +245,9 @@
     <Translation ID="RPR_DEF_LGO" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for office buildings:" />
     <Translation ID="RPR_DEF_LTS" String="This save" />
     <Translation ID="RPR_DEF_LAS" String="New saves" />
-    <Translation ID="RPR_DEF_VIS" String="Customer (visitor) capacity calculations" />
-    <Translation ID="RPR_DEF_VNE" String="New method - based on workforce size" />
-    <Translation ID="RPR_DEF_VOL" String="Old method - based on building lot size" />
+    <Translation ID="RPR_DEF_VIS" String="Customer (visitor) capacity" />
+    <Translation ID="RPR_DEF_VNE" String="New method (population)" />
+    <Translation ID="RPR_DEF_VOL" String="Old method (lot size)" />
     <Translation ID="RPR_DEF_VMU" String="Customer count multiplier" />
     <Translation ID="RPR_DEF_VIS_TIP" String="The basis for calculating the number of customers this building can handle each business cycle.  The old method was to use the size of the building's lot, and the new method is to use the number of workplaces in the building." />
     <Translation ID="TRN_CHOICE" String="Set language" />

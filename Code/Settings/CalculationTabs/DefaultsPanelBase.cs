@@ -10,7 +10,11 @@ namespace RealPop2
     internal abstract class DefaultsPanel
     {
         // Layout constants.
+        private const float LeftColumn = 200f;
+        private const float MenuWidth = 300f;
         protected const float Margin = 5f;
+        protected const float RowAdditionX = LeftColumn + MenuWidth + (Margin * 2);
+        protected float RowHeight = 30f;
 
         // Dropdown menus.
         protected readonly UIDropDown[] popMenus, floorMenus;
@@ -164,11 +168,10 @@ namespace RealPop2
         /// Sets up the defaults dropdown menus.
         /// </summary>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected virtual float SetUpMenus()
+        private float SetUpMenus()
         {
             // Layout constants.
             const float LeftColumn = 200f;
-            const float RowHeight = 30f;
             const float MenuWidth = 300f;
 
             // Starting y position.
@@ -203,6 +206,9 @@ namespace RealPop2
                     }
                 };
 
+                // Add any additional controls to right of row.
+                RowAdditions(currentY, i);
+
                 // Floor pack on next row.
                 currentY += RowHeight;
 
@@ -232,6 +238,15 @@ namespace RealPop2
             // Revert button.
             UIButton revertToSaveButton = UIControls.AddButton(panel, (Margin * 2) + 150f, yPos, Translations.Translate("RPR_OPT_RTS"), 150f);
             revertToSaveButton.eventClicked += ResetSaved;
+        }
+
+
+        /// <summary>
+        /// Adds any additional controls to the right of each row.
+        /// </summary>
+        /// <param name="index">Index number of this row</param>
+        protected virtual void RowAdditions(float yPos, int index)
+        {
         }
 
 

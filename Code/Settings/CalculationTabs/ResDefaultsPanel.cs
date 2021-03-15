@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 
 
 namespace RealPop2
@@ -74,76 +73,24 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Sets up the defaults dropdown menus.
+        /// Adds any additional controls to the right of each row.
         /// </summary>
-        /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected override float SetUpMenus()
+        /// <param name="yPos">Relative Y position at top of row items</param>
+        /// <param name="index">Index number of this row</param>
+        protected override void RowAdditions(float yPos, int index)
         {
-            // Layout constants.
-            const float LeftColumn = 200f;
-            const float RowHeight = 30f;
-            const float MenuWidth = 300f;
-            const float ButtonX = LeftColumn + MenuWidth + (Margin * 2);
             const float ButtonHeight = 25f;
 
-            // Starting y position.
-            float currentY = 90f;
 
-            for (int i = 0; i < SubServiceNames.Length; ++i)
-            {
+            // Add 'apply to new buildings' button level with population pack dropdown.
+            UIButton applyNewButton = UIControls.AddButton(panel, RowAdditionX, yPos, Translations.Translate("RPR_CAL_NBD"), 200f, ButtonHeight, 0.8f);
+            applyNewButton.objectUserData = index;
+            applyNewButton.eventClicked += ApplyToNew;
 
-                // Row icon and label.
-                PanelUtils.RowHeaderIcon(panel, ref currentY, SubServiceNames[i], IconNames[i], AtlasNames[i]);
-
-                // Apply button label.
-                UIControls.AddLabel(panel, ButtonX, currentY - 20f, Translations.Translate("RPR_CAL_SAT"));
-
-                // Pop pack dropdown.
-                popMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), MenuWidth, false);
-
-                // Save current index in object user data.
-                popMenus[i].objectUserData = i;
-
-                // Event handler.
-                popMenus[i].eventSelectedIndexChanged += (control, index) =>
-                {
-                    // Retrieve stored index.
-                    int serviceIndex = (int)control.objectUserData;
-
-                    // Hide floor menu if we've selected legacy calcs, otherwise show it.
-                    if (availablePopPacks[serviceIndex][index].version == (int)DataVersion.legacy)
-                    {
-                        floorMenus[serviceIndex].Hide();
-                    }
-                    else
-                    {
-                        floorMenus[serviceIndex].Show();
-                    }
-                };
-
-                // Add 'apply to new buildings' button level with population pack dropdown.
-                UIButton applyNewButton = UIControls.AddButton(panel, ButtonX, currentY, Translations.Translate("RPR_CAL_NBD"), 200f, ButtonHeight, 0.8f);
-                applyNewButton.objectUserData = i;
-                applyNewButton.eventClicked += ApplyToNew;
-
-                // Floor pack on next row.
-                currentY += RowHeight;
-
-                // Floor pack dropdown.
-                floorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, false);
-
-                // Add 'apply to existing buildings' button level with floor pack dropdown.
-                UIButton applyExistButton = UIControls.AddButton(panel, ButtonX, currentY, Translations.Translate("RPR_CAL_ABD"), 200f, ButtonHeight, 0.8f);
-                applyExistButton.objectUserData = i;
-                applyExistButton.eventClicked += ApplyToAll;
-
-
-                // Next row.
-                currentY += RowHeight + Margin;
-            }
-
-            // Return finishing Y position.
-            return currentY;
+            // Add 'apply to existing buildings' button level with floor pack dropdown.
+            UIButton applyExistButton = UIControls.AddButton(panel, RowAdditionX, yPos + RowHeight, Translations.Translate("RPR_CAL_ABD"), 200f, ButtonHeight, 0.8f);
+            applyExistButton.objectUserData = index;
+            applyExistButton.eventClicked += ApplyToAll;
         }
 
 

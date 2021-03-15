@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -106,14 +107,23 @@ namespace RealPop2
         public bool DefaultLegacyOff { get => ModSettings.newSaveLegacyOff; set => ModSettings.newSaveLegacyOff = value; }
 
 
-        // Commercial visitor calculations - clamp to 0 or 1 at this stage.
+        // Commercial visitor calculations (legacy Beta).
         [XmlElement("CommericalVisitsMode")]
-        public int ComVisitMode { get => ModSettings.comVisitMode; set => ModSettings.comVisitMode = Math.Max(0, Math.Min(value, 1)); }
+        public int ComVisitMode { set => RealisticVisitplaceCount.SetVisitModes = Math.Max(0, Math.Min(value, 1)); }
+
+        // Commercial visitor multiplier (legacy Beta).
+        [XmlElement("CommericalVisitsMultiplier")]
+        public float ComVisitMult { set => RealisticVisitplaceCount.SetVisitMults = Mathf.Max(0.1f, Mathf.Min(value, 1f)); }
+
+        // Commercial visitor calculations - clamp to 0 or 1 at this stage.
+        [XmlArray("CommericalVisitsModes")]
+        [XmlArrayItem("Mode")]
+        public List<SubServiceEntry<ItemClass.SubService, int>> comVisitModes;
 
         // Commercial visitor multiplier.
-        [XmlElement("CommericalVisitsMultiplier")]
-        public float ComVisitMult { get => ModSettings.comVisitMult; set => ModSettings.comVisitMult = Mathf.Max(0.1f, Mathf.Min(value, 1f)); }
-
+        [XmlArray("CommericalVisitsMultipliers")]
+        [XmlArrayItem("Multiplier")]
+        public List<SubServiceEntry<ItemClass.SubService, float>> comVisitMults;
 
         // Realistic education.
         [XmlElement("EnableSchoolPop")]
@@ -152,6 +162,26 @@ namespace RealPop2
     }
 
 
+
+    /// <summary>
+    /// Basic serializable KeyValuePair for SubService dictionaries. 
+    /// </summary>
+    /// <typeparam name="K">Key</typeparam>
+    /// <typeparam name="V">Value</typeparam>
+    [Serializable]
+    [XmlType(TypeName = "SubServiceEntry")]
+    public struct SubServiceEntry<K, V>
+    {
+        [XmlAttribute("SubService")]
+        public K Key
+        { get; set; }
+
+        [XmlAttribute("Value")]
+        public V Value
+        { get; set; }
+    }
+
+
     /// XML serialization/deserialization utilities class.
     /// </summary>
     internal static class SettingsUtils
@@ -176,6 +206,20 @@ namespace RealPop2
                         if (!(xmlSerializer.Deserialize(reader) is XMLSettingsFile xmlSettingsFile))
                         {
                             Logging.Error("couldn't deserialize settings file");
+                        }
+                        else
+                        {
+                            // Iterate through each KeyValuePair parsed and add update entry in commercial visit modes dictionary.
+                            foreach (SubServiceEntry<ItemClass.SubService, int> entry in xmlSettingsFile.comVisitModes)
+                            {
+                                RealisticVisitplaceCount.comVisitModes[entry.Key] = entry.Value;
+                            }
+
+                            // Iterate through each KeyValuePair parsed and add update entry in commercial visit multipliers dictionary.
+                            foreach (SubServiceEntry<ItemClass.SubService, float> entry in xmlSettingsFile.comVisitMults)
+                            {
+                                RealisticVisitplaceCount.comVisitMults[entry.Key] = entry.Value;
+                            }
                         }
                     }
                 }
@@ -202,7 +246,34 @@ namespace RealPop2
                 using (StreamWriter writer = new StreamWriter(SettingsFileName))
                 {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLSettingsFile));
-                    xmlSerializer.Serialize(writer, new XMLSettingsFile());
+                    XMLSettingsFile settingsFile = new XMLSettingsFile();
+
+                    // Iterate though each entry in the commercial visit modes dictionary and serialize into XML KeyValuePair.
+                    List<SubServiceEntry<ItemClass.SubService, int>> vistModes = new List<SubServiceEntry<ItemClass.SubService, int>>();
+                    foreach (KeyValuePair<ItemClass.SubService, int> entry in RealisticVisitplaceCount.comVisitModes)
+                    {
+                        vistModes.Add(new SubServiceEntry<ItemClass.SubService, int>
+                        {
+                            Key = entry.Key,
+                            Value = entry.Value
+                        });
+                    }
+                    settingsFile.comVisitModes = vistModes;
+
+                    // Iterate though each entry in the commercial visit multipliers dictionary and serialize into XML KeyValuePair.
+                    List<SubServiceEntry<ItemClass.SubService, float>> visitMults = new List<SubServiceEntry<ItemClass.SubService, float>>();
+                    foreach (KeyValuePair<ItemClass.SubService, float> entry in RealisticVisitplaceCount.comVisitMults)
+                    {
+                        visitMults.Add(new SubServiceEntry<ItemClass.SubService, float>
+                        {
+                            Key = entry.Key,
+                            Value = entry.Value
+                        });
+                    }
+                    settingsFile.comVisitMults = visitMults;
+
+                    // Save to file.
+                    xmlSerializer.Serialize(writer, settingsFile);
                 }
             }
             catch (Exception e)

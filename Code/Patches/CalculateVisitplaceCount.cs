@@ -1,4 +1,4 @@
-﻿using ColossalFramework.Math;
+﻿using System.Collections.Generic;
 using HarmonyLib;
 
 
@@ -15,31 +15,90 @@ namespace RealPop2
     [HarmonyPatch("CalculateVisitplaceCount")]
     public static class RealisticVisitplaceCount
     {
+
+        // Commercial visits modes.
+        internal enum ComVisitModes
+        {
+            popCalcs = 0,
+            legacy
+        }
+
+        internal const float DefaultVisitMult = 0.4f;
+
+
+        // Dictionaries for calculation mode and multipliers.
+        internal static Dictionary<ItemClass.SubService, int> comVisitModes = new Dictionary<ItemClass.SubService, int>
+        {
+            { ItemClass.SubService.CommercialLow, (int)ComVisitModes.legacy },
+            { ItemClass.SubService.CommercialHigh, (int)ComVisitModes.legacy },
+            { ItemClass.SubService.CommercialLeisure, (int)ComVisitModes.legacy },
+            { ItemClass.SubService.CommercialTourist, (int)ComVisitModes.legacy },
+            { ItemClass.SubService.CommercialEco, (int)ComVisitModes.legacy }
+        };
+        internal static Dictionary<ItemClass.SubService, float> comVisitMults = new Dictionary<ItemClass.SubService, float>
+        {
+            { ItemClass.SubService.CommercialLow, DefaultVisitMult },
+            { ItemClass.SubService.CommercialHigh, DefaultVisitMult },
+            { ItemClass.SubService.CommercialLeisure, DefaultVisitMult },
+            { ItemClass.SubService.CommercialTourist, DefaultVisitMult },
+            { ItemClass.SubService.CommercialEco, DefaultVisitMult }
+        };
+
+
+        /// <summary>
+        /// Sets the visit mode for all commercial subservices to the specified mode.
+        /// </summary>
+        /// <param name="visitMode">Visit mode to set</param>
+        internal static int SetVisitModes
+        {
+            set
+            {
+                foreach (ItemClass.SubService subService in comVisitModes.Keys)
+                {
+                    comVisitModes[subService] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the visit mode for all commercial subservices to the specified mode.
+        /// </summary>
+        /// <param name="visitMode">Visit mode to set</param>
+        internal static float SetVisitMults
+        {
+            set
+            {
+                foreach (ItemClass.SubService subService in comVisitMults.Keys)
+                {
+                    comVisitMults[subService] = value;
+                }
+            }
+        }
+
+
         /// <summary>
         /// Harmony Prefix patch to ResidentialBuildingAI.CalculateHomeCount to implement mod population calculations.
         /// </summary>
         /// <param name="__result">Original method result</param>
         /// <param name="__instance">Original AI instance reference</param>
         /// <param name="level">Building level</param>
-        /// <param name="r">Randomizer (unused)</param>
-        /// <param name="width">Building lot width (unused)</param>
-        /// <param name="length">Building lot length (unused)</param>
-        /// <returns>Always false (don't execute base game method after this)</returns>
-        public static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
+        /// <returns>False (don't execute base game method after this) if new calculatons have been used, true if old calculations are being used</returns>
+        public static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level)
         {
             // Get builidng info.
             BuildingInfo info = __instance.m_info;
-
-            // Get cached workplace count and calculate total workplaces.
-            int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
-            float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
-            float multiplier;
+            ItemClass.SubService subService = info.m_class.m_subService;
 
             // New or old calculations?
-            if (ModSettings.comVisitMode == (int)ModSettings.ComVisitModes.popCalcs)
+            if (comVisitModes[subService] == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs)
             {
+                // Get cached workplace count and calculate total workplaces.
+                int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
+                float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
+                float multiplier;
+
                 // New settings, based on population.
-                switch (info.GetSubService())
+                switch (subService)
                 {
                     case ItemClass.SubService.CommercialLow:
                         switch (info.GetClassLevel())
@@ -83,7 +142,7 @@ namespace RealPop2
                 }
 
                 // Multiply total workers by multipler and overall multiplier (from settings) to get result.
-                __result = (int)(totalWorkers * multiplier * ModSettings.comVisitMult);
+                __result = (int)(totalWorkers * multiplier * comVisitMults[subService]);
             }
             else
             {
@@ -92,7 +151,7 @@ namespace RealPop2
                 return true;
             }
 
-            // Always set at least two.
+            // Always set at least one.
             if (__result < 1)
             {
                 Logging.Error("invalid visitcount result ", __result.ToString(), " for ", __instance.m_info.name, "; setting to 1");
