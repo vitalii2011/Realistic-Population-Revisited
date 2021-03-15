@@ -75,9 +75,10 @@ namespace RealPop2
         /// <summary>
         /// Adds any additional controls to the right of each row.
         /// </summary>
+        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
-        protected override void RowAdditions(float yPos, int index)
+        protected override void RowAdditions(UIPanel panel, float yPos, int index)
         {
             const float ButtonHeight = 25f;
 
@@ -112,8 +113,8 @@ namespace RealPop2
                 ItemClass.SubService subService = subServices[subServiceIndex];
 
                 // Get selected population pack.
-                int popIndex = popMenus[subServiceIndex].selectedIndex;
-                PopDataPack selectedPopPack = availablePopPacks[subServiceIndex][popIndex];
+                int popIndex = PopMenus[subServiceIndex].selectedIndex;
+                PopDataPack selectedPopPack = AvailablePopPacks[subServiceIndex][popIndex];
 
                 // Check to see if this is a change from the current default.
                 if (!PopData.instance.CurrentDefaultPack(service, subService).name.Equals(selectedPopPack.name))
@@ -126,7 +127,7 @@ namespace RealPop2
                 }
 
                 // Check floor pack if we're not using legacy calcs.
-                if (selectedPopPack.version != (int)DataVersion.legacy && availableFloorPacks[floorMenus[subServiceIndex].selectedIndex] is FloorDataPack selectedFloorPack)
+                if (selectedPopPack.version != (int)DataVersion.legacy && AvailableFloorPacks[FloorMenus[subServiceIndex].selectedIndex] is FloorDataPack selectedFloorPack)
                 {
                     // Not legacy - check to see if this is a change from the current default.
                     if (!FloorData.instance.CurrentDefaultPack(service, subService).name.Equals(selectedFloorPack.name))

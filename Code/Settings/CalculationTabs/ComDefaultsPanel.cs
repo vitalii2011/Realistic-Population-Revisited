@@ -103,9 +103,10 @@ namespace RealPop2
         /// <summary>
         /// Adds any additional controls to the right of each row.
         /// </summary>
+        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
-        protected override void RowAdditions(float yPos, int index)
+        protected override void RowAdditions(UIPanel panel, float yPos, int index)
         {
             // Layout constants.
             const float SliderPanelHeight = 20f;

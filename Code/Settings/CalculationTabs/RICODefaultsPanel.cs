@@ -25,10 +25,23 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal RICODefaultsPanel(UITabstrip tabStrip, int tabIndex) :  base(tabStrip, tabIndex)
         {
+        }
+
+
+        /// <summary>
+        /// Adds header controls to the panel.
+        /// </summary>
+        /// <param name="panel">Panel reference</param>
+        /// <param name="yPos">Relative Y position for buttons</param>
+        /// <returns>Relative Y coordinate below the finished setup</returns>
+        protected override float PanelHeader(UIPanel panel, float yPos)
+        {
+            // Y position reference.
+            float currentY = yPos + Margin;
+
             // Add 'Use legacy by default' header.
 
             // Label.
-            float currentY = Margin;
             UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate(LegacyCheckLabel), textScale: 0.9f);
             currentY += legacyLabel.height + 5f;
 
@@ -45,9 +58,9 @@ namespace RealPop2
                 UpdateMenus();
                 SettingsUtils.SaveSettings();
             };
-            currentY += 20f;
 
             // Use legacy by default for new saves check.
+            currentY += 20f;
             UICheckBox legacyNewSaveCheck = UIControls.LabelledCheckBox(panel, Margin * 2, currentY, Translations.Translate("RPR_DEF_LAS"));
             legacyNewSaveCheck.label.wordWrap = true;
             legacyNewSaveCheck.label.autoSize = false;
@@ -60,6 +73,8 @@ namespace RealPop2
                 UpdateMenus();
                 SettingsUtils.SaveSettings();
             };
+
+            return currentY + 30f;
         }
     }
 }
