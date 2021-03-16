@@ -29,7 +29,7 @@ namespace RealPop2
 
         // What's new notification version.
         internal static string whatsNewVersion = "0.0";
-        internal static string whatsNewBeta = "";
+        internal static int whatsNewBetaVersion = 0;
 
         /// <summary>
         /// Handles current 'use legacy by default for residential' option changes.

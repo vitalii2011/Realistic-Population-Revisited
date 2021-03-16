@@ -1,7 +1,8 @@
-﻿using ColossalFramework.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ColossalFramework;
+using ColossalFramework.UI;
 
 
 namespace RealPop2.MessageBox
@@ -16,19 +17,19 @@ namespace RealPop2.MessageBox
         /// </summary>
         /// <param name="lastNotifiedVersion">Last notified version (version messages equal to or earlier than this will be minimized</param>
         /// <param name="messages">Version update messages to display, in order (newest versions first), with a list of items (as translation keys) for each version</param>
-        public void SetMessages(Version lastNotifiedVersion, Dictionary<Version, string[]> messages)
+        public void SetMessages(Version lastNotifiedVersion, WhatsNewMessage[] messages)
         {
             // Iterate through each provided version and add it to the messagebox.
-            foreach (KeyValuePair<Version, string[]> message in messages)
+            foreach (WhatsNewMessage message in messages)
             {
                 VersionMessage versionMessage = ScrollableContent.AddUIComponent<VersionMessage>();
                 versionMessage.width = ScrollableContent.width;
-                versionMessage.SetText(message.Key, message.Value);
+                versionMessage.SetText(message);
                 // Add spacer below.
                 AddSpacer();
 
-                // Hide version messages that have already been notified.
-                if (message.Key <= lastNotifiedVersion)
+                // Hide version messages that have already been notified (always showing versions with headers).
+                if ((message.version < lastNotifiedVersion) || (message.version == lastNotifiedVersion && message.betaVersion <= ModSettings.whatsNewBetaVersion))
                 {
                     versionMessage.IsCollapsed = true;
                 }
@@ -87,25 +88,29 @@ namespace RealPop2.MessageBox
             /// <summary>
             /// Sets version message text.
             /// </summary>
-            /// <param name="version">Version</param>
-            /// <param name="messageKeys">Message text as list of translation keys for individual points</param>
-            public void SetText(Version version, string[] messageKeys)
+            /// <param name="message">What's new message to display</param>
+            public void SetText(WhatsNewMessage message)
             {
-                // Major version 99 means a Beta message.
-                bool isBeta = version.Major == 99;
+                // Set version header and message text.
+                versionTitle = RealPopMod.ModName + " " + message.version.ToString() + message.versionHeader;
 
-                // Set version header and message text (Beta label is first index of messageKeys).
-                versionTitle = RealPopMod.ModName + " " + (isBeta ? messageKeys[0] : version.ToString());
-
-                // Add messages as separate list items (noting first element is Beta title if this is a Beta version).
-                for (int i = isBeta ? 1 : 0; i < messageKeys.Length; ++i)
+                // Add message elements as separate list items.
+                for (int i = 1; i < message.messages.Length; ++i)
                 {
-                    ListItem newMessageLabel = AddUIComponent<ListItem>();
-                    listItems.Add(newMessageLabel);
-                    newMessageLabel.Text = Translations.Translate(messageKeys[i]);
+                    try
+                    {
+                        // Message text is either a translation key or direct text, depending on the messageKeys setting.
+                        ListItem newMessageLabel = AddUIComponent<ListItem>();
+                        listItems.Add(newMessageLabel);
+                        newMessageLabel.Text = message.messageKeys ? Translations.Translate(message.messages[i]) : message.messages[i];
 
-                    // Make sure initial width is set properly.
-                    newMessageLabel.width = width;
+                        // Make sure initial width is set properly.
+                        newMessageLabel.width = width;
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.LogException(e, "Exception showing what's new message");
+                    }
                 }
 
                 // Always start maximized.

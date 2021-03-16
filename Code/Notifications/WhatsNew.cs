@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using System.Collections.Generic;
 using RealPop2.MessageBox;
-
 
 
 namespace RealPop2
@@ -13,14 +11,16 @@ namespace RealPop2
     internal static class WhatsNew
     {
         // List of versions and associated update message lines (as translation keys).
-        private static Dictionary<Version, string[]> Versions => new Dictionary<Version, string[]>
+        private readonly static WhatsNewMessage[] WhatsNewMessages = new WhatsNewMessage[]
         {
+            new WhatsNewMessage
             {
-                // Beta message version is 99.
-                new Version("99.0.11"),
-                new string[]
+                version = new Version("2.0.0.0"),
+                versionHeader = " BETA 11",
+                betaVersion = 11,
+                messageKeys = false,
+                messages = new string[]
                 {
-                    "2.0 BETA 11 updates",
                     "Add configurable multiplier for new-style commercial customer (visit) calculations (in commercial defaults options panel), with initial default of 0.4",
                     "Fix floor calculation pack changes not being saved if the population pack also wasn't changed",
                     "Fix 'save and apply' for school calculations not showing",
@@ -28,12 +28,14 @@ namespace RealPop2
                     "Update building preview renderer and standardize background to plain sky blue"
                 }
             },
+            new WhatsNewMessage
             {
-                // Beta message version is 99.
-                new Version("99.0.10"),
-                new string[]
+                version = new Version("2.0.0.0"),
+                versionHeader = " BETA 10",
+                betaVersion = 10,
+                messageKeys = false,
+                messages = new string[]
                 {
-                    "2.0 BETA 10 updates",
                     "Overhaul commercial building visitor (customer) count code and add options for new (workforce-base) or old (building lot size-based) calculations",
                     "Display commercial building visitor counts in calculations display panels",
                     "Split workplace defaults panel into separate commercial, office, industrial and school panels, with separate 'legacy as default' selections fof each",
@@ -41,10 +43,13 @@ namespace RealPop2
                     "Overhaul custom pack editing and saving code"
                 }
             },
+            new WhatsNewMessage
             {
-                // Beta message version is 99.
-                new Version("99.0.9"),
-                new string[]
+                version = new Version("2.0.0.0"),
+                versionHeader = " BETA 9",
+                betaVersion = 9,
+                messageKeys = false,
+                messages = new string[]
                 {
                     "2.0 BETA 9 updates",
                     "Separate residential and workplace default option panels, and allow 'use legacy by default' to be toggled separately for each",
@@ -53,29 +58,39 @@ namespace RealPop2
                     "Update savegame serialization",
                 }
             },
+            new WhatsNewMessage
             {
-                // Beta message version is 99.
-                new Version("99.0.8"),
-                new string[]
+                version = new Version("2.0.0.0"),
+                versionHeader = " BETA 8",
+                betaVersion = 8,
+                messageKeys = false,
+                messages = new string[]
                 {
                     "2.0 BETA 8 updates",
                     "Fix new-style population overrides not being recognised by legacy calculations",
                     "Add tooltips for population and floor calculation panel fields"
                 }
             },
+            new WhatsNewMessage
             {
-                // Beta message version is 99.
-                new Version("99.0.7"),
-                new string[]
+                version = new Version("2.0.0.0"),
+                versionHeader = " BETA 7",
+                betaVersion = 7,
+                messageKeys = false,
+                messages = new string[]
                 {
                     "2.0 BETA 7 updates",
                     "Changes to default calculation packs now only take effect via a new 'Save and Apply' button",
                     "Redo residential population caching to better handle buildings with invalid levels"
                 }
             },
+            new WhatsNewMessage
             {
-                new Version("99.0.6"),
-                new string[]
+                version = new Version("2.0.0.0"),
+                versionHeader = " BETA 6",
+                betaVersion = 6,
+                messageKeys = false,
+                messages = new string[]
                 {
                     "2.0 BETA 6 updates",
                     "New population caching system that fully recognises multiple levels for the same building prefab (historical buildings)",
@@ -83,10 +98,14 @@ namespace RealPop2
                     "Fix building settings panel not opening when target building doesn't have a valid mesh material"
                 }
             },
+            new WhatsNewMessage
             {
-                new Version("2.0"),
-                new string[]
+                version = new Version("2.0.0.0"),
+                versionHeader = "",
+                messageKeys = true,
+                messages = new string[]
                 {
+                    "",
                     "RPR_200_0",
                     "RPR_200_1",
                     "RPR_200_2",
@@ -116,7 +135,9 @@ namespace RealPop2
         {
             // Save current version to settings file.
             ModSettings.whatsNewVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            ModSettings.whatsNewBeta = RealPopMod.Beta;
+
+            // Save current version header as beta.
+            ModSettings.whatsNewBetaVersion = WhatsNewMessages[0].betaVersion;
             SettingsUtils.SaveSettings();
 
             return true;
@@ -133,7 +154,7 @@ namespace RealPop2
             Version modVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
             // Don't show notification if we're already up to (or ahead of) this version AND there hasn't been a beta update.
-            if (whatsNewVersion >= modVersion && ModSettings.whatsNewBeta.Equals(RealPopMod.Beta))
+            if (whatsNewVersion >= modVersion && ModSettings.whatsNewBetaVersion == RealPopMod.BetaVersion)
             {
                 return;
             }
@@ -142,7 +163,20 @@ namespace RealPop2
             WhatsNewMessageBox messageBox = MessageBoxBase.ShowModal<WhatsNewMessageBox>();
             messageBox.Title = RealPopMod.ModName + " " + RealPopMod.Version;
             messageBox.DSAButton.eventClicked += (component, clickEvent) => DontShowAgain();
-            messageBox.SetMessages(whatsNewVersion, Versions);
+            messageBox.SetMessages(whatsNewVersion, WhatsNewMessages);
         }
+    }
+
+
+    /// <summary>
+    /// Version message struct.
+    /// </summary>
+    public struct WhatsNewMessage
+    {
+        public Version version;
+        public string versionHeader;
+        public int betaVersion;
+        public bool messageKeys;
+        public string[] messages;
     }
 }

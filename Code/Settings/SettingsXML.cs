@@ -17,9 +17,9 @@ namespace RealPop2
         [XmlElement("WhatsNewVersion")]
         public string WhatsNewVersion { get => ModSettings.whatsNewVersion; set => ModSettings.whatsNewVersion = value; }
 
-        [XmlElement("WhatsNewBeta")]
-        [DefaultValue("")]
-        public string WhatsNewBeta { get => ModSettings.whatsNewBeta; set => ModSettings.whatsNewBeta = value; }
+        [XmlElement("WhatsNewBetaVersion")]
+        [DefaultValue(0)]
+        public int WhatsNewBetaVersion { get => ModSettings.whatsNewBetaVersion; set => ModSettings.whatsNewBetaVersion = value; }
 
         // Language.
         [XmlElement("Language")]
