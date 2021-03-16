@@ -20,8 +20,8 @@ namespace RealPop2
 
         // Panel components.
         protected UIDropDown packDropDown;
-        protected UITextField packNameField;
-        protected UIButton saveButton, deleteButton;
+        private UIButton saveButton, deleteButton;
+
 
         // List of packs.
         protected List<DataPack> packList;
@@ -32,6 +32,9 @@ namespace RealPop2
         // Tab sprite name and tooltip key.
         protected abstract string TabSprite { get; }
         protected abstract string TabTooltipKey { get; }
+
+        // Pack name field.
+        protected UITextField PackNameField { get; private set; }
 
 
 
@@ -58,6 +61,7 @@ namespace RealPop2
         protected abstract void UpdatePack(DataPack pack);
 
 
+        /// <summary>
         /// Constructor - adds editing options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
@@ -95,9 +99,9 @@ namespace RealPop2
             float currentY = yPos + RowHeight;
 
             // Pack name textfield.
-            packNameField = UIControls.BigTextField(panel, 140f, currentY);
-            packNameField.isEnabled = false;
-            UILabel packNameLabel = UIControls.AddLabel(packNameField, -100f, (packNameField.height - 18f) / 2, Translations.Translate("RPR_OPT_EDT_NAM"));
+            PackNameField = UIControls.BigTextField(panel, 140f, currentY);
+            PackNameField.isEnabled = false;
+            UILabel packNameLabel = UIControls.AddLabel(PackNameField, -100f, (PackNameField.height - 18f) / 2, Translations.Translate("RPR_OPT_EDT_NAM"));
 
             // Space for buttons.
             currentY += 50f;
@@ -125,13 +129,13 @@ namespace RealPop2
             // Enable save and delete buttons and name textfield if this is a custom pack, otherwise disable.
             if (packList[index].version == (int)DataVersion.customOne)
             {
-                packNameField.Enable();
+                PackNameField.Enable();
                 saveButton.Enable();
                 deleteButton.Enable();
             }
             else
             {
-                packNameField.Disable();
+                PackNameField.Disable();
                 saveButton.Disable();
                 deleteButton.Disable();
             }

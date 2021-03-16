@@ -144,7 +144,7 @@ namespace RealPop2
         protected override void Save(UIComponent control, UIMouseEventParameter mouseEvent)
         {
             // Basic sanity check - need a valid name to proceed.
-            if (!packNameField.text.IsNullOrWhiteSpace())
+            if (!PackNameField.text.IsNullOrWhiteSpace())
             {
                 base.Save(control, mouseEvent);
 
@@ -179,7 +179,7 @@ namespace RealPop2
             }
 
             // We now have a unique name; set the textfield.
-            packNameField.text = newPackName;
+            PackNameField.text = newPackName;
 
             // Add new pack with basic values (deails will be populated later).
             VolumetricPopPack newPack = new VolumetricPopPack
@@ -246,8 +246,8 @@ namespace RealPop2
             if (pack is VolumetricPopPack popPack)
             {
                 // Basic pack attributes.
-                pack.name = packNameField.text;
-                pack.displayName = packNameField.text;
+                pack.name = PackNameField.text;
+                pack.displayName = PackNameField.text;
 
                 // Iterate through each level, parsing input fields.
                 for (int i = 0; i < maxLevels[serviceDropDown.selectedIndex]; ++i)
@@ -397,7 +397,7 @@ namespace RealPop2
             VolumetricPopPack volPack = (VolumetricPopPack)packList[index];
 
             // Set name field.
-            packNameField.text = volPack.displayName ?? volPack.name;
+            PackNameField.text = volPack.displayName ?? volPack.name;
 
             // Set service selection menu by iterating through each service and looking for a match.
             for (int i = 0; i < services.Length; ++i)

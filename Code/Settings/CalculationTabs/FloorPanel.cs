@@ -93,7 +93,7 @@ namespace RealPop2
         protected override void Save(UIComponent control, UIMouseEventParameter mouseEvent)
         {
             // Basic sanity check - need a valid name to proceed.
-            if (!packNameField.text.IsNullOrWhiteSpace())
+            if (!PackNameField.text.IsNullOrWhiteSpace())
             {
                 base.Save(control, mouseEvent);
 
@@ -125,7 +125,7 @@ namespace RealPop2
             }
 
             // We now have a unique name; set the textfield.
-            packNameField.text = newPackName;
+            PackNameField.text = newPackName;
 
             // Add new pack with basic values (deails will be populated later).
             FloorDataPack newPack = new FloorDataPack
@@ -190,8 +190,8 @@ namespace RealPop2
             if (pack is FloorDataPack floorPack)
             {
                 // Basic pack attributes.
-                floorPack.name = packNameField.text;
-                floorPack.displayName = packNameField.text;
+                floorPack.name = PackNameField.text;
+                floorPack.displayName = PackNameField.text;
                 floorPack.version = (int)DataVersion.customOne;
 
                 // Textfields.
@@ -230,7 +230,7 @@ namespace RealPop2
             FloorDataPack floorPack = (FloorDataPack)packList[index];
 
             // Set name field.
-            packNameField.text = floorPack.displayName ?? floorPack.name;
+            PackNameField.text = floorPack.displayName ?? floorPack.name;
 
             // Populate controls.
             floorHeightField.text = floorPack.floorHeight.ToString();
