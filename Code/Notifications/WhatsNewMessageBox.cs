@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ColossalFramework;
 using ColossalFramework.UI;
 
 
@@ -23,7 +22,7 @@ namespace RealPop2.MessageBox
             foreach (WhatsNewMessage message in messages)
             {
                 VersionMessage versionMessage = ScrollableContent.AddUIComponent<VersionMessage>();
-                versionMessage.width = ScrollableContent.width;
+                versionMessage.width = ContentWidth;
                 versionMessage.SetText(message);
                 // Add spacer below.
                 AddSpacer();
@@ -92,7 +91,7 @@ namespace RealPop2.MessageBox
             public void SetText(WhatsNewMessage message)
             {
                 // Set version header and message text.
-                versionTitle = RealPopMod.ModName + " " + message.version.ToString() + message.versionHeader;
+                versionTitle = RealPopMod.ModName + " " + message.version.ToString(message.version.Minor > 0 ? 3 : 2) + message.versionHeader;
 
                 // Add message elements as separate list items.
                 for (int i = 1; i < message.messages.Length; ++i)

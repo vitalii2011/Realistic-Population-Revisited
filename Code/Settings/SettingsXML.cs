@@ -116,12 +116,12 @@ namespace RealPop2
         public float ComVisitMult { set => RealisticVisitplaceCount.SetVisitMults = Mathf.Max(0.1f, Mathf.Min(value, 1f)); }
 
         // Commercial visitor calculations - clamp to 0 or 1 at this stage.
-        [XmlArray("CommericalVisitsModes")]
+        [XmlArray("CommercialVisitsModes")]
         [XmlArrayItem("Mode")]
         public List<SubServiceEntry<ItemClass.SubService, int>> comVisitModes;
 
         // Commercial visitor multiplier.
-        [XmlArray("CommericalVisitsMultipliers")]
+        [XmlArray("CommercialVisitsMultipliers")]
         [XmlArrayItem("Multiplier")]
         public List<SubServiceEntry<ItemClass.SubService, float>> comVisitMults;
 
