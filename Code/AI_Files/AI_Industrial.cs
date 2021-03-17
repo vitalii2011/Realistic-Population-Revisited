@@ -120,7 +120,7 @@ namespace RealPop2
             }
             catch (System.Exception)
             {
-                Logging.Message(item.gameObject.name, " attempted to be use ", item.m_class.m_subService.ToString(), " with level ", level.ToString(), ". Returning as level 0");
+                Logging.Message(item.gameObject.name, " attempted to use ", item.m_class.m_subService.ToString(), " with level ", level.ToString(), ". Returning as level 0");
                 return array[0];
             }
         }
