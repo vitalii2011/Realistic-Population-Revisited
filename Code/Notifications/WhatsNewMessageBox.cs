@@ -94,7 +94,7 @@ namespace RealPop2.MessageBox
                 versionTitle = RealPopMod.ModName + " " + message.version.ToString(message.version.Minor > 0 ? 3 : 2) + message.versionHeader;
 
                 // Add message elements as separate list items.
-                for (int i = 1; i < message.messages.Length; ++i)
+                for (int i = 0; i < message.messages.Length; ++i)
                 {
                     try
                     {

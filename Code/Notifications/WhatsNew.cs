@@ -51,7 +51,6 @@ namespace RealPop2
                 messageKeys = false,
                 messages = new string[]
                 {
-                    "2.0 BETA 9 updates",
                     "Separate residential and workplace default option panels, and allow 'use legacy by default' to be toggled separately for each",
                     "Trial use of icons instead of text for calculations panel tabs",
                     "Add buttons in residential defaults panel to apply changes in default packs to existing residential buildings",
@@ -66,7 +65,6 @@ namespace RealPop2
                 messageKeys = false,
                 messages = new string[]
                 {
-                    "2.0 BETA 8 updates",
                     "Fix new-style population overrides not being recognised by legacy calculations",
                     "Add tooltips for population and floor calculation panel fields"
                 }
@@ -79,7 +77,6 @@ namespace RealPop2
                 messageKeys = false,
                 messages = new string[]
                 {
-                    "2.0 BETA 7 updates",
                     "Changes to default calculation packs now only take effect via a new 'Save and Apply' button",
                     "Redo residential population caching to better handle buildings with invalid levels"
                 }
@@ -92,7 +89,6 @@ namespace RealPop2
                 messageKeys = false,
                 messages = new string[]
                 {
-                    "2.0 BETA 6 updates",
                     "New population caching system that fully recognises multiple levels for the same building prefab (historical buildings)",
                     "Implement handling for reductions in residential homecounts when buildings upgrade",
                     "Fix building settings panel not opening when target building doesn't have a valid mesh material"
@@ -105,7 +101,6 @@ namespace RealPop2
                 messageKeys = true,
                 messages = new string[]
                 {
-                    "",
                     "RPR_200_0",
                     "RPR_200_1",
                     "RPR_200_2",
