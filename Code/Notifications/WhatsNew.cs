@@ -16,6 +16,17 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 12",
+                betaVersion = 12,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Commercial visit calculation modes and multipliers can now be set seperately for each commercial sub-service"
+                }
+            },
+            new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 11",
                 betaVersion = 11,
                 messageKeys = false,

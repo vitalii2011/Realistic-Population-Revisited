@@ -14,8 +14,8 @@ namespace RealPop2
         // Internal and private name and version components.
         internal static string ModName => "Realistic Population 2";
         internal static string Version => BaseVersion + " " + Beta;
-        internal static string Beta => "BETA 11.2";
-        internal static int BetaVersion => 11;
+        internal static string Beta => "BETA 12";
+        internal static int BetaVersion => 12;
         private static string BaseVersion => "2.0";
 
 
