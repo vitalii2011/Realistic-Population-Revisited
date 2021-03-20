@@ -105,7 +105,7 @@ namespace RealPop2
                 harmonyBox.AddList(Translations.Translate("ERR_HAR2"), Translations.Translate("ERR_HAR3"));
 
                 // Closing para.
-                harmonyBox.AddParas(Translations.Translate("ERR_HAR4"));
+                harmonyBox.AddParas(Translations.Translate("MES_PAGE"));
             }
 
             // Check to see if a conflicting mod has been detected.
@@ -115,7 +115,7 @@ namespace RealPop2
                 ListMessageBox modConflictBox = MessageBoxBase.ShowModal<ListMessageBox>();
 
                 // Key text items.
-                modConflictBox.AddParas(Translations.Translate("ERR_CON0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("RPR_ERR_CON0"), Translations.Translate("ERR_CON1"));
+                modConflictBox.AddParas(Translations.Translate("ERR_CON0"), Translations.Translate("RPR_ERR_CON0"), Translations.Translate("RPR_ERR_FAT"), Translations.Translate("ERR_CON1"));
 
                 // Add conflicting mod name(s).
                 modConflictBox.AddList(ModUtils.conflictingModNames.ToArray());

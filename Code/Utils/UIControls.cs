@@ -205,6 +205,22 @@ namespace RealPop2
 
 
         /// <summary>
+        /// Creates a plain textfield using the game's option panel checkbox template.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="text">Descriptive label text</param>
+        /// <returns>New checkbox using the game's option panel template</returns>
+        public static UITextField AddPlainTextfield(UIComponent parent, string text)
+        {
+            UIPanel textFieldPanel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsTextfieldTemplate")) as UIPanel;
+
+            // Set text label.
+            textFieldPanel.Find<UILabel>("Label").text = text;
+            return textFieldPanel.Find<UITextField>("Text Field");
+        }
+
+
+        /// <summary>
         /// Adds a checkbox with a descriptive text label immediately to the right.
         /// </summary>
         /// <param name="parent">Parent component</param>
