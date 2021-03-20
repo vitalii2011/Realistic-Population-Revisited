@@ -23,7 +23,7 @@ namespace RealPop2
             legacy
         }
 
-        internal const float DefaultVisitMult = 0.4f;
+        internal const int DefaultVisitMult = 40;
 
 
         // Dictionaries for calculation mode and multipliers.
@@ -35,7 +35,7 @@ namespace RealPop2
             { ItemClass.SubService.CommercialTourist, (int)ComVisitModes.legacy },
             { ItemClass.SubService.CommercialEco, (int)ComVisitModes.legacy }
         };
-        internal static Dictionary<ItemClass.SubService, float> comVisitMults = new Dictionary<ItemClass.SubService, float>
+        internal static Dictionary<ItemClass.SubService, int> comVisitMults = new Dictionary<ItemClass.SubService, int>
         {
             { ItemClass.SubService.CommercialLow, DefaultVisitMult },
             { ItemClass.SubService.CommercialHigh, DefaultVisitMult },
@@ -61,10 +61,10 @@ namespace RealPop2
         }
 
         /// <summary>
-        /// Sets the visit mode for all commercial subservices to the specified mode.
+        /// Sets the visit percentage multiplier for all commercial subservices to the specified mode.
         /// </summary>
         /// <param name="visitMode">Visit mode to set</param>
-        internal static float SetVisitMults
+        internal static int SetVisitMults
         {
             set
             {
@@ -142,7 +142,7 @@ namespace RealPop2
                 }
 
                 // Multiply total workers by multipler and overall multiplier (from settings) to get result.
-                __result = (int)(totalWorkers * multiplier * comVisitMults[subService]);
+                __result = (int)((totalWorkers * comVisitMults[subService] * multiplier) / 100f);
             }
             else
             {

@@ -175,9 +175,9 @@ namespace RealPop2
             visitMultSliders[index].thumbObject = sliderThumb;
 
             // Mutiplier slider value range.
-            visitMultSliders[index].stepSize = 0.01f;
-            visitMultSliders[index].minValue = 0.01f;
-            visitMultSliders[index].maxValue = 1f;
+            visitMultSliders[index].stepSize = 1f;
+            visitMultSliders[index].minValue = 1f;
+            visitMultSliders[index].maxValue = 100f;
 
             // Set initial value and force intitial display.
             visitMultSliders[index].eventValueChanged += MultSliderText;
@@ -222,7 +222,7 @@ namespace RealPop2
                RealisticVisitplaceCount.comVisitModes[subServices[i]] = visitDefaultMenus[i].selectedIndex;
 
                 // Record mutltiplier.
-                RealisticVisitplaceCount.comVisitMults[subServices[i]] = visitMultSliders[i].value;
+                RealisticVisitplaceCount.comVisitMults[subServices[i]] = (int)visitMultSliders[i].value;
             }
 
             base.Apply(control, mouseEvent);
@@ -258,7 +258,7 @@ namespace RealPop2
         {
             if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
             {
-                valueLabel.text = Mathf.RoundToInt(value * 100f).ToString() + "%";
+                valueLabel.text = Mathf.RoundToInt(value).ToString() + "%";
             }
         }
     }
