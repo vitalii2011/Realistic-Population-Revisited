@@ -27,16 +27,16 @@ namespace RealPop2
 			/* Changing:
 			 * int num6 = Mathf.Max(num5, num2 * 4);
 			 * To:
-			 * int num6 = Mathf.Min(Mathf.Max(num5, num2 * 4), 40000;
+			 * int num6 = Mathf.Min(Mathf.Max(num5, num2 * 4), MaxGoodsDemand;
 			 * 
-			 * This ensures that outstanding goods demand is capped at 40,000, so the building won't order more goods beyond that point.
+			 * This ensures that outstanding goods demand is capped at MaxGoodsDemand, so the building won't order more goods beyond that point.
 			 * 
 			 * Finding this is easy, as it's the only call in this method (of any kind) immediately after a mul.
 			 */
 
 
 			// Maximum goods demand level.
-			const int MaxGoodsDemand = 40000;
+			const int MaxGoodsDemand = 48000;
 
 			// Status flag.
 			bool isPatched = false;
@@ -67,7 +67,7 @@ namespace RealPop2
 
 						if (instruction.opcode == OpCodes.Call && instruction.operand.ToString().Equals("Int32 Max(Int32, Int32)"))
 						{
-							// Yes - insert call to new Math.Min(x, 40,000) after original call.
+							// Yes - insert call to new Math.Min(x, MaxGoodsDemand) after original call.
 							Logging.KeyMessage("transpiler adding MaxGoodsDemand of ", MaxGoodsDemand.ToString(), " after Int32 Max(Int32, Int32)");
 							yield return new CodeInstruction(OpCodes.Ldc_I4, MaxGoodsDemand);
 							yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Math), nameof(Math.Min), new Type[] { typeof(int), typeof(int) }));
