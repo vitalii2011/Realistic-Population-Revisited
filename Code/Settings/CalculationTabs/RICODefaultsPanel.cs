@@ -42,7 +42,7 @@ namespace RealPop2
             // Add 'Use legacy by default' header.
 
             // Label.
-            UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate(LegacyCheckLabel), textScale: 0.9f);
+            UILabel legacyLabel = UIControls.AddLabel(panel, Margin, currentY, Translations.Translate(LegacyCheckLabel), panel.width - Margin, textScale: 0.9f);
             currentY += legacyLabel.height + 5f;
 
             // Use legacy by default for this save check.

@@ -142,10 +142,10 @@ namespace RealPop2
 
             // Mutiplier slider value label.
             UILabel visitMult = sliderPanel.AddUIComponent<UILabel>();
+            visitMult.name = "ValueLabel";
             visitMult.verticalAlignment = UIVerticalAlignment.Middle;
             visitMult.textAlignment = UIHorizontalAlignment.Center;
             visitMult.textScale = 0.7f;
-            visitMult.text = RealisticVisitplaceCount.comVisitMults[subServices[index]].ToString();
             visitMult.autoSize = false;
             visitMult.color = new Color32(91, 97, 106, 255);
             visitMult.size = new Vector2(38, 15);
@@ -174,16 +174,15 @@ namespace RealPop2
             sliderThumb.relativePosition = new Vector2(0f, -OffsetX);
             visitMultSliders[index].thumbObject = sliderThumb;
 
-            // Mutiplier slider values.
-            visitMultSliders[index].stepSize = 0.05f;
-            visitMultSliders[index].minValue = 0.1f;
+            // Mutiplier slider value range.
+            visitMultSliders[index].stepSize = 0.01f;
+            visitMultSliders[index].minValue = 0.01f;
             visitMultSliders[index].maxValue = 1f;
-            visitMultSliders[index].value = RealisticVisitplaceCount.comVisitMults[subServices[index]];
 
-            visitMultSliders[index].eventValueChanged += (control, value) =>
-            {
-                visitMult.text = value.ToString();
-            };
+            // Set initial value and force intitial display.
+            visitMultSliders[index].eventValueChanged += MultSliderText;
+            visitMultSliders[index].value = RealisticVisitplaceCount.comVisitMults[subServices[index]];
+            MultSliderText(visitMultSliders[index], visitMultSliders[index].value);
 
             // Visit mode default event handler to show/hide multiplier slider.
             visitDefaultMenus[index].eventSelectedIndexChanged += VisitDefaultIndexChanged;
@@ -247,6 +246,19 @@ namespace RealPop2
 
                 // Reset visit multiplier menu selection.
                 visitDefaultMenus[i].selectedIndex = ThisLegacyCategory ? (int)RealisticVisitplaceCount.ComVisitModes.legacy : (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
+            }
+        }
+
+        /// <summary>
+        /// Updates the displayed value on a multiplier slider.
+        /// </summary>
+        /// <param name="control">Calling component</param>
+        /// <param name="value">New valie</param>
+        private  void MultSliderText(UIComponent control, float value)
+        {
+            if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
+            {
+                valueLabel.text = Mathf.RoundToInt(value * 100f).ToString() + "%";
             }
         }
     }

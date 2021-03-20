@@ -4,9 +4,6 @@ using System.Reflection.Emit;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     /// <summary>
@@ -102,5 +99,3 @@ namespace RealPop2
         }
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter
