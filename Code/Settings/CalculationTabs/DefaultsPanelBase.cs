@@ -191,7 +191,7 @@ namespace RealPop2
                 PanelUtils.RowHeaderIcon(panel, ref currentY, SubServiceNames[i], IconNames[i], AtlasNames[i]);
 
                 // Pop pack dropdown.
-                PopMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), MenuWidth, false);
+                PopMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), MenuWidth, accomodateLabel: false);
 
                 // Save current index in object user data.
                 PopMenus[i].objectUserData = i;
@@ -220,7 +220,7 @@ namespace RealPop2
                 currentY += RowHeight;
 
                 // Floor pack dropdown.
-                FloorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, false);
+                FloorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, accomodateLabel: false);
 
 
                 // Next row.

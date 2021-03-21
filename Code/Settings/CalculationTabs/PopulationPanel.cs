@@ -121,7 +121,7 @@ namespace RealPop2
                 areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
                 areaPerFields[i].tooltipBox = TooltipUtils.TooltipBox;
 
-                multiFloorChecks[i] = UIControls.AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY, multiFloorTip);
+                multiFloorChecks[i] = UIControls.AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY, tooltip: multiFloorTip);
                 multiFloorChecks[i].tooltipBox = TooltipUtils.TooltipBox;
 
                 // Move to next row.

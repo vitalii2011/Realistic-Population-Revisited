@@ -133,6 +133,7 @@
     <Compile Include="Code\Patches\ReversePatches.cs" />
     <Compile Include="Code\Patches\SimulationStepImpl.cs" />
     <Compile Include="Code\Patches\ModifyMaterialBuffer.cs" />
+    <Compile Include="Code\Patches\VisitorEnter.cs" />
     <Compile Include="Code\Patches\WorldInfoPanel.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />

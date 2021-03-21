@@ -124,7 +124,7 @@ namespace RealPop2
                 visitMultSliders = new UISlider[subServices.Length];
             }
 
-            visitDefaultMenus[index] = UIControls.AddDropDown(panel, RowAdditionX, yPos, controlWidth, Translations.Translate("RPR_DEF_VIS_TIP"));
+            visitDefaultMenus[index] = UIControls.AddDropDown(panel, RowAdditionX, yPos, controlWidth, tooltip: Translations.Translate("RPR_DEF_VIS_TIP"));
             visitDefaultMenus[index].tooltipBox = TooltipUtils.TooltipBox;
             visitDefaultMenus[index].objectUserData = index;
             visitDefaultMenus[index].items = new string[]

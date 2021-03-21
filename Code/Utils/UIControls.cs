@@ -90,6 +90,18 @@ namespace RealPop2
 
 
         /// <summary>
+        /// Adds a small textfield with an attached label to the left.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="posX">Relative X postion</param>
+        /// <param name="posY">Relative Y position</param>
+        /// <param name="text">Label text</param>
+        /// <param name="width">Textfield width (default 200)</param>
+        /// <returns>New large textfield with attached label</returns>
+        public static UITextField SmallLabelledTextField(UIComponent parent, float posX, float posY, string text, float width = 200f) => LabelledTextField(parent, posX, posY, text, width, 18f, 0.9f, 3);
+
+
+        /// <summary>
         /// Adds a large textfield with an attached label to the left.
         /// </summary>
         /// <param name="parent">Parent component</param>
@@ -224,16 +236,17 @@ namespace RealPop2
         /// Adds a checkbox with a descriptive text label immediately to the right.
         /// </summary>
         /// <param name="parent">Parent component</param>
-        /// <param name="text">Descriptive label text</param>
         /// <param name="xPos">Relative x position</param>
         /// <param name="yPos">Relative y position</param>
+        /// <param name="text">Descriptive label text</param>
         /// <param name="textScale">Text scale of label (default 0.8)</param>
+        /// <param name="size">Checkbox size (default 16f)</param>
         /// <param name="tooltip">Tooltip, if any</param>
         /// <returns>New UI checkbox with attached labels</returns>
-        public static UICheckBox LabelledCheckBox(UIComponent parent, float xPos, float yPos, string text, float textScale = 0.8f, string tooltip = null)
+        public static UICheckBox LabelledCheckBox(UIComponent parent, float xPos, float yPos, string text, float size = 16f, float textScale = 0.8f, string tooltip = null)
         {
             // Create base checkbox.
-            UICheckBox checkBox = AddCheckBox(parent, xPos, yPos, tooltip);
+            UICheckBox checkBox = AddCheckBox(parent, xPos, yPos, size, tooltip);
 
             // Label.
             checkBox.label = checkBox.AddUIComponent<UILabel>();
@@ -256,27 +269,28 @@ namespace RealPop2
         /// <param name="parent">Parent component</param>
         /// <param name="xPos">Relative x position</param>
         /// <param name="yPos">Relative y position</param>
+        /// <param name="size">Checkbox size (default 16f)</param>
         /// <param name="tooltip">Tooltip, if any</param>
         /// <returns>New UI checkbox *without* attached labels</returns>
-        public static UICheckBox AddCheckBox(UIComponent parent, float xPos, float yPos, string tooltip = null)
+        public static UICheckBox AddCheckBox(UIComponent parent, float xPos, float yPos, float size = 16f, string tooltip = null)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
 
             // Size and position.
-            checkBox.height = 16f;
-            checkBox.width = 16f;
+            checkBox.width = size;
+            checkBox.height = size;
             checkBox.clipChildren = false;
             checkBox.relativePosition = new Vector3(xPos, yPos);
 
             // Sprites.
             UISprite sprite = checkBox.AddUIComponent<UISprite>();
             sprite.spriteName = "check-unchecked";
-            sprite.size = new Vector2(16f, 16f);
+            sprite.size = new Vector2(size, size);
             sprite.relativePosition = Vector3.zero;
 
             checkBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
             ((UISprite)checkBox.checkedBoxObject).spriteName = "check-checked";
-            checkBox.checkedBoxObject.size = new Vector2(16f, 16f);
+            checkBox.checkedBoxObject.size = new Vector2(size, size);
             checkBox.checkedBoxObject.relativePosition = Vector3.zero;
 
             // Add tooltip.
