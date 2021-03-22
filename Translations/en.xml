@@ -252,7 +252,7 @@
     <Translation ID="RPR_DEF_VMU" String="Customer count multiplier" />
     <Translation ID="RPR_DEF_VMU_TIP" String="The calculated customer accounts will be multiplied by this percentage" />
     <Translation ID="RPR_DEF_CGM" String="Sales multiplier" />
-    <Translation ID="RPR_DEF_CGM_TIP" String="The amount of goods sold by this building per customer will be multiplied by this percentage" />
+    <Translation ID="RPR_DEF_CGM_TIP" String="The amount of goods sold by this building per customer will be multiplied by this percentage; reduced rates will mean fewer goods are required, but tax revenue will also be reduced" />
     <Translation ID="TRN_CHOICE" String="Set language" />
     <Translation ID="TRN_SYS" String="Use system language" />
     <Translation ID="MES_CLS" String="Close" />

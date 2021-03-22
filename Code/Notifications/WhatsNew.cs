@@ -16,6 +16,16 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 14",
+                betaVersion = 14,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Add configurable commercial sales rates (in the defaults panel), adjustable per sub-service.  Reduced rates will mean slower goods consumption, but lower tax revenue."
+                }
+            },new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 13",
                 betaVersion = 13,
                 messageKeys = false,
@@ -25,7 +35,8 @@ namespace RealPop2
                     "Fix game bug with incoming commercial goods buffer (uint16 overflow)",
                     "Limit commercial building incoming demand limits"
                 }
-            },new WhatsNewMessage
+            },
+            new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
                 versionHeader = " BETA 12",
