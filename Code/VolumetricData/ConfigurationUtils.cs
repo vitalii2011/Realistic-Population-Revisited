@@ -137,8 +137,11 @@ namespace RealPop2
                                 });
                             }
 
+                            // Deserialise visit modes.
+                            RealisticVisitplaceCount.DeserializeVisits(configFile.visitorModes);
+
                             // Deserialise commercial sales multipliers.
-                            GoodsUtils.DeSerializeSalesMults(configFile.salesMults);
+                            GoodsUtils.DeserializeSalesMults(configFile.salesMults);
                         }
                     }
                 }
@@ -269,6 +272,9 @@ namespace RealPop2
                             floorHeight = floorOverride.Value.floorHeight
                         });
                     }
+
+                    // Serialise visit modes.
+                    configFile.visitorModes = RealisticVisitplaceCount.SerializeVisits();
 
                     // Serialise commercial sales multipliers.
                     configFile.salesMults = GoodsUtils.SerializeSalesMults();

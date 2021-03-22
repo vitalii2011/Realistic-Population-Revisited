@@ -92,10 +92,10 @@ namespace RealPop2
             for (int i = 0; i < visitMultSliders.Length; ++i)
             {
                 // Reset visit multiplier slider value
-                visitMultSliders[i].value = RealisticVisitplaceCount.comVisitMults[subServices[i]];
+                visitMultSliders[i].value = RealisticVisitplaceCount.GetVisitMult(subServices[i]);
 
                 // Reset visit multiplier menu selection/
-                visitDefaultMenus[i].selectedIndex = RealisticVisitplaceCount.comVisitModes[subServices[i]];
+                visitDefaultMenus[i].selectedIndex = RealisticVisitplaceCount.GetVisitMode(subServices[i]);
             }
         }
 
@@ -139,7 +139,7 @@ namespace RealPop2
             currentY = yPos;
             visitMultSliders[index] = AddSlider(panel, RowAdditionX, currentY, controlWidth);
             visitMultSliders[index].objectUserData = index;
-            visitMultSliders[index].value = RealisticVisitplaceCount.comVisitMults[subServices[index]];
+            visitMultSliders[index].value = RealisticVisitplaceCount.GetVisitMult(subServices[index]);
             visitMultSliders[index].tooltipBox = TooltipUtils.TooltipBox;
             visitMultSliders[index].tooltip = Translations.Translate("RPR_DEF_VMU_TIP");
             MultSliderText(visitMultSliders[index], visitMultSliders[index].value);
@@ -148,7 +148,7 @@ namespace RealPop2
             visitDefaultMenus[index].eventSelectedIndexChanged += VisitDefaultIndexChanged;
 
             // Set visit mode initial selection.
-            visitDefaultMenus[index].selectedIndex = RealisticVisitplaceCount.comVisitModes[subServices[index]];
+            visitDefaultMenus[index].selectedIndex = RealisticVisitplaceCount.GetVisitMode(subServices[index]);
 
             // Customer multiplier slider.
             currentY += RowHeight;
@@ -190,19 +190,19 @@ namespace RealPop2
             sliderPanel.relativePosition = new Vector2(xPos, yPos);
 
             // Mutiplier slider value label.
-            UILabel visitMult = sliderPanel.AddUIComponent<UILabel>();
-            visitMult.name = "ValueLabel";
-            visitMult.verticalAlignment = UIVerticalAlignment.Middle;
-            visitMult.textAlignment = UIHorizontalAlignment.Center;
-            visitMult.textScale = 0.7f;
-            visitMult.autoSize = false;
-            visitMult.color = new Color32(91, 97, 106, 255);
-            visitMult.size = new Vector2(38, 15);
-            visitMult.relativePosition = new Vector2(sliderPanel.width - visitMult.width - Margin, (SliderPanelHeight - visitMult.height) / 2f);
+            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
+            valueLabel.name = "ValueLabel";
+            valueLabel.verticalAlignment = UIVerticalAlignment.Middle;
+            valueLabel.textAlignment = UIHorizontalAlignment.Center;
+            valueLabel.textScale = 0.7f;
+            valueLabel.autoSize = false;
+            valueLabel.color = new Color32(91, 97, 106, 255);
+            valueLabel.size = new Vector2(38, 15);
+            valueLabel.relativePosition = new Vector2(sliderPanel.width - valueLabel.width - Margin, (SliderPanelHeight - valueLabel.height) / 2f);
 
             // Mutiplier slider control.
             UISlider newSlider = sliderPanel.AddUIComponent<UISlider>();
-            newSlider.size = new Vector2(sliderPanel.width - visitMult.width - (Margin * 3), SliderHeight);
+            newSlider.size = new Vector2(sliderPanel.width - valueLabel.width - (Margin * 3), SliderHeight);
             newSlider.relativePosition = new Vector2(0f, OffsetX);
 
             // Mutiplier slider track.
@@ -261,10 +261,10 @@ namespace RealPop2
             for (int i = 0; i < subServices.Length; ++i)
             {
                 // Record vist mode calculations.
-               RealisticVisitplaceCount.comVisitModes[subServices[i]] = visitDefaultMenus[i].selectedIndex;
+               RealisticVisitplaceCount.SetVisitMode(subServices[i], visitDefaultMenus[i].selectedIndex);
 
                 // Record visitor mutltiplier.
-                RealisticVisitplaceCount.comVisitMults[subServices[i]] = (int)visitMultSliders[i].value;
+                RealisticVisitplaceCount.SetVisitMult(subServices[i], (int)visitMultSliders[i].value);
 
                 // Record goods multiplier.
                 GoodsUtils.SetComMult(subServices[i], (int)goodsMultSliders[i].value);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using HarmonyLib;
 
 
@@ -9,7 +10,7 @@ using HarmonyLib;
 namespace RealPop2
 {
     /// <summary>
-    /// Harmony patch to implement visit count changes for commercial buildings.
+    /// Harmony patch to implement visit count changes for commercial buildings, and supporting methods.
     /// </summary>
     [HarmonyPatch(typeof(CommercialBuildingAI))]
     [HarmonyPatch("CalculateVisitplaceCount")]
@@ -27,7 +28,7 @@ namespace RealPop2
 
 
         // Dictionaries for calculation mode and multipliers.
-        internal static Dictionary<ItemClass.SubService, int> comVisitModes = new Dictionary<ItemClass.SubService, int>
+        private static readonly Dictionary<ItemClass.SubService, int> comVisitModes = new Dictionary<ItemClass.SubService, int>
         {
             { ItemClass.SubService.CommercialLow, (int)ComVisitModes.legacy },
             { ItemClass.SubService.CommercialHigh, (int)ComVisitModes.legacy },
@@ -35,7 +36,7 @@ namespace RealPop2
             { ItemClass.SubService.CommercialTourist, (int)ComVisitModes.legacy },
             { ItemClass.SubService.CommercialEco, (int)ComVisitModes.legacy }
         };
-        internal static Dictionary<ItemClass.SubService, int> comVisitMults = new Dictionary<ItemClass.SubService, int>
+        private static readonly Dictionary<ItemClass.SubService, int> comVisitMults = new Dictionary<ItemClass.SubService, int>
         {
             { ItemClass.SubService.CommercialLow, DefaultVisitMult },
             { ItemClass.SubService.CommercialHigh, DefaultVisitMult },
@@ -160,6 +161,111 @@ namespace RealPop2
 
             // Don't execute base method after this.
             return false;
+        }
+
+
+        /// <summary>
+        /// Gets the current commerical visit mode for the specified sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Visit mode</returns>
+        internal static int GetVisitMode(ItemClass.SubService subService)
+        {
+            if (comVisitModes.ContainsKey(subService))
+            {
+                return comVisitModes[subService];
+            }
+
+            Logging.Error("invalid subservice passed to GetVisitMode");
+                return 0;
+        }
+
+
+        /// <summary>
+        /// Sets the current commerical visit mode for the specified sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service to set</param>
+        /// <param name="value">Value to set</param>
+        /// <returns>Visit mode</returns>
+        internal static void SetVisitMode(ItemClass.SubService subService, int value)
+        {
+            if (comVisitModes.ContainsKey(subService))
+            {
+                comVisitModes[subService] = Mathf.Clamp(0, value, 1);
+            }
+
+            Logging.Error("invalid subservice passed to SetVisitMode");
+        }
+
+
+        /// <summary>
+        /// Gets the current commerical visit multiplier for the specified sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Visit mode</returns>
+        internal static int GetVisitMult(ItemClass.SubService subService)
+        {
+            if (comVisitModes.ContainsKey(subService))
+            {
+                return comVisitMults[subService];
+            }
+
+            Logging.Error("invalid subservice passed to GetVisitMult");
+            return 0;
+        }
+
+
+        /// <summary>
+        /// Sets the current commerical visit multipier for the specified sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service to set</param>
+        /// <param name="value">Value to set</param>
+        /// <returns>Visit mode</returns>
+        internal static void SetVisitMult(ItemClass.SubService subService, int value)
+        {
+            if (comVisitMults.ContainsKey(subService))
+            {
+                comVisitMults[subService] = Mathf.Clamp(0, value, 100);
+            }
+
+            Logging.Error("invalid subservice passed to SetVisitMult");
+        }
+
+
+        /// <summary>
+        /// Serializes the current visitor mode settings ready for XML.
+        /// </summary>
+        /// <returns>New list of visitor mode entries ready for serialization</returns>
+        internal static List<VisitorMode> SerializeVisits()
+        {
+            List<VisitorMode> entries = new List<VisitorMode>();
+
+            foreach(KeyValuePair<ItemClass.SubService, int> entry in comVisitModes)
+            {
+                entries.Add(new VisitorMode
+                {
+                    subService = entry.Key,
+                    mode = entry.Value,
+                    multiplier = comVisitMults[entry.Key]
+                });
+            }
+
+            return entries;
+        }
+
+
+        /// <summary>
+        /// Deserializes XML visitor mode entries.
+        /// </summary>
+        /// <param name="entries">List of visitor mode entries to deserialize</param>
+        /// <returns>New list of visitor mode entries ready for serialization</returns>
+        internal static void DeserializeVisits(List<VisitorMode> entries)
+        {
+            foreach (VisitorMode entry in entries)
+            {
+                SetVisitMode(entry.subService, entry.mode);
+                SetVisitMult(entry.subService, entry.multiplier);
+            }
         }
     }
 }

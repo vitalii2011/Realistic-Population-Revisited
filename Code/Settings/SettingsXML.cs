@@ -162,7 +162,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Load settings from XML file.
+        /// Load settings from XML file - Beta legacy.
         /// </summary>
         internal static void LoadSettings()
         {
@@ -184,13 +184,13 @@ namespace RealPop2
                             // Iterate through each KeyValuePair parsed and add update entry in commercial visit modes dictionary.
                             foreach (SubServiceEntry entry in xmlSettingsFile.comVisitModes)
                             {
-                                RealisticVisitplaceCount.comVisitModes[entry.SubService] = entry.Value;
+                                RealisticVisitplaceCount.SetVisitMode(entry.subService, entry.value);
                             }
 
                             // Iterate through each KeyValuePair parsed and add update entry in commercial visit multipliers dictionary.
                             foreach (SubServiceEntry entry in xmlSettingsFile.comVisitMults)
                             {
-                                RealisticVisitplaceCount.comVisitMults[entry.SubService] = entry.Value;
+                                RealisticVisitplaceCount.SetVisitMult(entry.subService, entry.value);
                             }
                         }
                     }
@@ -219,30 +219,6 @@ namespace RealPop2
                 {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(XMLSettingsFile));
                     XMLSettingsFile settingsFile = new XMLSettingsFile();
-
-                    // Iterate though each entry in the commercial visit modes dictionary and serialize into XML KeyValuePair.
-                    List<SubServiceEntry> vistModes = new List<SubServiceEntry>();
-                    foreach (KeyValuePair<ItemClass.SubService, int> entry in RealisticVisitplaceCount.comVisitModes)
-                    {
-                        vistModes.Add(new SubServiceEntry
-                        {
-                            SubService = entry.Key,
-                            Value = entry.Value
-                        });
-                    }
-                    settingsFile.comVisitModes = vistModes;
-
-                    // Iterate though each entry in the commercial visit multipliers dictionary and serialize into XML KeyValuePair.
-                    List<SubServiceEntry> visitMults = new List<SubServiceEntry>();
-                    foreach (KeyValuePair<ItemClass.SubService, int> entry in RealisticVisitplaceCount.comVisitMults)
-                    {
-                        visitMults.Add(new SubServiceEntry
-                        {
-                            SubService = entry.Key,
-                            Value = entry.Value
-                        });
-                    }
-                    settingsFile.comVisitMults = visitMults;
 
                     // Save to file.
                     xmlSerializer.Serialize(writer, settingsFile);

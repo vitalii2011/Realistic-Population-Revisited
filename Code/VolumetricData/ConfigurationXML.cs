@@ -50,6 +50,10 @@ namespace RealPop2
         [XmlArrayItem("floors")]
         public List<FloorCalcOverride> floors;
 
+        [XmlArray("visitors")]
+        [XmlArrayItem("visitors")]
+        public List<VisitorMode> visitorModes;
+
         [XmlArray("commercial_sales")]
         [XmlArrayItem("percentage")]
         public List<SubServiceEntry> salesMults;
@@ -311,11 +315,27 @@ namespace RealPop2
     public struct SubServiceEntry
     {
         [XmlAttribute("subservice")]
-        public ItemClass.SubService SubService
-        { get; set; }
+        public ItemClass.SubService subService;
 
         [XmlAttribute("value")]
-        public int Value
-        { get; set; }
+        public int value;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Serializable]
+    [XmlType(TypeName = "visitors")]
+    public struct VisitorMode
+    {
+        [XmlAttribute("subservice")]
+        public ItemClass.SubService subService;
+
+        [XmlAttribute("mode")]
+        public int mode;
+
+        [XmlAttribute("multiplier")]
+        public int multiplier;
     }
 }

@@ -88,28 +88,28 @@ namespace RealPop2
             {
                 new SubServiceEntry
                 {
-                    SubService = ItemClass.SubService.CommercialLow,
-                    Value = lowComMult
+                    subService = ItemClass.SubService.CommercialLow,
+                    value = lowComMult
                 },
                 new SubServiceEntry
                 {
-                    SubService = ItemClass.SubService.CommercialHigh,
-                    Value = highComMult
+                    subService = ItemClass.SubService.CommercialHigh,
+                    value = highComMult
                 },
                 new SubServiceEntry
                 {
-                    SubService = ItemClass.SubService.CommercialEco,
-                    Value = ecoComMult
+                    subService = ItemClass.SubService.CommercialEco,
+                    value = ecoComMult
                 },
                 new SubServiceEntry
                 {
-                    SubService = ItemClass.SubService.CommercialLeisure,
-                    Value = leisureMult
+                    subService = ItemClass.SubService.CommercialLeisure,
+                    value = leisureMult
                 },
                 new SubServiceEntry
                 {
-                    SubService = ItemClass.SubService.CommercialTourist,
-                    Value = touristMult
+                    subService = ItemClass.SubService.CommercialTourist,
+                    value = touristMult
                 }
             };
         }
@@ -120,11 +120,11 @@ namespace RealPop2
         /// </summary>
         /// <param name="entries">List of sub-service entries to deserialize</param>
         /// <returns>New list of sub-service entries ready for serialization</returns>
-        internal static void DeSerializeSalesMults(List<SubServiceEntry> entries)
+        internal static void DeserializeSalesMults(List<SubServiceEntry> entries)
         {
             foreach (SubServiceEntry entry in entries)
             {
-                SetComMult(entry.SubService, entry.Value);
+                SetComMult(entry.subService, entry.value);
             }
         }
     }
