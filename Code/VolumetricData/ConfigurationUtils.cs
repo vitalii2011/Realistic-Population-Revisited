@@ -136,6 +136,9 @@ namespace RealPop2
                                     floorHeight = floorOverride.floorHeight
                                 });
                             }
+
+                            // Deserialise commercial sales multipliers.
+                            GoodsUtils.DeSerializeSalesMults(configFile.salesMults);
                         }
                     }
                 }
@@ -266,6 +269,9 @@ namespace RealPop2
                             floorHeight = floorOverride.Value.floorHeight
                         });
                     }
+
+                    // Serialise commercial sales multipliers.
+                    configFile.salesMults = GoodsUtils.SerializeSalesMults();
 
                     // Write to file.
                     xmlSerializer.Serialize(writer, configFile);

@@ -371,13 +371,17 @@ namespace RealPop2
         /// <param name="yPos">Relative y position</param>
         /// <param name="text">Text label</param>
         /// <param name="width">Dropdown menu width, excluding label (default 220f)</param>
-        /// <param name="accomodateLabel">True (default) to move menu to accomoate text label width, false otherwise</param>
+        /// <param name="itemTextScale">Text scaling (default 0.7f)</param>
+        /// <param name="height">Dropdown button height (default 25f)</param>
+        /// <param name="itemHeight">Dropdown menu item height (default 20)</param>
+        /// <param name="itemVertPadding">Dropdown menu item vertical text padding (default 8)</param>
+        /// <param name="accomodateLabel">True (default) to move menu to accomodate text label width, false otherwise</param>
         /// <param name="tooltip">Tooltip, if any</param>
         /// <returns>New dropdown menu with an attached text label and enclosing panel</returns>
-        public static UIDropDown AddLabelledDropDown(UIComponent parent, float xPos, float yPos, string text, float width = 220f, bool accomodateLabel = true, string tooltip = null)
+        public static UIDropDown AddLabelledDropDown(UIComponent parent, float xPos, float yPos, string text, float width = 220f, float height = 25f, float itemTextScale = 0.7f, int itemHeight = 20, int itemVertPadding = 8, bool accomodateLabel = true, string tooltip = null)
         {
             // Create dropdown.
-            UIDropDown dropDown = AddDropDown(parent, xPos, yPos, width, tooltip);
+            UIDropDown dropDown = AddDropDown(parent, xPos, yPos, width, height, itemTextScale, itemHeight, itemVertPadding, tooltip);
 
             // Add label.
             UILabel label = dropDown.AddUIComponent<UILabel>();
@@ -387,7 +391,7 @@ namespace RealPop2
             // Get width and position.
             float labelWidth = label.width + 10f;
 
-            label.relativePosition = new Vector3(-labelWidth, 6f);
+            label.relativePosition = new Vector2(-labelWidth, (height - label.height) / 2f);
 
             // Move dropdown to accomodate label if that setting is set.
             if (accomodateLabel)
@@ -406,14 +410,14 @@ namespace RealPop2
         /// <param name="xPos">Relative x position (default 20)</param>
         /// <param name="yPos">Relative y position (default 0)</param>
         /// <param name="width">Dropdown menu width, excluding label (default 220f)</param>
+        /// <param name="height">Dropdown button height (default 25f)</param>
+        /// <param name="itemTextScale">Text scaling (default 0.7f)</param>
+        /// <param name="itemHeight">Dropdown menu item height (default 20)</param>
+        /// <param name="itemVertPadding">Dropdown menu item vertical text padding (default 8)</param>
         /// <param name="tooltip">Tooltip, if any</param>
         /// <returns>New dropdown menu *without* an attached text label or enclosing panel</returns>
-        public static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f, string tooltip = null)
+        public static UIDropDown AddDropDown(UIComponent parent, float xPos, float yPos, float width = 220f, float height = 25f, float itemTextScale = 0.7f, int itemHeight = 20, int itemVertPadding = 8, string tooltip = null)
         {
-            // Constants.
-            const float Height = 25f;
-            const int ItemHeight = 20;
-
             // Create dropdown menu.
             UIDropDown dropDown = parent.AddUIComponent<UIDropDown>();
             dropDown.listBackground = "GenericPanelLight";
@@ -429,17 +433,17 @@ namespace RealPop2
             dropDown.zOrder = 1;
             dropDown.verticalAlignment = UIVerticalAlignment.Middle;
             dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
-            dropDown.textFieldPadding = new RectOffset(8, 0, 8, 0);
-            dropDown.itemPadding = new RectOffset(14, 0, 8, 0);
+            dropDown.textFieldPadding = new RectOffset(8, 0, itemVertPadding, 0);
+            dropDown.itemPadding = new RectOffset(14, 0, itemVertPadding, 0);
 
             dropDown.relativePosition = new Vector3(xPos, yPos);
 
             // Dropdown size parameters.
-            dropDown.size = new Vector2(width, Height);
+            dropDown.size = new Vector2(width, height);
             dropDown.listWidth = (int)width;
             dropDown.listHeight = 500;
-            dropDown.itemHeight = ItemHeight;
-            dropDown.textScale = 0.7f;
+            dropDown.itemHeight = itemHeight;
+            dropDown.textScale = itemTextScale;
 
             // Create dropdown button.
             UIButton button = dropDown.AddUIComponent<UIButton>();

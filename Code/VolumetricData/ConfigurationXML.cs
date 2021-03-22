@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
@@ -48,6 +49,10 @@ namespace RealPop2
         [XmlArray("override_floors")]
         [XmlArrayItem("floors")]
         public List<FloorCalcOverride> floors;
+
+        [XmlArray("commercial_sales")]
+        [XmlArrayItem("percentage")]
+        public List<SubServiceEntry> salesMults;
     }
 
 
@@ -295,5 +300,22 @@ namespace RealPop2
         // Production.
         [XmlAttribute("production")]
         public int production;
+    }
+
+
+    /// <summary>
+    /// Basic serializable KeyValuePair for SubService dictionaries. 
+    /// </summary>
+    [Serializable]
+    [XmlType(TypeName = "subservice")]
+    public struct SubServiceEntry
+    {
+        [XmlAttribute("subservice")]
+        public ItemClass.SubService SubService
+        { get; set; }
+
+        [XmlAttribute("value")]
+        public int Value
+        { get; set; }
     }
 }

@@ -78,20 +78,23 @@ namespace RealPop2
         /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
-        protected override void RowAdditions(UIPanel panel, float yPos, int index)
+        /// <returns>Relative Y coordinate below the finished setup</returns>
+        protected override float RowAdditions(UIPanel panel, float yPos, int index)
         {
-            const float ButtonHeight = 25f;
+            const float ButtonHeight = 20f;
 
 
             // Add 'apply to new buildings' button level with population pack dropdown.
-            UIButton applyNewButton = UIControls.AddButton(panel, RowAdditionX, yPos, Translations.Translate("RPR_CAL_NBD"), 200f, ButtonHeight, 0.8f);
+            UIButton applyNewButton = UIControls.AddButton(panel, RowAdditionX, yPos - RowHeight, Translations.Translate("RPR_CAL_NBD"), 200f, ButtonHeight, 0.8f);
             applyNewButton.objectUserData = index;
             applyNewButton.eventClicked += ApplyToNew;
 
             // Add 'apply to existing buildings' button level with floor pack dropdown.
-            UIButton applyExistButton = UIControls.AddButton(panel, RowAdditionX, yPos + RowHeight, Translations.Translate("RPR_CAL_ABD"), 200f, ButtonHeight, 0.8f);
+            UIButton applyExistButton = UIControls.AddButton(panel, RowAdditionX, yPos, Translations.Translate("RPR_CAL_ABD"), 200f, ButtonHeight, 0.8f);
             applyExistButton.objectUserData = index;
             applyExistButton.eventClicked += ApplyToAll;
+
+            return yPos;
         }
 
 

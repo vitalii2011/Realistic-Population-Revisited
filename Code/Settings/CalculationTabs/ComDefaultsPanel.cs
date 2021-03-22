@@ -64,7 +64,7 @@ namespace RealPop2
 
         // Panel components.
         private UIDropDown[] visitDefaultMenus;
-        private UISlider[] visitMultSliders;
+        private UISlider[] visitMultSliders, goodsMultSliders;
 
         // Legacy settings references.
         protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyCom; set => ModSettings.newSaveLegacyCom = value; }
@@ -106,25 +106,27 @@ namespace RealPop2
         /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
-        protected override void RowAdditions(UIPanel panel, float yPos, int index)
+        /// <returns>Relative Y coordinate adjusted for any finished setup</returns>
+        protected override float RowAdditions(UIPanel panel, float yPos, int index)
         {
             // Layout constants.
-            const float SliderPanelHeight = 20f;
-            const float SliderHeight = 6f;
-            const float OffsetX = (SliderPanelHeight - SliderHeight) / 2f;
             float controlWidth = panel.width - RowAdditionX;
 
+
+            float currentY = yPos - RowHeight;
+
             // Header label.
-            UIControls.AddLabel(panel, RowAdditionX, yPos - 19f, Translations.Translate("RPR_DEF_VIS"), -1, 0.8f);
+            UIControls.AddLabel(panel, RowAdditionX, currentY - 19f, Translations.Translate("RPR_DEF_VIS"), -1, 0.8f);
 
             // RowAdditions is called as part of parent constructor, so we need to initialise them here if they aren't already.
             if (visitDefaultMenus == null)
             {
                 visitDefaultMenus = new UIDropDown[subServices.Length];
                 visitMultSliders = new UISlider[subServices.Length];
+                goodsMultSliders = new UISlider[subServices.Length];
             }
 
-            visitDefaultMenus[index] = UIControls.AddDropDown(panel, RowAdditionX, yPos, controlWidth, tooltip: Translations.Translate("RPR_DEF_VIS_TIP"));
+            visitDefaultMenus[index] = UIControls.AddDropDown(panel, RowAdditionX, currentY, controlWidth, height: 20f, itemVertPadding: 6, tooltip: Translations.Translate("RPR_DEF_VIS_TIP"));
             visitDefaultMenus[index].tooltipBox = TooltipUtils.TooltipBox;
             visitDefaultMenus[index].objectUserData = index;
             visitDefaultMenus[index].items = new string[]
@@ -133,12 +135,59 @@ namespace RealPop2
                 Translations.Translate("RPR_DEF_VOL")
             };
 
+            // Visitor multiplication slider.
+            currentY = yPos;
+            visitMultSliders[index] = AddSlider(panel, RowAdditionX, currentY, controlWidth);
+            visitMultSliders[index].objectUserData = index;
+            visitMultSliders[index].value = RealisticVisitplaceCount.comVisitMults[subServices[index]];
+            visitMultSliders[index].tooltipBox = TooltipUtils.TooltipBox;
+            visitMultSliders[index].tooltip = Translations.Translate("RPR_DEF_VMU_TIP");
+            MultSliderText(visitMultSliders[index], visitMultSliders[index].value);
+
+            // Visit mode default event handler to show/hide multiplier slider.
+            visitDefaultMenus[index].eventSelectedIndexChanged += VisitDefaultIndexChanged;
+
+            // Set visit mode initial selection.
+            visitDefaultMenus[index].selectedIndex = RealisticVisitplaceCount.comVisitModes[subServices[index]];
+
+            // Customer multiplier slider.
+            currentY += RowHeight;
+            goodsMultSliders[index] = AddSlider(panel, LeftColumn, currentY, controlWidth);
+            goodsMultSliders[index].objectUserData = index;
+            goodsMultSliders[index].value = (int)GoodsUtils.GetComMult(subServices[index]);
+            goodsMultSliders[index].tooltipBox = TooltipUtils.TooltipBox;
+            goodsMultSliders[index].tooltip = Translations.Translate("RPR_DEF_CGM_TIP");
+            MultSliderText(goodsMultSliders[index], goodsMultSliders[index].value);
+
+            // Customer multiplier label.
+            UILabel goodsLabel = UIControls.AddLabel(panel, 0f, 0f, Translations.Translate("RPR_DEF_CGM"), textScale: 0.8f);
+            goodsLabel.relativePosition = new Vector3(LeftColumn - 10f - goodsLabel.width, currentY + (goodsMultSliders[index].parent.height - goodsLabel.height) / 2f);
+
+            return currentY;
+        }
+
+
+        /// <summary>
+        /// Adds a slider.
+        /// </summary>
+        /// <param name="panel">Panel reference</param>
+        /// <param name="xPos">Relative X position</param>
+        /// <param name="yPos">Relative Y position</param>
+        /// <param name="width">Slider width</param>
+        /// <returns>New slider</returns>
+        private UISlider AddSlider(UIPanel panel, float xPos, float yPos, float width)
+        {
+            // Layout constants.
+            const float SliderPanelHeight = 20f;
+            const float SliderHeight = 6f;
+            const float OffsetX = (SliderPanelHeight - SliderHeight) / 2f;
+
             // Mutiplier slider panel.
             UIPanel sliderPanel = panel.AddUIComponent<UIPanel>();
             sliderPanel.autoSize = false;
             sliderPanel.autoLayout = false;
-            sliderPanel.size = new Vector2(controlWidth, SliderPanelHeight);
-            sliderPanel.relativePosition = new Vector2(RowAdditionX, yPos + RowHeight);
+            sliderPanel.size = new Vector2(width, SliderPanelHeight);
+            sliderPanel.relativePosition = new Vector2(xPos, yPos);
 
             // Mutiplier slider value label.
             UILabel visitMult = sliderPanel.AddUIComponent<UILabel>();
@@ -152,43 +201,36 @@ namespace RealPop2
             visitMult.relativePosition = new Vector2(sliderPanel.width - visitMult.width - Margin, (SliderPanelHeight - visitMult.height) / 2f);
 
             // Mutiplier slider control.
-            visitMultSliders[index] = sliderPanel.AddUIComponent<UISlider>();
-            visitMultSliders[index].size = new Vector2(sliderPanel.width - visitMult.width - (Margin * 3), SliderHeight);
-            visitMultSliders[index].relativePosition = new Vector2(0f, OffsetX);
-            visitMultSliders[index].objectUserData = index;
+            UISlider newSlider = sliderPanel.AddUIComponent<UISlider>();
+            newSlider.size = new Vector2(sliderPanel.width - visitMult.width - (Margin * 3), SliderHeight);
+            newSlider.relativePosition = new Vector2(0f, OffsetX);
 
             // Mutiplier slider track.
-            UISlicedSprite sliderSprite = visitMultSliders[index].AddUIComponent<UISlicedSprite>();
+            UISlicedSprite sliderSprite = newSlider.AddUIComponent<UISlicedSprite>();
             sliderSprite.autoSize = false;
-            sliderSprite.size = new Vector2(visitMultSliders[index].width, visitMultSliders[index].height);
+            sliderSprite.size = new Vector2(newSlider.width, newSlider.height);
             sliderSprite.relativePosition = new Vector2(0f, 0f);
             sliderSprite.atlas = TextureUtils.InGameAtlas;
             sliderSprite.spriteName = "ScrollbarTrack";
 
             // Mutiplier slider thumb.
-            UISlicedSprite sliderThumb = visitMultSliders[index].AddUIComponent<UISlicedSprite>();
+            UISlicedSprite sliderThumb = newSlider.AddUIComponent<UISlicedSprite>();
             sliderThumb.atlas = TextureUtils.InGameAtlas;
             sliderThumb.spriteName = "ScrollbarThumb";
             sliderThumb.height = 20f;
             sliderThumb.width = 10f;
             sliderThumb.relativePosition = new Vector2(0f, -OffsetX);
-            visitMultSliders[index].thumbObject = sliderThumb;
+            newSlider.thumbObject = sliderThumb;
 
             // Mutiplier slider value range.
-            visitMultSliders[index].stepSize = 1f;
-            visitMultSliders[index].minValue = 1f;
-            visitMultSliders[index].maxValue = 100f;
+            newSlider.stepSize = 1f;
+            newSlider.minValue = 1f;
+            newSlider.maxValue = 100f;
 
-            // Set initial value and force intitial display.
-            visitMultSliders[index].eventValueChanged += MultSliderText;
-            visitMultSliders[index].value = RealisticVisitplaceCount.comVisitMults[subServices[index]];
-            MultSliderText(visitMultSliders[index], visitMultSliders[index].value);
+            // Event handler to update text.
+            newSlider.eventValueChanged += MultSliderText;
 
-            // Visit mode default event handler to show/hide multiplier slider.
-            visitDefaultMenus[index].eventSelectedIndexChanged += VisitDefaultIndexChanged;
-
-            // Set visit mode initial selection.
-            visitDefaultMenus[index].selectedIndex = RealisticVisitplaceCount.comVisitModes[subServices[index]];
+            return newSlider;
         }
 
 
@@ -221,8 +263,11 @@ namespace RealPop2
                 // Record vist mode calculations.
                RealisticVisitplaceCount.comVisitModes[subServices[i]] = visitDefaultMenus[i].selectedIndex;
 
-                // Record mutltiplier.
+                // Record visitor mutltiplier.
                 RealisticVisitplaceCount.comVisitMults[subServices[i]] = (int)visitMultSliders[i].value;
+
+                // Record goods multiplier.
+                GoodsUtils.SetComMult(subServices[i], (int)goodsMultSliders[i].value);
             }
 
             base.Apply(control, mouseEvent);
@@ -246,6 +291,9 @@ namespace RealPop2
 
                 // Reset visit multiplier menu selection.
                 visitDefaultMenus[i].selectedIndex = ThisLegacyCategory ? (int)RealisticVisitplaceCount.ComVisitModes.legacy : (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
+
+                // Reset goods multiplier slider value.
+                visitMultSliders[i].value = GoodsUtils.DefaultSalesMult;
             }
         }
 

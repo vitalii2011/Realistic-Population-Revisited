@@ -133,7 +133,6 @@
     <Compile Include="Code\Patches\ReversePatches.cs" />
     <Compile Include="Code\Patches\SimulationStepImpl.cs" />
     <Compile Include="Code\Patches\ModifyMaterialBuffer.cs" />
-    <Compile Include="Code\Patches\VisitorEnter.cs" />
     <Compile Include="Code\Patches\WorldInfoPanel.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationPanelBase.cs" />
@@ -159,6 +158,7 @@
     <Compile Include="Code\Settings\CalculationTabs\EmpDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\PopulationPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
+    <Compile Include="Code\Utils\GoodsUtils.cs" />
     <Compile Include="Code\Utils\TextureUtils.cs" />
     <Compile Include="Code\Utils\TooltipUtils.cs" />
     <Compile Include="Code\Utils\UIControls.cs" />

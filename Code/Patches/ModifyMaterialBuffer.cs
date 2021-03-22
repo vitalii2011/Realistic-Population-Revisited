@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
@@ -13,7 +14,7 @@ namespace RealPop2
     public static class ModifyMaterialBufferFix
     {
         /// <summary>
-        /// Harmony transpiler for CommercialBuildingAI.ModifyMaterialBuffer, to insert a custom call to fix a game bug (no bounds check on uint16).
+        /// Harmony transpiler for CommercialBuildingAI.ModifyMaterialBuffer, to insert a goods consumed multiplier and a custom call to fix a game bug (no bounds check on uint16).
         /// </summary>
         /// <param name="original">Original method</param>
         /// <param name="instructions">Original ILCode</param>
@@ -21,6 +22,18 @@ namespace RealPop2
         /// <returns>Patched ILCode</returns>
         public static IEnumerable<CodeInstruction> Transpiler(MethodBase original, IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
+            // Two insertions to make here.
+
+            /*
+             * Inserting:
+             * amountDelta = (amountDelta * GoodsUtils.GetComMult(ref building)) / 100
+             * 
+             * Just after:
+             * int customBuffer = data.m_customBuffer2;
+             * 
+             * To implement custom consumer consumption multiplier.
+             */
+
             /* Inserting a call to our custom buffer overflow check method, so:
 			 * amountDelta = Mathf.Clamp(amountDelta, 0, num3 - customBuffer2)
 			 * Becomes:
@@ -33,6 +46,8 @@ namespace RealPop2
 			 * [insert here]
 			 * 
 			 * stind.i4
+			 * 
+			 * To fix game bug where uint16 overflows can occur here.
 			 */
 
             // ILCode local variable indexes.
@@ -40,7 +55,7 @@ namespace RealPop2
 
 
             // Status flag.
-            bool isPatched = false;
+            bool isFirstPatched = false, isSecondPatched = false;
 
 
             // Instruction parsing.
@@ -54,8 +69,36 @@ namespace RealPop2
                 instruction = instructionsEnumerator.Current;
                 yield return instruction;
 
+                // Fist patch - looking for first field call to get m_customBuffer2.
+                if (!isFirstPatched && instruction.opcode == OpCodes.Ldfld && instruction.operand.ToString().Equals("System.UInt16 m_customBuffer2"))
+                {
+                    // Found it - are there following instructions?
+                    if (instructionsEnumerator.MoveNext())
+                    {
+                        // Yes - get the next instruction.
+                        instruction = instructionsEnumerator.Current;
+                        yield return instruction;
+
+                        // Check if this one is storing the result in local variable 0 (customBuffer)
+                        if (instruction.opcode == OpCodes.Stloc_0)
+                        {
+                            // Yes - insert multiplier code here.
+                            yield return new CodeInstruction(OpCodes.Ldarg_S, 4);
+                            yield return new CodeInstruction(OpCodes.Ldarg_S, 4);
+                            yield return new CodeInstruction(OpCodes.Ldind_I4);
+                            yield return new CodeInstruction(OpCodes.Ldarg_2);
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(GoodsUtils), nameof(GoodsUtils.GetComMult), new Type[] { typeof(Building).MakeByRefType()}));
+                            yield return new CodeInstruction(OpCodes.Mul);
+                            yield return new CodeInstruction(OpCodes.Ldc_I4, 100);
+                            yield return new CodeInstruction(OpCodes.Div);
+                            yield return new CodeInstruction(OpCodes.Stind_I4);
+                            isFirstPatched = true;
+                        }
+                    }
+                }
+
                 // Looking for possible precursor calls to "call Math.Max".
-                if (!isPatched && instruction.opcode == OpCodes.Sub)
+                if (!isSecondPatched && instruction.opcode == OpCodes.Sub)
                 {
                     // Found sub - are there following instructions?
                     if (instructionsEnumerator.MoveNext())
@@ -73,7 +116,7 @@ namespace RealPop2
                             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModifyMaterialBufferFix), nameof(ModifyMaterialBufferFix.BufferOverflowCheck)));
 
                             // Set flag.
-                            isPatched = true;
+                            isSecondPatched = true;
                         }
                     }
                 }

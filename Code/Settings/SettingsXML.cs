@@ -110,12 +110,12 @@ namespace RealPop2
         // Commercial visitor calculations - clamp to 0 or 1 at this stage.
         [XmlArray("CommercialVisitsModes")]
         [XmlArrayItem("Mode")]
-        public List<SubServiceEntry<ItemClass.SubService, int>> comVisitModes;
+        public List<SubServiceEntry> comVisitModes;
 
         // Commercial visitor multiplier.
         [XmlArray("CommercialVisitsPercentages")]
         [XmlArrayItem("Percentage")]
-        public List<SubServiceEntry<ItemClass.SubService, int>> comVisitMults;
+        public List<SubServiceEntry> comVisitMults;
 
         // Realistic education.
         [XmlElement("EnableSchoolPop")]
@@ -154,26 +154,6 @@ namespace RealPop2
     }
 
 
-
-    /// <summary>
-    /// Basic serializable KeyValuePair for SubService dictionaries. 
-    /// </summary>
-    /// <typeparam name="K">Key</typeparam>
-    /// <typeparam name="V">Value</typeparam>
-    [Serializable]
-    [XmlType(TypeName = "SubServiceEntry")]
-    public struct SubServiceEntry<K, V>
-    {
-        [XmlAttribute("SubService")]
-        public K Key
-        { get; set; }
-
-        [XmlAttribute("Value")]
-        public V Value
-        { get; set; }
-    }
-
-
     /// XML serialization/deserialization utilities class.
     /// </summary>
     internal static class SettingsUtils
@@ -202,15 +182,15 @@ namespace RealPop2
                         else
                         {
                             // Iterate through each KeyValuePair parsed and add update entry in commercial visit modes dictionary.
-                            foreach (SubServiceEntry<ItemClass.SubService, int> entry in xmlSettingsFile.comVisitModes)
+                            foreach (SubServiceEntry entry in xmlSettingsFile.comVisitModes)
                             {
-                                RealisticVisitplaceCount.comVisitModes[entry.Key] = entry.Value;
+                                RealisticVisitplaceCount.comVisitModes[entry.SubService] = entry.Value;
                             }
 
                             // Iterate through each KeyValuePair parsed and add update entry in commercial visit multipliers dictionary.
-                            foreach (SubServiceEntry<ItemClass.SubService, int> entry in xmlSettingsFile.comVisitMults)
+                            foreach (SubServiceEntry entry in xmlSettingsFile.comVisitMults)
                             {
-                                RealisticVisitplaceCount.comVisitMults[entry.Key] = entry.Value;
+                                RealisticVisitplaceCount.comVisitMults[entry.SubService] = entry.Value;
                             }
                         }
                     }
@@ -241,24 +221,24 @@ namespace RealPop2
                     XMLSettingsFile settingsFile = new XMLSettingsFile();
 
                     // Iterate though each entry in the commercial visit modes dictionary and serialize into XML KeyValuePair.
-                    List<SubServiceEntry<ItemClass.SubService, int>> vistModes = new List<SubServiceEntry<ItemClass.SubService, int>>();
+                    List<SubServiceEntry> vistModes = new List<SubServiceEntry>();
                     foreach (KeyValuePair<ItemClass.SubService, int> entry in RealisticVisitplaceCount.comVisitModes)
                     {
-                        vistModes.Add(new SubServiceEntry<ItemClass.SubService, int>
+                        vistModes.Add(new SubServiceEntry
                         {
-                            Key = entry.Key,
+                            SubService = entry.Key,
                             Value = entry.Value
                         });
                     }
                     settingsFile.comVisitModes = vistModes;
 
                     // Iterate though each entry in the commercial visit multipliers dictionary and serialize into XML KeyValuePair.
-                    List<SubServiceEntry<ItemClass.SubService, int>> visitMults = new List<SubServiceEntry<ItemClass.SubService, int>>();
+                    List<SubServiceEntry> visitMults = new List<SubServiceEntry>();
                     foreach (KeyValuePair<ItemClass.SubService, int> entry in RealisticVisitplaceCount.comVisitMults)
                     {
-                        visitMults.Add(new SubServiceEntry<ItemClass.SubService, int>
+                        visitMults.Add(new SubServiceEntry
                         {
-                            Key = entry.Key,
+                            SubService = entry.Key,
                             Value = entry.Value
                         });
                     }

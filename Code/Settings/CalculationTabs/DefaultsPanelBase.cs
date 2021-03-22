@@ -10,11 +10,11 @@ namespace RealPop2
     internal abstract class DefaultsPanel
     {
         // Layout constants.
-        private const float LeftColumn = 200f;
+        protected const float LeftColumn = 200f;
         private const float MenuWidth = 300f;
         protected const float Margin = 5f;
         protected const float RowAdditionX = LeftColumn + MenuWidth + (Margin * 2);
-        protected float RowHeight = 30f;
+        protected float RowHeight = 25f;
 
 
         // Instance references.
@@ -191,7 +191,7 @@ namespace RealPop2
                 PanelUtils.RowHeaderIcon(panel, ref currentY, SubServiceNames[i], IconNames[i], AtlasNames[i]);
 
                 // Pop pack dropdown.
-                PopMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), MenuWidth, accomodateLabel: false);
+                PopMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_DEN"), MenuWidth, height: 20f, itemVertPadding: 6, accomodateLabel: false);
 
                 // Save current index in object user data.
                 PopMenus[i].objectUserData = i;
@@ -213,14 +213,14 @@ namespace RealPop2
                     }
                 };
 
-                // Add any additional controls to right of row.
-                RowAdditions(panel, currentY, i);
-
                 // Floor pack on next row.
                 currentY += RowHeight;
 
                 // Floor pack dropdown.
-                FloorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, accomodateLabel: false);
+                FloorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, height: 20f, itemVertPadding: 6, accomodateLabel: false);
+
+                // Add any additional controls.
+                currentY = RowAdditions(panel, currentY, i);
 
 
                 // Next row.
@@ -262,13 +262,15 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Adds any additional controls to the right of each row.
+        /// Adds any additional controls for each row.
         /// </summary>
         /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
-        protected virtual void RowAdditions(UIPanel panel, float yPos, int index)
+        /// <returns>Relative Y coordinate below the finished setup</returns>
+        protected virtual float RowAdditions(UIPanel panel, float yPos, int index)
         {
+            return yPos;
         }
 
 
