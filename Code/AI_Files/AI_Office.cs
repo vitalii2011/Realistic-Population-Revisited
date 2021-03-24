@@ -60,40 +60,6 @@ namespace RealPop2
     }
 
 
-    [HarmonyPatch(typeof(OfficeBuildingAI))]
-    [HarmonyPatch("CalculateProductionCapacity")]
-    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    public static class RealisticOfficeProduction
-    {
-
-        public static bool Prefix(ref int __result, OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
-        {
-            BuildingInfo item = __instance.m_info;
-
-            int[] workplaces = PopData.instance.WorkplaceCache(item, (int)level);
-            int totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
-
-            if (totalWorkers > 0)
-            {
-                // Employment is available
-                int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
-
-                // Original method return value.
-                __result = Mathf.Max(1, totalWorkers / array[DataStore.PRODUCTION]);
-            }
-            else
-            {
-                // Original method return value.
-                // Return minimum to be safe.
-                __result = 1;
-            }
-
-            // Don't execute base method after this.
-            return false;
-        }
-    }
-
-
     public class OfficeBuildingAIMod : OfficeBuildingAI
     {
         public static int[] GetArray(BuildingInfo item, int level)

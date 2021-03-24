@@ -91,17 +91,17 @@ namespace RealPop2
             // Reset sliders and menus.
             for (int i = 0; i < visitMultSliders.Length; ++i)
             {
-                // Reset visit multiplier slider value
+                // Reset visit multiplier slider values.
                 visitMultSliders[i].value = RealisticVisitplaceCount.GetVisitMult(subServices[i]);
 
-                // Reset visit multiplier menu selection/
+                // Reset visit mode menu selections.
                 visitDefaultMenus[i].selectedIndex = RealisticVisitplaceCount.GetVisitMode(subServices[i]);
             }
         }
 
 
         /// <summary>
-        /// Adds any additional controls to the right of each row.
+        /// Adds any additional controls to each row.
         /// </summary>
         /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
@@ -168,73 +168,6 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Adds a slider.
-        /// </summary>
-        /// <param name="panel">Panel reference</param>
-        /// <param name="xPos">Relative X position</param>
-        /// <param name="yPos">Relative Y position</param>
-        /// <param name="width">Slider width</param>
-        /// <returns>New slider</returns>
-        private UISlider AddSlider(UIPanel panel, float xPos, float yPos, float width)
-        {
-            // Layout constants.
-            const float SliderPanelHeight = 20f;
-            const float SliderHeight = 6f;
-            const float OffsetX = (SliderPanelHeight - SliderHeight) / 2f;
-
-            // Mutiplier slider panel.
-            UIPanel sliderPanel = panel.AddUIComponent<UIPanel>();
-            sliderPanel.autoSize = false;
-            sliderPanel.autoLayout = false;
-            sliderPanel.size = new Vector2(width, SliderPanelHeight);
-            sliderPanel.relativePosition = new Vector2(xPos, yPos);
-
-            // Mutiplier slider value label.
-            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
-            valueLabel.name = "ValueLabel";
-            valueLabel.verticalAlignment = UIVerticalAlignment.Middle;
-            valueLabel.textAlignment = UIHorizontalAlignment.Center;
-            valueLabel.textScale = 0.7f;
-            valueLabel.autoSize = false;
-            valueLabel.color = new Color32(91, 97, 106, 255);
-            valueLabel.size = new Vector2(38, 15);
-            valueLabel.relativePosition = new Vector2(sliderPanel.width - valueLabel.width - Margin, (SliderPanelHeight - valueLabel.height) / 2f);
-
-            // Mutiplier slider control.
-            UISlider newSlider = sliderPanel.AddUIComponent<UISlider>();
-            newSlider.size = new Vector2(sliderPanel.width - valueLabel.width - (Margin * 3), SliderHeight);
-            newSlider.relativePosition = new Vector2(0f, OffsetX);
-
-            // Mutiplier slider track.
-            UISlicedSprite sliderSprite = newSlider.AddUIComponent<UISlicedSprite>();
-            sliderSprite.autoSize = false;
-            sliderSprite.size = new Vector2(newSlider.width, newSlider.height);
-            sliderSprite.relativePosition = new Vector2(0f, 0f);
-            sliderSprite.atlas = TextureUtils.InGameAtlas;
-            sliderSprite.spriteName = "ScrollbarTrack";
-
-            // Mutiplier slider thumb.
-            UISlicedSprite sliderThumb = newSlider.AddUIComponent<UISlicedSprite>();
-            sliderThumb.atlas = TextureUtils.InGameAtlas;
-            sliderThumb.spriteName = "ScrollbarThumb";
-            sliderThumb.height = 20f;
-            sliderThumb.width = 10f;
-            sliderThumb.relativePosition = new Vector2(0f, -OffsetX);
-            newSlider.thumbObject = sliderThumb;
-
-            // Mutiplier slider value range.
-            newSlider.stepSize = 1f;
-            newSlider.minValue = 1f;
-            newSlider.maxValue = 100f;
-
-            // Event handler to update text.
-            newSlider.eventValueChanged += MultSliderText;
-
-            return newSlider;
-        }
-
-
-        /// <summary>
         /// Visit default menu index changed event handler.
         /// <param name="control">Calling component</param>
         /// <param name="index">New selected index</param>
@@ -257,7 +190,7 @@ namespace RealPop2
         /// <param name="mouseEvent">Mouse event (unused)</param>
         protected override void Apply(UIComponent control, UIMouseEventParameter mouseEvent)
         {
-            // Extract subservice index from this control's object user data.
+            // Iterate through all subservices.
             for (int i = 0; i < subServices.Length; ++i)
             {
                 // Record vist mode calculations.
@@ -294,19 +227,6 @@ namespace RealPop2
 
                 // Reset goods multiplier slider value.
                 visitMultSliders[i].value = GoodsUtils.DefaultSalesMult;
-            }
-        }
-
-        /// <summary>
-        /// Updates the displayed value on a multiplier slider.
-        /// </summary>
-        /// <param name="control">Calling component</param>
-        /// <param name="value">New valie</param>
-        private  void MultSliderText(UIComponent control, float value)
-        {
-            if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
-            {
-                valueLabel.text = Mathf.RoundToInt(value).ToString() + "%";
             }
         }
     }

@@ -57,6 +57,10 @@ namespace RealPop2
         [XmlArray("commercial_sales")]
         [XmlArrayItem("percentage")]
         public List<SubServiceEntry> salesMults;
+
+        [XmlArray("office_production")]
+        [XmlArrayItem("percentage")]
+        public List<SubServiceEntry> offProdMults;
     }
 
 

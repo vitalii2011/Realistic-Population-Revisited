@@ -12,8 +12,7 @@ namespace RealPop2
     /// <summary>
     /// Harmony patch to implement visit count changes for commercial buildings, and supporting methods.
     /// </summary>
-    [HarmonyPatch(typeof(CommercialBuildingAI))]
-    [HarmonyPatch("CalculateVisitplaceCount")]
+    [HarmonyPatch(typeof(CommercialBuildingAI), nameof(CommercialBuildingAI.CalculateVisitplaceCount))]
     public static class RealisticVisitplaceCount
     {
 
@@ -24,7 +23,11 @@ namespace RealPop2
             legacy
         }
 
+        // Default multiplier.
         internal const int DefaultVisitMult = 40;
+
+        // Maximum multiplier.
+        internal const int MaxVisitMult = 100;
 
 
         // Dictionaries for calculation mode and multipliers.
@@ -225,7 +228,7 @@ namespace RealPop2
         {
             if (comVisitMults.ContainsKey(subService))
             {
-                comVisitMults[subService] = Mathf.Clamp(0, value, 100);
+                comVisitMults[subService] = Mathf.Clamp(0, value, MaxVisitMult);
             }
 
             Logging.Error("invalid subservice passed to SetVisitMult");

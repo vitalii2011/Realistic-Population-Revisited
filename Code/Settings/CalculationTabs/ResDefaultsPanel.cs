@@ -73,7 +73,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Adds any additional controls to the right of each row.
+        /// Adds any additional controls to each row.
         /// </summary>
         /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
