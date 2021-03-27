@@ -122,8 +122,8 @@ namespace RealPop2
             currentY = yPos;
             prodMultSliders[index] = AddSlider(panel, RowAdditionX, currentY, controlWidth);
             prodMultSliders[index].objectUserData = index;
-            prodMultSliders[index].maxValue = RealisticOfficeProduction.MaxProdMult;
-            prodMultSliders[index].value = RealisticOfficeProduction.GetProdMult(subServices[index]);
+            prodMultSliders[index].maxValue = RealisticIndustrialProduction.MaxProdMult;
+            prodMultSliders[index].value = RealisticIndustrialProduction.GetProdMult();
             prodMultSliders[index].tooltipBox = TooltipUtils.TooltipBox;
             prodMultSliders[index].tooltip = Translations.Translate("RPR_DEF_PRD_TIP");
             MultSliderText(prodMultSliders[index], prodMultSliders[index].value);

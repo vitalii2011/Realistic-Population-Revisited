@@ -140,7 +140,7 @@ namespace RealPop2
                 return prodModes[subService];
             }
 
-            Logging.Error("invalid subservice passed to GetProdMode");
+            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor GetProdMode");
             return 0;
         }
 
@@ -157,7 +157,7 @@ namespace RealPop2
                 prodModes[subService] = Mathf.Clamp(0, value, 1);
             }
 
-            Logging.Error("invalid subservice passed to SetProdMode");
+            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMode");
         }
 
 
@@ -173,7 +173,7 @@ namespace RealPop2
                 return prodMults[subService];
             }
 
-            Logging.Error("invalid subservice passed to GetProdMult");
+            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor GetProdMult");
             return 0;
         }
 
@@ -191,7 +191,7 @@ namespace RealPop2
                 prodMults[subService] = Mathf.Clamp(0, value, MaxProdMult);
             }
 
-            Logging.Error("invalid subservice passed to SetProdMult");
+            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMult");
         }
 
 
