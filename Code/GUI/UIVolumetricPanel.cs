@@ -34,7 +34,7 @@ namespace RealPop2
 
         // Panel components.
         private UIFastList floorsList;
-        private UILabel numFloorsLabel, floorAreaLabel, visitCountLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
+        private UILabel numFloorsLabel, floorAreaLabel, visitCountLabel, productionLabel, firstMinLabel, firstExtraLabel, floorHeightLabel;
         private UILabel emptyAreaLabel, emptyPercentLabel, perLabel, unitsLabel;
         private UILabel totalHomesLabel, totalJobsLabel, totalStudentsLabel;
         private UILabel schoolWorkerLabel, costLabel;
@@ -69,6 +69,7 @@ namespace RealPop2
             totalJobsLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_WOR", RightColumn, Row7, "RPR_CAL_VOL_UTS_TIP");
             totalStudentsLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_STU", RightColumn, Row7, "RPR_CAL_VOL_UTS_TIP");
             visitCountLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_VIS", RightColumn, Row8, "RPR_CAL_VOL_VIS_TIP");
+            productionLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_PRD", RightColumn, Row8, "RPR_CAL_VOL_PRD_TIP");
             unitsLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_UNI", LeftColumn, Row2, "RPR_CAL_VOL_UNI_TIP");
             emptyPercentLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_EPC", LeftColumn, Row2, "RPR_CAL_VOL_EPC_TIP");
             emptyAreaLabel = AddVolumetricLabel(this, "RPR_CAL_VOL_EMP", LeftColumn, Row3, "RPR_CAL_VOL_EMP_TIP");
@@ -316,6 +317,8 @@ namespace RealPop2
                     break;
             }
 
+
+
             // Display commercial visit count, or hide the label if not commercial.
             if (building.GetAI() is CommercialBuildingAI commercialAI)
             {
@@ -325,6 +328,17 @@ namespace RealPop2
             else
             {
                 visitCountLabel.Hide();
+            }
+
+            // Display production count, or hide the label if not a production building.
+            if (building.GetAI() is PrivateBuildingAI privateAI && (privateAI is OfficeBuildingAI || privateAI is IndustrialBuildingAI || privateAI is IndustrialExtractorAI))
+            {
+                productionLabel.Show();
+                productionLabel.text = privateAI.CalculateProductionCapacity(building.GetClassLevel(), new ColossalFramework.Math.Randomizer(), building.GetWidth(), building.GetLength()).ToString();
+            }
+            else
+            {
+                productionLabel.Hide();
             }
 
 

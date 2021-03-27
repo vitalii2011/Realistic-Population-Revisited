@@ -37,7 +37,7 @@ namespace RealPop2
 
         // Special-purpose labels used to display either jobs or households as appropriate.
         private UILabel homesJobsCalcLabel, homesJobsCustomLabel, homesJobsActualLabel;
-        private UILabel visitCountLabel;
+        private UILabel visitCountLabel, productionLabel;
 
 
         /// <summary>
@@ -86,6 +86,11 @@ namespace RealPop2
             visitCountLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 5) * LineHeight);
             visitCountLabel.width = 270;
             visitCountLabel.textAlignment = UIHorizontalAlignment.Left;
+
+            productionLabel = this.AddUIComponent<UILabel>();
+            productionLabel.relativePosition = new Vector3(LeftPadding, ((int)Details.numDetails + 5) * LineHeight);
+            productionLabel.width = 270;
+            productionLabel.textAlignment = UIHorizontalAlignment.Left;
 
             // Message label (initially hidden).
             messageLabel = this.AddUIComponent<UILabel>();
@@ -203,6 +208,17 @@ namespace RealPop2
                 else
                 {
                     visitCountLabel.Hide();
+                }
+
+                // Display production count, or hide the label if not a production building.
+                if (building.GetAI() is PrivateBuildingAI privateAI && (privateAI is OfficeBuildingAI || privateAI is IndustrialBuildingAI || privateAI is IndustrialExtractorAI))
+                {
+                    productionLabel.Show();
+                    productionLabel.text = Translations.Translate("RPR_CAL_VOL_PRD") + " " + privateAI.CalculateProductionCapacity(building.GetClassLevel(), new ColossalFramework.Math.Randomizer(), building.GetWidth(), building.GetLength()).ToString();
+                }
+                else
+                {
+                    productionLabel.Hide();
                 }
             }
 

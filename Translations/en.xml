@@ -141,7 +141,9 @@
     <Translation ID="RPR_CAL_VOL_UTS" String="Total units" />
     <Translation ID="RPR_CAL_VOL_UTS_TIP" String="The total population (households or workplaces) for this building calculated using the above settings." />
     <Translation ID="RPR_CAL_VOL_VIS" String="Visitor count" />
-    <Translation ID="RPR_CAL_VOL_VIS_TIP" String="The number of customer visits supported by this building for each business cycle." />
+    <Translation ID="RPR_CAL_VOL_VIS_TIP" String="The maximum number of simultaneous customers supported by this building." />
+    <Translation ID="RPR_CAL_VOL_PRD" String="Production rate" />
+    <Translation ID="RPR_CAL_VOL_PRD_TIP" String="This building's maximum rate of production." />
     <Translation ID="RPR_CAL_VOL_FLH" String="Floor height" />
     <Translation ID="RPR_CAL_VOL_FLH_TIP" String="The typical floor-to-floor height, in meters, of each story in this building (the first floor has additional options below)." />
     <Translation ID="RPR_CAL_VOL_FMN" String="First floor height min" />
