@@ -15,7 +15,6 @@ namespace RealPop2
     [HarmonyPatch(typeof(CommercialBuildingAI), nameof(CommercialBuildingAI.CalculateVisitplaceCount))]
     public static class RealisticVisitplaceCount
     {
-
         // Commercial visits modes.
         internal enum ComVisitModes
         {
@@ -50,37 +49,6 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Sets the visit mode for all commercial subservices to the specified mode.
-        /// </summary>
-        /// <param name="visitMode">Visit mode to set</param>
-        internal static int SetVisitModes
-        {
-            set
-            {
-                foreach (ItemClass.SubService subService in comVisitModes.Keys)
-                {
-                    comVisitModes[subService] = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the visit percentage multiplier for all commercial subservices to the specified mode.
-        /// </summary>
-        /// <param name="visitMode">Visit mode to set</param>
-        internal static int SetVisitMults
-        {
-            set
-            {
-                foreach (ItemClass.SubService subService in comVisitMults.Keys)
-                {
-                    comVisitMults[subService] = value;
-                }
-            }
-        }
-
-
-        /// <summary>
         /// Harmony Prefix patch to ResidentialBuildingAI.CalculateHomeCount to implement mod population calculations.
         /// </summary>
         /// <param name="__result">Original method result</param>
@@ -91,7 +59,7 @@ namespace RealPop2
         {
             // Get builidng info.
             BuildingInfo info = __instance.m_info;
-            ItemClass.SubService subService = info.m_class.m_subService;
+            ItemClass.SubService subService = info.GetSubService();
 
             // New or old calculations?
             if (comVisitModes[subService] == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs)
@@ -168,10 +136,39 @@ namespace RealPop2
 
 
         /// <summary>
+        /// Sets the visit mode for all commercial subservices to the specified mode.
+        /// </summary>
+        internal static int SetVisitModes
+        {
+            set
+            {
+                foreach (ItemClass.SubService subService in comVisitModes.Keys)
+                {
+                    comVisitModes[subService] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the visit percentage multiplier for all commercial subservices to the specified mode.
+        /// </summary>
+        internal static int SetVisitMults
+        {
+            set
+            {
+                foreach (ItemClass.SubService subService in comVisitMults.Keys)
+                {
+                    comVisitMults[subService] = value;
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Gets the current commerical visit mode for the specified sub-service.
         /// </summary>
         /// <param name="subService">Sub-service</param>
-        /// <returns>Visit mode</returns>
+        /// <returns>Visit calculation mode</returns>
         internal static int GetVisitMode(ItemClass.SubService subService)
         {
             if (comVisitModes.ContainsKey(subService))
@@ -180,7 +177,7 @@ namespace RealPop2
             }
 
             Logging.Error("invalid subservice passed to GetVisitMode");
-                return 0;
+            return 0;
         }
 
 
@@ -189,7 +186,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
-        /// <returns>Visit mode</returns>
+        /// <returns>Visit calculaiton mode</returns>
         internal static void SetVisitMode(ItemClass.SubService subService, int value)
         {
             if (comVisitModes.ContainsKey(subService))
@@ -205,10 +202,10 @@ namespace RealPop2
         /// Gets the current commerical visit multiplier for the specified sub-service.
         /// </summary>
         /// <param name="subService">Sub-service</param>
-        /// <returns>Visit mode</returns>
+        /// <returns>Visit multiplier</returns>
         internal static int GetVisitMult(ItemClass.SubService subService)
         {
-            if (comVisitModes.ContainsKey(subService))
+            if (comVisitMults.ContainsKey(subService))
             {
                 return comVisitMults[subService];
             }
@@ -223,7 +220,6 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
-        /// <returns>Visit mode</returns>
         internal static void SetVisitMult(ItemClass.SubService subService, int value)
         {
             if (comVisitMults.ContainsKey(subService))
@@ -239,13 +235,13 @@ namespace RealPop2
         /// Serializes the current visitor mode settings ready for XML.
         /// </summary>
         /// <returns>New list of visitor mode entries ready for serialization</returns>
-        internal static List<VisitorMode> SerializeVisits()
+        internal static List<SubServiceMode> SerializeVisits()
         {
-            List<VisitorMode> entries = new List<VisitorMode>();
+            List<SubServiceMode> entries = new List<SubServiceMode>();
 
             foreach(KeyValuePair<ItemClass.SubService, int> entry in comVisitModes)
             {
-                entries.Add(new VisitorMode
+                entries.Add(new SubServiceMode
                 {
                     subService = entry.Key,
                     mode = entry.Value,
@@ -262,9 +258,9 @@ namespace RealPop2
         /// </summary>
         /// <param name="entries">List of visitor mode entries to deserialize</param>
         /// <returns>New list of visitor mode entries ready for serialization</returns>
-        internal static void DeserializeVisits(List<VisitorMode> entries)
+        internal static void DeserializeVisits(List<SubServiceMode> entries)
         {
-            foreach (VisitorMode entry in entries)
+            foreach (SubServiceMode entry in entries)
             {
                 SetVisitMode(entry.subService, entry.mode);
                 SetVisitMult(entry.subService, entry.multiplier);

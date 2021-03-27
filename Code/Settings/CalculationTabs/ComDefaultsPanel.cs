@@ -168,22 +168,6 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Visit default menu index changed event handler.
-        /// <param name="control">Calling component</param>
-        /// <param name="index">New selected index</param>
-        /// </summary>
-        private void VisitDefaultIndexChanged(UIComponent control, int index)
-        {
-            // Extract subservice index from this control's object user data.
-            if (control.objectUserData is int subServiceIndex)
-            {
-                // Toggle multiplier slider visibility based on current state.
-                visitMultSliders[subServiceIndex].parent.isVisible = index == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
-            }
-        }
-
-
-        /// <summary>
         /// 'Save and apply' button event handler.
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
@@ -193,10 +177,10 @@ namespace RealPop2
             // Iterate through all subservices.
             for (int i = 0; i < subServices.Length; ++i)
             {
-                // Record vist mode calculations.
+                // Record vist calculation modes.
                RealisticVisitplaceCount.SetVisitMode(subServices[i], visitDefaultMenus[i].selectedIndex);
 
-                // Record visitor mutltiplier.
+                // Record visitor multiplier.
                 RealisticVisitplaceCount.SetVisitMult(subServices[i], (int)visitMultSliders[i].value);
 
                 // Record goods multiplier.
@@ -222,11 +206,27 @@ namespace RealPop2
                 // Reset visit multiplier slider value.
                 visitMultSliders[i].value = RealisticVisitplaceCount.DefaultVisitMult;
 
-                // Reset visit multiplier menu selection.
+                // Reset visit mode menu selection.
                 visitDefaultMenus[i].selectedIndex = ThisLegacyCategory ? (int)RealisticVisitplaceCount.ComVisitModes.legacy : (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
 
                 // Reset goods multiplier slider value.
                 visitMultSliders[i].value = GoodsUtils.DefaultSalesMult;
+            }
+        }
+
+
+        /// <summary>
+        /// Visit default menu index changed event handler.
+        /// <param name="control">Calling component</param>
+        /// <param name="index">New selected index</param>
+        /// </summary>
+        private void VisitDefaultIndexChanged(UIComponent control, int index)
+        {
+            // Extract subservice index from this control's object user data.
+            if (control.objectUserData is int subServiceIndex)
+            {
+                // Toggle multiplier slider visibility based on current state.
+                visitMultSliders[subServiceIndex].parent.isVisible = index == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
             }
         }
     }

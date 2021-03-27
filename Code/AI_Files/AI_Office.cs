@@ -4,9 +4,6 @@ using UnityEngine;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     [HarmonyPatch(typeof(OfficeBuildingAI))]
@@ -47,7 +44,7 @@ namespace RealPop2
         new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
     public static class RealisticOfficePollution
     {
-        public static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        public static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, out int groundPollution, out int noisePollution)
         {
             int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int) level);
 
@@ -88,5 +85,3 @@ namespace RealPop2
         }
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter

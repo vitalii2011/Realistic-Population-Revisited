@@ -4,9 +4,6 @@ using UnityEngine;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     [HarmonyPatch(typeof(IndustrialBuildingAI))]
@@ -48,7 +45,7 @@ namespace RealPop2
     public static class RealisticIndustrialPollution
     {
 
-        public static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        public static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, int productionRate, out int groundPollution, out int noisePollution)
         {
             int[] array = IndustrialBuildingAIMod.GetArray(__instance.m_info, (int)level);
 
@@ -59,25 +56,6 @@ namespace RealPop2
             return false;
         }
     }
-
-
-    [HarmonyPatch(typeof(IndustrialBuildingAI))]
-    [HarmonyPatch("CalculateProductionCapacity")]
-    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    public static class RealisticIndustrialProduction
-    {
-        public static bool Prefix(ref int __result, IndustrialBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
-        {
-            int[] array = IndustrialBuildingAIMod.GetArray(__instance.m_info, (int)level);
-
-            // Original method return value.
-            __result = Mathf.Max(100, width * length * array[DataStore.PRODUCTION]) / 100;
-
-            // Don't execute base method after this.
-            return false;
-        }
-    }
-
 
     public static class IndustrialBuildingAIMod
     {
@@ -126,5 +104,3 @@ namespace RealPop2
         }
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter

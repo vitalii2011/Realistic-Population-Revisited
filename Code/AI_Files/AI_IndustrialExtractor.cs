@@ -4,9 +4,6 @@ using UnityEngine;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     [HarmonyPatch(typeof(IndustrialExtractorAI))]
@@ -15,7 +12,7 @@ namespace RealPop2
       new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out, ArgumentType.Out })]
     public static class RealisticExtractorConsumption
     {
-        public static bool Prefix(IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
+        public static bool Prefix(IndustrialExtractorAI __instance, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
             int[] array = IndustrialExtractorAIMod.GetArray(__instance.m_info, IndustrialExtractorAIMod.EXTRACT_LEVEL);
 
@@ -48,30 +45,12 @@ namespace RealPop2
     public static class RealisticExtractorPollution
     {
 
-        public static bool Prefix(IndustrialExtractorAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
+        public static bool Prefix(IndustrialExtractorAI __instance, int productionRate, out int groundPollution, out int noisePollution)
         {
             int[] array = IndustrialExtractorAIMod.GetArray(__instance.m_info, IndustrialExtractorAIMod.EXTRACT_LEVEL);
 
             groundPollution = (productionRate * array[DataStore.GROUND_POLLUTION]) / 100;
             noisePollution = (productionRate * array[DataStore.NOISE_POLLUTION]) / 100;
-
-            // Don't execute base method after this.
-            return false;
-        }
-    }
-
-
-    [HarmonyPatch(typeof(IndustrialExtractorAI))]
-    [HarmonyPatch("CalculateProductionCapacity")]
-    [HarmonyPatch(new Type[] { typeof(ItemClass.Level), typeof(Randomizer), typeof(int), typeof(int) })]
-    public static class RealisticExtractorProduction
-    {
-        public static bool Prefix(ref int __result, IndustrialExtractorAI __instance, ItemClass.Level level, Randomizer r, int width, int length)
-        {
-            int[] array = IndustrialExtractorAIMod.GetArray(__instance.m_info, IndustrialExtractorAIMod.EXTRACT_LEVEL);
-
-            // Original method return value.
-            __result = Mathf.Max(100, width * length * array[DataStore.PRODUCTION]) / 100;
 
             // Don't execute base method after this.
             return false;
@@ -123,5 +102,3 @@ namespace RealPop2
         } // end getArray
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter

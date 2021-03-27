@@ -41,7 +41,7 @@ namespace RealPop2
         protected override string[] AtlasNames => atlasNames;
 
         // Tab width.
-        protected override float TabWidth => 50f;
+        protected override float TabWidth => 40f;
 
 
         /// <summary>

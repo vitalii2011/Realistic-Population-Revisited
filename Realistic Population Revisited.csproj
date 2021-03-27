@@ -126,7 +126,9 @@
     <Compile Include="Code\Notifications\WhatsNewMessageBox.cs" />
     <Compile Include="Code\Patches\BuildingUpgraded.cs" />
     <Compile Include="Code\Patches\CalculateHomeCount.cs" />
-    <Compile Include="Code\Patches\CalculateProductionCapacity.cs" />
+    <Compile Include="Code\Patches\ExtractorProductionCapacity.cs" />
+    <Compile Include="Code\Patches\IndustrialProductionCapacity.cs" />
+    <Compile Include="Code\Patches\OfficeProductionCapacity.cs" />
     <Compile Include="Code\Patches\CalculateVisitplaceCount.cs" />
     <Compile Include="Code\Patches\CalculateWorkplaceCount.cs" />
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\PanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ResidentialPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\DefaultsPanelBase.cs" />
+    <Compile Include="Code\Settings\CalculationTabs\ExtractorDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\FloorPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\IndDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\OffDefaultsPanel.cs" />

@@ -16,28 +16,14 @@ namespace RealPop2
     public static class RealisticOfficeProduction
     {
         // Default multiplier.
-        internal const int DefaultOfficeMult = 100;
+        internal const int DefaultProdMult = 100;
 
         // Maximum multiplier.
         internal const int MaxProdMult = 200;
 
         // Settings per subservice.
-        private static int genericOfficeProdMult = DefaultOfficeMult;
-        private static int highTechOfficeProdMult = DefaultOfficeMult;
-
-
-        /// <summary>
-        /// Sets the production percentage multiplier for all office subservices to the specified mode.
-        /// </summary>
-        /// <param name="visitMode">Visit mode to set</param>
-        internal static int SetVisitMults
-        {
-            set
-            {
-                genericOfficeProdMult = DefaultOfficeMult;
-                highTechOfficeProdMult = DefaultOfficeMult;
-            }
-        }
+        private static int genericOfficeProdMult = DefaultProdMult;
+        private static int highTechOfficeProdMult = DefaultProdMult;
 
 
         /// <summary>
@@ -51,14 +37,14 @@ namespace RealPop2
         {
             // Get builidng info.
             BuildingInfo info = __instance.m_info;
-            ItemClass.SubService subService = info.m_class.m_subService;
+            ItemClass.SubService subService = info.GetSubService();
 
-                // Get cached workplace count and calculate total workplaces.
-                int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
-                float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
+            // Get cached workplace count and calculate total workplaces.
+            int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
+            float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
 
-                // Multiply total workers by multipler and overall multiplier (from settings) to get result; divisor is 1,000 to match original mod 1/10th when at 100% production.
-                __result = (int)((totalWorkers * (subService == ItemClass.SubService.OfficeHightech ? highTechOfficeProdMult : genericOfficeProdMult)) / 1000f);
+            // Multiply total workers by overall multiplier (from settings) to get result; divisor is 1,000 to match original mod 1/10th when at 100% production.
+            __result = (int)((totalWorkers * (subService == ItemClass.SubService.OfficeHightech ? highTechOfficeProdMult : genericOfficeProdMult)) / 1000f);
 
 
             // Always set at least one.
@@ -71,7 +57,6 @@ namespace RealPop2
             // Don't execute base method after this.
             return false;
         }
-
 
 
         /// <summary>
@@ -123,16 +108,16 @@ namespace RealPop2
         /// Serializes the current office production multiplier settings ready for XML.
         /// </summary>
         /// <returns>New list of office production multiplier entries ready for serialization</returns>
-        internal static List<SubServiceEntry> SerializeProdMults()
+        internal static List<SubServiceValue> SerializeProdMults()
         {
-            return new List<SubServiceEntry>()
+            return new List<SubServiceValue>()
             {
-                new SubServiceEntry
+                new SubServiceValue
                 {
                     subService = ItemClass.SubService.OfficeGeneric,
                     value = genericOfficeProdMult
                 },
-                new SubServiceEntry
+                new SubServiceValue
                 {
                     subService = ItemClass.SubService.OfficeHightech,
                     value = highTechOfficeProdMult
@@ -142,13 +127,13 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Deserializes XML visitor mode entries.
+        /// Deserializes XML office production multiplier entries.
         /// </summary>
         /// <param name="entries">List of office production multiplier entries to deserialize</param>
         /// <returns>New list of voffice production multiplier entries ready for serialization</returns>
-        internal static void DeserializeProdMults(List<SubServiceEntry> entries)
+        internal static void DeserializeProdMults(List<SubServiceValue> entries)
         {
-            foreach (SubServiceEntry entry in entries)
+            foreach (SubServiceValue entry in entries)
             {
                 SetProdMult(entry.subService, entry.value);
             }

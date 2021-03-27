@@ -15,7 +15,7 @@ namespace RealPop2
 
         // Components.
         private readonly ResDefaultsPanel resDefaults;
-        private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults;
+        private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults, extDefaults;
         private readonly SchDefaultsPanel schDefaults;
 
 
@@ -49,6 +49,7 @@ namespace RealPop2
             resDefaults = new ResDefaultsPanel(childTabStrip, tab++);
             comDefaults = new ComDefaultsPanel(childTabStrip, tab++);
             indDefaults = new IndDefaultsPanel(childTabStrip, tab++);
+            extDefaults = new ExtDefaultsPanel(childTabStrip, tab++);
             offDefaults = new OffDefaultsPanel(childTabStrip, tab++);
             schDefaults = new SchDefaultsPanel(childTabStrip, tab++);
             new PopulationPanel(childTabStrip, tab++);
@@ -68,6 +69,7 @@ namespace RealPop2
             comDefaults.UpdateMenus();
             offDefaults.UpdateMenus();
             indDefaults.UpdateMenus();
+            extDefaults.UpdateMenus();
             schDefaults.UpdateMenus();
         }
     }

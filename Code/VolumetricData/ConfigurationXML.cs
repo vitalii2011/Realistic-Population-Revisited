@@ -52,15 +52,23 @@ namespace RealPop2
 
         [XmlArray("visitors")]
         [XmlArrayItem("visitors")]
-        public List<VisitorMode> visitorModes;
+        public List<SubServiceMode> visitorModes;
 
         [XmlArray("commercial_sales")]
         [XmlArrayItem("percentage")]
-        public List<SubServiceEntry> salesMults;
+        public List<SubServiceValue> salesMults;
 
         [XmlArray("office_production")]
         [XmlArrayItem("percentage")]
-        public List<SubServiceEntry> offProdMults;
+        public List<SubServiceValue> offProdMults;
+
+        [XmlArray("industrial_production")]
+        [XmlArrayItem("production")]
+        public List<SubServiceMode> indProdModes;
+
+        [XmlArray("extractor_production")]
+        [XmlArrayItem("production")]
+        public List<SubServiceMode> extProdModes;
     }
 
 
@@ -316,7 +324,7 @@ namespace RealPop2
     /// </summary>
     [Serializable]
     [XmlType(TypeName = "subservice")]
-    public struct SubServiceEntry
+    public struct SubServiceValue
     {
         [XmlAttribute("subservice")]
         public ItemClass.SubService subService;
@@ -330,8 +338,8 @@ namespace RealPop2
     /// 
     /// </summary>
     [Serializable]
-    [XmlType(TypeName = "visitors")]
-    public struct VisitorMode
+    [XmlType(TypeName = "subservice")]
+    public struct SubServiceMode
     {
         [XmlAttribute("subservice")]
         public ItemClass.SubService subService;

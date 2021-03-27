@@ -12,10 +12,12 @@ namespace RealPop2
         private static bool thisSaveLegacyRes = false;
         private static bool thisSaveLegacyCom = false;
         private static bool thisSaveLegacyInd = false;
+        private static bool thisSaveLegacyExt = false;
         private static bool thisSaveLegacyOff = false;
         internal static bool newSaveLegacyRes = false;
         internal static bool newSaveLegacyCom = false;
         internal static bool newSaveLegacyInd = false;
+        internal static bool newSaveLegacyExt = false;
         internal static bool newSaveLegacyOff = false;
 
         // Enable additional features.
@@ -79,7 +81,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Handles current 'use legacy by default for industiral' option changes.
+        /// Handles current 'use legacy by default for industrial' option changes.
         /// </summary>
         internal static bool ThisSaveLegacyInd
         {
@@ -96,6 +98,29 @@ namespace RealPop2
                     ClearWorkplaceCaches();
                     // Update flag.
                     thisSaveLegacyInd = value;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Handles current 'use legacy by default for extractors' option changes.
+        /// </summary>
+        internal static bool ThisSaveLegacyExt
+        {
+            // Simple getter.
+            get => thisSaveLegacyExt;
+
+            // Setter needs to clear out DataStore cache if the setting has changed (to force calculation of new values).
+            set
+            {
+                // Has setting changed?
+                if (value != thisSaveLegacyExt)
+                {
+                    // Yes - clear caches.
+                    ClearWorkplaceCaches();
+                    // Update flag.
+                    thisSaveLegacyExt = value;
                 }
             }
         }

@@ -82,31 +82,31 @@ namespace RealPop2
         /// Serializes the current settings ready for XML.
         /// </summary>
         /// <returns>New list of sub-service entries ready for serialization</returns>
-        internal static List<SubServiceEntry> SerializeSalesMults()
+        internal static List<SubServiceValue> SerializeSalesMults()
         {
-            return new List<SubServiceEntry>
+            return new List<SubServiceValue>
             {
-                new SubServiceEntry
+                new SubServiceValue
                 {
                     subService = ItemClass.SubService.CommercialLow,
                     value = lowComMult
                 },
-                new SubServiceEntry
+                new SubServiceValue
                 {
                     subService = ItemClass.SubService.CommercialHigh,
                     value = highComMult
                 },
-                new SubServiceEntry
+                new SubServiceValue
                 {
                     subService = ItemClass.SubService.CommercialEco,
                     value = ecoComMult
                 },
-                new SubServiceEntry
+                new SubServiceValue
                 {
                     subService = ItemClass.SubService.CommercialLeisure,
                     value = leisureMult
                 },
-                new SubServiceEntry
+                new SubServiceValue
                 {
                     subService = ItemClass.SubService.CommercialTourist,
                     value = touristMult
@@ -120,9 +120,9 @@ namespace RealPop2
         /// </summary>
         /// <param name="entries">List of sub-service entries to deserialize</param>
         /// <returns>New list of sub-service entries ready for serialization</returns>
-        internal static void DeserializeSalesMults(List<SubServiceEntry> entries)
+        internal static void DeserializeSalesMults(List<SubServiceValue> entries)
         {
-            foreach (SubServiceEntry entry in entries)
+            foreach (SubServiceValue entry in entries)
             {
                 SetComMult(entry.subService, entry.value);
             }

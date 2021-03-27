@@ -183,16 +183,14 @@ namespace RealPop2
             WhatsNewMessage latestMessage = WhatsNewMessages[0];
 
             // Don't show notification if we're already up to (or ahead of) the first what's new message (including Beta updates).
-            if (whatsNewVersion < latestMessage.version || (whatsNewVersion == latestMessage.version && latestMessage.betaVersion <= ModSettings.whatsNewBetaVersion))
+            if (whatsNewVersion < latestMessage.version || (whatsNewVersion == latestMessage.version && latestMessage.betaVersion < ModSettings.whatsNewBetaVersion))
             {
-                return;
+                // Show messagebox.
+                WhatsNewMessageBox messageBox = MessageBoxBase.ShowModal<WhatsNewMessageBox>();
+                messageBox.Title = RealPopMod.ModName + " " + RealPopMod.Version;
+                messageBox.DSAButton.eventClicked += (component, clickEvent) => DontShowAgain();
+                messageBox.SetMessages(whatsNewVersion, WhatsNewMessages);
             }
-
-            // Show messagebox.
-            WhatsNewMessageBox messageBox = MessageBoxBase.ShowModal<WhatsNewMessageBox>();
-            messageBox.Title = RealPopMod.ModName + " " + RealPopMod.Version;
-            messageBox.DSAButton.eventClicked += (component, clickEvent) => DontShowAgain();
-            messageBox.SetMessages(whatsNewVersion, WhatsNewMessages);
         }
     }
 

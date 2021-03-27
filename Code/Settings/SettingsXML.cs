@@ -103,6 +103,9 @@ namespace RealPop2
         [XmlElement("NewSavesLegacyInd")]
         public bool DefaultLegacyInd { get => ModSettings.newSaveLegacyInd; set => ModSettings.newSaveLegacyInd = value; }
 
+        [XmlElement("NewSavesLegacyExt")]
+        public bool DefaultLegacyExt { get => ModSettings.newSaveLegacyExt; set => ModSettings.newSaveLegacyExt = value; }
+
         [XmlElement("NewSavesLegacyOff")]
         public bool DefaultLegacyOff { get => ModSettings.newSaveLegacyOff; set => ModSettings.newSaveLegacyOff = value; }
 
@@ -110,12 +113,12 @@ namespace RealPop2
         // Commercial visitor calculations - clamp to 0 or 1 at this stage.
         [XmlArray("CommercialVisitsModes")]
         [XmlArrayItem("Mode")]
-        public List<SubServiceEntry> comVisitModes;
+        public List<SubServiceValue> comVisitModes;
 
         // Commercial visitor multiplier.
         [XmlArray("CommercialVisitsPercentages")]
         [XmlArrayItem("Percentage")]
-        public List<SubServiceEntry> comVisitMults;
+        public List<SubServiceValue> comVisitMults;
 
         // Realistic education.
         [XmlElement("EnableSchoolPop")]
@@ -182,13 +185,13 @@ namespace RealPop2
                         else
                         {
                             // Iterate through each KeyValuePair parsed and add update entry in commercial visit modes dictionary.
-                            foreach (SubServiceEntry entry in xmlSettingsFile.comVisitModes)
+                            foreach (SubServiceValue entry in xmlSettingsFile.comVisitModes)
                             {
                                 RealisticVisitplaceCount.SetVisitMode(entry.subService, entry.value);
                             }
 
                             // Iterate through each KeyValuePair parsed and add update entry in commercial visit multipliers dictionary.
-                            foreach (SubServiceEntry entry in xmlSettingsFile.comVisitMults)
+                            foreach (SubServiceValue entry in xmlSettingsFile.comVisitMults)
                             {
                                 RealisticVisitplaceCount.SetVisitMult(entry.subService, entry.value);
                             }

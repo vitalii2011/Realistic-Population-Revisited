@@ -6,37 +6,47 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default employment calculation packs.
     /// </summary>
-    internal class OffDefaultsPanel : EmpDefaultsPanel
+    internal class ExtDefaultsPanel : EmpDefaultsPanel
     {
         // Service/subservice arrays.
         private readonly string[] subServiceNames =
         {
-            Translations.Translate("RPR_CAT_OFF"),
-            Translations.Translate("RPR_CAT_ITC")
+            Translations.Translate("RPR_CAT_FAR"),
+            Translations.Translate("RPR_CAT_FOR"),
+            Translations.Translate("RPR_CAT_OIL"),
+            Translations.Translate("RPR_CAT_ORE")
         };
 
         private readonly ItemClass.Service[] services =
         {
-            ItemClass.Service.Office,
-            ItemClass.Service.Office
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Industrial
         };
 
         private readonly ItemClass.SubService[] subServices =
         {
-            ItemClass.SubService.OfficeGeneric,
-            ItemClass.SubService.OfficeHightech
+            ItemClass.SubService.IndustrialFarming,
+            ItemClass.SubService.IndustrialForestry,
+            ItemClass.SubService.IndustrialOil,
+            ItemClass.SubService.IndustrialOre,
         };
 
         private readonly string[] iconNames =
         {
-            "ZoningOffice",
-            "IconPolicyHightech"
+            "IconPolicyFarming",
+            "IconPolicyForest",
+            "IconPolicyOil",
+            "IconPolicyOre",
         };
 
         private readonly string[] atlasNames =
         {
-            "Thumbnails",
-            "Ingame"
+            "Ingame",
+            "Ingame",
+            "Ingame",
+            "Ingame",
         };
 
         protected override string[] SubServiceNames => subServiceNames;
@@ -45,18 +55,15 @@ namespace RealPop2
         protected override string[] IconNames => iconNames;
         protected override string[] AtlasNames => atlasNames;
 
-        // Tab width.
-        protected override float TabWidth => 50f;
-
-
         // Panel components.
         private UISlider[] prodMultSliders;
+        private UIDropDown[] prodDefaultMenus;
 
 
         // Legacy settings references.
-        protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyOff; set => ModSettings.newSaveLegacyOff = value; }
-        protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyOff; set => ModSettings.ThisSaveLegacyOff = value; }
-        protected override string LegacyCheckLabel => "RPR_DEF_LGO";
+        protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyExt; set => ModSettings.newSaveLegacyExt = value; }
+        protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyExt; set => ModSettings.ThisSaveLegacyExt = value; }
+        protected override string LegacyCheckLabel => "RPR_DEF_LGI";
 
 
         /// <summary>
@@ -64,9 +71,10 @@ namespace RealPop2
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal OffDefaultsPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
+        internal ExtDefaultsPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
         }
+
 
         // <summary>
         /// Updates pack selection menu items.
@@ -78,8 +86,11 @@ namespace RealPop2
             // Reset sliders and menus.
             for (int i = 0; i < prodMultSliders.Length; ++i)
             {
-                // Reset production multiplier slider values.
-                prodMultSliders[i].value = RealisticOfficeProduction.GetProdMult(subServices[i]);
+                // Reset visit multiplier slider values.
+                prodMultSliders[i].value = RealisticExtractorProduction.GetProdMult(subServices[i]);
+
+                // Reset visit mode menu selections.
+                prodDefaultMenus[i].selectedIndex = RealisticExtractorProduction.GetProdMode(subServices[i]);
             }
         }
 
@@ -106,9 +117,20 @@ namespace RealPop2
             if (prodMultSliders == null)
             {
                 prodMultSliders = new UISlider[subServices.Length];
+                prodDefaultMenus = new UIDropDown[subServices.Length];
             }
 
+            prodDefaultMenus[index] = UIControls.AddDropDown(panel, RowAdditionX, currentY, controlWidth, height: 20f, itemVertPadding: 6, tooltip: Translations.Translate("RPR_DEF_VIS_TIP"));
+            prodDefaultMenus[index].tooltipBox = TooltipUtils.TooltipBox;
+            prodDefaultMenus[index].objectUserData = index;
+            prodDefaultMenus[index].items = new string[]
+            {
+                Translations.Translate("RPR_DEF_VNE"),
+                Translations.Translate("RPR_DEF_VOL")
+            };
+
             // Production multiplication slider.
+            currentY = yPos;
             prodMultSliders[index] = AddSlider(panel, RowAdditionX, currentY, controlWidth);
             prodMultSliders[index].objectUserData = index;
             prodMultSliders[index].maxValue = RealisticOfficeProduction.MaxProdMult;
@@ -116,6 +138,12 @@ namespace RealPop2
             prodMultSliders[index].tooltipBox = TooltipUtils.TooltipBox;
             prodMultSliders[index].tooltip = Translations.Translate("RPR_DEF_PRD_TIP");
             MultSliderText(prodMultSliders[index], prodMultSliders[index].value);
+
+            // Production calculation mode default event handler to show/hide multiplier slider.
+            prodDefaultMenus[index].eventSelectedIndexChanged += ProdDefaultIndexChanged;
+
+            // Set prodution calculation mode initial selection.
+            prodDefaultMenus[index].selectedIndex = RealisticExtractorProduction.GetProdMode(subServices[index]);
 
             return yPos;
         }
@@ -131,8 +159,11 @@ namespace RealPop2
             // Iterate through all subservices.
             for (int i = 0; i < subServices.Length; ++i)
             {
-                // Record production mutltiplier.
-                RealisticOfficeProduction.SetProdMult(subServices[i], (int)prodMultSliders[i].value);
+                // Record production calculation modes.
+                RealisticExtractorProduction.SetProdMode(subServices[i], prodDefaultMenus[i].selectedIndex);
+
+                // Record production multiplier.
+                RealisticExtractorProduction.SetProdMult(subServices[i], (int)prodMultSliders[i].value);
             }
 
             base.Apply(control, mouseEvent);
@@ -148,11 +179,30 @@ namespace RealPop2
         {
             base.ResetDefaults(control, mouseEvent);
 
-            // Reset sliders.
+            // Reset sliders and menus.
             for (int i = 0; i < prodMultSliders.Length; ++i)
             {
                 // Reset production multiplier slider value.
-                prodMultSliders[i].value = RealisticOfficeProduction.DefaultProdMult;
+                prodMultSliders[i].value = RealisticExtractorProduction.DefaultProdMult;
+
+                // Reset visit mode menu selection.
+                prodDefaultMenus[i].selectedIndex = ThisLegacyCategory ? (int)RealisticExtractorProduction.ProdModes.legacy : (int)RealisticExtractorProduction.ProdModes.popCalcs;
+            }
+        }
+
+
+        /// <summary>
+        /// Production mode menu index changed event handler.
+        /// <param name="control">Calling component</param>
+        /// <param name="index">New selected index</param>
+        /// </summary>
+        private void ProdDefaultIndexChanged(UIComponent control, int index)
+        {
+            // Extract subservice index from this control's object user data.
+            if (control.objectUserData is int subServiceIndex)
+            {
+                // Toggle multiplier slider visibility based on current state.
+                prodMultSliders[subServiceIndex].parent.isVisible = index == (int)RealisticExtractorProduction.ProdModes.popCalcs;
             }
         }
     }

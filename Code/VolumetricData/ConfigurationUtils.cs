@@ -145,6 +145,10 @@ namespace RealPop2
 
                             // Deserialise office production multipliers.
                             RealisticOfficeProduction.DeserializeProdMults(configFile.offProdMults);
+
+                            // Deserialize industrial production calculation modes.
+                            RealisticIndustrialProduction.DeserializeProds(configFile.indProdModes);
+                            RealisticExtractorProduction.DeserializeProds(configFile.extProdModes);
                         }
                     }
                 }
@@ -282,8 +286,12 @@ namespace RealPop2
                     // Serialise commercial sales multipliers.
                     configFile.salesMults = GoodsUtils.SerializeSalesMults();
 
-                    // Deserialise office production multipliers.
+                    // Serialise office production multipliers.
                     configFile.offProdMults = RealisticOfficeProduction.SerializeProdMults();
+
+                    // Serialize industrial production calculation modes.
+                    configFile.indProdModes = RealisticIndustrialProduction.SerializeProds();
+                    configFile.extProdModes = RealisticExtractorProduction.SerializeProds();
 
                     // Write to file.
                     xmlSerializer.Serialize(writer, configFile);
