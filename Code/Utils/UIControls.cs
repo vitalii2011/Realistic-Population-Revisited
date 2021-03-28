@@ -250,14 +250,14 @@ namespace RealPop2
 
             // Label.
             checkBox.label = checkBox.AddUIComponent<UILabel>();
-            checkBox.label.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
+            checkBox.label.verticalAlignment = UIVerticalAlignment.Middle;
             checkBox.label.textScale = textScale;
             checkBox.label.autoSize = true;
             checkBox.label.text = text;
-            checkBox.label.relativePosition = new Vector2(21f, (checkBox.label.height - checkBox.height) / 2f);
 
             // Dynamic width to accomodate label.
             checkBox.width = checkBox.label.width + 21f;
+            checkBox.label.relativePosition = new Vector2(21f, ((checkBox.height - checkBox.label.height) / 2f) + 1f);
 
             return checkBox;
         }
