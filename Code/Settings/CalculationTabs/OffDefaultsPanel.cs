@@ -96,11 +96,13 @@ namespace RealPop2
             // Layout constants.
             float controlWidth = panel.width - RowAdditionX;
 
-
-            float currentY = yPos - RowHeight;
+            // Attach controls to floor menu, so visibility will follow same state (i.e. hidden when legacy calculations are selected, shown otherwise).
+            UIDropDown floorMenu = FloorMenus[index];
+            float additionX = RowAdditionX - floorMenu.relativePosition.x;
+            float currentY = yPos - RowHeight - floorMenu.relativePosition.y;
 
             // Header label.
-            UIControls.AddLabel(panel, RowAdditionX, currentY - 19f, Translations.Translate("RPR_DEF_PRD"), -1, 0.8f);
+            UIControls.AddLabel(floorMenu, additionX, currentY - 19f, Translations.Translate("RPR_DEF_PRD"), -1, 0.8f);
 
             // RowAdditions is called as part of parent constructor, so we need to initialise them here if they aren't already.
             if (prodMultSliders == null)
@@ -109,7 +111,7 @@ namespace RealPop2
             }
 
             // Production multiplication slider.
-            prodMultSliders[index] = AddSlider(panel, RowAdditionX, currentY, controlWidth);
+            prodMultSliders[index] = AddSlider(floorMenu, additionX, currentY, controlWidth);
             prodMultSliders[index].objectUserData = index;
             prodMultSliders[index].maxValue = RealisticOfficeProduction.MaxProdMult;
             prodMultSliders[index].value = RealisticOfficeProduction.GetProdMult(subServices[index]);

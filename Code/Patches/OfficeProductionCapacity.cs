@@ -3,10 +3,6 @@ using UnityEngine;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     /// <summary>
@@ -33,7 +29,7 @@ namespace RealPop2
         /// <param name="__instance">Original AI instance reference</param>
         /// <param name="level">Building level</param>
         /// <returns>False (don't execute base game method after this)</returns>
-        public static bool Prefix(ref int __result, OfficeBuildingAI __instance, ItemClass.Level level, int width, int length)
+        public static bool Prefix(ref int __result, OfficeBuildingAI __instance, ItemClass.Level level)
         {
             // Get builidng info.
             BuildingInfo info = __instance.m_info;
@@ -41,16 +37,35 @@ namespace RealPop2
 
             // Get cached workplace count and calculate total workplaces.
             int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
-            float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
+            int totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
 
-            // Multiply total workers by overall multiplier (from settings) to get result; divisor is 1,000 to match original mod 1/10th when at 100% production.
-            __result = (int)((totalWorkers * (subService == ItemClass.SubService.OfficeHightech ? highTechOfficeProdMult : genericOfficeProdMult)) / 1000f);
+            // Using legacy settings?
+            if (PopData.instance.ActivePack(info).version == (int)DataVersion.legacy)
+            {
+                // Legacy settings.
+                int[] array = OfficeBuildingAIMod.GetArray(info, (int)level);
 
+                Logging.Message("using Legacy office production settings, with level ", level.ToString(), " and production parameter ", array[DataStore.PRODUCTION].ToString());
+                string message = "Details";
+                foreach(int item in array)
+                {
+                    message += ": " + item.ToString();
+                }
+                Logging.Message(message);
+
+
+                // Original method return value.
+                __result = totalWorkers / array[DataStore.PRODUCTION];
+            }
+            else
+            {
+                // Hew settings - multiply total workers by overall multiplier (from settings) to get result; divisor is 1,000 to match original mod 1/10th when at 100% production.
+                __result = (totalWorkers * (subService == ItemClass.SubService.OfficeHightech ? highTechOfficeProdMult : genericOfficeProdMult)) / 1000;
+            }
 
             // Always set at least one.
             if (__result < 1)
             {
-                Logging.Error("invalid production result ", __result.ToString(), " for ", __instance.m_info.name, "; setting to 1");
                 __result = 1;
             }
 
@@ -140,6 +155,3 @@ namespace RealPop2
         }
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter
-#pragma warning restore IDE0079 // Remove unnecessary suppression

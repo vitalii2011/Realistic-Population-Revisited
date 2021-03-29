@@ -156,8 +156,10 @@ namespace RealPop2
             {
                 prodModes[subService] = Mathf.Clamp(0, value, 1);
             }
-
-            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMode");
+            else
+            {
+                Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMode");
+            }
         }
 
 

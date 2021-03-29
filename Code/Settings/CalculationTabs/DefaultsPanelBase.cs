@@ -373,12 +373,12 @@ namespace RealPop2
         /// <summary>
         /// Adds a slider.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
+        /// <param name="parent">Parent component</param>
         /// <param name="xPos">Relative X position</param>
         /// <param name="yPos">Relative Y position</param>
         /// <param name="width">Slider width</param>
         /// <returns>New slider</returns>
-        protected UISlider AddSlider(UIPanel panel, float xPos, float yPos, float width)
+        protected UISlider AddSlider(UIComponent parent, float xPos, float yPos, float width)
         {
             // Layout constants.
             const float SliderPanelHeight = 20f;
@@ -386,7 +386,7 @@ namespace RealPop2
             const float OffsetX = (SliderPanelHeight - SliderHeight) / 2f;
 
             // Mutiplier slider panel.
-            UIPanel sliderPanel = panel.AddUIComponent<UIPanel>();
+            UIPanel sliderPanel = parent.AddUIComponent<UIPanel>();
             sliderPanel.autoSize = false;
             sliderPanel.autoLayout = false;
             sliderPanel.size = new Vector2(width, SliderPanelHeight);
