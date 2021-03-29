@@ -4,10 +4,6 @@ using ColossalFramework.Math;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     /// <summary>
@@ -38,15 +34,12 @@ namespace RealPop2
         /// </summary>
         /// <param name="__instance">Original AI instance reference</param>
         /// <param name="level">Building level</param>
-        /// <param name="r">Randomizer (unused)</param>
-        /// <param name="width">Building lot width (unused)</param>
-        /// <param name="length">Building lot length (unused)</param>
         /// <param name="level0">Uneducated worker count output</param>
         /// <param name="level1">Educated worker count output</param>
         /// <param name="level2">Well-educated worker count output</param>
         /// <param name="level3">Highly-educated worker count output</param>
-        /// <returns></returns>
-        public static bool Prefix(PrivateBuildingAI __instance, ItemClass.Level level, Randomizer r, int width, int length, out int level0, out int level1, out int level2, out int level3)
+        /// <returns>Always false (never execute original method)</returns>
+        public static bool Prefix(PrivateBuildingAI __instance, ItemClass.Level level, out int level0, out int level1, out int level2, out int level3)
         {
             // Get cached workplace count.
             int[] workplaces = PopData.instance.WorkplaceCache(__instance.m_info, (int)level);
@@ -62,6 +55,3 @@ namespace RealPop2
         }
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter
-#pragma warning restore IDE0079 // Remove unnecessary suppression

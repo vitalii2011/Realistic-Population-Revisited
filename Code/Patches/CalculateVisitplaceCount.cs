@@ -3,10 +3,6 @@ using UnityEngine;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     /// <summary>
@@ -176,7 +172,7 @@ namespace RealPop2
                 return comVisitModes[subService];
             }
 
-            Logging.Error("invalid subservice passed to GetVisitMode");
+            Logging.Error("invalid subservice", subService.ToString(), " passed to GetVisitMode");
             return 0;
         }
 
@@ -193,8 +189,10 @@ namespace RealPop2
             {
                 comVisitModes[subService] = Mathf.Clamp(0, value, 1);
             }
-
-            Logging.Error("invalid subservice passed to SetVisitMode");
+            else
+            {
+                Logging.Error("invalid subservice ", subService.ToString(), " passed to SetVisitMode");
+            }
         }
 
 
@@ -210,7 +208,7 @@ namespace RealPop2
                 return comVisitMults[subService];
             }
 
-            Logging.Error("invalid subservice passed to GetVisitMult");
+            Logging.Error("invalid subservice ", subService.ToString(), " passed to GetVisitMult");
             return 0;
         }
 
@@ -226,8 +224,10 @@ namespace RealPop2
             {
                 comVisitMults[subService] = Mathf.Clamp(0, value, MaxVisitMult);
             }
-
-            Logging.Error("invalid subservice passed to SetVisitMult");
+            else
+            {
+                Logging.Error("invalid subservice ", subService.ToString(), " passed to SetVisitMult");
+            }
         }
 
 
@@ -268,6 +268,3 @@ namespace RealPop2
         }
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter
-#pragma warning restore IDE0079 // Remove unnecessary suppression

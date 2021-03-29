@@ -192,8 +192,10 @@ namespace RealPop2
             {
                 prodMults[subService] = Mathf.Clamp(0, value, MaxProdMult);
             }
-
-            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMult");
+            else
+            {
+                Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMult");
+            }
         }
 
 

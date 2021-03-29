@@ -3,9 +3,6 @@ using System.Runtime.CompilerServices;
 using HarmonyLib;
 
 
-#pragma warning disable IDE0060 // Remove unused parameter
-
-
 namespace RealPop2
 {
     /// <summary>
@@ -26,7 +23,7 @@ namespace RealPop2
         public static void EnsureCitizenUnits(object instance, ushort buildingID, ref Building data, int homeCount, int workCount, int visitCount, int studentCount)
         {
             string message = "EnsureCitizenUnits reverse Harmony patch wasn't applied";
-            Logging.Error(message);
+            Logging.Error(message, instance.ToString(), buildingID.ToString(), data.ToString(), homeCount.ToString(), workCount.ToString(), visitCount.ToString(), studentCount.ToString());
             throw new NotImplementedException(message);
         }
 
@@ -43,10 +40,8 @@ namespace RealPop2
         public static void ReleaseUnitImplementation(object instance, uint unit, ref CitizenUnit data)
         {
             string message = "ReleaseUnitImplementation reverse Harmony patch wasn't applied";
-            Logging.Error(message);
+            Logging.Error(message, instance.ToString(), unit.ToString(), data.ToString());
             throw new NotImplementedException(message);
         }
     }
 }
-
-#pragma warning restore IDE0060 // Remove unused parameter
