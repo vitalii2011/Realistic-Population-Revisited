@@ -312,10 +312,6 @@ namespace RealPop2
         // Income generation.
         [XmlAttribute("income")]
         public int income;
-
-        // Production.
-        [XmlAttribute("production")]
-        public int production;
     }
 
 

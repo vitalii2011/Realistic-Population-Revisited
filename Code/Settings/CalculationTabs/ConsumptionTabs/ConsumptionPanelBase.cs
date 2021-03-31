@@ -19,22 +19,19 @@ namespace RealPop2
         protected const float PollutionX = SewageX + ColumnWidth + Margin;
         protected const float NoiseX = PollutionX + ColumnWidth + Margin;
         protected const float MailX = NoiseX + ColumnWidth + (Margin * 4);
-        protected const float ProductionX = MailX + ColumnWidth + Margin;
-        protected const float IncomeX = ProductionX + ColumnWidth + Margin;
-        protected const float FinalX = ProductionX + WideColumnWidth;
+        protected const float IncomeX = MailX + ColumnWidth + Margin;
+        protected const float FinalX = MailX + WideColumnWidth;
 
 
         // Textfield array.
         protected UITextField[][] pollutionFields;
         protected UITextField[][] noiseFields;
         protected UITextField[][] mailFields;
-        protected UITextField[][] productionFields;
 
         // Column labels.
         protected string pollutionLabel;
         protected string noiseLabel;
         protected string mailLabel;
-        protected string productionLabel;
 
 
         /// <summary>
@@ -52,7 +49,6 @@ namespace RealPop2
             pollutionFields = new UITextField[numSubServices][];
             noiseFields = new UITextField[numSubServices][];
             mailFields = new UITextField[numSubServices][];
-            productionFields = new UITextField[numSubServices][];
         }
 
 
@@ -70,7 +66,6 @@ namespace RealPop2
             pollutionFields[service] = new UITextField[numLevels];
             noiseFields[service] = new UITextField[numLevels];
             mailFields[service] = new UITextField[numLevels];
-            productionFields[service] = new UITextField[numLevels];
             incomeFields[service] = new UITextField[numLevels];
         }
 
@@ -89,7 +84,6 @@ namespace RealPop2
             pollutionLabel = Translations.Translate("RPR_OPT_POL");
             noiseLabel = Translations.Translate("RPR_OPT_NOI");
             mailLabel = Translations.Translate("RPR_OPT_MAI");
-            productionLabel = Translations.Translate("RPR_OPT_PRO");
             wealthLabel = Translations.Translate("RPR_OPT_WEA");
 
             // Headings.
@@ -100,7 +94,6 @@ namespace RealPop2
             ColumnIcon(panel, PollutionX, ColumnWidth, pollutionLabel, "InfoIconPollution");
             ColumnIcon(panel, NoiseX, ColumnWidth, noiseLabel, "InfoIconNoisePollution");
             ColumnIcon(panel, MailX, ColumnWidth, mailLabel, "InfoIconPost");
-            ColumnIcon(panel, ProductionX, ColumnWidth, productionLabel, "IconPolicyAutomatedSorting");
             ColumnIcon(panel, IncomeX, WideColumnWidth, wealthLabel, "ToolbarIconMoney");
 
             // Consumption heading.
@@ -162,7 +155,6 @@ namespace RealPop2
                 pollutionFields[subService][i] = AddTextField(panel, ColumnWidth, PollutionX, currentY, pollutionLabel);
                 noiseFields[subService][i] = AddTextField(panel, ColumnWidth, NoiseX, currentY, noiseLabel);
                 mailFields[subService][i] = AddTextField(panel, ColumnWidth, MailX, currentY, mailLabel);
-                productionFields[subService][i] = AddTextField(panel, ColumnWidth, ProductionX, currentY, productionLabel);
                 incomeFields[subService][i] = AddTextField(panel, WideColumnWidth, IncomeX, currentY, wealthLabel);
 
                 // Increment Y position.
@@ -191,7 +183,6 @@ namespace RealPop2
                 pollutionFields[subService][i].text = dataArray[i][DataStore.GROUND_POLLUTION].ToString();
                 noiseFields[subService][i].text = dataArray[i][DataStore.NOISE_POLLUTION].ToString();
                 mailFields[subService][i].text = dataArray[i][DataStore.MAIL].ToString();
-                productionFields[subService][i].text = dataArray[i][DataStore.PRODUCTION].ToString();
                 incomeFields[subService][i].text = dataArray[i][DataStore.INCOME].ToString();
             }
         }
@@ -214,7 +205,6 @@ namespace RealPop2
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.GROUND_POLLUTION], pollutionFields[subService][i].text);
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.NOISE_POLLUTION], noiseFields[subService][i].text);
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.MAIL], mailFields[subService][i].text);
-                PanelUtils.ParseInt(ref dataArray[i][DataStore.PRODUCTION], productionFields[subService][i].text);
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.INCOME], incomeFields[subService][i].text);
             }
         }

@@ -110,7 +110,6 @@ namespace RealPop2
                                     dataArray[level][DataStore.NOISE_POLLUTION] = consumptionLine.noise;
                                     dataArray[level][DataStore.MAIL] = consumptionLine.mail;
                                     dataArray[level][DataStore.INCOME] = consumptionLine.income;
-                                    dataArray[level][DataStore.PRODUCTION] = consumptionLine.production;
                                 }
                             }
 
@@ -355,7 +354,6 @@ namespace RealPop2
                     noise = dataArray[i][DataStore.NOISE_POLLUTION],
                     mail = dataArray[i][DataStore.MAIL],
                     income = dataArray[i][DataStore.INCOME],
-                    production = dataArray[i][DataStore.PRODUCTION]
                 };
 
                 // Add new record to the return list.

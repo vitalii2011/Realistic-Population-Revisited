@@ -13,25 +13,25 @@ namespace RealPop2
         protected const float LeftTitle = 50f;
         protected const float ColumnWidth = 50f;
         protected const float Column1Width = 100f;
-        protected const float Column8Width = 60f;
+        protected const float Column8Width = 55f;
         protected const float Column2 = Column1 + Column1Width + Margin;
         protected const float Column3 = Column2 + ColumnWidth + Margin;
         protected const float Column4 = Column3 + ColumnWidth + Margin + Margin;
         protected const float Column5 = Column4 + ColumnWidth + Margin;
         protected const float Column6 = Column5 + ColumnWidth + Margin;
         protected const float Column7 = Column6 + ColumnWidth + Margin;
-        protected const float Column8 = Column7 + ColumnWidth + Margin;
+        protected const float Column8 = Column7 + Column8Width + Margin;
+        protected const float Column9 = Column8 + Column8Width + Margin;
 
 
         // Textfield array.
-        protected UITextField[][] areaFields;
-        protected UITextField[][] floorFields;
-        protected UITextField[][] extraFloorFields;
+        protected UITextField[][] areaFields, floorFields, extraFloorFields, productionFields;
 
         // Column labels.
         protected string areaLabel;
         protected string floorLabel;
         protected string extraFloorLabel;
+        protected string productionLabel;
 
 
         /// <summary>
@@ -63,6 +63,7 @@ namespace RealPop2
             sewageFields = new UITextField[numSubServices][];
             garbageFields = new UITextField[numSubServices][];
             incomeFields = new UITextField[numSubServices][];
+            productionFields = new UITextField[numSubServices][];
         }
 
 
@@ -81,6 +82,7 @@ namespace RealPop2
             sewageLabel = Translations.Translate("RPR_OPT_SEW");
             garbageLabel = Translations.Translate("RPR_OPT_GAR");
             wealthLabel = Translations.Translate("RPR_OPT_WEA");
+            productionLabel = Translations.Translate("RPR_OPT_PRO");
 
             // Headings.
             PanelUtils.ColumnLabel(panel, Column1, TitleHeight, Column1Width + Margin, areaLabel, areaLabel, 1.0f);
@@ -90,6 +92,7 @@ namespace RealPop2
             ColumnIcon(panel, Column6, ColumnWidth, sewageLabel, "ToolbarIconWaterAndSewageDisabled");
             ColumnIcon(panel, Column7, ColumnWidth, garbageLabel, "InfoIconGarbage");
             ColumnIcon(panel, Column8, Column8Width, wealthLabel, "ToolbarIconMoney");
+            ColumnIcon(panel, Column9, ColumnWidth, productionLabel, "IconPolicyAutomatedSorting");
 
             // Bonus floors.
             if (notResidential)
@@ -154,6 +157,7 @@ namespace RealPop2
                 sewageFields[subService][i] = AddTextField(panel, ColumnWidth, Column6, currentY, sewageLabel);
                 garbageFields[subService][i] = AddTextField(panel, ColumnWidth, Column7, currentY, garbageLabel);
                 incomeFields[subService][i] = AddTextField(panel, Column8Width, Column8, currentY, wealthLabel);
+                productionFields[subService][i] = AddTextField(panel, ColumnWidth, Column9, currentY, productionLabel);
 
                 // Bonus levels.
                 if (notResidential)
@@ -187,6 +191,7 @@ namespace RealPop2
                 sewageFields[subService][i].text = dataArray[i][DataStore.SEWAGE].ToString();
                 garbageFields[subService][i].text = dataArray[i][DataStore.GARBAGE].ToString();
                 incomeFields[subService][i].text = dataArray[i][DataStore.INCOME].ToString();
+                productionFields[subService][i].text = dataArray[i][DataStore.PRODUCTION].ToString();
 
                 // Extra floor field, if applicable.
                 if (!(this is LegacyResidentialPanel))
@@ -214,6 +219,7 @@ namespace RealPop2
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.SEWAGE], sewageFields[subService][i].text);
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.GARBAGE], garbageFields[subService][i].text);
                 PanelUtils.ParseInt(ref dataArray[i][DataStore.INCOME], incomeFields[subService][i].text);
+                PanelUtils.ParseInt(ref dataArray[i][DataStore.PRODUCTION], productionFields[subService][i].text);
 
                 // Extra floor field, if applicable.
                 if (!(this is LegacyResidentialPanel))

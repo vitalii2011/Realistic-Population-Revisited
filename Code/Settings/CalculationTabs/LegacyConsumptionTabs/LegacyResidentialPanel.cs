@@ -42,6 +42,7 @@ namespace RealPop2
                 sewageFields[i] = new UITextField[NumLevels];
                 garbageFields[i] = new UITextField[NumLevels];
                 incomeFields[i] = new UITextField[NumLevels];
+                productionFields[i] = new UITextField[NumLevels];
             }
 
             // Headings.
