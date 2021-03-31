@@ -16,6 +16,17 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 15",
+                betaVersion = 15,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Add configurable industrial and office production rates (in the defaults panel), adjustable per sub-service."
+                }
+            },
+            new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 14",
                 betaVersion = 14,
                 messageKeys = false,
@@ -23,7 +34,8 @@ namespace RealPop2
                 {
                     "Add configurable commercial sales rates (in the defaults panel), adjustable per sub-service.  Reduced rates will mean slower goods consumption, but lower tax revenue."
                 }
-            },new WhatsNewMessage
+            },
+            new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
                 versionHeader = " BETA 13",
