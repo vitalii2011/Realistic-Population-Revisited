@@ -195,7 +195,7 @@ namespace RealPop2
             WhatsNewMessage latestMessage = WhatsNewMessages[0];
 
             // Don't show notification if we're already up to (or ahead of) the first what's new message (including Beta updates).
-            if (whatsNewVersion < latestMessage.version || (whatsNewVersion == latestMessage.version && latestMessage.betaVersion < ModSettings.whatsNewBetaVersion))
+            if (whatsNewVersion < latestMessage.version || (whatsNewVersion == latestMessage.version && ModSettings.whatsNewBetaVersion < latestMessage.betaVersion))
             {
                 // Show messagebox.
                 WhatsNewMessageBox messageBox = MessageBoxBase.ShowModal<WhatsNewMessageBox>();
