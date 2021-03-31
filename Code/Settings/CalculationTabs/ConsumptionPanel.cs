@@ -9,6 +9,25 @@ namespace RealPop2
     /// </summary>
     internal class ConsumptionPanel
     {
+        private readonly string[] iconNames =
+        {
+            "ToolbarIconElectricity",
+            "ToolbarIconWaterAndSewage",
+            "InfoIconGarbage",
+            "InfoIconNoisePollution",
+            "ToolbarIconMoney"
+        };
+
+
+        private readonly string[] atlasNames =
+        {
+            "ingame",
+            "ingame",
+            "ingame",
+            "ingame",
+            "ingame"
+        };
+
         /// <summary>
         /// Adds education options tab to tabstrip.
         /// </summary>
@@ -17,11 +36,7 @@ namespace RealPop2
         internal ConsumptionPanel(UITabstrip parentTabStrip, int tabIndex)
         {
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, out UIButton tabButton, 100f);
-            panel.autoLayout = false;
-
-            // Button size and text scale.
-            tabButton.textScale = 0.7f;
+            UIPanel panel = PanelUtils.AddIconTab(parentTabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, iconNames, atlasNames, 100f);
 
             // Add tabstrip.
             UITabstrip childTabStrip = panel.AddUIComponent<UITabstrip>();
@@ -36,16 +51,9 @@ namespace RealPop2
 
             // Add child tabs.
             new ResidentialPanel(childTabStrip, 0);
-            new IndustrialPanel(childTabStrip, 1);
-            new CommercialPanel(childTabStrip, 2);
+            new CommercialPanel(childTabStrip, 1);
+            new IndustrialPanel(childTabStrip, 2);
             new OfficePanel(childTabStrip, 3);
-
-            // Change tab size and text scale (to differentiate from 'main' tabstrip).
-            foreach (UIButton button in childTabStrip.components)
-            {
-                button.textScale = 0.8f;
-                button.width = 100f;
-            }
         }
     }
 }

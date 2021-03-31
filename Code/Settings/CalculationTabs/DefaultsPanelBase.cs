@@ -48,32 +48,8 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal DefaultsPanel(UITabstrip tabStrip, int tabIndex)
         {
-            // Layout constants.
-            const float TabIconSize = 23f;
-
-
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton, TabWidth);
-            panel.autoLayout = false;
-
-            // Add tab sprites.
-            float spriteBase = (TabWidth - 2f) / IconNames.Length;
-            float spriteOffset = (spriteBase - TabIconSize) / 2f;
-            for (int i = 0; i < IconNames.Length; ++i)
-            {
-                UISprite thumbSprite = tabButton.AddUIComponent<UISprite>();
-                thumbSprite.relativePosition = new Vector2(1f + (spriteBase * i) + spriteOffset, 1f);
-                thumbSprite.width = TabIconSize;
-                thumbSprite.height = TabIconSize;
-                thumbSprite.atlas = TextureUtils.GetTextureAtlas(AtlasNames[i]);
-                thumbSprite.spriteName = IconNames[i];
-
-                // Put later sprites behind earlier sprites, for clarity.
-                thumbSprite.SendToBack();
-            }
-
-            // Set tooltip.
-            tabButton.tooltip = Translations.Translate("RPR_OPT_DEF");
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_DEF"), tabIndex, IconNames, AtlasNames, TabWidth);
 
             // Initialise arrays.
             AvailablePopPacks = new PopDataPack[SubServiceNames.Length][];

@@ -17,6 +17,23 @@ namespace RealPop2
         private const int NumLevels = 5;
 
 
+        private readonly string[] iconNames =
+        {
+            "ZoningResidentialLow",
+            "ZoningResidentialHigh",
+            "IconPolicySelfsufficient",
+            "IconPolicySelfsufficient"
+        };
+
+        private readonly string[] atlasNames =
+        {
+            "Thumbnails",
+            "Thumbnails",
+            "Ingame",
+            "Ingame"
+        };
+
+
         /// <summary>
         /// Adds residential options tab to tabstrip.
         /// </summary>
@@ -25,7 +42,7 @@ namespace RealPop2
         public ResidentialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex, iconNames, atlasNames);
 
             // Set residential flag.
             notResidential = false;

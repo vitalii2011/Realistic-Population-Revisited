@@ -28,6 +28,24 @@ namespace RealPop2
             "RPR_CAT_TOU"
         };
 
+        private readonly string[] iconNames =
+        {
+            "ZoningCommercialLow",
+            "ZoningCommercialHigh",
+            "IconPolicyOrganic",
+            "IconPolicyLeisure",
+            "IconPolicyTourist"
+        };
+
+        private readonly string[] atlasNames =
+        {
+            "Thumbnails",
+            "Thumbnails",
+            "Ingame",
+            "Ingame",
+            "Ingame",
+        };
+
         /// <summary>
         /// Adds commercial options tab to tabstrip.
         /// </summary>
@@ -36,7 +54,7 @@ namespace RealPop2
         public CommercialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_COM"), tabIndex);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_COM"), tabIndex, iconNames, atlasNames);
 
             // Initialise textfield arrays (first dimension, sub-services).
             SubServiceArrays(NumSubServices);

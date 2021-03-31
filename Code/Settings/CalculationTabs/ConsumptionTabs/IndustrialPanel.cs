@@ -28,6 +28,24 @@ namespace RealPop2
             "RPR_CAT_ORE"
         };
 
+        private readonly string[] iconNames =
+        {
+            "ZoningIndustrial",
+            "IconPolicyFarming",
+            "IconPolicyForest",
+            "IconPolicyOil",
+            "IconPolicyOre",
+        };
+
+        private readonly string[] atlasNames =
+        {
+            "Thumbnails",
+            "Ingame",
+            "Ingame",
+            "Ingame",
+            "Ingame",
+        };
+
         /// <summary>
         /// Adds industrial options tab to tabstrip.
         /// </summary>
@@ -36,7 +54,7 @@ namespace RealPop2
         public IndustrialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_IND"), tabIndex);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_IND"), tabIndex, iconNames, atlasNames);
 
             // Initialise textfield arrays (first dimension, sub-services).
             SubServiceArrays(NumSubServices);

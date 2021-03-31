@@ -30,7 +30,7 @@ namespace RealPop2
             Instance = this;
 
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(parentTabStrip, Translations.Translate("RPR_PCK_NAM"), tabIndex);
+            UIPanel panel = PanelUtils.AddTextTab(parentTabStrip, Translations.Translate("RPR_PCK_NAM"), tabIndex, out UIButton _);
             panel.autoLayout = false;
 
             // Add tabstrip.

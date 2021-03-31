@@ -36,7 +36,7 @@ namespace RealPop2
         public LegacyCommercialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_COM"), tabIndex);
+            UIPanel panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate("RPR_CAT_COM"), tabIndex, out UIButton _);
 
             // Initialise textfield array.
             SetupArrays(NumSubServices);

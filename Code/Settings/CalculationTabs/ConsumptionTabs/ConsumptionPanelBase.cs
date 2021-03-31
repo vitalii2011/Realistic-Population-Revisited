@@ -90,7 +90,7 @@ namespace RealPop2
             ColumnIcon(panel, PowerX, ColumnWidth, powerLabel, "ToolbarIconElectricity");
             ColumnIcon(panel, WaterX, ColumnWidth, waterLabel, "ToolbarIconWaterAndSewage");
             ColumnIcon(panel, GarbageX, ColumnWidth, garbageLabel, "InfoIconGarbage");
-            ColumnIcon(panel, SewageX, ColumnWidth, sewageLabel, "ToolbarIconWaterAndSewageDisabled");
+            ColumnIcon(panel, SewageX, ColumnWidth, sewageLabel, "IconPolicyFilterIndustrialWaste");
             ColumnIcon(panel, PollutionX, ColumnWidth, pollutionLabel, "InfoIconPollution");
             ColumnIcon(panel, NoiseX, ColumnWidth, noiseLabel, "InfoIconNoisePollution");
             ColumnIcon(panel, MailX, ColumnWidth, mailLabel, "InfoIconPost");

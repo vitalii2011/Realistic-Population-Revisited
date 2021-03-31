@@ -22,6 +22,19 @@ namespace RealPop2
             "RPR_CAT_ITC"
         };
 
+        private readonly string[] iconNames =
+        {
+            "ZoningOffice",
+            "IconPolicyHightech"
+        };
+
+        private readonly string[] atlasNames =
+        {
+            "Thumbnails",
+            "Ingame"
+        };
+
+
         /// <summary>
         /// Adds commercial options tab to tabstrip.
         /// </summary>
@@ -30,7 +43,7 @@ namespace RealPop2
         public OfficePanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_OFF"), tabIndex);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_OFF"), tabIndex, iconNames, atlasNames);
 
             // Initialise textfield arrays (first dimension, sub-services).
             SubServiceArrays(NumSubServices);

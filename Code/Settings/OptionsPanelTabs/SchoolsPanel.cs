@@ -16,7 +16,7 @@ namespace RealPop2
         internal EducationPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_OPT_SCH"), tabIndex);
+            UIPanel panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate("RPR_OPT_SCH"), tabIndex, out UIButton _);
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = true;
 

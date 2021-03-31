@@ -69,23 +69,10 @@ namespace RealPop2
         internal CalculationPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Layout constants.
-            const float TabIconSize = 23f;
             const float TabWidth = 50f;
 
             // Add tab and helper.
-            panel = PanelUtils.AddTab(tabStrip, "", tabIndex, out UIButton tabButton, TabWidth);
-            panel.autoLayout = false;
-
-            // Add tab sprite.
-            UISprite thumbSprite = tabButton.AddUIComponent<UISprite>();
-            thumbSprite.relativePosition = new Vector2((TabWidth - TabIconSize) / 2f, 1f);
-            thumbSprite.width = TabIconSize;
-            thumbSprite.height = TabIconSize;
-            thumbSprite.atlas = TextureUtils.InGameAtlas;
-            thumbSprite.spriteName = TabSprite;
-
-            // Set tooltip.
-            tabButton.tooltip = Translations.Translate(TabTooltipKey);
+            panel = PanelUtils.AddIconTab(tabStrip, "", tabIndex, new string[] { TabSprite }, new string[] { "ingame" }, TabWidth);
         }
 
 

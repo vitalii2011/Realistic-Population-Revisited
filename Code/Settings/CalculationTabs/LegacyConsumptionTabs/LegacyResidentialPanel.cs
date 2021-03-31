@@ -25,7 +25,7 @@ namespace RealPop2
         public LegacyResidentialPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex);
+            UIPanel panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex, out UIButton _);
 
             // Set residential flag.
             notResidential = false;
