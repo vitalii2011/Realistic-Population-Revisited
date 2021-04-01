@@ -18,26 +18,45 @@ namespace RealPop2
             legacy
         }
 
+        // Array indexes.
+        private enum SubServiceIndex
+        {
+            IndustrialFarming = 0,
+            IndustrialForestry,
+            IndustrialOil,
+            IndustrialOre,
+            NumSubServices
+        }
+
+        // Sub-service mapping.
+        private static readonly ItemClass.SubService[] subServices =
+        {
+            ItemClass.SubService.IndustrialFarming,
+            ItemClass.SubService.IndustrialForestry,
+            ItemClass.SubService.IndustrialOil,
+            ItemClass.SubService.IndustrialOre
+        };
+
         // Default multiplier.
         internal const int DefaultProdMult = 100;
 
         // Maximum multiplier.
         internal const int MaxProdMult = 200;
 
-        // Dictionaries for calculation mode and multipliers.
-        private static readonly Dictionary<ItemClass.SubService, int> prodModes = new Dictionary<ItemClass.SubService, int>
+        // Arrays for calculation mode and multipliers.
+        private static readonly int[] prodModes =
         {
-            { ItemClass.SubService.IndustrialFarming, (int)ProdModes.legacy },
-            { ItemClass.SubService.IndustrialForestry, (int)ProdModes.legacy },
-            { ItemClass.SubService.IndustrialOil, (int)ProdModes.legacy },
-            { ItemClass.SubService.IndustrialOre, (int)ProdModes.legacy }
+            (int)ProdModes.legacy,
+            (int)ProdModes.legacy,
+            (int)ProdModes.legacy,
+            (int)ProdModes.legacy
         };
-        private static readonly Dictionary<ItemClass.SubService, int> prodMults = new Dictionary<ItemClass.SubService, int>
+        private static readonly int[] prodMults =
         {
-            { ItemClass.SubService.IndustrialFarming, DefaultProdMult },
-            { ItemClass.SubService.IndustrialForestry, DefaultProdMult },
-            { ItemClass.SubService.IndustrialOil, DefaultProdMult },
-            { ItemClass.SubService.IndustrialOre, DefaultProdMult }
+            DefaultProdMult,
+            DefaultProdMult,
+            DefaultProdMult,
+            DefaultProdMult
         };
 
 
@@ -54,8 +73,11 @@ namespace RealPop2
             BuildingInfo info = __instance.m_info;
             ItemClass.SubService subService = info.GetSubService();
 
+            // Array index.
+            int arrayIndex = GetIndex(subService);
+
             // New or old method?
-            if (prodModes[subService] == (int)ProdModes.popCalcs)
+            if (prodModes[arrayIndex] == (int)ProdModes.popCalcs)
             {
                 // New settings, based on population.
                 float multiplier;
@@ -75,7 +97,7 @@ namespace RealPop2
 
                 float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
                 // Multiply total workers by multipler and overall multiplier (from settings) to get result.
-                __result = (int)((totalWorkers * multiplier * prodMults[subService]) / 100f);
+                __result = (int)((totalWorkers * multiplier * prodMults[arrayIndex]) / 100f);
             }
             else
             {
@@ -106,12 +128,13 @@ namespace RealPop2
         {
             set
             {
-                foreach (ItemClass.SubService subService in prodModes.Keys)
+                for (int i = 0; i < prodModes.Length; ++i)
                 {
-                    prodModes[subService] = value;
+                    prodModes[i] = value;
                 }
             }
         }
+
 
         /// <summary>
         /// Sets the extractor production percentage multiplier for all commercial subservices to the specified mode.
@@ -120,9 +143,9 @@ namespace RealPop2
         {
             set
             {
-                foreach (ItemClass.SubService subService in prodMults.Keys)
+                for (int i = 0; i < prodMults.Length; ++i)
                 {
-                    prodMults[subService] = value;
+                    prodMults[i] = value;
                 }
             }
         }
@@ -133,16 +156,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service</param>
         /// <returns>Production calculation mode</returns>
-        internal static int GetProdMode(ItemClass.SubService subService)
-        {
-            if (prodModes.ContainsKey(subService))
-            {
-                return prodModes[subService];
-            }
-
-            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor GetProdMode");
-            return 0;
-        }
+        internal static int GetProdMode(ItemClass.SubService subService) => prodModes[GetIndex(subService)];
 
 
         /// <summary>
@@ -150,17 +164,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
-        internal static void SetProdMode(ItemClass.SubService subService, int value)
-        {
-            if (prodModes.ContainsKey(subService))
-            {
-                prodModes[subService] = Mathf.Clamp(0, value, 1);
-            }
-            else
-            {
-                Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMode");
-            }
-        }
+        internal static void SetProdMode(ItemClass.SubService subService, int value) => prodModes[GetIndex(subService)] = value;
 
 
         /// <summary>
@@ -168,16 +172,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service</param>
         /// <returns>Visit mode</returns>
-        internal static int GetProdMult(ItemClass.SubService subService)
-        {
-            if (prodMults.ContainsKey(subService))
-            {
-                return prodMults[subService];
-            }
-
-            Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor GetProdMult");
-            return 0;
-        }
+        internal static int GetProdMult(ItemClass.SubService subService) => prodMults[GetIndex(subService)];
 
 
         /// <summary>
@@ -186,17 +181,7 @@ namespace RealPop2
         /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
         /// <returns>Visit mode</returns>
-        internal static void SetProdMult(ItemClass.SubService subService, int value)
-        {
-            if (prodMults.ContainsKey(subService))
-            {
-                prodMults[subService] = Mathf.Clamp(0, value, MaxProdMult);
-            }
-            else
-            {
-                Logging.Error("invalid subservice ", subService.ToString(), " passed to extractor SetProdMult");
-            }
-        }
+        internal static void SetProdMult(ItemClass.SubService subService, int value) => prodMults[GetIndex(subService)] = value;
 
 
         /// <summary>
@@ -207,13 +192,13 @@ namespace RealPop2
         {
             List<SubServiceMode> entries = new List<SubServiceMode>();
 
-            foreach (KeyValuePair<ItemClass.SubService, int> entry in prodModes)
+            for (int i = 0; i < prodModes.Length; ++i)
             {
                 entries.Add(new SubServiceMode
                 {
-                    subService = entry.Key,
-                    mode = entry.Value,
-                    multiplier = prodMults[entry.Key]
+                    subService = subServices[i],
+                    mode = prodModes[i],
+                    multiplier = prodMults[i]
                 });
             }
 
@@ -232,6 +217,30 @@ namespace RealPop2
             {
                 SetProdMode(entry.subService, entry.mode);
                 SetProdMult(entry.subService, entry.multiplier);
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the sub-service array index for the given sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Array index</returns>
+        private static int GetIndex(ItemClass.SubService subService)
+        {
+            switch (subService)
+            {
+                case ItemClass.SubService.IndustrialFarming:
+                    return (int)SubServiceIndex.IndustrialFarming;
+                case ItemClass.SubService.IndustrialForestry:
+                    return (int)SubServiceIndex.IndustrialForestry;
+                case ItemClass.SubService.IndustrialOil:
+                    return (int)SubServiceIndex.IndustrialOil;
+                case ItemClass.SubService.IndustrialOre:
+                    return (int)SubServiceIndex.IndustrialOre;
+                default:
+                    Logging.Error("invalid subservice ", subService.ToString(), " passed to RealisticExtractorProduction.GetIndex");
+                    return (int)SubServiceIndex.IndustrialFarming;
             }
         }
     }

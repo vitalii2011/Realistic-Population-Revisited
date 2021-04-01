@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using HarmonyLib;
 
 
@@ -18,6 +17,27 @@ namespace RealPop2
             legacy
         }
 
+        // Array indexes.
+        private enum SubServiceIndex
+        {
+            CommercialLow = 0,
+            CommercialHigh,
+            CommercialLeisure,
+            CommercialTourist,
+            CommercialEco,
+            NumSubServices
+        }
+
+        // Sub-service mapping.
+        private static readonly ItemClass.SubService[] subServices =
+        {
+            ItemClass.SubService.CommercialLow,
+            ItemClass.SubService.CommercialHigh,
+            ItemClass.SubService.CommercialLeisure,
+            ItemClass.SubService.CommercialTourist,
+            ItemClass.SubService.CommercialEco
+        };
+
         // Default multiplier.
         internal const int DefaultVisitMult = 40;
 
@@ -25,22 +45,22 @@ namespace RealPop2
         internal const int MaxVisitMult = 100;
 
 
-        // Dictionaries for calculation mode and multipliers.
-        private static readonly Dictionary<ItemClass.SubService, int> comVisitModes = new Dictionary<ItemClass.SubService, int>
+        // Arrays for calculation mode and multipliers.
+        private static readonly int[] comVisitModes =
         {
-            { ItemClass.SubService.CommercialLow, (int)ComVisitModes.legacy },
-            { ItemClass.SubService.CommercialHigh, (int)ComVisitModes.legacy },
-            { ItemClass.SubService.CommercialLeisure, (int)ComVisitModes.legacy },
-            { ItemClass.SubService.CommercialTourist, (int)ComVisitModes.legacy },
-            { ItemClass.SubService.CommercialEco, (int)ComVisitModes.legacy }
+            (int)ComVisitModes.legacy,
+            (int)ComVisitModes.legacy,
+            (int)ComVisitModes.legacy,
+            (int)ComVisitModes.legacy,
+            (int)ComVisitModes.legacy
         };
-        private static readonly Dictionary<ItemClass.SubService, int> comVisitMults = new Dictionary<ItemClass.SubService, int>
+        private static readonly int[] comVisitMults =
         {
-            { ItemClass.SubService.CommercialLow, DefaultVisitMult },
-            { ItemClass.SubService.CommercialHigh, DefaultVisitMult },
-            { ItemClass.SubService.CommercialLeisure, DefaultVisitMult },
-            { ItemClass.SubService.CommercialTourist, DefaultVisitMult },
-            { ItemClass.SubService.CommercialEco, DefaultVisitMult }
+            DefaultVisitMult,
+            DefaultVisitMult,
+            DefaultVisitMult,
+            DefaultVisitMult,
+            DefaultVisitMult
         };
 
 
@@ -57,8 +77,11 @@ namespace RealPop2
             BuildingInfo info = __instance.m_info;
             ItemClass.SubService subService = info.GetSubService();
 
+            // Array index.
+            int arrayIndex = GetIndex(subService);
+
             // New or old calculations?
-            if (comVisitModes[subService] == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs)
+            if (comVisitModes[arrayIndex] == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs)
             {
                 // Get cached workplace count and calculate total workplaces.
                 int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
@@ -110,7 +133,7 @@ namespace RealPop2
                 }
 
                 // Multiply total workers by multipler and overall multiplier (from settings) to get result.
-                __result = (int)((totalWorkers * comVisitMults[subService] * multiplier) / 100f);
+                __result = (int)((totalWorkers * comVisitMults[arrayIndex] * multiplier) / 100f);
             }
             else
             {
@@ -138,9 +161,9 @@ namespace RealPop2
         {
             set
             {
-                foreach (ItemClass.SubService subService in comVisitModes.Keys)
+                for (int i = 0; i < comVisitModes.Length; ++i)
                 {
-                    comVisitModes[subService] = value;
+                    comVisitModes[i] = value;
                 }
             }
         }
@@ -152,9 +175,9 @@ namespace RealPop2
         {
             set
             {
-                foreach (ItemClass.SubService subService in comVisitMults.Keys)
+                for (int i = 0; i < comVisitMults.Length; ++i)
                 {
-                    comVisitMults[subService] = value;
+                    comVisitMults[i] = value;
                 }
             }
         }
@@ -165,16 +188,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service</param>
         /// <returns>Visit calculation mode</returns>
-        internal static int GetVisitMode(ItemClass.SubService subService)
-        {
-            if (comVisitModes.ContainsKey(subService))
-            {
-                return comVisitModes[subService];
-            }
-
-            Logging.Error("invalid subservice", subService.ToString(), " passed to GetVisitMode");
-            return 0;
-        }
+        internal static int GetVisitMode(ItemClass.SubService subService) => comVisitModes[GetIndex(subService)];
 
 
         /// <summary>
@@ -183,17 +197,7 @@ namespace RealPop2
         /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
         /// <returns>Visit calculaiton mode</returns>
-        internal static void SetVisitMode(ItemClass.SubService subService, int value)
-        {
-            if (comVisitModes.ContainsKey(subService))
-            {
-                comVisitModes[subService] = Mathf.Clamp(0, value, 1);
-            }
-            else
-            {
-                Logging.Error("invalid subservice ", subService.ToString(), " passed to SetVisitMode");
-            }
-        }
+        internal static void SetVisitMode(ItemClass.SubService subService, int value) => comVisitModes[GetIndex(subService)] = value;
 
 
         /// <summary>
@@ -201,16 +205,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service</param>
         /// <returns>Visit multiplier</returns>
-        internal static int GetVisitMult(ItemClass.SubService subService)
-        {
-            if (comVisitMults.ContainsKey(subService))
-            {
-                return comVisitMults[subService];
-            }
-
-            Logging.Error("invalid subservice ", subService.ToString(), " passed to GetVisitMult");
-            return 0;
-        }
+        internal static int GetVisitMult(ItemClass.SubService subService) => comVisitMults[GetIndex(subService)];
 
 
         /// <summary>
@@ -218,17 +213,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
-        internal static void SetVisitMult(ItemClass.SubService subService, int value)
-        {
-            if (comVisitMults.ContainsKey(subService))
-            {
-                comVisitMults[subService] = Mathf.Clamp(0, value, MaxVisitMult);
-            }
-            else
-            {
-                Logging.Error("invalid subservice ", subService.ToString(), " passed to SetVisitMult");
-            }
-        }
+        internal static void SetVisitMult(ItemClass.SubService subService, int value) => comVisitMults[GetIndex(subService)] = value;
 
 
         /// <summary>
@@ -239,13 +224,13 @@ namespace RealPop2
         {
             List<SubServiceMode> entries = new List<SubServiceMode>();
 
-            foreach(KeyValuePair<ItemClass.SubService, int> entry in comVisitModes)
+            for (int i = 0; i < comVisitModes.Length; ++i)
             {
                 entries.Add(new SubServiceMode
                 {
-                    subService = entry.Key,
-                    mode = entry.Value,
-                    multiplier = comVisitMults[entry.Key]
+                    subService = subServices[i],
+                    mode = comVisitModes[i],
+                    multiplier = comVisitMults[i]
                 });
             }
 
@@ -264,6 +249,32 @@ namespace RealPop2
             {
                 SetVisitMode(entry.subService, entry.mode);
                 SetVisitMult(entry.subService, entry.multiplier);
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the sub-service array index for the given sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Array index</returns>
+        private static int GetIndex(ItemClass.SubService subService)
+        {
+            switch (subService)
+            {
+                case ItemClass.SubService.CommercialLow:
+                    return (int)SubServiceIndex.CommercialLow;
+                case ItemClass.SubService.CommercialHigh:
+                    return (int)SubServiceIndex.CommercialHigh;
+                case ItemClass.SubService.CommercialLeisure:
+                    return (int)SubServiceIndex.CommercialLeisure;
+                case ItemClass.SubService.CommercialTourist:
+                    return (int)SubServiceIndex.CommercialTourist;
+                case ItemClass.SubService.CommercialEco:
+                    return (int)SubServiceIndex.CommercialEco;
+                default:
+                    Logging.Error("invalid subservice ", subService.ToString(), " passed to RealisticVisitplaceCount.GetIndex");
+                    return (int)SubServiceIndex.CommercialLow;
             }
         }
     }
