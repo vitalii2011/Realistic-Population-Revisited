@@ -6,7 +6,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel (sub)-tab for industrial building consumption configuration.
     /// </summary>
-    internal class IndustrialPanel : ConsumptionPanelBase
+    internal class IndConsumptionPanel : ConsumptionPanelBase
     {
         // Array reference constants.
         private const int Generic = 0;
@@ -28,33 +28,15 @@ namespace RealPop2
             "RPR_CAT_ORE"
         };
 
-        private readonly string[] iconNames =
-        {
-            "ZoningIndustrial",
-            "IconPolicyFarming",
-            "IconPolicyForest",
-            "IconPolicyOil",
-            "IconPolicyOre",
-        };
-
-        private readonly string[] atlasNames =
-        {
-            "Thumbnails",
-            "Ingame",
-            "Ingame",
-            "Ingame",
-            "Ingame",
-        };
-
         /// <summary>
         /// Adds industrial options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public IndustrialPanel(UITabstrip tabStrip, int tabIndex)
+        public IndConsumptionPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_IND"), tabIndex, iconNames, atlasNames);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
 
             // Initialise textfield arrays (first dimension, sub-services).
             SubServiceArrays(NumSubServices);

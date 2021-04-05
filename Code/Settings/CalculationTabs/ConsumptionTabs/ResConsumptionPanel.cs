@@ -6,7 +6,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel (sub)-tab for residential building consumption configuration.
     /// </summary>
-    internal class ResidentialPanel : ConsumptionPanelBase
+    internal class ResConsumptionPanel : ConsumptionPanelBase
     {
         // Array reference constants.
         private const int LowRes = 0;
@@ -17,32 +17,15 @@ namespace RealPop2
         private const int NumLevels = 5;
 
 
-        private readonly string[] iconNames =
-        {
-            "ZoningResidentialLow",
-            "ZoningResidentialHigh",
-            "IconPolicySelfsufficient",
-            "IconPolicySelfsufficient"
-        };
-
-        private readonly string[] atlasNames =
-        {
-            "Thumbnails",
-            "Thumbnails",
-            "Ingame",
-            "Ingame"
-        };
-
-
         /// <summary>
         /// Adds residential options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public ResidentialPanel(UITabstrip tabStrip, int tabIndex)
+        public ResConsumptionPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex, iconNames, atlasNames);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
 
             // Set residential flag.
             notResidential = false;

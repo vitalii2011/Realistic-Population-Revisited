@@ -8,7 +8,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for creating and editing calculation packs.
     /// </summary>
-    internal abstract class CalculationPanelBase
+    internal abstract class PackPanelBase
     {
         // Constants.
         protected const float Margin = 5f;
@@ -66,13 +66,13 @@ namespace RealPop2
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal CalculationPanelBase(UITabstrip tabStrip, int tabIndex)
+        internal PackPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Layout constants.
             const float TabWidth = 50f;
 
             // Add tab and helper.
-            panel = PanelUtils.AddIconTab(tabStrip, "", tabIndex, new string[] { TabSprite }, new string[] { "ingame" }, TabWidth);
+            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate(TabTooltipKey), tabIndex, new string[] { TabSprite }, new string[] { "ingame" }, TabWidth);
         }
 
 

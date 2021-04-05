@@ -173,7 +173,7 @@ namespace RealPop2
                     case ItemClass.Service.Industrial:
                         if (buildingAI is IndustrialExtractorAI)
                         {
-                            array = IndustrialExtractorAIMod.GetArray(building, (int)building.GetClassLevel());
+                            array = IndustrialExtractorAIMod.GetArray(building, IndustrialExtractorAIMod.EXTRACT_LEVEL);
                         }
                         else
                         {

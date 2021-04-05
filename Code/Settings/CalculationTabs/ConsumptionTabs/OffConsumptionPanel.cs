@@ -6,7 +6,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel (sub)-tab for office building consumption configuration.
     /// </summary>
-    internal class OfficePanel : ConsumptionPanelBase
+    internal class OffConsumptionPanel : ConsumptionPanelBase
     {
         // Array reference constants.
         private const int Office = 0;
@@ -22,28 +22,16 @@ namespace RealPop2
             "RPR_CAT_ITC"
         };
 
-        private readonly string[] iconNames =
-        {
-            "ZoningOffice",
-            "IconPolicyHightech"
-        };
-
-        private readonly string[] atlasNames =
-        {
-            "Thumbnails",
-            "Ingame"
-        };
-
 
         /// <summary>
         /// Adds commercial options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public OfficePanel(UITabstrip tabStrip, int tabIndex)
+        public OffConsumptionPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_OFF"), tabIndex, iconNames, atlasNames);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
 
             // Initialise textfield arrays (first dimension, sub-services).
             SubServiceArrays(NumSubServices);

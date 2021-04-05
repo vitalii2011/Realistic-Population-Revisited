@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 
 
 namespace RealPop2
@@ -7,18 +6,30 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default employment calculation packs.
     /// </summary>
-    internal abstract class DefaultsPanel
+    internal abstract class DefaultsPanelBase : CalculationsPanelBase
     {
         // Layout constants.
-        protected const float LeftColumn = 200f;
         private const float MenuWidth = 300f;
-        protected const float Margin = 5f;
         protected const float RowAdditionX = LeftColumn + MenuWidth + (Margin * 2);
-        protected float RowHeight = 25f;
 
 
-        // Instance references.
-        internal static DefaultsPanel instance;
+        // Tab icons.
+        protected readonly string[] tabIconNames =
+        {
+            "SubBarMonumentModderPackFocused",
+            "ToolbarIconZoomOutCity"
+        };
+        protected readonly string[] tabAtlasNames =
+        {
+            "ingame",
+            "ingame"
+        };
+
+
+        // Tab icons.
+        protected override string TabName => Translations.Translate("RPR_OPT_DEF");
+        protected override string[] TabIconNames => tabIconNames;
+        protected override string[] TabAtlasNames => tabAtlasNames;
 
 
         // Dropdown menus.
@@ -30,27 +41,13 @@ namespace RealPop2
         protected DataPack[] AvailableFloorPacks { get; private set; }
 
 
-        // Service/subservice arrays.
-        protected abstract string[] SubServiceNames { get; }
-        protected abstract ItemClass.Service[] Services { get; }
-        protected abstract ItemClass.SubService[] SubServices { get; }
-        protected abstract string[] IconNames { get; }
-        protected abstract string[] AtlasNames { get; }
-
-        // Tab width.
-        protected virtual float TabWidth => 100f;
-
-
         /// <summary>
         /// Constructor - adds default options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal DefaultsPanel(UITabstrip tabStrip, int tabIndex)
+        internal DefaultsPanelBase(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add tab and helper.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_DEF"), tabIndex, IconNames, AtlasNames, TabWidth);
-
             // Initialise arrays.
             AvailablePopPacks = new PopDataPack[SubServiceNames.Length][];
             AvailableFloorPacks = FloorData.instance.Packs;
@@ -58,22 +55,16 @@ namespace RealPop2
             FloorMenus = new UIDropDown[SubServiceNames.Length];
 
             // Add header controls.
-            float currentY = PanelHeader(panel, Margin);
+            float currentY = PanelHeader(Margin);
 
             // Add menus.
-            currentY = SetUpMenus(panel, currentY);
-
-            // Add any additional components.
-            currentY = AddAdditional(panel, currentY);
+            currentY = SetUpMenus(currentY);
 
             // Add buttons- add extra space.
-            FooterButtons(panel, currentY + Margin);
+            FooterButtons(currentY + Margin);
 
             // Populate menus.
             UpdateMenus();
-
-            // Set instance.
-            instance = this;
         }
 
 
@@ -148,10 +139,9 @@ namespace RealPop2
         /// <summary>
         /// Sets up the defaults dropdown menus.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position for buttons</param>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        private float SetUpMenus(UIPanel panel, float yPos)
+        private float SetUpMenus(float yPos)
         {
             // Layout constants.
             const float LeftColumn = 200f;
@@ -196,7 +186,7 @@ namespace RealPop2
                 FloorMenus[i] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_CAL_BFL"), MenuWidth, height: 20f, itemVertPadding: 6, accomodateLabel: false);
 
                 // Add any additional controls.
-                currentY = RowAdditions(panel, currentY, i);
+                currentY = RowAdditions(currentY, i);
 
 
                 // Next row.
@@ -211,52 +201,21 @@ namespace RealPop2
         /// <summary>
         /// Adds header controls to the panel.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position for buttons</param>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected virtual float PanelHeader(UIPanel panel, float yPos)
+        protected virtual float PanelHeader(float yPos)
         {
             return yPos;
-        }
-
-
-        /// <summary>
-        /// Adds footer buttons to the panel.
-        /// </summary>
-        /// <param name="panel">Panel reference</param>
-        /// <param name="yPos">Relative Y position for buttons</param>
-        protected virtual void FooterButtons(UIPanel panel, float yPos)
-        {
-            // Reset button.
-            UIButton resetButton = UIControls.AddButton(panel, Margin, yPos, Translations.Translate("RPR_OPT_RTD"), 150f);
-            resetButton.eventClicked += ResetDefaults;
-
-            // Revert button.
-            UIButton revertToSaveButton = UIControls.AddButton(panel, (Margin * 2) + 150f, yPos, Translations.Translate("RPR_OPT_RTS"), 150f);
-            revertToSaveButton.eventClicked += ResetSaved;
         }
 
 
         /// <summary>
         /// Adds any additional controls to each row.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected virtual float RowAdditions(UIPanel panel, float yPos, int index)
-        {
-            return yPos;
-        }
-
-
-        /// <summary>
-        /// Adds any additional controls below the menu arrays but above button footers.
-        /// </summary>
-        /// <param name="panel">Panel reference</param>
-        /// <param name="yPos">Relative Y position</param>
-        /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected virtual float AddAdditional(UIPanel panel, float yPos)
+        protected virtual float RowAdditions(float yPos, int index)
         {
             return yPos;
         }
@@ -267,7 +226,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
         /// <param name="mouseEvent">Mouse event (unused)</param>
-        protected virtual void ResetDefaults(UIComponent control, UIMouseEventParameter mouseEvent)
+        protected override void ResetDefaults(UIComponent control, UIMouseEventParameter mouseEvent)
         {
             // Iterate through each sub-service menu.
             for (int i = 0; i < SubServiceNames.Length; ++i)
@@ -343,87 +302,6 @@ namespace RealPop2
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
         /// <param name="mouseEvent">Mouse event (unused)</param>
-        protected virtual void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent) => UpdateMenus();
-
-
-        /// <summary>
-        /// Adds a slider.
-        /// </summary>
-        /// <param name="parent">Parent component</param>
-        /// <param name="xPos">Relative X position</param>
-        /// <param name="yPos">Relative Y position</param>
-        /// <param name="width">Slider width</param>
-        /// <returns>New slider</returns>
-        protected UISlider AddSlider(UIComponent parent, float xPos, float yPos, float width)
-        {
-            // Layout constants.
-            const float SliderPanelHeight = 20f;
-            const float SliderHeight = 6f;
-            const float OffsetX = (SliderPanelHeight - SliderHeight) / 2f;
-
-            // Mutiplier slider panel.
-            UIPanel sliderPanel = parent.AddUIComponent<UIPanel>();
-            sliderPanel.autoSize = false;
-            sliderPanel.autoLayout = false;
-            sliderPanel.size = new Vector2(width, SliderPanelHeight);
-            sliderPanel.relativePosition = new Vector2(xPos, yPos);
-
-            // Mutiplier slider value label.
-            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
-            valueLabel.name = "ValueLabel";
-            valueLabel.verticalAlignment = UIVerticalAlignment.Middle;
-            valueLabel.textAlignment = UIHorizontalAlignment.Center;
-            valueLabel.textScale = 0.7f;
-            valueLabel.autoSize = false;
-            valueLabel.color = new Color32(91, 97, 106, 255);
-            valueLabel.size = new Vector2(38, 15);
-            valueLabel.relativePosition = new Vector2(sliderPanel.width - valueLabel.width - Margin, (SliderPanelHeight - valueLabel.height) / 2f);
-
-            // Mutiplier slider control.
-            UISlider newSlider = sliderPanel.AddUIComponent<UISlider>();
-            newSlider.size = new Vector2(sliderPanel.width - valueLabel.width - (Margin * 3), SliderHeight);
-            newSlider.relativePosition = new Vector2(0f, OffsetX);
-
-            // Mutiplier slider track.
-            UISlicedSprite sliderSprite = newSlider.AddUIComponent<UISlicedSprite>();
-            sliderSprite.autoSize = false;
-            sliderSprite.size = new Vector2(newSlider.width, newSlider.height);
-            sliderSprite.relativePosition = new Vector2(0f, 0f);
-            sliderSprite.atlas = TextureUtils.InGameAtlas;
-            sliderSprite.spriteName = "ScrollbarTrack";
-
-            // Mutiplier slider thumb.
-            UISlicedSprite sliderThumb = newSlider.AddUIComponent<UISlicedSprite>();
-            sliderThumb.atlas = TextureUtils.InGameAtlas;
-            sliderThumb.spriteName = "ScrollbarThumb";
-            sliderThumb.height = 20f;
-            sliderThumb.width = 10f;
-            sliderThumb.relativePosition = new Vector2(0f, -OffsetX);
-            newSlider.thumbObject = sliderThumb;
-
-            // Mutiplier slider value range.
-            newSlider.stepSize = 1f;
-            newSlider.minValue = 1f;
-            newSlider.maxValue = 100f;
-
-            // Event handler to update text.
-            newSlider.eventValueChanged += MultSliderText;
-
-            return newSlider;
-        }
-
-
-        /// <summary>
-        /// Updates the displayed value on a multiplier slider.
-        /// </summary>
-        /// <param name="control">Calling component</param>
-        /// <param name="value">New valie</param>
-        protected void MultSliderText(UIComponent control, float value)
-        {
-            if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
-            {
-                valueLabel.text = Mathf.RoundToInt(value).ToString() + "%";
-            }
-        }
+        protected override void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent) => UpdateMenus();
     }
 }

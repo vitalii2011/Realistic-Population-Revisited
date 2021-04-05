@@ -4,9 +4,9 @@
 namespace RealPop2
 {
     /// <summary>
-    /// Options panel for setting default employment calculation packs.
+    /// Options panel for setting industry goods calculations.
     /// </summary>
-    internal class IndDefaultsPanel : EmpDefaultsPanel
+    internal class IndGoodsPanel : GoodsPanelBase
     {
         // Service/subservice arrays.
         private readonly string[] subServiceNames =
@@ -40,19 +40,16 @@ namespace RealPop2
         protected override string[] IconNames => iconNames;
         protected override string[] AtlasNames => atlasNames;
 
-        // Tab width.
-        protected override float TabWidth => 40f;
-
 
         // Panel components.
         private UISlider[] prodMultSliders;
         private UIDropDown[] prodDefaultMenus;
 
 
-        // Legacy settings references.
-        protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyInd; set => ModSettings.newSaveLegacyInd = value; }
-        protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyInd; set => ModSettings.ThisSaveLegacyInd = value; }
-        protected override string LegacyCheckLabel => "RPR_DEF_LGI";
+        /// <summary>
+        /// Legacy settings link.
+        /// </summary>
+        protected bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyInd; set => ModSettings.ThisSaveLegacyInd = value; }
 
 
         /// <summary>
@@ -60,7 +57,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal IndDefaultsPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
+        internal IndGoodsPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
         }
 
@@ -68,48 +65,40 @@ namespace RealPop2
         // <summary>
         /// Updates pack selection menu items.
         /// </summary>
-        internal override void UpdateMenus()
+        internal override void UpdateControls()
         {
-            base.UpdateMenus();
+            base.UpdateControls();
 
             // Reset sliders and menus.
             for (int i = 0; i < prodMultSliders.Length; ++i)
             {
                 // Reset visit multiplier slider values.
-                prodMultSliders[i].value = RealisticIndustrialProduction.GetProdMult();
+                prodMultSliders[i].value = RealisticIndustrialProduction.GetProdMult(ItemClass.SubService.IndustrialGeneric);
 
                 // Reset visit mode menu selections.
-                prodDefaultMenus[i].selectedIndex = RealisticIndustrialProduction.GetProdMode();
+                prodDefaultMenus[i].selectedIndex = RealisticIndustrialProduction.GetProdMode(ItemClass.SubService.IndustrialGeneric);
             }
         }
 
 
         /// <summary>
-        /// Adds any additional controls to each row.
+        /// Adds controls for each sub-service.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
-        /// <returns>Relative Y coordinate adjusted for any finished setup</returns>
-        protected override float RowAdditions(UIPanel panel, float yPos, int index)
+        /// <returns>Relative Y coordinate below the finished setup</returns>
+        protected override float SubServiceControls(float yPos, int index)
         {
-            // Layout constants.
-            float controlWidth = panel.width - RowAdditionX;
-
-
-            float currentY = yPos - RowHeight;
-
-            // Header label.
-            UIControls.AddLabel(panel, RowAdditionX, currentY - 19f, Translations.Translate("RPR_DEF_PRD"), -1, 0.8f);
-
-            // RowAdditions is called as part of parent constructor, so we need to initialise them here if they aren't already.
+            // SubServiceControls is called as part of parent constructor, so we need to initialise them here if they aren't already.
             if (prodMultSliders == null)
             {
                 prodMultSliders = new UISlider[subServices.Length];
                 prodDefaultMenus = new UIDropDown[subServices.Length];
             }
 
-            prodDefaultMenus[index] = UIControls.AddDropDown(panel, RowAdditionX, currentY, controlWidth, height: 20f, itemVertPadding: 6, tooltip: Translations.Translate("RPR_DEF_VIS_TIP"));
+            // Production mode menus.
+            float currentY = yPos;
+            prodDefaultMenus[index] = UIControls.AddLabelledDropDown(panel, LeftColumn, currentY, Translations.Translate("RPR_DEF_PMD"), ControlWidth, height: 20f, itemVertPadding: 6, accomodateLabel: false, tooltip: Translations.Translate("RPR_DEF_PMD_TIP"));
             prodDefaultMenus[index].tooltipBox = TooltipUtils.TooltipBox;
             prodDefaultMenus[index].objectUserData = index;
             prodDefaultMenus[index].items = new string[]
@@ -118,23 +107,25 @@ namespace RealPop2
                 Translations.Translate("RPR_DEF_VOL")
             };
 
-            // Production multiplication slider.
-            currentY = yPos;
-            prodMultSliders[index] = AddSlider(panel, RowAdditionX, currentY, controlWidth);
+            // Production multiplication sliders.
+            currentY += RowHeight;
+            prodMultSliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_PRD_TIP");
             prodMultSliders[index].objectUserData = index;
             prodMultSliders[index].maxValue = RealisticIndustrialProduction.MaxProdMult;
-            prodMultSliders[index].value = RealisticIndustrialProduction.GetProdMult();
-            prodMultSliders[index].tooltipBox = TooltipUtils.TooltipBox;
-            prodMultSliders[index].tooltip = Translations.Translate("RPR_DEF_PRD_TIP");
+            prodMultSliders[index].value = RealisticIndustrialProduction.GetProdMult(ItemClass.SubService.IndustrialGeneric);
             MultSliderText(prodMultSliders[index], prodMultSliders[index].value);
+
+            // Production multiplier label.
+            UILabel multiplierLabel = UIControls.AddLabel(panel, 0f, 0f, Translations.Translate("RPR_DEF_PRD"), textScale: 0.8f);
+            multiplierLabel.relativePosition = new UnityEngine.Vector2(LeftColumn - 10f - multiplierLabel.width, currentY + (prodMultSliders[index].parent.height - multiplierLabel.height) / 2f);
 
             // Production calculation mode default event handler to show/hide multiplier slider.
             prodDefaultMenus[index].eventSelectedIndexChanged += ProdDefaultIndexChanged;
 
             // Set prodution calculation mode initial selection.
-            prodDefaultMenus[index].selectedIndex = RealisticIndustrialProduction.GetProdMode();
+            prodDefaultMenus[index].selectedIndex = RealisticIndustrialProduction.GetProdMode(ItemClass.SubService.IndustrialGeneric);
 
-            return yPos;
+            return currentY;
         }
 
 
@@ -149,10 +140,10 @@ namespace RealPop2
             for (int i = 0; i < subServices.Length; ++i)
             {
                 // Record production calculation modes.
-                RealisticIndustrialProduction.SetProdMode(prodDefaultMenus[i].selectedIndex);
+                RealisticIndustrialProduction.SetProdMode(ItemClass.SubService.IndustrialGeneric, prodDefaultMenus[i].selectedIndex);
 
                 // Record production multiplier.
-                RealisticIndustrialProduction.SetProdMult((int)prodMultSliders[i].value);
+                RealisticIndustrialProduction.SetProdMult(ItemClass.SubService.IndustrialGeneric, (int)prodMultSliders[i].value);
             }
 
             base.Apply(control, mouseEvent);
@@ -166,8 +157,6 @@ namespace RealPop2
         /// <param name="mouseEvent">Mouse event (unused)</param>
         protected override void ResetDefaults(UIComponent control, UIMouseEventParameter mouseEvent)
         {
-            base.ResetDefaults(control, mouseEvent);
-
             // Reset sliders and menus.
             for (int i = 0; i < prodMultSliders.Length; ++i)
             {
@@ -178,6 +167,14 @@ namespace RealPop2
                 prodDefaultMenus[i].selectedIndex = ThisLegacyCategory ? (int)RealisticIndustrialProduction.ProdModes.legacy : (int)RealisticIndustrialProduction.ProdModes.popCalcs;
             }
         }
+
+
+        /// <summary>
+        /// 'Revert to saved' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        protected override void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent) => UpdateControls();
 
 
         /// <summary>

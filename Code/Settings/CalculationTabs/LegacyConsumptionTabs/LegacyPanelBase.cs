@@ -7,7 +7,7 @@ namespace RealPop2
     /// <summary>
     /// Base class for options panel consumption settings (sub-)tabs (legacy configuration).
     /// </summary>
-    internal class LegacyPanelBase : PanelBase
+    internal class LegacyPanelBase : TextfieldPanelBase
     {
         // UI layout constants.
         protected const float LeftTitle = 50f;

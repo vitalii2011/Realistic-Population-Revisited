@@ -7,7 +7,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default employment calculation packs.
     /// </summary>
-    internal abstract class RICODefaultsPanel : DefaultsPanel
+    internal abstract class RICODefaultsPanel : DefaultsPanelBase
     {
 
         // Legacy settings links.
@@ -31,10 +31,9 @@ namespace RealPop2
         /// <summary>
         /// Adds header controls to the panel.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position for buttons</param>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected override float PanelHeader(UIPanel panel, float yPos)
+        protected override float PanelHeader(float yPos)
         {
             // Y position reference.
             float currentY = yPos + Margin;

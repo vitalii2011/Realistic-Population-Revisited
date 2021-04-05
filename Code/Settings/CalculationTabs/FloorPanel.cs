@@ -9,7 +9,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for creating and editing calculation packs.
     /// </summary>
-    internal class FloorPanel : CalculationPanelBase
+    internal class FloorPanel : PackPanelBase
     {
         // Constants.
         protected const float FloorHeightX = FirstItem;

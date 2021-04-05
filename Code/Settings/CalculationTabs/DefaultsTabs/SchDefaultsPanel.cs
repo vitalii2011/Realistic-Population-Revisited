@@ -6,7 +6,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default employment calculation packs.
     /// </summary>
-    internal class SchDefaultsPanel : DefaultsPanel
+    internal class SchDefaultsPanel : DefaultsPanelBase
     {
         // Service/subservice arrays.
         private readonly string[] subServiceNames =
@@ -40,9 +40,6 @@ namespace RealPop2
         protected override string[] IconNames => iconNames;
         protected override string[] AtlasNames => atlasNames;
 
-        // Tab width.
-        protected override float TabWidth => 40f;
-
 
         /// <summary>
         /// Constructor.
@@ -57,11 +54,10 @@ namespace RealPop2
         /// <summary>
         /// Adds footer buttons to the panel.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position for buttons</param>
-        protected override void FooterButtons(UIPanel panel, float yPos)
+        protected override void FooterButtons(float yPos)
         {
-            base.FooterButtons(panel, yPos);
+            base.FooterButtons(yPos);
 
             // Save button.
             UIButton saveButton = UIControls.AddButton(panel, (Margin * 3) + 300f, yPos, Translations.Translate("RPR_OPT_SAA"), 150f);

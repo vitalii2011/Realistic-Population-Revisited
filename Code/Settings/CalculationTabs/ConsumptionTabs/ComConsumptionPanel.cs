@@ -6,7 +6,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel (sub)-tab for commercial building consumption configuration.
     /// </summary>
-    class CommercialPanel : ConsumptionPanelBase
+    class ComConsumptionPanel : ConsumptionPanelBase
     {
         // Array reference constants.
         private const int LowCom = 0;
@@ -28,33 +28,15 @@ namespace RealPop2
             "RPR_CAT_TOU"
         };
 
-        private readonly string[] iconNames =
-        {
-            "ZoningCommercialLow",
-            "ZoningCommercialHigh",
-            "IconPolicyOrganic",
-            "IconPolicyLeisure",
-            "IconPolicyTourist"
-        };
-
-        private readonly string[] atlasNames =
-        {
-            "Thumbnails",
-            "Thumbnails",
-            "Ingame",
-            "Ingame",
-            "Ingame",
-        };
-
         /// <summary>
         /// Adds commercial options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public CommercialPanel(UITabstrip tabStrip, int tabIndex)
+        public ComConsumptionPanel(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_CAT_COM"), tabIndex, iconNames, atlasNames);
+            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
 
             // Initialise textfield arrays (first dimension, sub-services).
             SubServiceArrays(NumSubServices);

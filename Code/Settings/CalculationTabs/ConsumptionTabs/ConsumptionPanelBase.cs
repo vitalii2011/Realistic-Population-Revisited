@@ -7,7 +7,7 @@ namespace RealPop2
     /// <summary>
     /// Base class for options panel consumption settings (sub-)tabs (new configuration).
     /// </summary>
-    internal class ConsumptionPanelBase : PanelBase
+    internal class ConsumptionPanelBase : TextfieldPanelBase
     {
         // Constants.
         protected const float PowerX = 180f;
@@ -32,6 +32,24 @@ namespace RealPop2
         protected string pollutionLabel;
         protected string noiseLabel;
         protected string mailLabel;
+
+        // Tab icons.
+        protected readonly string[] tabIconNames =
+        {
+            "ToolbarIconElectricity",
+            "ToolbarIconWaterAndSewage",
+            "InfoIconGarbage",
+            "InfoIconNoisePollution",
+            "ToolbarIconMoney"
+        };
+        protected readonly string[] tabAtlasNames =
+        {
+            "ingame",
+            "ingame",
+            "ingame",
+            "ingame",
+            "ingame"
+        };
 
 
         /// <summary>

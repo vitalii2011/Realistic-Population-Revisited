@@ -75,11 +75,10 @@ namespace RealPop2
         /// <summary>
         /// Adds any additional controls to each row.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
         /// <returns>Relative Y coordinate below the finished setup</returns>
-        protected override float RowAdditions(UIPanel panel, float yPos, int index)
+        protected override float RowAdditions(float yPos, int index)
         {
             const float ButtonHeight = 20f;
 

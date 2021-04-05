@@ -4,9 +4,9 @@
 namespace RealPop2
 {
     /// <summary>
-    /// Options panel for setting default employment calculation packs.
+    /// Options panel for setting office goods calculations.
     /// </summary>
-    internal class OffDefaultsPanel : EmpDefaultsPanel
+    internal class OffGoodsPanel : GoodsPanelBase
     {
         // Service/subservice arrays.
         private readonly string[] subServiceNames =
@@ -45,18 +45,15 @@ namespace RealPop2
         protected override string[] IconNames => iconNames;
         protected override string[] AtlasNames => atlasNames;
 
-        // Tab width.
-        protected override float TabWidth => 50f;
-
 
         // Panel components.
         private UISlider[] prodMultSliders;
 
 
-        // Legacy settings references.
-        protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyOff; set => ModSettings.newSaveLegacyOff = value; }
-        protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyOff; set => ModSettings.ThisSaveLegacyOff = value; }
-        protected override string LegacyCheckLabel => "RPR_DEF_LGO";
+        /// <summary>
+        /// Legacy settings link.
+        /// </summary>
+        protected bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyOff; set => ModSettings.ThisSaveLegacyOff = value; }
 
 
         /// <summary>
@@ -64,16 +61,17 @@ namespace RealPop2
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        internal OffDefaultsPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
+        internal OffGoodsPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
         }
+
 
         // <summary>
         /// Updates pack selection menu items.
         /// </summary>
-        internal override void UpdateMenus()
+        internal override void UpdateControls()
         {
-            base.UpdateMenus();
+            base.UpdateControls();
 
             // Reset sliders and menus.
             for (int i = 0; i < prodMultSliders.Length; ++i)
@@ -85,38 +83,30 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Adds any additional controls to each row.
+        /// Adds controls for each sub-service.
         /// </summary>
-        /// <param name="panel">Panel reference</param>
         /// <param name="yPos">Relative Y position at top of row items</param>
         /// <param name="index">Index number of this row</param>
-        /// <returns>Relative Y coordinate adjusted for any finished setup</returns>
-        protected override float RowAdditions(UIPanel panel, float yPos, int index)
+        /// <returns>Relative Y coordinate below the finished setup</returns>
+        protected override float SubServiceControls(float yPos, int index)
         {
-            // Layout constants.
-            float controlWidth = panel.width - RowAdditionX;
-
-            // Attach controls to floor menu, so visibility will follow same state (i.e. hidden when legacy calculations are selected, shown otherwise).
-            UIDropDown floorMenu = FloorMenus[index];
-            float additionX = RowAdditionX - floorMenu.relativePosition.x;
-            float currentY = yPos - RowHeight - floorMenu.relativePosition.y;
+            // TODO: Attach controls to floor menu, so visibility will follow same state (i.e. hidden when legacy calculations are selected, shown otherwise).
+            float currentY = yPos;
 
             // Header label.
-            UIControls.AddLabel(floorMenu, additionX, currentY - 19f, Translations.Translate("RPR_DEF_PRD"), -1, 0.8f);
+            UIControls.AddLabel(panel, LeftColumn, currentY - 19f, Translations.Translate("RPR_DEF_PRD"), -1, 0.8f);
 
-            // RowAdditions is called as part of parent constructor, so we need to initialise them here if they aren't already.
+            // SubServiceControls is called as part of parent constructor, so we need to initialise them here if they aren't already.
             if (prodMultSliders == null)
             {
                 prodMultSliders = new UISlider[subServices.Length];
             }
 
             // Production multiplication slider.
-            prodMultSliders[index] = AddSlider(floorMenu, additionX, currentY, controlWidth);
+            prodMultSliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_PRD_TIP");
             prodMultSliders[index].objectUserData = index;
             prodMultSliders[index].maxValue = RealisticOfficeProduction.MaxProdMult;
             prodMultSliders[index].value = RealisticOfficeProduction.GetProdMult(subServices[index]);
-            prodMultSliders[index].tooltipBox = TooltipUtils.TooltipBox;
-            prodMultSliders[index].tooltip = Translations.Translate("RPR_DEF_PRD_TIP");
             MultSliderText(prodMultSliders[index], prodMultSliders[index].value);
 
             return yPos;
@@ -148,8 +138,6 @@ namespace RealPop2
         /// <param name="mouseEvent">Mouse event (unused)</param>
         protected override void ResetDefaults(UIComponent control, UIMouseEventParameter mouseEvent)
         {
-            base.ResetDefaults(control, mouseEvent);
-
             // Reset sliders.
             for (int i = 0; i < prodMultSliders.Length; ++i)
             {
@@ -157,5 +145,13 @@ namespace RealPop2
                 prodMultSliders[i].value = RealisticOfficeProduction.DefaultProdMult;
             }
         }
+
+
+        /// <summary>
+        /// 'Revert to saved' button event handler.
+        /// </summary>
+        /// <param name="control">Calling component (unused)</param>
+        /// <param name="mouseEvent">Mouse event (unused)</param>
+        protected override void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent) => UpdateControls();
     }
 }

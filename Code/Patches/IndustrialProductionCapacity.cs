@@ -18,15 +18,50 @@ namespace RealPop2
             legacy
         }
 
+        // Array indexes.
+        private enum SubServiceIndex
+        {
+            IndustrialGeneric = 0,
+            IndustrialFarming,
+            IndustrialForestry,
+            IndustrialOil,
+            IndustrialOre,
+            NumSubServices
+        }
+
+        // Sub-service mapping.
+        private static readonly ItemClass.SubService[] subServices =
+        {
+            ItemClass.SubService.IndustrialGeneric,
+            ItemClass.SubService.IndustrialFarming,
+            ItemClass.SubService.IndustrialForestry,
+            ItemClass.SubService.IndustrialOil,
+            ItemClass.SubService.IndustrialOre
+        };
+
         // Default multiplier.
         internal const int DefaultProdMult = 100;
 
         // Maximum multiplier.
         internal const int MaxProdMult = 200;
 
-        // Generic industrial settings.
-        private static int prodMode = (int)ProdModes.legacy;
-        private static int prodMult = DefaultProdMult;
+        // Arrays for calculation mode and multipliers.
+        private static readonly int[] prodModes =
+        {
+            (int)ProdModes.legacy,
+            (int)ProdModes.legacy,
+            (int)ProdModes.legacy,
+            (int)ProdModes.legacy,
+            (int)ProdModes.legacy
+        };
+        private static readonly int[] prodMults =
+        {
+            DefaultProdMult,
+            DefaultProdMult,
+            DefaultProdMult,
+            DefaultProdMult,
+            DefaultProdMult
+        };
 
 
         /// <summary>
@@ -40,9 +75,13 @@ namespace RealPop2
         {
             // Get builidng info.
             BuildingInfo info = __instance.m_info;
+            ItemClass.SubService subService = info.GetSubService();
+
+            // Array index.
+            int arrayIndex = GetIndex(subService);
 
             // New or old method?
-            if (prodMode == (int)ProdModes.popCalcs)
+            if (prodModes[arrayIndex] == (int)ProdModes.popCalcs)
             {
                 // New settings, based on population.
                 float multiplier;
@@ -64,7 +103,7 @@ namespace RealPop2
 
                 float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
                 // Multiply total workers by multipler and overall multiplier (from settings) to get result.
-                __result = (int)((totalWorkers * multiplier * prodMult) / 100f);
+                __result = (int)((totalWorkers * multiplier * prodMults[arrayIndex]) / 100f);
             }
             else
             {
@@ -89,38 +128,51 @@ namespace RealPop2
 
 
         /// <summary>
+        /// Sets the industrial production mode for all subservices to the specified mode.
+        /// </summary>
+        internal static int SetProdModes
+        {
+            set
+            {
+                for (int i = 0; i < prodModes.Length; ++i)
+                {
+                    prodModes[i] = value;
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Gets the current industrial production calculation mode.
         /// </summary>
-        /// <returns>Visit mode</returns>
-        internal static int GetProdMode() => prodMode;
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Production calculation mode</returns>
+        internal static int GetProdMode(ItemClass.SubService subService) => prodModes[GetIndex(subService)];
 
 
         /// <summary>
         /// Sets the current industrial production calculation mode.
         /// </summary>
+        /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
-        /// <returns>Visit mode</returns>
-        internal static void SetProdMode(int value)
-        {
-            prodMode = value;
-        }
+        internal static void SetProdMode(ItemClass.SubService subService, int value) => prodModes[GetIndex(subService)] = value;
+
 
         /// <summary>
         /// Gets the current industrial production multiplier.
         /// </summary>
-        /// <returns>Visit mode</returns>
-        internal static int GetProdMult() => prodMult;
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Production multiplier</returns>
+        internal static int GetProdMult(ItemClass.SubService subService) => prodMults[GetIndex(subService)];
 
 
         /// <summary>
         /// Sets the current industrial production multipier.
         /// </summary>
+        /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
         /// <returns>Visit mode</returns>
-        internal static void SetProdMult(int value)
-        {
-            prodMult = Mathf.Clamp(0, value, MaxProdMult);
-        }
+        internal static void SetProdMult(ItemClass.SubService subService, int value) => prodMults[GetIndex(subService)] = value;
 
 
         /// <summary>
@@ -129,15 +181,19 @@ namespace RealPop2
         /// <returns>New list of industrial production mode entries ready for serialization</returns>
         internal static List<SubServiceMode> SerializeProds()
         {
-            return new List<SubServiceMode>
+            List<SubServiceMode> entries = new List<SubServiceMode>();
+
+            for (int i = 0; i < prodModes.Length; ++i)
             {
-                new SubServiceMode
+                entries.Add(new SubServiceMode
                 {
-                    subService = ItemClass.SubService.IndustrialGeneric,
-                    mode = prodMode,
-                    multiplier = prodMult
-                }
-            };
+                    subService = subServices[i],
+                    mode = prodModes[i],
+                    multiplier = prodMults[i]
+                });
+            }
+
+            return entries;
         }
 
 
@@ -152,9 +208,35 @@ namespace RealPop2
             {
                 if (entry.subService == ItemClass.SubService.IndustrialGeneric)
                 {
-                    SetProdMode(entry.mode);
-                    SetProdMult(entry.multiplier);
+                    SetProdMode(entry.subService, entry.mode);
+                    SetProdMult(entry.subService, entry.multiplier);
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the sub-service array index for the given sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Array index</returns>
+        private static int GetIndex(ItemClass.SubService subService)
+        {
+            switch (subService)
+            {
+                case ItemClass.SubService.IndustrialGeneric:
+                    return (int)SubServiceIndex.IndustrialGeneric;
+                case ItemClass.SubService.IndustrialFarming:
+                    return (int)SubServiceIndex.IndustrialFarming;
+                case ItemClass.SubService.IndustrialForestry:
+                    return (int)SubServiceIndex.IndustrialForestry;
+                case ItemClass.SubService.IndustrialOil:
+                    return (int)SubServiceIndex.IndustrialOil;
+                case ItemClass.SubService.IndustrialOre:
+                    return (int)SubServiceIndex.IndustrialOre;
+                default:
+                    Logging.Error("invalid subservice ", subService.ToString(), " passed to RealisticIndustrialProduction.GetIndex");
+                    return (int)SubServiceIndex.IndustrialGeneric;
             }
         }
     }

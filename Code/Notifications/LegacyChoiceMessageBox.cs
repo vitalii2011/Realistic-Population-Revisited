@@ -44,7 +44,7 @@ namespace RealPop2.MessageBox
             ModSettings.ThisSaveLegacyExt = true;
             ModSettings.ThisSaveLegacyOff = true;
             RealisticVisitplaceCount.SetVisitModes = (int)RealisticVisitplaceCount.ComVisitModes.legacy;
-            RealisticIndustrialProduction.SetProdMode((int)RealisticIndustrialProduction.ProdModes.legacy);
+            RealisticIndustrialProduction.SetProdModes = (int)RealisticIndustrialProduction.ProdModes.legacy;
             RealisticExtractorProduction.SetProdModes = (int)RealisticExtractorProduction.ProdModes.legacy;
             Close();
         }
@@ -61,7 +61,7 @@ namespace RealPop2.MessageBox
             ModSettings.ThisSaveLegacyExt = false;
             ModSettings.ThisSaveLegacyOff = false;
             RealisticVisitplaceCount.SetVisitModes = (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
-            RealisticIndustrialProduction.SetProdMode((int)RealisticIndustrialProduction.ProdModes.popCalcs);
+            RealisticIndustrialProduction.SetProdModes = (int)RealisticIndustrialProduction.ProdModes.popCalcs;
             RealisticExtractorProduction.SetProdModes = (int)RealisticExtractorProduction.ProdModes.popCalcs;
             Close();
         }

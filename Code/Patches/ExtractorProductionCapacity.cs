@@ -122,7 +122,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Sets the extractor production mode for all commercial subservices to the specified mode.
+        /// Sets the extractor production mode for all subservices to the specified mode.
         /// </summary>
         internal static int SetProdModes
         {
@@ -171,7 +171,7 @@ namespace RealPop2
         /// Gets the current extractor production percentage multiplier for the specified sub-service.
         /// </summary>
         /// <param name="subService">Sub-service</param>
-        /// <returns>Visit mode</returns>
+        /// <returns>Production multiplier</returns>
         internal static int GetProdMult(ItemClass.SubService subService) => prodMults[GetIndex(subService)];
 
 

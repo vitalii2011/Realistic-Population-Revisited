@@ -10,7 +10,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for creating and editing calculation packs.
     /// </summary>
-    internal class PopulationPanel : CalculationPanelBase
+    internal class PopulationPanel : PackPanelBase
     {
         // Constants.
         private const float PopCheckX = FirstItem;

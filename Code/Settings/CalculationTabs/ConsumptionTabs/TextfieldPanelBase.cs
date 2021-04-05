@@ -5,9 +5,9 @@ using ColossalFramework.UI;
 namespace RealPop2
 {
     /// <summary>
-    /// Base class for options panel consumption settings (sub-)tabs.
+    /// Base class for options panel textfield-based (sub-)tabs.
     /// </summary>
-    internal class PanelBase
+    internal class TextfieldPanelBase
     {
         // Layout constants.
         protected const float Margin = 5f;

@@ -14,9 +14,12 @@ namespace RealPop2
 
 
         // Components.
-        private readonly ResDefaultsPanel resDefaults;
-        private readonly EmpDefaultsPanel comDefaults, offDefaults, indDefaults, extDefaults;
-        private readonly SchDefaultsPanel schDefaults;
+        private readonly ResidentialTab resTab;
+        private readonly CommercialTab comTab;
+        private readonly OfficeTab offTab;
+        private readonly IndustrialTab indTab;
+        private readonly ExtractorTab extTab;
+        private readonly SchoolTab schTab;
 
 
         /// <summary>
@@ -46,15 +49,14 @@ namespace RealPop2
 
             // Add child tabs.
             int tab = 0;
-            resDefaults = new ResDefaultsPanel(childTabStrip, tab++);
-            comDefaults = new ComDefaultsPanel(childTabStrip, tab++);
-            indDefaults = new IndDefaultsPanel(childTabStrip, tab++);
-            extDefaults = new ExtDefaultsPanel(childTabStrip, tab++);
-            offDefaults = new OffDefaultsPanel(childTabStrip, tab++);
-            schDefaults = new SchDefaultsPanel(childTabStrip, tab++);
+            resTab = new ResidentialTab(childTabStrip, tab++);
+            comTab = new CommercialTab(childTabStrip, tab++);
+            offTab = new OfficeTab(childTabStrip, tab++);
+            indTab = new IndustrialTab(childTabStrip, tab++);
+            extTab = new ExtractorTab(childTabStrip, tab++);
+            schTab = new SchoolTab(childTabStrip, tab++);
             new PopulationPanel(childTabStrip, tab++);
             new FloorPanel(childTabStrip, tab++);
-            new ConsumptionPanel(childTabStrip, tab++);
             new LegacyPanel(childTabStrip, tab);
         }
 
@@ -65,12 +67,12 @@ namespace RealPop2
         internal void UpdateDefaultMenus()
         {
             // Update for each defaults panel.
-            resDefaults.UpdateMenus();
-            comDefaults.UpdateMenus();
-            offDefaults.UpdateMenus();
-            indDefaults.UpdateMenus();
-            extDefaults.UpdateMenus();
-            schDefaults.UpdateMenus();
+            resTab.UpdateMenus();
+            comTab.UpdateMenus();
+            offTab.UpdateMenus();
+            indTab.UpdateMenus();
+            extTab.UpdateMenus();
+            schTab.UpdateMenus();
         }
     }
 }
