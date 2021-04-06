@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using ColossalFramework.UI;
+using ColossalFramework.Globalization;
 
 
 namespace RealPop2
@@ -163,7 +164,7 @@ namespace RealPop2
         {
             if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
             {
-                valueLabel.text = Mathf.RoundToInt(value).ToString() + "%";
+                valueLabel.text = Mathf.RoundToInt(value).ToString("N0", LocaleManager.cultureInfo) + "%";
             }
         }
     }

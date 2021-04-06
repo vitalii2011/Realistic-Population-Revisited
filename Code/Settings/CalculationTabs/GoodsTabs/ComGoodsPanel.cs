@@ -64,7 +64,7 @@ namespace RealPop2
 
         // Panel components.
         private UIDropDown[] visitDefaultMenus;
-        private UISlider[] visitMultSliders, goodsMultSliders;
+        private UISlider[] visitMultSliders, goodsMultSliders, inventorySliders;
 
 
         /// <summary>
@@ -98,6 +98,9 @@ namespace RealPop2
 
                 // Reset visit mode menu selections.
                 visitDefaultMenus[i].selectedIndex = RealisticVisitplaceCount.GetVisitMode(subServices[i]);
+
+                // Reset inventory cap slider value.
+                inventorySliders[i].value = GoodsUtils.GetInventoryCap(subServices[i]);
             }
         }
 
@@ -116,6 +119,7 @@ namespace RealPop2
                 visitDefaultMenus = new UIDropDown[subServices.Length];
                 visitMultSliders = new UISlider[subServices.Length];
                 goodsMultSliders = new UISlider[subServices.Length];
+                inventorySliders = new UISlider[subServices.Length];
             }
 
             // Sales multiplier slider.
@@ -142,8 +146,17 @@ namespace RealPop2
                 Translations.Translate("RPR_DEF_VOL")
             };
 
-            // Visitor multiplication slider.
+            // Inventory cap slider.
             currentY += RowHeight;
+            inventorySliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_CGM_TIP");
+            inventorySliders[index].objectUserData = index;
+            inventorySliders[index].minValue = GoodsUtils.MinInventory;
+            inventorySliders[index].maxValue = GoodsUtils.MaxInventory;
+            inventorySliders[index].stepSize = 1000f;
+            inventorySliders[index].value = GoodsUtils.GetInventoryCap(subServices[index]);
+            MultSliderText(inventorySliders[index], inventorySliders[index].value);
+
+            // Visitor multiplication slider.
             visitMultSliders[index] = AddSlider(panel, RightColumn, currentY, ControlWidth, "RPR_DEF_VMU_TIP");
             visitMultSliders[index].objectUserData = index;
             visitMultSliders[index].value = RealisticVisitplaceCount.GetVisitMult(subServices[index]);
@@ -177,6 +190,9 @@ namespace RealPop2
 
                 // Record goods multiplier.
                 GoodsUtils.SetComMult(subServices[i], (int)goodsMultSliders[i].value);
+
+                // Record inventory cap.
+                GoodsUtils.SetInventoryCap(subServices[i], (int)inventorySliders[i].value);
             }
 
             base.Apply(control, mouseEvent);
@@ -201,6 +217,9 @@ namespace RealPop2
 
                 // Reset goods multiplier slider value.
                 visitMultSliders[i].value = GoodsUtils.DefaultSalesMult;
+
+                // Reset inventory cap slider value.
+                inventorySliders[i].value = GoodsUtils.DefaultInventory;
             }
         }
 
