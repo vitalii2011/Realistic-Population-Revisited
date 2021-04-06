@@ -148,13 +148,17 @@ namespace RealPop2
 
             // Inventory cap slider.
             currentY += RowHeight;
-            inventorySliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_CGM_TIP");
+            inventorySliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_IDC_TIP");
             inventorySliders[index].objectUserData = index;
             inventorySliders[index].minValue = GoodsUtils.MinInventory;
             inventorySliders[index].maxValue = GoodsUtils.MaxInventory;
             inventorySliders[index].stepSize = 1000f;
             inventorySliders[index].value = GoodsUtils.GetInventoryCap(subServices[index]);
             MultSliderText(inventorySliders[index], inventorySliders[index].value);
+
+            // Inventory cap label.
+            UILabel invLabel = UIControls.AddLabel(panel, 0f, 0f, Translations.Translate("RPR_DEF_IDC"), textScale: 0.8f);
+            invLabel.relativePosition = new Vector2(LeftColumn - 10f - invLabel.width, currentY + (inventorySliders[index].parent.height - invLabel.height) / 2f);
 
             // Visitor multiplication slider.
             visitMultSliders[index] = AddSlider(panel, RightColumn, currentY, ControlWidth, "RPR_DEF_VMU_TIP");

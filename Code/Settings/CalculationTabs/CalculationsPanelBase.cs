@@ -97,6 +97,7 @@ namespace RealPop2
             // Layout constants.
             const float SliderPanelHeight = 20f;
             const float SliderHeight = 6f;
+            const float ValueLabelWidth = 45f;
             const float OffsetX = (SliderPanelHeight - SliderHeight) / 2f;
 
             // Mutiplier slider panel.
@@ -114,12 +115,12 @@ namespace RealPop2
             valueLabel.textScale = 0.7f;
             valueLabel.autoSize = false;
             valueLabel.color = new Color32(91, 97, 106, 255);
-            valueLabel.size = new Vector2(38, 15);
-            valueLabel.relativePosition = new Vector2(sliderPanel.width - valueLabel.width - Margin, (SliderPanelHeight - valueLabel.height) / 2f);
+            valueLabel.size = new Vector2(ValueLabelWidth, 15f);
+            valueLabel.relativePosition = new Vector2(sliderPanel.width - ValueLabelWidth - Margin, (SliderPanelHeight - valueLabel.height) / 2f);
 
             // Mutiplier slider control.
             UISlider newSlider = sliderPanel.AddUIComponent<UISlider>();
-            newSlider.size = new Vector2(sliderPanel.width - valueLabel.width - (Margin * 3), SliderHeight);
+            newSlider.size = new Vector2(sliderPanel.width - ValueLabelWidth - (Margin * 3), SliderHeight);
             newSlider.relativePosition = new Vector2(0f, OffsetX);
 
             // Mutiplier slider track.
