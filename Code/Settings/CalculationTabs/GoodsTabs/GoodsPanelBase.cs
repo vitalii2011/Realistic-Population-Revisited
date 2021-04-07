@@ -1,4 +1,6 @@
-﻿using ColossalFramework.UI;
+﻿using System.Linq;
+using UnityEngine;
+using ColossalFramework.UI;
 
 
 namespace RealPop2
@@ -25,12 +27,16 @@ namespace RealPop2
 
 
         // Tab settings.
-        protected override string TabName => Translations.Translate("RPR_OPT_PSI");
+        protected override string TabName => Translations.Translate(TitleKey);
         protected override string[] TabIconNames => tabIconNames;
         protected override string[] TabAtlasNames => tabAtlasNames;
 
         // Tab width.
         protected override float TabWidth => 40f;
+
+
+        // Title key.
+        protected abstract string TitleKey { get; }
 
 
         /// <summary>
@@ -40,8 +46,11 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal GoodsPanelBase(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
+            // Add title.
+            float currentY = TitleLabel(TitleKey);
+
             // Add menus.
-            float currentY = SetUpMenus(panel, Margin);
+            currentY = SetUpMenus(panel, currentY);
 
             // Add buttons- add extra space.
             FooterButtons(currentY + Margin);

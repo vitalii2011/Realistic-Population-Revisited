@@ -62,6 +62,10 @@ namespace RealPop2
         protected override string[] AtlasNames => atlasNames;
 
 
+        // Title key.
+        protected override string TitleKey => "RPR_TIT_CDF";
+
+
         // Legacy settings references.
         protected override bool NewLegacyCategory { get => ModSettings.newSaveLegacyCom; set => ModSettings.newSaveLegacyCom = value; }
         protected override bool ThisLegacyCategory { get => ModSettings.ThisSaveLegacyCom; set => ModSettings.ThisSaveLegacyCom = value; }

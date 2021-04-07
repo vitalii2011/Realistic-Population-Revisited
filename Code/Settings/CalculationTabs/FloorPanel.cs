@@ -17,8 +17,6 @@ namespace RealPop2
         protected const float FirstMaxX = FirstMinX + ColumnWidth;
         protected const float FirstEmptyX = FirstMaxX + ColumnWidth;
         protected const float MultiFloorX = FirstEmptyX + ColumnWidth;
-        protected const float PackMenuY = 5f;
-        protected const float DetailY = PackMenuY + 140f;
 
         // Textfield arrays.
         protected UITextField floorHeightField, firstMinField, firstExtraField;
@@ -37,8 +35,8 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal FloorPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Y position indicator.
-            float currentY = DetailY;
+            // Add title.
+            float currentY = TitleLabel(TabTooltipKey);
 
             // Initialise arrays
             floorHeightField = new UITextField();
@@ -48,16 +46,18 @@ namespace RealPop2
 
             // Pack selection dropdown.
             packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
-            packDropDown.parent.relativePosition = new Vector3(20f, PackMenuY);
+            packDropDown.parent.relativePosition = new Vector3(20f, currentY);
             packDropDown.eventSelectedIndexChanged += PackChanged;
 
             // Headings.
-            PanelUtils.ColumnLabel(panel, FloorHeightX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), Translations.Translate("RPR_CAL_VOL_FLH_TIP"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMinX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), Translations.Translate("RPR_CAL_VOL_FMN_TIP"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMaxX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), Translations.Translate("RPR_CAL_VOL_FMX_TIP"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstEmptyX, DetailY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), Translations.Translate("RPR_CAL_VOL_IGF_TIP"), 1.0f);
+            currentY += 140f;
+            PanelUtils.ColumnLabel(panel, FloorHeightX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), Translations.Translate("RPR_CAL_VOL_FLH_TIP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FirstMinX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), Translations.Translate("RPR_CAL_VOL_FMN_TIP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FirstMaxX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), Translations.Translate("RPR_CAL_VOL_FMX_TIP"), 1.0f);
+            PanelUtils.ColumnLabel(panel, FirstEmptyX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), Translations.Translate("RPR_CAL_VOL_IGF_TIP"), 1.0f);
 
             // Add level textfields.
+            currentY += RowHeight;
             floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FLH_TIP"));
             floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
             floorHeightField.tooltipBox = TooltipUtils.TooltipBox;

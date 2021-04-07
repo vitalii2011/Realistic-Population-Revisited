@@ -41,6 +41,10 @@ namespace RealPop2
         protected override string[] AtlasNames => atlasNames;
 
 
+        // Title key.
+        protected override string TitleKey => "RPR_TIT_SDF";
+
+
         /// <summary>
         /// Constructor.
         /// </summary>

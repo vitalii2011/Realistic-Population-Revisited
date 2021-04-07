@@ -196,12 +196,21 @@
     <Translation ID="RPR_CAL_SCH_WKR_TIP" String="The number and level of workplaces available at this school calculated using the above settings" />
     <Translation ID="RPR_CAL_SCH_CST" String="Cost/maintenance" />
     <Translation ID="RPR_CAL_SCH_CST_TIP" String="The school's construction cost and weekly maintenance cost calculated using the above settings" />
+    <Translation ID="RPR_TIT_RDF" String="Residential calculation defaults" />
+    <Translation ID="RPR_TIT_CDF" String="Commercial calculation defaults" />
+    <Translation ID="RPR_TIT_IDF" String="Industrial calculation defaults" />
+    <Translation ID="RPR_TIT_EDF" String="Extractor calculation defaults" />
+    <Translation ID="RPR_TIT_ODF" String="Office calculation defaults" />
+    <Translation ID="RPR_TIT_SDF" String="School calculation defaults" />
+    <Translation ID="RPR_TIT_CGO" String="Commercial goods settings" />
+    <Translation ID="RPR_TIT_IGO" String="Industrial production settings" />
+    <Translation ID="RPR_TIT_EGO" String="Extractor production settings" />
+    <Translation ID="RPR_TIT_OGO" String="Office production settings" />
     <Translation ID="RPR_OPT_MOD" String="Mod settings" />
     <Translation ID="RPR_OPT_KEY" String="Hotkey for building options screen" />
     <Translation ID="RPR_OPT_PRS" String="Press any key" />
     <Translation ID="RPR_OPT_LEG" String="Legacy" />
     <Translation ID="RPR_OPT_CON" String="Consumption" />
-    <Translation ID="RPR_OPT_STO" String="Floors" />
     <Translation ID="RPR_OPT_LVL" String="Level" />
     <Translation ID="RPR_OPT_PERW" String="Amounts per worker" />
     <Translation ID="RPR_OPT_PERH" String="Amounts per household" />
@@ -234,7 +243,8 @@
     <Translation ID="RPR_OPT_SJX" String="Extra job per # students" />
     <Translation ID="RPR_OPT_CRI" String="Crime" />
     <Translation ID="RPR_OPT_CML" String="Crime multiplier (percentage)" />
-    <Translation ID="RPR_OPT_POP" String="Population" />
+    <Translation ID="RPR_OPT_POP" String="Population calculation packs" />
+    <Translation ID="RPR_OPT_STO" String="Floor calculation packs" />
     <Translation ID="RPR_OPT_DEF" String="Default calculation packs" />
     <Translation ID="RPR_OPT_PSI" String="Production, sales and inventory settings" />
     <Translation ID="RPR_OPT_EDT_NAM" String="Pack name" />

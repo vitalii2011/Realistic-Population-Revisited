@@ -19,8 +19,6 @@ namespace RealPop2
         private const float EmptyAreaX = EmptyPercentX + ColumnWidth;
         private const float AreaPerX = EmptyAreaX + ColumnWidth;
         private const float MultiFloorX = AreaPerX + ColumnWidth;
-        private const float PackMenuY = 90f;
-        private const float DetailY = PackMenuY + 140f;
 
         private readonly string[] serviceNames = { Translations.Translate("RPR_CAT_RES"), Translations.Translate("RPR_CAT_IND"), Translations.Translate("RPR_CAT_COM"), Translations.Translate("RPR_CAT_OFF"), Translations.Translate("RPR_CAT_SCH") };
         private readonly ItemClass.Service[] services = { ItemClass.Service.Residential, ItemClass.Service.Industrial, ItemClass.Service.Commercial, ItemClass.Service.Office, ItemClass.Service.Education };
@@ -47,8 +45,8 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal PopulationPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Y position indicator.
-            float currentY = DetailY;
+            // Add title.
+            float currentY = TitleLabel(TabTooltipKey);
 
             // Initialise arrays
             emptyAreaFields = new UITextField[5];
@@ -61,12 +59,13 @@ namespace RealPop2
 
             // Service selection dropdown.
             serviceDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_SVC"), serviceNames, -1);
-            serviceDropDown.parent.relativePosition = new Vector3(20f, Margin);
+            serviceDropDown.parent.relativePosition = new Vector3(20f, currentY);
             serviceDropDown.eventSelectedIndexChanged += ServiceChanged;
 
             // Pack selection dropdown.
             packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
-            packDropDown.parent.relativePosition = new Vector3(20f, PackMenuY);
+            currentY += 70f;
+            packDropDown.parent.relativePosition = new Vector3(20f, currentY);
             packDropDown.eventSelectedIndexChanged += PackChanged;
 
             // Label strings - cached to avoid calling Translations.Translate each time (for the tooltips, anwyay, including the others makes code more readable).
@@ -84,12 +83,13 @@ namespace RealPop2
             string multiFloorTip = Translations.Translate("RPR_CAL_VOL_MFU_TIP");
 
             // Headings.
-            PanelUtils.ColumnLabel(panel, EmptyAreaX, DetailY, ColumnWidth, emptyArea, emptyAreaTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, EmptyPercentX, DetailY, ColumnWidth, emptyPercent, emptyPercentTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, PopCheckX, DetailY, ColumnWidth, useFixedPop, useFixedPopTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, FixedPopX, DetailY, ColumnWidth, fixedPop, fixedPopTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, AreaPerX, DetailY, ColumnWidth, areaPer, areaPerTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, MultiFloorX, DetailY, ColumnWidth, multiFloor, multiFloorTip, 1.0f);
+            currentY += 140f;
+            PanelUtils.ColumnLabel(panel, EmptyAreaX, currentY, ColumnWidth, emptyArea, emptyAreaTip, 1.0f);
+            PanelUtils.ColumnLabel(panel, EmptyPercentX, currentY, ColumnWidth, emptyPercent, emptyPercentTip, 1.0f);
+            PanelUtils.ColumnLabel(panel, PopCheckX, currentY, ColumnWidth, useFixedPop, useFixedPopTip, 1.0f);
+            PanelUtils.ColumnLabel(panel, FixedPopX, currentY, ColumnWidth, fixedPop, fixedPopTip, 1.0f);
+            PanelUtils.ColumnLabel(panel, AreaPerX, currentY, ColumnWidth, areaPer, areaPerTip, 1.0f);
+            PanelUtils.ColumnLabel(panel, MultiFloorX, currentY, ColumnWidth, multiFloor, multiFloorTip, 1.0f);
 
             // Add level textfields.
             for (int i = 0; i < 5; ++i)

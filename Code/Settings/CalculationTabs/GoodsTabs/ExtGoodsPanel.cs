@@ -56,6 +56,10 @@ namespace RealPop2
         protected override string[] AtlasNames => atlasNames;
 
 
+        // Title key.
+        protected override string TitleKey => "RPR_TIT_EGO";
+
+
         // Panel components.
         private UISlider[] extProdMultSliders, procProdMultSliders;
         private UIDropDown[] extProdDefaultMenus, procProdDefaultMenus;

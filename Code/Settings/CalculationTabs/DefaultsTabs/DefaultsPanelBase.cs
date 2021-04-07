@@ -27,9 +27,13 @@ namespace RealPop2
 
 
         // Tab icons.
-        protected override string TabName => Translations.Translate("RPR_OPT_DEF");
+        protected override string TabName => Translations.Translate(TitleKey);
         protected override string[] TabIconNames => tabIconNames;
         protected override string[] TabAtlasNames => tabAtlasNames;
+
+
+        // Title key.
+        protected abstract string TitleKey { get; }
 
 
         // Dropdown menus.
@@ -54,8 +58,11 @@ namespace RealPop2
             PopMenus = new UIDropDown[SubServiceNames.Length];
             FloorMenus = new UIDropDown[SubServiceNames.Length];
 
+            // Add title.
+            float currentY = TitleLabel(TitleKey);
+
             // Add header controls.
-            float currentY = PanelHeader(Margin);
+            currentY = PanelHeader(currentY);
 
             // Add menus.
             currentY = SetUpMenus(currentY);

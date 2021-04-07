@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using ColossalFramework.UI;
 using ColossalFramework.Globalization;
 
@@ -189,6 +190,22 @@ namespace RealPop2
             {
                 valueLabel.text = Mathf.RoundToInt(value).ToString("N0", LocaleManager.cultureInfo);
             }
+        }
+
+
+        /// <summary>
+        /// Adds a title label at the top of the panel.
+        /// </summary>
+        /// <param name="titleKey">Title translation key</param>
+        /// <returns>Y position below title</returns>
+        protected float TitleLabel(string titleKey)
+        {
+            // Add title.
+            UILabel titleLabel = UIControls.AddLabel(panel, 0f, Margin, Translations.Translate(titleKey), panel.width, 1.5f);
+            titleLabel.textAlignment = UIHorizontalAlignment.Center;
+            titleLabel.font = Resources.FindObjectsOfTypeAll<UIFont>().FirstOrDefault((UIFont f) => f.name == "OpenSans-Semibold");
+
+            return Margin + titleLabel.height + Margin;
         }
     }
 }
