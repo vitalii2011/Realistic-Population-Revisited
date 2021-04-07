@@ -8,8 +8,7 @@ namespace RealPop2
 	/// <summary>
 	/// Harmony Postfix patch to handle *reductions* in homecounts when a building upgrades, applied to base game PrivateBuildingAI.BuildingUpgraded.
 	/// </summary>
-	[HarmonyPatch(typeof(PrivateBuildingAI))]
-	[HarmonyPatch("BuildingUpgraded")]
+	[HarmonyPatch(typeof(PrivateBuildingAI), nameof(PrivateBuildingAI.BuildingUpgraded))]
 	[HarmonyBefore("com.github.algernon-A.csl.ablc")]
 	public static class BuildingUpgradedPatch
 	{

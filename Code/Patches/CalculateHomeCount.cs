@@ -11,8 +11,7 @@ namespace RealPop2
     /// <summary>
     /// Harmony patch to implement population count changes for residential buildings.
     /// </summary>
-    [HarmonyPatch(typeof(ResidentialBuildingAI))]
-    [HarmonyPatch("CalculateHomeCount")]
+    [HarmonyPatch(typeof(ResidentialBuildingAI), nameof(ResidentialBuildingAI.CalculateHomeCount)]
     public static class RealisticHomeCount
     {
         /// <summary>

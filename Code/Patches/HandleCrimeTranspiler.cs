@@ -10,8 +10,7 @@ namespace RealPop2
     /// Transpiler to patch CommonBuildingAI.HandleCrime.
     /// This implements the mods custom crime settings.
     /// </summary>
-    [HarmonyPatch(typeof(CommonBuildingAI))]
-    [HarmonyPatch("HandleCrime")]
+    [HarmonyPatch(typeof(CommonBuildingAI), "HandleCrime")]
     public static class HandleCrimeTranspiler
     {
         // Inserting a call to our custom replacement method after these instructions (normally at the start of the method):
