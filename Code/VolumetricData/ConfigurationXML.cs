@@ -69,6 +69,10 @@ namespace RealPop2
         [XmlArray("extractor_production")]
         [XmlArrayItem("production")]
         public List<SubServiceMode> extProdModes;
+
+        [XmlArray("commercial_inventory_caps")]
+        [XmlArrayItem("inventory")]
+        public List<SubServiceValue> comIndCaps;
     }
 
 

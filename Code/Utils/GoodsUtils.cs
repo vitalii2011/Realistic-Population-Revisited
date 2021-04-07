@@ -154,7 +154,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Serializes the current settings ready for XML.
+        /// Serializes the current sales multiplier settings ready for XML.
         /// </summary>
         /// <returns>New list of sub-service entries ready for serialization</returns>
         internal static List<SubServiceValue> SerializeSalesMults()
@@ -191,7 +191,44 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Deserializes XML sub-service entries.
+        /// Serializes the current inventory demand caps ready for XML.
+        /// </summary>
+        /// <returns>New list of sub-service entries ready for serialization</returns>
+        internal static List<SubServiceValue> SerializeInvCaps()
+        {
+            return new List<SubServiceValue>
+            {
+                new SubServiceValue
+                {
+                    subService = ItemClass.SubService.CommercialLow,
+                    value = lowComInv
+                },
+                new SubServiceValue
+                {
+                    subService = ItemClass.SubService.CommercialHigh,
+                    value = highComInv
+                },
+                new SubServiceValue
+                {
+                    subService = ItemClass.SubService.CommercialEco,
+                    value = ecoComInv
+                },
+                new SubServiceValue
+                {
+                    subService = ItemClass.SubService.CommercialLeisure,
+                    value = leisureInv
+                },
+                new SubServiceValue
+                {
+                    subService = ItemClass.SubService.CommercialTourist,
+                    value = touristInv
+                }
+            };
+        }
+
+
+        /// <summary>
+        /// Deserializes XML sub-service entries for sales multipliers.
         /// </summary>
         /// <param name="entries">List of sub-service entries to deserialize</param>
         /// <returns>New list of sub-service entries ready for serialization</returns>
@@ -200,6 +237,20 @@ namespace RealPop2
             foreach (SubServiceValue entry in entries)
             {
                 SetComMult(entry.subService, entry.value);
+            }
+        }
+
+
+        /// <summary>
+        /// Deserializes XML sub-service entries for inventory demand caps.
+        /// </summary>
+        /// <param name="entries">List of sub-service entries to deserialize</param>
+        /// <returns>New list of sub-service entries ready for serialization</returns>
+        internal static void DeserializeInvCaps(List<SubServiceValue> entries)
+        {
+            foreach (SubServiceValue entry in entries)
+            {
+                SetInventoryCap(entry.subService, entry.value);
             }
         }
     }

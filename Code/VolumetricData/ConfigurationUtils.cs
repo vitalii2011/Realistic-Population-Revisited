@@ -148,6 +148,9 @@ namespace RealPop2
                             // Deserialize industrial production calculation modes.
                             RealisticIndustrialProduction.DeserializeProds(configFile.indProdModes);
                             RealisticExtractorProduction.DeserializeProds(configFile.extProdModes);
+
+                            // Deserialise commercial inventory caps.
+                            GoodsUtils.DeserializeInvCaps(configFile.comIndCaps);
                         }
                     }
                 }
@@ -291,6 +294,9 @@ namespace RealPop2
                     // Serialize industrial production calculation modes.
                     configFile.indProdModes = RealisticIndustrialProduction.SerializeProds();
                     configFile.extProdModes = RealisticExtractorProduction.SerializeProds();
+
+                    // Serialise commercial inventory caps.
+                    configFile.comIndCaps = GoodsUtils.SerializeInvCaps();
 
                     // Write to file.
                     xmlSerializer.Serialize(writer, configFile);
