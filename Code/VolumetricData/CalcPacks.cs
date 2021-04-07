@@ -170,7 +170,7 @@
             if (value == 0)
             {
                 // No volumetric override - use legacy calcs.
-                int[] array = ResidentialBuildingAIMod.GetArray(buildingPrefab, (int)level);
+                int[] array = AI_Utils.GetResidentialArray(buildingPrefab, (int)level);
                 return AI_Utils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array);
             }
 
@@ -192,7 +192,7 @@
         /// <returns>Workplace breakdowns and visitor count </returns>
         public override int[] Workplaces(BuildingInfo buildingPrefab, int level)
         {
-            int[] array = CommercialBuildingAIMod.GetArray(buildingPrefab, level);
+            int[] array = AI_Utils.GetCommercialArray(buildingPrefab, level);
             AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 4, ref array, out int[] output);
 
             return output;
@@ -219,12 +219,12 @@
             // Need to test if we're an extractor or not for this one.
             if (buildingPrefab.GetAI() is IndustrialExtractorAI)
             {
-                array = IndustrialExtractorAIMod.GetArray(buildingPrefab, IndustrialExtractorAIMod.EXTRACT_LEVEL);
+                array = AI_Utils.GetExtractorArray(buildingPrefab);
                 minWorkers = 3;
             }
             else
             {
-                array = IndustrialBuildingAIMod.GetArray(buildingPrefab, level);
+                array = AI_Utils.GetIndustryArray(buildingPrefab, level);
                 minWorkers = 4;
             }
 
@@ -248,7 +248,7 @@
         /// <returns>Workplace breakdowns and visitor count </returns>
         public override int[] Workplaces(BuildingInfo buildingPrefab, int level)
         {
-            int[] array = OfficeBuildingAIMod.GetArray(buildingPrefab, level);
+            int[] array = AI_Utils.GetOfficeArray(buildingPrefab, level);
             AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 10, ref array, out int[] output);
 
             return output;

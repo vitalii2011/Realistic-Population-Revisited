@@ -115,7 +115,7 @@
     <Content Include="Translations\zh.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\AI_Files\AI_School.cs" />
+    <Compile Include="Code\Patches\StudentCount.cs" />
     <Compile Include="Code\GUI\UIModCalcs.cs" />
     <Compile Include="Code\GUI\UIPreviewPanel.cs" />
     <Compile Include="Code\Notifications\DontShowAgainMessageBox.cs" />

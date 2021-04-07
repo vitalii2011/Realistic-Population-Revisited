@@ -6,7 +6,7 @@ namespace RealPop2
     /// <summary>
     /// Harmony patch for realistic student counts.
     /// </summary>
-    [HarmonyPatch(typeof(SchoolAI), "StudentCount", MethodType.Getter)]
+    [HarmonyPatch(typeof(SchoolAI), nameof(SchoolAI.StudentCount), MethodType.Getter)]
     public static class StudentCountPatch
     {
         /// <summary>

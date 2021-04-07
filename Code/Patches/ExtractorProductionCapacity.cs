@@ -6,7 +6,7 @@ using HarmonyLib;
 namespace RealPop2
 {
     /// <summary>
-    /// Harmony patch to implement production changes for office buildings, and supporting methods.
+    /// Harmony patch to implement production changes for extractor buildings, and supporting methods.
     /// </summary>
     [HarmonyPatch(typeof(IndustrialExtractorAI), nameof(IndustrialExtractorAI.CalculateProductionCapacity))]
     public static class RealisticExtractorProduction
@@ -61,7 +61,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Harmony Prefix patch to IndustrialBuildingAI.CalculateProductionCapacity to implement mod production calculations.
+        /// Harmony Prefix patch to IndustrialExtractorAI.CalculateProductionCapacity to implement mod production calculations.
         /// </summary>
         /// <param name="__result">Original method result</param>
         /// <param name="__instance">Original AI instance reference</param>
@@ -102,7 +102,7 @@ namespace RealPop2
             else
             {
                 // Legacy calcs.
-                int[] array = IndustrialExtractorAIMod.GetArray(__instance.m_info, IndustrialExtractorAIMod.EXTRACT_LEVEL);
+                int[] array = AI_Utils.GetExtractorArray(__instance.m_info);
 
                 // Original method return value.
                 __result = Mathf.Max(100, width * length * array[DataStore.PRODUCTION]) / 100;

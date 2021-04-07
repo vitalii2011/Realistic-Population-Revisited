@@ -28,7 +28,7 @@ namespace RealPop2
         public static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
             // Get relevant array from datastore.
-            int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int)level);
+            int[] array = AI_Utils.GetOfficeArray(__instance.m_info, (int)level);
 
             // Get consumption rates from array.
             electricityConsumption = array[DataStore.POWER];

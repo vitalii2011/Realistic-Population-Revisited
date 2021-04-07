@@ -12,42 +12,13 @@ namespace RealPop2
     {
         public static bool Prefix(OfficeBuildingAI __instance, ItemClass.Level level, out int groundPollution, out int noisePollution)
         {
-            int[] array = OfficeBuildingAIMod.GetArray(__instance.m_info, (int) level);
+            int[] array = AI_Utils.GetOfficeArray(__instance.m_info, (int) level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
             noisePollution = array[DataStore.NOISE_POLLUTION];
 
             // Don't execute base method after this.
             return false;
-        }
-    }
-
-
-    public class OfficeBuildingAIMod : OfficeBuildingAI
-    {
-        public static int[] GetArray(BuildingInfo item, int level)
-        {
-            int[][] array = DataStore.office;
-
-            try
-            {
-                switch (item.m_class.m_subService)
-                {
-                    case ItemClass.SubService.OfficeHightech:
-                        array = DataStore.officeHighTech;
-                        break;
-
-                    case ItemClass.SubService.OfficeGeneric:
-                    default:
-                        break;
-                }
-
-                return array[level];
-            }
-            catch (System.Exception)
-            {
-                return array[0];
-            }
         }
     }
 }

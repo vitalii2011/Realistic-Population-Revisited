@@ -93,7 +93,7 @@ namespace RealPop2
             // Set the visitors here since we're calculating
             //if (num != 0)
             //{
-                //value = Mathf.Max(200, width * length * array[DataStore.VISIT]) / 100;
+            //value = Mathf.Max(200, width * length * array[DataStore.VISIT]) / 100;
             //}
             //output.visitors = value;
         } // end calculateprefabWorkerVisit
@@ -209,6 +209,219 @@ namespace RealPop2
             }
 
             return width * length;
+        }
+
+
+        /// <summary>
+        /// Returns the datastore array for residential buildings.
+        /// </summary>
+        /// <param name="item">Building prefab</param>
+        /// <param name="level">Building level</param>
+        /// <returns>Datastore array</returns>
+        public static int[] GetResidentialArray(BuildingInfo item, int level)
+        {
+            int[][] array = DataStore.residentialLow;
+
+            try
+            {
+                switch (item.m_class.m_subService)
+                {
+                    case ItemClass.SubService.ResidentialHighEco:
+                        array = DataStore.resEcoHigh;
+                        break;
+
+                    case ItemClass.SubService.ResidentialLowEco:
+                        array = DataStore.resEcoLow;
+                        break;
+
+                    case ItemClass.SubService.ResidentialHigh:
+                        array = DataStore.residentialHigh;
+                        break;
+
+                    case ItemClass.SubService.ResidentialLow:
+                    default:
+                        break;
+                }
+
+                return array[level];
+            }
+            catch
+            {
+                return array[0];
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the datastore array for industry buildings.
+        /// </summary>
+        /// <param name="item">Building prefab</param>
+        /// <param name="level">Building level</param>
+        /// <returns>Datastore array</returns>
+        public static int[] GetIndustryArray(BuildingInfo item, int level)
+        {
+            int tempLevel;
+            int[][] array = DataStore.industry;
+
+            try
+            {
+                // Adding 1 to specialized industry to capture correct processor level.
+
+                switch (item.m_class.m_subService)
+                {
+                    case ItemClass.SubService.IndustrialOre:
+                        array = DataStore.industry_ore;
+                        tempLevel = level + 1;
+                        break;
+
+                    case ItemClass.SubService.IndustrialForestry:
+                        array = DataStore.industry_forest;
+                        tempLevel = level + 1;
+                        break;
+
+                    case ItemClass.SubService.IndustrialFarming:
+                        array = DataStore.industry_farm;
+                        tempLevel = level + 1;
+                        break;
+
+                    case ItemClass.SubService.IndustrialOil:
+                        array = DataStore.industry_oil;
+                        tempLevel = level + 1;
+                        break;
+
+                    case ItemClass.SubService.IndustrialGeneric:  // Deliberate fall through
+                    default:
+                        tempLevel = level;
+                        break;
+                }
+
+                return array[tempLevel];
+            }
+            catch
+            {
+                return array[0];
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the datastore array for extractor buildings.
+        /// </summary>
+        /// <param name="item">Building prefab</param>
+        /// <returns>Datastore array</returns>
+        public static int[] GetExtractorArray(BuildingInfo item)
+        {
+            int[][] array = DataStore.industry;
+
+            try
+            {
+                switch (item.m_class.m_subService)
+                {
+                    case ItemClass.SubService.IndustrialOre:
+                        array = DataStore.industry_ore;
+                        break;
+
+                    case ItemClass.SubService.IndustrialForestry:
+                        array = DataStore.industry_forest;
+                        break;
+
+                    case ItemClass.SubService.IndustrialFarming:
+                        array = DataStore.industry_farm;
+                        break;
+
+                    case ItemClass.SubService.IndustrialOil:
+                        array = DataStore.industry_oil;
+                        break;
+
+                    case ItemClass.SubService.IndustrialGeneric:  // Deliberate fall through
+                    default:
+                        break;
+                }
+
+                // Extracting is always level 1 (To make it easier to code)
+                return array[0];
+            }
+            catch
+            {
+                return array[0];
+            }
+        }
+
+
+
+        /// <summary>
+        /// Returns the datastore array for commercial buildings.
+        /// </summary>
+        /// <param name="item">Building prefab</param>
+        /// <param name="level">Building level</param>
+        /// <returns>Datastore array</returns>
+        public static int[] GetCommercialArray(BuildingInfo item, int level)
+        {
+            int[][] array = DataStore.commercialLow;
+
+            try
+            {
+                switch (item.m_class.m_subService)
+                {
+                    case ItemClass.SubService.CommercialLeisure:
+                        array = DataStore.commercialLeisure;
+                        break;
+
+                    case ItemClass.SubService.CommercialTourist:
+                        array = DataStore.commercialTourist;
+                        break;
+
+                    case ItemClass.SubService.CommercialEco:
+                        array = DataStore.commercialEco;
+                        break;
+
+                    case ItemClass.SubService.CommercialHigh:
+                        array = DataStore.commercialHigh;
+                        break;
+
+                    case ItemClass.SubService.CommercialLow:
+                    default:
+                        break;
+                }
+
+                return array[level];
+            }
+            catch (System.Exception)
+            {
+                return array[0];
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the datastore array for office buildings.
+        /// </summary>
+        /// <param name="item">Building prefab</param>
+        /// <param name="level">Building level</param>
+        /// <returns>Datastore array</returns>
+        public static int[] GetOfficeArray(BuildingInfo item, int level)
+        {
+            int[][] array = DataStore.office;
+
+            try
+            {
+                switch (item.m_class.m_subService)
+                {
+                    case ItemClass.SubService.OfficeHightech:
+                        array = DataStore.officeHighTech;
+                        break;
+
+                    case ItemClass.SubService.OfficeGeneric:
+                    default:
+                        break;
+                }
+
+                return array[level];
+            }
+            catch
+            {
+                return array[0];
+            }
         }
     }
 }

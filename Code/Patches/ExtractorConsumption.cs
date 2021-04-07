@@ -27,7 +27,7 @@ namespace RealPop2
         public static bool Prefix(IndustrialExtractorAI __instance, Randomizer r, int productionRate, out int electricityConsumption, out int waterConsumption, out int sewageAccumulation, out int garbageAccumulation, out int incomeAccumulation, out int mailAccumulation)
         {
             // Get relevant array from datastore.
-            int[] array = IndustrialExtractorAIMod.GetArray(__instance.m_info, IndustrialExtractorAIMod.EXTRACT_LEVEL);
+            int[] array = AI_Utils.GetExtractorArray(__instance.m_info);
 
             // Get consumption rates from array.
             electricityConsumption = array[DataStore.POWER];
