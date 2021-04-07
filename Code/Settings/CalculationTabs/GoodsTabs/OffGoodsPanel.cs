@@ -107,7 +107,7 @@ namespace RealPop2
             prodMultSliders[index].objectUserData = index;
             prodMultSliders[index].maxValue = RealisticOfficeProduction.MaxProdMult;
             prodMultSliders[index].value = RealisticOfficeProduction.GetProdMult(subServices[index]);
-            MultSliderText(prodMultSliders[index], prodMultSliders[index].value);
+            PercentSliderText(prodMultSliders[index], prodMultSliders[index].value);
 
             return yPos;
         }

@@ -127,7 +127,7 @@ namespace RealPop2
             goodsMultSliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_CGM_TIP");
             goodsMultSliders[index].objectUserData = index;
             goodsMultSliders[index].value = (int)GoodsUtils.GetComMult(subServices[index]);
-            MultSliderText(goodsMultSliders[index], goodsMultSliders[index].value);
+            PercentSliderText(goodsMultSliders[index], goodsMultSliders[index].value);
 
             // Sales multiplier label.
             UILabel goodsLabel = UIControls.AddLabel(panel, 0f, 0f, Translations.Translate("RPR_DEF_CGM"), textScale: 0.8f);
@@ -148,13 +148,13 @@ namespace RealPop2
 
             // Inventory cap slider.
             currentY += RowHeight;
-            inventorySliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_IDC_TIP");
+            inventorySliders[index] = AddSlider(panel, LeftColumn, currentY, ControlWidth, "RPR_DEF_IDC_TIP", false);
             inventorySliders[index].objectUserData = index;
             inventorySliders[index].minValue = GoodsUtils.MinInventory;
             inventorySliders[index].maxValue = GoodsUtils.MaxInventory;
             inventorySliders[index].stepSize = 1000f;
             inventorySliders[index].value = GoodsUtils.GetInventoryCap(subServices[index]);
-            MultSliderText(inventorySliders[index], inventorySliders[index].value);
+            AbsSliderText(inventorySliders[index], inventorySliders[index].value);
 
             // Inventory cap label.
             UILabel invLabel = UIControls.AddLabel(panel, 0f, 0f, Translations.Translate("RPR_DEF_IDC"), textScale: 0.8f);
@@ -164,7 +164,7 @@ namespace RealPop2
             visitMultSliders[index] = AddSlider(panel, RightColumn, currentY, ControlWidth, "RPR_DEF_VMU_TIP");
             visitMultSliders[index].objectUserData = index;
             visitMultSliders[index].value = RealisticVisitplaceCount.GetVisitMult(subServices[index]);
-            MultSliderText(visitMultSliders[index], visitMultSliders[index].value);
+            PercentSliderText(visitMultSliders[index], visitMultSliders[index].value);
 
             // Visit mode default event handler to show/hide multiplier slider.
             visitDefaultMenus[index].eventSelectedIndexChanged += VisitDefaultIndexChanged;

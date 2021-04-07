@@ -134,7 +134,7 @@ namespace RealPop2
             extProdMultSliders[index].objectUserData = index;
             extProdMultSliders[index].maxValue = RealisticExtractorProduction.MaxProdMult;
             extProdMultSliders[index].value = RealisticExtractorProduction.GetProdMult(subServices[index]);
-            MultSliderText(extProdMultSliders[index], extProdMultSliders[index].value);
+            PercentSliderText(extProdMultSliders[index], extProdMultSliders[index].value);
 
             // Processor production mode menus.
             currentY += RowHeight;
@@ -152,7 +152,7 @@ namespace RealPop2
             procProdMultSliders[index].objectUserData = index;
             procProdMultSliders[index].maxValue = RealisticIndustrialProduction.MaxProdMult;
             procProdMultSliders[index].value = RealisticIndustrialProduction.GetProdMult(subServices[index]);
-            MultSliderText(procProdMultSliders[index], procProdMultSliders[index].value);
+            PercentSliderText(procProdMultSliders[index], procProdMultSliders[index].value);
 
             // Production calculation mode default event handlers to show/hide multiplier slider.
             extProdDefaultMenus[index].eventSelectedIndexChanged += ExtProdDefaultIndexChanged;

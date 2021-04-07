@@ -113,7 +113,7 @@ namespace RealPop2
             prodMultSliders[index].objectUserData = index;
             prodMultSliders[index].maxValue = RealisticIndustrialProduction.MaxProdMult;
             prodMultSliders[index].value = RealisticIndustrialProduction.GetProdMult(ItemClass.SubService.IndustrialGeneric);
-            MultSliderText(prodMultSliders[index], prodMultSliders[index].value);
+            PercentSliderText(prodMultSliders[index], prodMultSliders[index].value);
 
             // Production multiplier label.
             UILabel multiplierLabel = UIControls.AddLabel(panel, 0f, 0f, Translations.Translate("RPR_DEF_PRD"), textScale: 0.8f);

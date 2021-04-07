@@ -91,8 +91,9 @@ namespace RealPop2
         /// <param name="yPos">Relative Y position</param>
         /// <param name="width">Slider width</param>
         /// <param name="tooltipKey">Tooltip translation key</param>
+        /// <param name="isPercent">True if this slider should display percentage values, false to display absolute values</param>
         /// <returns>New slider</returns>
-        protected UISlider AddSlider(UIComponent parent, float xPos, float yPos, float width, string tooltipKey)
+        protected UISlider AddSlider(UIComponent parent, float xPos, float yPos, float width, string tooltipKey, bool isPercent = true)
         {
             // Layout constants.
             const float SliderPanelHeight = 20f;
@@ -150,22 +151,43 @@ namespace RealPop2
             newSlider.maxValue = 100f;
 
             // Event handler to update text.
-            newSlider.eventValueChanged += MultSliderText;
+            if (isPercent)
+            {
+                newSlider.eventValueChanged += PercentSliderText;
+            }
+            else
+            {
+                newSlider.eventValueChanged += AbsSliderText;
+            }
 
             return newSlider;
         }
 
 
         /// <summary>
-        /// Updates the displayed value on a multiplier slider.
+        /// Updates the displayed percentage value on a multiplier slider.
         /// </summary>
         /// <param name="control">Calling component</param>
         /// <param name="value">New valie</param>
-        protected void MultSliderText(UIComponent control, float value)
+        protected void PercentSliderText(UIComponent control, float value)
         {
             if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
             {
-                valueLabel.text = Mathf.RoundToInt(value).ToString("N0", LocaleManager.cultureInfo) + "%";
+                valueLabel.text = Mathf.RoundToInt(value).ToString() + "%";
+            }
+        }
+
+
+        /// <summary>
+        /// Updates the displayed absolute value on a multiplier slider.
+        /// </summary>
+        /// <param name="control">Calling component</param>
+        /// <param name="value">New valie</param>
+        protected void AbsSliderText(UIComponent control, float value)
+        {
+            if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
+            {
+                valueLabel.text = Mathf.RoundToInt(value).ToString("N0", LocaleManager.cultureInfo);
             }
         }
     }
