@@ -16,6 +16,17 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 16",
+                betaVersion = 16,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Rearrange options panel structure and add configurable commercial inventory demand caps."
+                }
+            },
+            new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 15",
                 betaVersion = 15,
                 messageKeys = false,

@@ -7,6 +7,7 @@ Version 2.0 -
 - Major new feature: adjustable crime rate
 - Major new feature: adjust commercial goods sales rates
 - Rebalance commercial building customer (visitor) counts in line with population and add selectable configurations per subservice
+- Rebalance industrial production rates in line with population and add selectable configurations per subservice
 - Support different building levels for the same building prefab (historical buildings)
 - Save status flags to savegame to track which calculations (new or legacy) should be used by default for that save, separately selectable for each major service type
 - Rearrange options panel layout and add sub-tabs as required
