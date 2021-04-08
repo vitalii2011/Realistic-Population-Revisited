@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using ColossalFramework;
 using ColossalFramework.UI;
 
@@ -234,6 +235,47 @@ namespace RealPop2
 
             // Set the relative position at the end so we can adjust for the final post-wrap autoheight.
             columnLabel.relativePosition = new Vector3(xPos + ((width - columnLabel.width) / 2), baseY - columnLabel.height);
+        }
+
+
+        /// <summary>
+        /// Adds a title label across the top of the specified UIComponent.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="titleKey">Title translation key</param>
+        /// <returns>Y position below title</returns>
+        internal static float TitleLabel(UIComponent parent, string titleKey)
+        {
+            // Margin.
+            const float Margin = 5f;
+
+            // Add title.
+            UILabel titleLabel = UIControls.AddLabel(parent, 0f, Margin, Translations.Translate(titleKey), parent.width, 1.5f);
+            titleLabel.textAlignment = UIHorizontalAlignment.Center;
+            titleLabel.font = Resources.FindObjectsOfTypeAll<UIFont>().FirstOrDefault((UIFont f) => f.name == "OpenSans-Semibold");
+
+            OptionsSpacer(parent, titleLabel.height + (Margin * 2f));
+
+            return Margin + titleLabel.height + Margin + 5f + Margin;
+        }
+
+
+        /// <summary>
+        /// Adds an options-panel-style spacer bar across the specified UIComponent.
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="yPos">Relative y-position</param>
+        internal static void OptionsSpacer(UIComponent parent, float yPos)
+        {
+            // Margin.
+            const float Margin = 5f;
+
+
+            UIPanel spacerPanel = parent.AddUIComponent<UIPanel>();
+            spacerPanel.width = parent.width - (Margin * 2);
+            spacerPanel.height = 5f;
+            spacerPanel.relativePosition = new Vector2(Margin, yPos);
+            spacerPanel.backgroundSprite = "ContentManagerItemBackground";
         }
     }
 }

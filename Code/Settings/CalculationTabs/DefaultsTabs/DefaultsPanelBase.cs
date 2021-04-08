@@ -59,7 +59,7 @@ namespace RealPop2
             FloorMenus = new UIDropDown[SubServiceNames.Length];
 
             // Add title.
-            float currentY = TitleLabel(TitleKey);
+            float currentY = PanelUtils.TitleLabel(panel, TitleKey);
 
             // Add header controls.
             currentY = PanelHeader(currentY);

@@ -73,7 +73,11 @@ namespace RealPop2
                 SettingsUtils.SaveSettings();
             };
 
-            return currentY + 30f;
+            // Spacer bar.
+            currentY += 25f;
+            PanelUtils.OptionsSpacer(panel, currentY);
+
+            return currentY + 10f;
         }
     }
 }

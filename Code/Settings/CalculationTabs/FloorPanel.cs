@@ -36,7 +36,7 @@ namespace RealPop2
         internal FloorPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
             // Add title.
-            float currentY = TitleLabel(TabTooltipKey);
+            float currentY = PanelUtils.TitleLabel(panel, TabTooltipKey);
 
             // Initialise arrays
             floorHeightField = new UITextField();

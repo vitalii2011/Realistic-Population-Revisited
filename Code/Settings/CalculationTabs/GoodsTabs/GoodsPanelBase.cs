@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 
 
 namespace RealPop2
@@ -47,7 +45,7 @@ namespace RealPop2
         internal GoodsPanelBase(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
             // Add title.
-            float currentY = TitleLabel(TitleKey);
+            float currentY = PanelUtils.TitleLabel(panel, TitleKey);
 
             // Add menus.
             currentY = SetUpMenus(panel, currentY);

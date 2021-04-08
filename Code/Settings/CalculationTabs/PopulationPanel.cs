@@ -46,7 +46,7 @@ namespace RealPop2
         internal PopulationPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
             // Add title.
-            float currentY = TitleLabel(TabTooltipKey);
+            float currentY = PanelUtils.TitleLabel(panel, TabTooltipKey);
 
             // Initialise arrays
             emptyAreaFields = new UITextField[5];
