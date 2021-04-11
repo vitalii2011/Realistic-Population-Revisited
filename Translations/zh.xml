@@ -200,8 +200,6 @@
     <Translation ID="RPR_OPT_CON" String="需求消耗" />
     <Translation ID="RPR_OPT_STO" String="全部樓層" />
     <Translation ID="RPR_OPT_LVL" String="級別" />
-    <Translation ID="RPR_OPT_PERW" String="每個工人(勞工)合計" />
-    <Translation ID="RPR_OPT_PERH" String="每戶合計" />
     <Translation ID="RPR_OPT_APH" String="每戶面積(平方米)" />
     <Translation ID="RPR_OPT_APW" String="每個工人面積(平方米)" />
     <Translation ID="RPR_OPT_FLR" String="樓層高度(米)" />

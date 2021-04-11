@@ -49,9 +49,9 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Updates service selection menu for the relevant defaults panel.
+        /// Updates control values for relevant defaults panel.
         /// </summary>
-        internal void UpdateMenus() => defaultsPanel?.UpdateMenus();
+        internal void UpdateControls() => defaultsPanel?.UpdateControls();
 
 
         /// <summary>

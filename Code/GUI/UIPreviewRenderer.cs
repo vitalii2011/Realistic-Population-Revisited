@@ -239,7 +239,6 @@ namespace RealPop2
             Vector3[] vertices;
 
             // Set default model position.
-            // We render at +100 Y to avoid garbage left at 0,0 by certain shaders and renderers (and we only rotate around the Y axis so will never see the origin).
             Vector3 modelPosition = new Vector3(0f, 0f, 0f);
 
             // Add our main mesh, if any (some are null, because they only 'appear' through subbuildings - e.g. Boston Residence Garage).
@@ -271,7 +270,7 @@ namespace RealPop2
                         minZ = vertices[i].z;
                 }
 
-                // Calculate rendering matrix and add mesh to scene.
+                // Calculate rendering matrix.
                 Matrix4x4 matrix = Matrix4x4.TRS(modelPosition, Quaternion.Euler(Vector3.zero), Vector3.one);
 
                 // Floor preview rendering, if set to do so and we have a valid floor calculation pack set.
@@ -315,6 +314,8 @@ namespace RealPop2
                     floorMesh.triangles = triList.ToArray();
                     Graphics.DrawMesh(floorMesh, matrix, testMaterial, 0, renderCamera, 0, null, false, false);
                 }
+
+                // Add building mesh to scene.
                 Graphics.DrawMesh(currentMesh, matrix, _material, 0, renderCamera, 0, null, true, true);
 
             }

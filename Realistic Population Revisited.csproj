@@ -144,7 +144,6 @@
     <Compile Include="Code\Patches\WorldInfoPanel.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationsPanelBase.cs" />
-    <Compile Include="Code\Settings\CalculationTabs\GoodsTabs\ExtGoodsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\GoodsTabs\IndGoodsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\GoodsTabs\OffGoodsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\PackPanelBase.cs" />
@@ -157,7 +156,6 @@
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\TextfieldPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ResConsumptionPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\DefaultsTabs\DefaultsPanelBase.cs" />
-    <Compile Include="Code\Settings\CalculationTabs\DefaultsTabs\ExtDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ExtractorTab.cs" />
     <Compile Include="Code\Settings\CalculationTabs\FloorPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\GoodsTabs\ComGoodsPanel.cs" />

@@ -11,12 +11,20 @@ namespace RealPop2
         // Tab icons.
         private readonly string[] iconNames =
         {
-            "ZoningIndustrial"
+            "ZoningIndustrial",
+            "IconPolicyFarming",
+            "IconPolicyForest",
+            "IconPolicyOil",
+            "IconPolicyOre"
         };
 
         private readonly string[] atlasNames =
         {
-            "Thumbnails"
+            "Thumbnails",
+            "Ingame",
+            "Ingame",
+            "Ingame",
+            "Ingame"
         };
 
         protected override string[] IconNames => iconNames;
@@ -24,7 +32,7 @@ namespace RealPop2
         protected override string Tooltip => Translations.Translate("RPR_CAT_IND");
 
         // Tab width.
-        protected override float TabWidth => 40f;
+        protected override float TabWidth => 120f;
 
 
         /// <summary>

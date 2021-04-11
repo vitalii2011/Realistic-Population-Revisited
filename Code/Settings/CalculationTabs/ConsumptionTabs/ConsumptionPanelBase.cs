@@ -113,17 +113,6 @@ namespace RealPop2
             ColumnIcon(panel, NoiseX, ColumnWidth, noiseLabel, "InfoIconNoisePollution");
             ColumnIcon(panel, MailX, ColumnWidth, mailLabel, "InfoIconPost");
             ColumnIcon(panel, IncomeX, WideColumnWidth, wealthLabel, "ToolbarIconMoney");
-
-            // Consumption heading.
-            UILabel headingLabel = panel.AddUIComponent<UILabel>();
-            headingLabel.autoSize = false;
-            headingLabel.autoHeight = true;
-            headingLabel.wordWrap = true;
-            headingLabel.relativePosition = new Vector3(PowerX, 0);
-            headingLabel.verticalAlignment = UIVerticalAlignment.Middle;
-            headingLabel.textAlignment = UIHorizontalAlignment.Center;
-            headingLabel.width = FinalX - PowerX;
-            headingLabel.text = Translations.Translate(notResidential ? "RPR_OPT_PERW" : "RPR_OPT_PERH");
         }
 
 

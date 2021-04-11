@@ -25,6 +25,7 @@ namespace RealPop2
             IndustrialForestry,
             IndustrialOil,
             IndustrialOre,
+            IndustrialGeneric, // Generic should be unused but including it makes code more consistent.
             NumSubServices
         }
 
@@ -34,7 +35,8 @@ namespace RealPop2
             ItemClass.SubService.IndustrialFarming,
             ItemClass.SubService.IndustrialForestry,
             ItemClass.SubService.IndustrialOil,
-            ItemClass.SubService.IndustrialOre
+            ItemClass.SubService.IndustrialOre,
+            ItemClass.SubService.IndustrialGeneric
         };
 
         // Default multiplier.
@@ -49,10 +51,12 @@ namespace RealPop2
             (int)ProdModes.legacy,
             (int)ProdModes.legacy,
             (int)ProdModes.legacy,
+            (int)ProdModes.legacy,
             (int)ProdModes.legacy
         };
         private static readonly int[] prodMults =
         {
+            DefaultProdMult,
             DefaultProdMult,
             DefaultProdMult,
             DefaultProdMult,
@@ -238,6 +242,8 @@ namespace RealPop2
                     return (int)SubServiceIndex.IndustrialOil;
                 case ItemClass.SubService.IndustrialOre:
                     return (int)SubServiceIndex.IndustrialOre;
+                case ItemClass.SubService.IndustrialGeneric:
+                    return (int)SubServiceIndex.IndustrialGeneric;
                 default:
                     Logging.Error("invalid subservice ", subService.ToString(), " passed to RealisticExtractorProduction.GetIndex");
                     return (int)SubServiceIndex.IndustrialFarming;

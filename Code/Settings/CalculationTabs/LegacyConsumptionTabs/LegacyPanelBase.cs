@@ -99,17 +99,6 @@ namespace RealPop2
             {
                 PanelUtils.ColumnLabel(panel, Column3, TitleHeight, ColumnWidth + Margin, extraFloorLabel, extraFloorLabel, 0.8f);
             }
-
-            // Consumption heading.
-            UILabel headingLabel = panel.AddUIComponent<UILabel>();
-            headingLabel.autoSize = false;
-            headingLabel.autoHeight = true;
-            headingLabel.wordWrap = true;
-            headingLabel.relativePosition = new Vector3(Column4, 0);
-            headingLabel.verticalAlignment = UIVerticalAlignment.Middle;
-            headingLabel.textAlignment = UIHorizontalAlignment.Center;
-            headingLabel.width = Column8 + Column8Width - Column4;
-            headingLabel.text = Translations.Translate(notResidential ? "RPR_OPT_PERW" : "RPR_OPT_PERH");
         }
 
 

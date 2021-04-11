@@ -54,7 +54,7 @@ namespace RealPop2
             legacyThisSaveCheck.eventCheckChanged += (control, isChecked) =>
             {
                 ThisLegacyCategory = isChecked;
-                UpdateMenus();
+                UpdateControls();
                 SettingsUtils.SaveSettings();
             };
 
@@ -69,13 +69,13 @@ namespace RealPop2
             legacyNewSaveCheck.eventCheckChanged += (control, isChecked) =>
             {
                 NewLegacyCategory = isChecked;
-                UpdateMenus();
+                UpdateControls();
                 SettingsUtils.SaveSettings();
             };
 
             // Spacer bar.
             currentY += 25f;
-            PanelUtils.OptionsSpacer(panel, currentY);
+            UIControls.OptionsSpacer(panel, Margin, currentY, panel.width - (Margin * 2f));
 
             return currentY + 10f;
         }

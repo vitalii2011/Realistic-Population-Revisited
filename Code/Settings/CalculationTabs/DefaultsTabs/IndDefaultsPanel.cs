@@ -11,28 +11,49 @@ namespace RealPop2
         // Service/subservice arrays.
         private readonly string[] subServiceNames =
         {
-            Translations.Translate("RPR_CAT_IND")
+            Translations.Translate("RPR_CAT_IND"),
+            Translations.Translate("RPR_CAT_FAR"),
+            Translations.Translate("RPR_CAT_FOR"),
+            Translations.Translate("RPR_CAT_OIL"),
+            Translations.Translate("RPR_CAT_ORE")
         };
 
         private readonly ItemClass.Service[] services =
         {
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Industrial,
+            ItemClass.Service.Industrial,
             ItemClass.Service.Industrial
         };
 
         private readonly ItemClass.SubService[] subServices =
         {
-            ItemClass.SubService.IndustrialGeneric
+            ItemClass.SubService.IndustrialGeneric,
+            ItemClass.SubService.IndustrialFarming,
+            ItemClass.SubService.IndustrialForestry,
+            ItemClass.SubService.IndustrialOil,
+            ItemClass.SubService.IndustrialOre
         };
 
         private readonly string[] iconNames =
         {
-            "ZoningIndustrial"
+            "ZoningIndustrial",
+            "IconPolicyFarming",
+            "IconPolicyForest",
+            "IconPolicyOil",
+            "IconPolicyOre"
         };
 
         private readonly string[] atlasNames =
         {
-            "Thumbnails"
+            "Thumbnails",
+            "Ingame",
+            "Ingame",
+            "Ingame",
+            "Ingame"
         };
+
 
         protected override string[] SubServiceNames => subServiceNames;
         protected override ItemClass.Service[] Services => services;

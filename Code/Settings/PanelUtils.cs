@@ -254,28 +254,9 @@ namespace RealPop2
             titleLabel.textAlignment = UIHorizontalAlignment.Center;
             titleLabel.font = Resources.FindObjectsOfTypeAll<UIFont>().FirstOrDefault((UIFont f) => f.name == "OpenSans-Semibold");
 
-            OptionsSpacer(parent, titleLabel.height + (Margin * 2f));
+            UIControls.OptionsSpacer(parent, Margin, titleLabel.height + (Margin * 2f), parent.width - (Margin * 2f));
 
             return Margin + titleLabel.height + Margin + 5f + Margin;
-        }
-
-
-        /// <summary>
-        /// Adds an options-panel-style spacer bar across the specified UIComponent.
-        /// </summary>
-        /// <param name="parent">Parent component</param>
-        /// <param name="yPos">Relative y-position</param>
-        internal static void OptionsSpacer(UIComponent parent, float yPos)
-        {
-            // Margin.
-            const float Margin = 5f;
-
-
-            UIPanel spacerPanel = parent.AddUIComponent<UIPanel>();
-            spacerPanel.width = parent.width - (Margin * 2);
-            spacerPanel.height = 5f;
-            spacerPanel.relativePosition = new Vector2(Margin, yPos);
-            spacerPanel.backgroundSprite = "ContentManagerItemBackground";
         }
     }
 }

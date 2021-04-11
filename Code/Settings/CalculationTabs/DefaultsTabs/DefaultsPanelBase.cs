@@ -70,15 +70,15 @@ namespace RealPop2
             // Add buttons- add extra space.
             FooterButtons(currentY + Margin);
 
-            // Populate menus.
-            UpdateMenus();
+            // Set control values.
+            UpdateControls();
         }
 
 
         /// <summary>
-        /// Updates pack selection menu items.
+        /// Updates control values.
         /// </summary>
-        internal virtual void UpdateMenus()
+        internal void UpdateControls()
         {
             for (int i = 0; i < SubServiceNames.Length; ++i)
             {
@@ -170,21 +170,7 @@ namespace RealPop2
                 PopMenus[i].objectUserData = i;
 
                 // Event handler.
-                PopMenus[i].eventSelectedIndexChanged += (control, index) =>
-                {
-                    // Retrieve stored index.
-                    int serviceIndex = (int)control.objectUserData;
-
-                    // Hide floor menu if we've selected legacy calcs, otherwise show it.
-                    if (AvailablePopPacks[serviceIndex][index].version == (int)DataVersion.legacy)
-                    {
-                        FloorMenus[serviceIndex].Hide();
-                    }
-                    else
-                    {
-                        FloorMenus[serviceIndex].Show();
-                    }
-                };
+                PopMenus[i].eventSelectedIndexChanged += PopMenuChanged;
 
                 // Floor pack on next row.
                 currentY += RowHeight;
@@ -309,6 +295,28 @@ namespace RealPop2
         /// </summary>
         /// <param name="control">Calling component (unused)</param>
         /// <param name="mouseEvent">Mouse event (unused)</param>
-        protected override void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent) => UpdateMenus();
+        protected override void ResetSaved(UIComponent control, UIMouseEventParameter mouseEvent) => UpdateControls();
+        
+
+        /// <summary>
+        /// Population pack menu changed event handler.
+        /// <param name="control">Calling component</param>
+        /// <param name="index">New selected index</param>
+        /// </summary>
+        private void PopMenuChanged(UIComponent control, int index)
+        {
+            // Retrieve stored index.
+            int serviceIndex = (int)control.objectUserData;
+
+            // Hide floor menu if we've selected legacy calcs, otherwise show it.
+            if (AvailablePopPacks[serviceIndex][index].version == (int)DataVersion.legacy)
+            {
+                FloorMenus[serviceIndex].Hide();
+            }
+            else
+            {
+                FloorMenus[serviceIndex].Show();
+            }
+        }
     }
 }

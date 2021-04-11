@@ -53,7 +53,6 @@ namespace RealPop2
             comTab = new CommercialTab(childTabStrip, tab++);
             offTab = new OfficeTab(childTabStrip, tab++);
             indTab = new IndustrialTab(childTabStrip, tab++);
-            extTab = new ExtractorTab(childTabStrip, tab++);
             schTab = new SchoolTab(childTabStrip, tab++);
             new PopulationPanel(childTabStrip, tab++);
             new FloorPanel(childTabStrip, tab++);
@@ -67,12 +66,11 @@ namespace RealPop2
         internal void UpdateDefaultMenus()
         {
             // Update for each defaults panel.
-            resTab.UpdateMenus();
-            comTab.UpdateMenus();
-            offTab.UpdateMenus();
-            indTab.UpdateMenus();
-            extTab.UpdateMenus();
-            schTab.UpdateMenus();
+            resTab.UpdateControls();
+            comTab.UpdateControls();
+            offTab.UpdateControls();
+            indTab.UpdateControls();
+            schTab.UpdateControls();
         }
     }
 }
