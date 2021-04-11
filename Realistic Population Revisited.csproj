@@ -156,7 +156,6 @@
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\TextfieldPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\ConsumptionTabs\ResConsumptionPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\DefaultsTabs\DefaultsPanelBase.cs" />
-    <Compile Include="Code\Settings\CalculationTabs\ExtractorTab.cs" />
     <Compile Include="Code\Settings\CalculationTabs\FloorPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\GoodsTabs\ComGoodsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\GoodsTabs\GoodsPanelBase.cs" />

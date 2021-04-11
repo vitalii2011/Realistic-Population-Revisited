@@ -16,6 +16,17 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 17",
+                betaVersion = 16,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Merge industrial and extractor calculations panels."
+                }
+            },
+            new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 16",
                 betaVersion = 16,
                 messageKeys = false,

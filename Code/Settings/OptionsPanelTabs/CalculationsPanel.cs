@@ -18,7 +18,6 @@ namespace RealPop2
         private readonly CommercialTab comTab;
         private readonly OfficeTab offTab;
         private readonly IndustrialTab indTab;
-        private readonly ExtractorTab extTab;
         private readonly SchoolTab schTab;
 
 
