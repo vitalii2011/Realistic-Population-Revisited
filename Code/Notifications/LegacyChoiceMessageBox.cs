@@ -41,7 +41,6 @@ namespace RealPop2.MessageBox
             ModSettings.ThisSaveLegacyRes = true;
             ModSettings.ThisSaveLegacyCom = true;
             ModSettings.ThisSaveLegacyInd = true;
-            ModSettings.ThisSaveLegacyExt = true;
             ModSettings.ThisSaveLegacyOff = true;
             RealisticVisitplaceCount.SetVisitModes = (int)RealisticVisitplaceCount.ComVisitModes.legacy;
             RealisticIndustrialProduction.SetProdModes = (int)RealisticIndustrialProduction.ProdModes.legacy;
@@ -58,7 +57,6 @@ namespace RealPop2.MessageBox
             ModSettings.ThisSaveLegacyRes = false;
             ModSettings.ThisSaveLegacyCom = false;
             ModSettings.ThisSaveLegacyInd = false;
-            ModSettings.ThisSaveLegacyExt = false;
             ModSettings.ThisSaveLegacyOff = false;
             RealisticVisitplaceCount.SetVisitModes = (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
             RealisticIndustrialProduction.SetProdModes = (int)RealisticIndustrialProduction.ProdModes.popCalcs;

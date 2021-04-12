@@ -15,7 +15,7 @@ namespace RealPop2
     {
         // Unique data ID.
         private readonly string dataID = "RealisticPopulation";
-        internal const int CurrentDataVersion = 4;
+        internal const int CurrentDataVersion = 5;
 
 
         /// <summary>
@@ -83,7 +83,6 @@ namespace RealPop2
                     ModSettings.ThisSaveLegacyRes = ModSettings.newSaveLegacyRes;
                     ModSettings.ThisSaveLegacyCom = ModSettings.newSaveLegacyCom;
                     ModSettings.ThisSaveLegacyInd = ModSettings.newSaveLegacyInd;
-                    ModSettings.ThisSaveLegacyExt = ModSettings.newSaveLegacyExt;
                     ModSettings.ThisSaveLegacyOff = ModSettings.newSaveLegacyOff;
                     ModSettings.isRealPop2Save = true;
                 }
@@ -112,7 +111,6 @@ namespace RealPop2
             serializer.WriteBool(ModSettings.ThisSaveLegacyRes);
             serializer.WriteBool(ModSettings.ThisSaveLegacyCom);
             serializer.WriteBool(ModSettings.ThisSaveLegacyInd);
-            serializer.WriteBool(ModSettings.ThisSaveLegacyExt);
             serializer.WriteBool(ModSettings.ThisSaveLegacyOff);
         }
 
@@ -132,26 +130,28 @@ namespace RealPop2
                 Logging.Message("read data version ", dataVersion.ToString());
 
                 // Make sure we have a matching data version.
-                if (dataVersion == Serializer.CurrentDataVersion)
+                if (dataVersion == 3 || dataVersion == 5)
                 {
+                    // Versions where industrial and extractor workplace legacy settings are combined.
+
                     // Read 'using legacy' flags for residential and workplace buildings, in order.
                     ModSettings.ThisSaveLegacyRes = serializer.ReadBool();
                     ModSettings.ThisSaveLegacyCom = serializer.ReadBool();
                     ModSettings.ThisSaveLegacyInd = serializer.ReadBool();
-                    ModSettings.ThisSaveLegacyExt = serializer.ReadBool();
                     ModSettings.ThisSaveLegacyOff = serializer.ReadBool();
 
                     // Record that we've successfully deserialized savegame data.
                     ModSettings.isRealPop2Save = true;
                 }
-                else if (dataVersion == 3)
+                else if (dataVersion == 4)
                 {
-                    // Legacy data version where instrial and extractor workplace legacy settings were combined.
+                    // Legacy data version which had separate industrial and extractor defaults.
 
                     // Read 'using legacy' flags for residential and workplace buildings, in order.
                     ModSettings.ThisSaveLegacyRes = serializer.ReadBool();
                     ModSettings.ThisSaveLegacyCom = serializer.ReadBool();
                     ModSettings.ThisSaveLegacyInd = serializer.ReadBool();
+                    serializer.ReadBool();
                     ModSettings.ThisSaveLegacyOff = serializer.ReadBool();
 
                     // Record that we've successfully deserialized savegame data.
@@ -166,7 +166,6 @@ namespace RealPop2
                     bool thisSaveLegacyWrk = serializer.ReadBool();
                     ModSettings.ThisSaveLegacyCom = thisSaveLegacyWrk;
                     ModSettings.ThisSaveLegacyInd = thisSaveLegacyWrk;
-                    ModSettings.ThisSaveLegacyExt = thisSaveLegacyWrk;
                     ModSettings.ThisSaveLegacyOff = thisSaveLegacyWrk;
 
                     // Record that we've successfully deserialized savegame data.
@@ -181,7 +180,6 @@ namespace RealPop2
                     ModSettings.ThisSaveLegacyRes = thisSaveLegacy;
                     ModSettings.ThisSaveLegacyCom = thisSaveLegacy;
                     ModSettings.ThisSaveLegacyInd = thisSaveLegacy;
-                    ModSettings.ThisSaveLegacyExt = thisSaveLegacy;
                     ModSettings.ThisSaveLegacyOff = thisSaveLegacy;
 
                     // Record that we've successfully deserialized savegame data.

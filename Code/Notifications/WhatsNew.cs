@@ -17,11 +17,12 @@ namespace RealPop2
             {
                 version = new Version("2.0.0.0"),
                 versionHeader = " BETA 17",
-                betaVersion = 16,
+                betaVersion = 17,
                 messageKeys = false,
                 messages = new string[]
                 {
-                    "Merge industrial and extractor calculations panels."
+                    "Merge industrial and extractor calculations panels.",
+                    "Change slider displays from percentages to multipliers."
                 }
             },
             new WhatsNewMessage

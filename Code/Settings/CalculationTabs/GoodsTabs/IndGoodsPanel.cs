@@ -118,8 +118,8 @@ namespace RealPop2
             float currentY = yPos;
 
             // Header labels.
-            UIControls.AddLabel(panel, LeftColumn, currentY - 19f, Translations.Translate("RPR_DEF_PRD"), -1, 0.8f);
-            UIControls.AddLabel(panel, RightColumn, currentY - 19f, Translations.Translate("RPR_DEF_PMD"), -1, 0.8f);
+            UIControls.AddLabel(panel, LeftColumn, currentY - 19f, Translations.Translate("RPR_DEF_PMD"), -1, 0.8f);
+            UIControls.AddLabel(panel, RightColumn, currentY - 19f, Translations.Translate("RPR_DEF_PRD"), -1, 0.8f);
 
             // SubServiceControls is called as part of parent constructor, so we need to initialise them here if they aren't already.
             if (procProdMultSliders == null)
