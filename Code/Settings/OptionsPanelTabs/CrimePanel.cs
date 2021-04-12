@@ -1,4 +1,6 @@
-﻿using ColossalFramework.UI;
+﻿using System;
+using UnityEngine;
+using ColossalFramework.UI;
 
 
 namespace RealPop2
@@ -20,8 +22,37 @@ namespace RealPop2
             UIHelper helper = new UIHelper(panel);
             panel.autoLayout = true;
 
-            // Crime multiplier.  Simple integer.
-            UISlider crimeMult = UIControls.AddSliderWithValue(panel, Translations.Translate("RPR_OPT_CML"), 1f, 200f, 1f, ModSettings.crimeMultiplier, (value) => { ModSettings.crimeMultiplier = value; });
+            // Add slider component.
+            UISlider newSlider = UIControls.AddSlider(panel, Translations.Translate("RPR_OPT_CML"), 1f, 200f, 1f, ModSettings.crimeMultiplier);
+            newSlider.tooltipBox = TooltipUtils.TooltipBox;
+            newSlider.tooltip = Translations.Translate("RPR_OPT_CML_TIP");
+
+            // Value label.
+            UIPanel sliderPanel = (UIPanel)newSlider.parent;
+            UILabel valueLabel = sliderPanel.AddUIComponent<UILabel>();
+            valueLabel.name = "ValueLabel";
+            valueLabel.relativePosition = UIControls.PositionRightOf(newSlider, 8f, 1f);
+
+            // Set initial text.
+            PercentSliderText(newSlider, newSlider.value);
+
+            // Event handler to update value label.
+            newSlider.eventValueChanged += PercentSliderText;
+        }
+
+
+        /// <summary>
+        /// Updates the displayed percentage value on a multiplier slider.
+        /// </summary>
+        /// <param name="control">Calling component</param>
+        /// <param name="value">New valie</param>
+        protected void PercentSliderText(UIComponent control, float value)
+        {
+            if (control?.parent?.Find<UILabel>("ValueLabel") is UILabel valueLabel)
+            {
+                decimal decimalNumber = new Decimal(Mathf.RoundToInt(value));
+                valueLabel.text = "x" + Decimal.Divide(decimalNumber, 100).ToString("0.00");
+            }
         }
     }
 }
