@@ -104,6 +104,7 @@
     <Translation ID="RPR_CAT_SSH" String="Автономные дома" />
     <Translation ID="RPR_CAT_ERL" String="Жилые экодома низ. плотн." />
     <Translation ID="RPR_CAT_ERH" String="Жилые экодома выс. плотн." />
+    <Translation ID="RPR_CAT_SIN" String="Специализированная пром-сть" />
     <Translation ID="RPR_CAT_SCH" String="Школы" />
     <Translation ID="RPR_FIL_NAME" String="Название:" />
     <Translation ID="RPR_FIL_SET" String="Фильтр по настройкам (см. Всплывающие подсказки)" />
@@ -131,9 +132,19 @@
     <Translation ID="RPR_CAL_BFL" String="Этажи" />
     <Translation ID="RPR_CAL_FOV" String="Использование настраиваемого переопределения" />
     <Translation ID="RPR_CAL_FLG" String="Выбор расчёта этажа недоступен при использовании устаревших расчётов" />
+    <Translation ID="RPR_CAL_SAT" String="Сохранить и применить к:" />
+    <Translation ID="RPR_CAL_NBD" String="Только новые здания" />
+    <Translation ID="RPR_CAL_ABD" String="Все здания" />
     <Translation ID="RPR_CAL_VOL_FLR" String="Этажи" />
-    <Translation ID="RPR_CAL_VOL_TFA" String="Общая площадь этажа" />
+    <Translation ID="RPR_CAL_VOL_FLR_TIP" String="Количество этажей для этого здания рассчитанная с использованием вышеуказанных настроек." />
+    <Translation ID="RPR_CAL_VOL_TFA" String="Общая площадь этажей" />
+    <Translation ID="RPR_CAL_VOL_TFA_TIP" String="Общая площадь этажей для этого здания рассчитанная с использованием вышеуказанных настроек." />
     <Translation ID="RPR_CAL_VOL_UTS" String="Всего units" />
+    <Translation ID="RPR_CAL_VOL_UTS_TIP" String="Общая численность населения (домашних хозяйств или рабочих мест) для этого здания рассчитанная с использованием вышеуказанных настроек." />
+    <Translation ID="RPR_CAL_VOL_VIS" String="Количество посетителей" />
+    <Translation ID="RPR_CAL_VOL_VIS_TIP" String="Максимальное количество одновременных посетителей, вмещаемых этим зданием." />
+    <Translation ID="RPR_CAL_VOL_PRD" String="Производительность" />
+    <Translation ID="RPR_CAL_VOL_PRD_TIP" String="Максимальная скорость производства в этом здании." />
     <Translation ID="RPR_CAL_VOL_FLH" String="Высота этажа" />
     <Translation ID="RPR_CAL_VOL_FLH_TIP" String="Типичная высота, в метрах, каждого этажа в этом здании (первый этаж имеет дополнительные варианты ниже)." />
     <Translation ID="RPR_CAL_VOL_FMN" String="Высота первого этажа мин." />
@@ -145,19 +156,22 @@
     <Translation ID="RPR_CAL_VOL_EPC" String="Пустая площадь (%)" />
     <Translation ID="RPR_CAL_VOL_EPC_TIP" String="Этот процент каждой области каждого этажа будет рассматриваться как пустое пространство и не будет учитываться при расчёте количества семей или работников." />
     <Translation ID="RPR_CAL_VOL_EMP" String="Пустая площадь (фикс.)" />
-    <Translation ID="RPR_CAL_VOL_EMP_TIP" String="Фиксированный объем пространства, который будет вычтен из каждой площади, перед расчётом семей и рабочих мест (рассматривается как пустое место)." />
+    <Translation ID="RPR_CAL_VOL_EMP_TIP" String="Фиксированный объём пространства, который будет вычтен из каждой площади, перед расчётом семей и рабочих мест (рассматривается как пустое место)." />
     <Translation ID="RPR_CAL_VOL_FXP" String="Fixed population?" />
     <Translation ID="RPR_CAL_VOL_FXP_TIP" String="Если флажок установлен, используется фиксированный показатель для расчёта семей или рабочих мест, независимо от размера здания (например, одна семья в здании) ." />
     <Translation ID="RPR_CAL_VOL_UNI" String="Units" />
+    <Translation ID="RPR_CAL_VOL_HOU" String="Домохозяйства" />
+    <Translation ID="RPR_CAL_VOL_WOR" String="Рабочие места" />
+    <Translation ID="RPR_CAL_VOL_STU" String="Студенты" />
     <Translation ID="RPR_CAL_VOL_UNI_TIP" String="Количество семей или работников в здании" />
     <Translation ID="RPR_CAL_VOL_APU" String="Площадь на unit" />
     <Translation ID="RPR_CAL_VOL_APU_TIP" String="Площадь (в квадратных метрах), необходимая для каждой семьи или работника (после того, как пустое пространство будет вычтено)." />
     <Translation ID="RPR_CAL_VOL_MFU" String="Многоэтажные блоки" />
     <Translation ID="RPR_CAL_VOL_MFU_TIP" String="Если это не выбрано, то семьи или работники будут рассчитаны для каждого отдельного этажа в здании. Если выбрано, то для расчёта семей или работников будет использоваться всё здание." />
-    <Translation ID="RPR_CAL_VOL_HOU" String="дома" />
-    <Translation ID="RPR_CAL_VOL_WOR" String="работников" />
-    <Translation ID="RPR_CAL_VOL_STU" String="студентов" />
     <Translation ID="RPR_CAL_VOL_ARA" String="площадь" />
+    <Translation ID="RPR_CAL_UNI_HOU" String="дома" />
+    <Translation ID="RPR_CAL_UNI_WOR" String="работников" />
+    <Translation ID="RPR_CAL_UNI_STU" String="студентов" />
     <Translation ID="RPR_CAL_HOM_CALC" String="Calculated homes:" />
     <Translation ID="RPR_CAL_HOM_CUST" String="Customised homes:" />
     <Translation ID="RPR_CAL_HOM_APPL" String="Applied homes:" />
@@ -179,14 +193,27 @@
     <Translation ID="RPR_CAL_CAP_DEF" String="Множитель по умолчанию:" />
     <Translation ID="RPR_CAL_SCH_PRO" String="Масштабирование персонала и затрат" />
     <Translation ID="RPR_CAL_SCH_WKR" String="Школьные работники" />
+    <Translation ID="RPR_CAL_SCH_WKR_TIP" String="Количество и уровень рабочих мест, доступных в этой школе, рассчитанные с использованием вышеуказанных настроек" />
     <Translation ID="RPR_CAL_SCH_CST" String="Стоимость/обслуживание" />
+    <Translation ID="RPR_CAL_SCH_CST_TIP" String="Стоимость строительства школы и еженедельные затраты на обслуживание, рассчитанные с использованием вышеуказанных настроек" />
+    <Translation ID="RPR_TIT_RDF" String="Расчёты по умолчанию для жилых зданий" />
+    <Translation ID="RPR_TIT_CDF" String="Расчёты по умолчанию для коммерческих зданий" />
+    <Translation ID="RPR_TIT_IDF" String="Расчёты по умолчанию для промышленных зданий" />
+    <Translation ID="RPR_TIT_EDF" String="Расчёты по умолчанию для добывающих предприятий" />
+    <Translation ID="RPR_TIT_ODF" String="Расчёты по умолчанию для офисных зданий" />
+    <Translation ID="RPR_TIT_SDF" String="Расчёты по умолчанию для школ" />
+    <Translation ID="RPR_TIT_CGO" String="Настройки коммерческих предприятий" />
+    <Translation ID="RPR_TIT_IGO" String="Настройки промышленных производств" />
+    <Translation ID="RPR_TIT_EGO" String="Настройки добывающих предприятий" />
+    <Translation ID="RPR_TIT_OGO" String="Настройки работы офисов" />
     <Translation ID="RPR_OPT_MOD" String="Настройки мода" />
     <Translation ID="RPR_OPT_KEY" String="Горячая клавиша для экрана параметров строительства" />
     <Translation ID="RPR_OPT_PRS" String="Нажмите любую клавишу" />
     <Translation ID="RPR_OPT_LEG" String="Legacy" />
     <Translation ID="RPR_OPT_CON" String="Потребление" />
-    <Translation ID="RPR_OPT_STO" String="Stories" />
     <Translation ID="RPR_OPT_LVL" String="Уровень" />
+    <Translation ID="RPR_OPT_PERW" String="Суммы на одного работника" />
+    <Translation ID="RPR_OPT_PERH" String="Суммы на семью" />
     <Translation ID="RPR_OPT_APH" String="Площадь на семью (м2)" />
     <Translation ID="RPR_OPT_APW" String="Площадь на работника (м2)" />
     <Translation ID="RPR_OPT_FLR" String="Высота этажа (м)" />
@@ -217,7 +244,9 @@
     <Translation ID="RPR_OPT_CRI" String="Криминал" />
     <Translation ID="RPR_OPT_CML" String="Множитель преступности (в процентах)" />
     <Translation ID="RPR_OPT_POP" String="Население" />
+    <Translation ID="RPR_OPT_STO" String="Floor calculation packs" />
     <Translation ID="RPR_OPT_DEF" String="По умолчанию" />
+    <Translation ID="RPR_OPT_PSI" String="Настройки производства, продаж и запасов" />
     <Translation ID="RPR_OPT_EDT_NAM" String="Название пакета" />
     <Translation ID="RPR_OPT_SVC" String="Service" />
     <Translation ID="RPR_OPT_CPK" String="Пакет расчётов" />
@@ -225,9 +254,25 @@
     <Translation ID="RPR_OPT_DEL" String="Удалить пакет" />
     <Translation ID="RPR_OPT_NPK" String="Новый пакет" />
     <Translation ID="RPR_DEF_LGR" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для жилых зданий:" />
-    <Translation ID="RPR_DEF_LGW" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для зданий с рабочими местами:" />
+    <Translation ID="RPR_DEF_LGC" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для коммерческих зданий:" />
+    <Translation ID="RPR_DEF_LGI" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для промышленных зданий:" />
+    <Translation ID="RPR_DEF_LGO" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для офисных зданий" />
     <Translation ID="RPR_DEF_LTS" String="Это сохранение" />
     <Translation ID="RPR_DEF_LAS" String="Новое сохранение" />
+    <Translation ID="RPR_DEF_VIS" String="Вместимость клиентов(посетителей)" />
+    <Translation ID="RPR_DEF_VIS_TIP" String="Основа для расчёта количества клиентов, с которыми это здание может справиться сразу. Старый метод заключался в использовании размера участка здания, а новый - в использовании количества рабочих мест в здании." />
+    <Translation ID="RPR_DEF_VNE" String="Новый метод (кол-во людей)" />
+    <Translation ID="RPR_DEF_VOL" String="Старый метод (площадь)" />
+    <Translation ID="RPR_DEF_VMU" String="Множитель количества клиентов" />
+    <Translation ID="RPR_DEF_VMU_TIP" String="Расчётное количество клиентов будет умножено на этот процент" />
+    <Translation ID="RPR_DEF_CGM" String="Множитель продаж" />
+    <Translation ID="RPR_DEF_CGM_TIP" String="Количество товаров, проданных этим зданием на одного клиента, будет умножено на этот процент; снижение ставок будет означать, что требуется меньше товаров, но налоговые поступления также будут уменьшены" />
+    <Translation ID="RPR_DEF_IDC" String="Ограничение объёма запасов" />
+    <Translation ID="RPR_DEF_IDC_TIP" String="Триггерные суммы складских запасов зданий будут ограничены этим максимумом (не влияет на здания с рассчитанными триггерными суммами складских запасов, которые уже ниже этого предела)." />
+    <Translation ID="RPR_DEF_PMD" String="Режим расчёта" />
+    <Translation ID="RPR_DEF_PMD_TIP" String="Основа для расчёта нормы выработки этого здания. Старый метод состоял в том, чтобы использовать размер участка здания, а новый – использовать количество рабочих мест в здании." />
+    <Translation ID="RPR_DEF_PRD" String="Множитель производства" />
+    <Translation ID="RPR_DEF_PRD_TIP" String="Количество товаров, произведенных этим зданием, будет умножено на этот процент" />
     <Translation ID="TRN_CHOICE" String="Установить язык" />
     <Translation ID="TRN_SYS" String="Использ. системный" />
     <Translation ID="MES_CLS" String="Закрыть" />
@@ -245,10 +290,9 @@
     <Translation ID="ERR_HAR1" String="Возможные причины этой проблемы включают:" />
     <Translation ID="ERR_HAR2" String="Требуемый мод, Harmony 2 – не установлен" />
     <Translation ID="ERR_HAR3" String="Старый и/или сломанный мод мешает правильной работе Harmony 2" />
-    <Translation ID="ERR_HAR4" String="Пожалуйста, обратитесь к странице мода в Steam Workshop для получения дополнительной информации." />
     <Translation ID="ERR_CON0" String="Обнаружен конфликт модов!" />
     <Translation ID="ERR_CON1" String="Конфликтующие моды:" />
-    <Translation ID="RPR_ERR_CON0" String="Realistic Population 2 обнаружила конфликт как минимум с одним другим модом." />
+    <Translation ID="RPR_ERR_CON0" String="Realistic Population 2 обнаружил конфликт как минимум с одним другим модом." />
     <Translation ID="RPR_ERR_CON1" String="Эти моды должны быть удалены, прежде чем Realistic Population 2 сможет работать." />
     <Translation ID="RPR_200_0" String="Переименование с 'Realistic Population Revisited' на 'Realistic Population 2', чтобы отразить степень изменений" />
     <Translation ID="RPR_200_1" String="ОСНОВНАЯ НОВАЯ ФУНКЦИЯ: расчёт численности населения в новых зданиях на основе фактических форм и размеров зданий с реалистично рассчитанной площадью этажа с возможностью выбора между новыми или старыми ('устаревшими') расчётами " />
