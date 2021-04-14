@@ -163,13 +163,16 @@ namespace RealPop2
             extProdMultSliders[index].objectUserData = index;
             extProdMultSliders[index].maxValue = RealisticExtractorProduction.MaxProdMult;
             extProdMultSliders[index].value = RealisticExtractorProduction.GetProdMult(subServices[index]);
-            PercentSliderText(extProdMultSliders[index], extProdMultSliders[index].value);
 
             // Always hide generic industrial extractor (index 0) controls.
             if (index == 0)
             {
                 extProdModeMenus[0].Hide();
-                extProdMultSliders[0].Hide();
+                extProdMultSliders[0].parent.Hide();
+            }
+            else
+            {
+                PercentSliderText(extProdMultSliders[index], extProdMultSliders[index].value);
             }
 
             // Production calculation mode default event handlers to show/hide multiplier slider.
