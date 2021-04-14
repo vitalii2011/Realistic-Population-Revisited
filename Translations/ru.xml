@@ -241,7 +241,8 @@
     <Translation ID="RPR_OPT_SJX" String="Доп. работа на # студента " />
     <Translation ID="RPR_OPT_CRI" String="Криминал" />
     <Translation ID="RPR_OPT_CML" String="Множитель преступности (в процентах)" />
-    <Translation ID="RPR_OPT_POP" String="Население" />
+    <Translation ID="RPR_OPT_CML_TIP" String="Базовое накопление преступности для города будет умножено на эту сумму" />
+    <Translation ID="RPR_OPT_POP" String="Пакеты расчёта численности населения" />
     <Translation ID="RPR_OPT_STO" String="Floor calculation packs" />
     <Translation ID="RPR_OPT_DEF" String="По умолчанию" />
     <Translation ID="RPR_OPT_PSI" String="Настройки производства, продаж и запасов" />
