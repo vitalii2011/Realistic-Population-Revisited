@@ -212,8 +212,6 @@
     <Translation ID="RPR_OPT_LEG" String="Legacy" />
     <Translation ID="RPR_OPT_CON" String="Потребление" />
     <Translation ID="RPR_OPT_LVL" String="Уровень" />
-    <Translation ID="RPR_OPT_PERW" String="Суммы на одного работника" />
-    <Translation ID="RPR_OPT_PERH" String="Суммы на семью" />
     <Translation ID="RPR_OPT_APH" String="Площадь на семью (м2)" />
     <Translation ID="RPR_OPT_APW" String="Площадь на работника (м2)" />
     <Translation ID="RPR_OPT_FLR" String="Высота этажа (м)" />
