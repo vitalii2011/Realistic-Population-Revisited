@@ -48,11 +48,11 @@ namespace RealPop2
         // Arrays for calculation mode and multipliers.
         private static readonly int[] comVisitModes =
         {
-            (int)ComVisitModes.legacy,
-            (int)ComVisitModes.legacy,
-            (int)ComVisitModes.legacy,
-            (int)ComVisitModes.legacy,
-            (int)ComVisitModes.legacy
+            (int)ComVisitModes.popCalcs,
+            (int)ComVisitModes.popCalcs,
+            (int)ComVisitModes.popCalcs,
+            (int)ComVisitModes.popCalcs,
+            (int)ComVisitModes.popCalcs
         };
         private static readonly int[] comVisitMults =
         {
