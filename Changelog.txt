@@ -12,6 +12,7 @@ Version 2.0 -
 - Save status flags to savegame to track which calculations (new or legacy) should be used by default for that save, separately selectable for each major service type
 - Rearrange options panel layout and add sub-tabs as required
 - Enable preview of calculated building floors in building preview
+- Display commercial building visitor counts in building info panel
 - Add custom mouse button keybinding option
 - Upgrade to Harmony 2
 - Add settings filters to building details panel
@@ -19,7 +20,7 @@ Version 2.0 -
 - Overhaul update notifications (thanks, macsergey!)
 - Overhaul mod conflict detection and notification
 - Overhaul logging
-- Multiple code cleanups
+- Multiple code cleanups and replacemnt of legacy code
 
 
 Version 1.4.3 -
