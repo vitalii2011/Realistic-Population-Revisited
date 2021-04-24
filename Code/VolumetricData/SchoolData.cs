@@ -279,7 +279,6 @@ namespace RealPop2
         /// </summary>
         internal void UpdateSchools()
         {
-
             // Iterate through all loaded building prefabs.
             for (uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); ++i)
             {

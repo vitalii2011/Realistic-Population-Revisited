@@ -142,6 +142,7 @@
     <Compile Include="Code\Patches\SimulationStepImpl.cs" />
     <Compile Include="Code\Patches\ModifyMaterialBuffer.cs" />
     <Compile Include="Code\Patches\WorldInfoPanel.cs" />
+    <Compile Include="Code\Patches\ZonedBuildingWorldInfoPanel.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\CalculationTabs\CalculationsPanelBase.cs" />
     <Compile Include="Code\Settings\CalculationTabs\GoodsTabs\IndGoodsPanel.cs" />

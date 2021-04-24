@@ -139,9 +139,6 @@ namespace RealPop2
                 MessageBoxBase.ShowModal<LegacyChoiceMessageBox>();
             }
 
-            // Wait for loading to fully complete.
-            while (!LoadingManager.instance.m_loadingComplete) { }
-
             // Record initial (default) school settings and apply ours over the top.
             SchoolData.instance.OnLoad();
 
