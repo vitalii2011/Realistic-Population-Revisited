@@ -108,7 +108,7 @@ namespace RealPop2
             else
             {
                 // Legacy calcs.
-                int[] array = AI_Utils.GetIndustryArray(__instance.m_info, (int)level);
+                int[] array = LegacyAIUtils.GetIndustryArray(__instance.m_info, (int)level);
 
                 // Original method return value.
                 __result = Mathf.Max(100, width * length * array[DataStore.PRODUCTION]) / 100;

@@ -43,7 +43,7 @@ namespace RealPop2
             if (PopData.instance.ActivePack(info).version == (int)DataVersion.legacy)
             {
                 // Legacy settings.
-                int[] array = AI_Utils.GetOfficeArray(info, (int)level);
+                int[] array = LegacyAIUtils.GetOfficeArray(info, (int)level);
 
                 Logging.Message("using Legacy office production settings, with level ", level.ToString(), " and production parameter ", array[DataStore.PRODUCTION].ToString());
                 string message = "Details";

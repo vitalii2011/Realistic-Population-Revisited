@@ -12,7 +12,7 @@ namespace RealPop2
     {
         public static bool Prefix(ResidentialBuildingAI __instance, ItemClass.Level level, out int groundPollution, out int noisePollution)
         {
-            int[] array = AI_Utils.GetResidentialArray(__instance.m_info, (int)level);
+            int[] array = LegacyAIUtils.GetResidentialArray(__instance.m_info, (int)level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
             noisePollution = array[DataStore.NOISE_POLLUTION];

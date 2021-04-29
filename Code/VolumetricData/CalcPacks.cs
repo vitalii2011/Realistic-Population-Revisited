@@ -170,8 +170,8 @@
             if (value == 0)
             {
                 // No volumetric override - use legacy calcs.
-                int[] array = AI_Utils.GetResidentialArray(buildingPrefab, (int)level);
-                return AI_Utils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array);
+                int[] array = LegacyAIUtils.GetResidentialArray(buildingPrefab, (int)level);
+                return LegacyAIUtils.CalculatePrefabHousehold(buildingPrefab.GetWidth(), buildingPrefab.GetWidth(), ref buildingPrefab, ref array);
             }
 
             return value;
@@ -192,8 +192,8 @@
         /// <returns>Workplace breakdowns and visitor count </returns>
         public override int[] Workplaces(BuildingInfo buildingPrefab, int level)
         {
-            int[] array = AI_Utils.GetCommercialArray(buildingPrefab, level);
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 4, ref array, out int[] output);
+            int[] array = LegacyAIUtils.GetCommercialArray(buildingPrefab, level);
+            LegacyAIUtils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 4, ref array, out int[] output);
 
             return output;
         }
@@ -219,16 +219,16 @@
             // Need to test if we're an extractor or not for this one.
             if (buildingPrefab.GetAI() is IndustrialExtractorAI)
             {
-                array = AI_Utils.GetExtractorArray(buildingPrefab);
+                array = LegacyAIUtils.GetExtractorArray(buildingPrefab);
                 minWorkers = 3;
             }
             else
             {
-                array = AI_Utils.GetIndustryArray(buildingPrefab, level);
+                array = LegacyAIUtils.GetIndustryArray(buildingPrefab, level);
                 minWorkers = 4;
             }
 
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, minWorkers, ref array, out int[] output);
+            LegacyAIUtils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, minWorkers, ref array, out int[] output);
 
             return output;
         }
@@ -248,8 +248,8 @@
         /// <returns>Workplace breakdowns and visitor count </returns>
         public override int[] Workplaces(BuildingInfo buildingPrefab, int level)
         {
-            int[] array = AI_Utils.GetOfficeArray(buildingPrefab, level);
-            AI_Utils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 10, ref array, out int[] output);
+            int[] array = LegacyAIUtils.GetOfficeArray(buildingPrefab, level);
+            LegacyAIUtils.CalculateprefabWorkerVisit(buildingPrefab.GetWidth(), buildingPrefab.GetLength(), ref buildingPrefab, 10, ref array, out int[] output);
 
             return output;
         }

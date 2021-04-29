@@ -234,7 +234,7 @@ namespace RealPop2
         /// <param name="prefab">Building prefab</param>
         /// <param name="level">Building level </param>
         /// <returns>Calculated visitplace count</returns>
-        internal static int LegacyVisitCount(BuildingInfo prefab, ItemClass.Level level) => UnityEngine.Mathf.Max(200, prefab.GetWidth() * prefab.GetWidth() * AI_Utils.GetCommercialArray(prefab, (int)level)[DataStore.VISIT]) / 100;
+        internal static int LegacyVisitCount(BuildingInfo prefab, ItemClass.Level level) => UnityEngine.Mathf.Max(200, prefab.GetWidth() * prefab.GetWidth() * LegacyAIUtils.GetCommercialArray(prefab, (int)level)[DataStore.VISIT]) / 100;
 
 
         /// <summary>

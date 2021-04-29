@@ -232,7 +232,7 @@ namespace RealPop2
                         ReversePatches.EnsureCitizenUnits(residentialAI, i, ref thisBuilding, homeCount, 0, visitCount, 0);
 
                         // Remove any extra households.
-                        RealisticCitizenUnits.RemoveHouseHold(ref buildingBuffer[i], homeCount);
+                        LegacyAIUtils.RemoveHouseHold(ref buildingBuffer[i], homeCount);
 
                         // Log changes.
                         Logging.Message("Reset CitizenUnits for building ", i.ToString(), " (", thisBuilding.Info.name,"); CitizenUnit count is now ", citizenManager.m_unitCount.ToString());

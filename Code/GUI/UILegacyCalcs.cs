@@ -141,7 +141,7 @@ namespace RealPop2
             if (buildingAI is ResidentialBuildingAI)
             {
                 // Get appropriate calculation array.
-                array = AI_Utils.GetResidentialArray(building, (int)building.GetClassLevel());
+                array = LegacyAIUtils.GetResidentialArray(building, (int)building.GetClassLevel());
 
                 // Set calculated homes label.
                 homesJobsCalcLabel.text = Translations.Translate("RPR_CAL_HOM_CALC");
@@ -165,19 +165,19 @@ namespace RealPop2
                 switch (building.GetService())
                 {
                     case ItemClass.Service.Commercial:
-                        array = AI_Utils.GetCommercialArray(building, (int)building.GetClassLevel());
+                        array = LegacyAIUtils.GetCommercialArray(building, (int)building.GetClassLevel());
                         break;
                     case ItemClass.Service.Office:
-                        array = AI_Utils.GetOfficeArray(building, (int)building.GetClassLevel());
+                        array = LegacyAIUtils.GetOfficeArray(building, (int)building.GetClassLevel());
                         break;
                     case ItemClass.Service.Industrial:
                         if (buildingAI is IndustrialExtractorAI)
                         {
-                            array = AI_Utils.GetExtractorArray(building);
+                            array = LegacyAIUtils.GetExtractorArray(building);
                         }
                         else
                         {
-                            array = AI_Utils.GetIndustryArray(building, (int)building.GetClassLevel());
+                            array = LegacyAIUtils.GetIndustryArray(building, (int)building.GetClassLevel());
                         }
                         break;
                     default:

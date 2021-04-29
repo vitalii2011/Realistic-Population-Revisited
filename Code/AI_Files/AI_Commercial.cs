@@ -15,7 +15,7 @@ namespace RealPop2
         public static bool Prefix(CommercialBuildingAI __instance, ItemClass.Level level, int productionRate, DistrictPolicies.CityPlanning cityPlanningPolicies, out int groundPollution, out int noisePollution)
         {
             ItemClass item = __instance.m_info.m_class;
-            int[] array = AI_Utils.GetCommercialArray(__instance.m_info, (int)level);
+            int[] array = LegacyAIUtils.GetCommercialArray(__instance.m_info, (int)level);
 
             groundPollution = array[DataStore.GROUND_POLLUTION];
             noisePollution = (productionRate * array[DataStore.NOISE_POLLUTION]) / 100;
@@ -40,7 +40,7 @@ namespace RealPop2
     {
         public static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level, int width, int length)
         {
-            int[] array = AI_Utils.GetCommercialArray(__instance.m_info, (int)level);
+            int[] array = LegacyAIUtils.GetCommercialArray(__instance.m_info, (int)level);
 
             // Original method return value.
             __result = Mathf.Max(100, width * length * array[DataStore.PRODUCTION]) / 100;

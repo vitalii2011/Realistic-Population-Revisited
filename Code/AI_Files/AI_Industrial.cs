@@ -13,7 +13,7 @@ namespace RealPop2
 
         public static bool Prefix(IndustrialBuildingAI __instance, ItemClass.Level level, int productionRate, out int groundPollution, out int noisePollution)
         {
-            int[] array = AI_Utils.GetIndustryArray(__instance.m_info, (int)level);
+            int[] array = LegacyAIUtils.GetIndustryArray(__instance.m_info, (int)level);
 
             groundPollution = (productionRate * array[DataStore.GROUND_POLLUTION]) / 100;
             noisePollution = (productionRate * array[DataStore.NOISE_POLLUTION]) / 100;
