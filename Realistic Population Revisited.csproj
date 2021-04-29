@@ -138,7 +138,6 @@
     <Compile Include="Code\Patches\HandleCrimeTranspiler.cs" />
     <Compile Include="Code\Patches\Patcher.cs" />
     <Compile Include="Code\Patches\ResidentialConsumption.cs" />
-    <Compile Include="Code\Patches\ReversePatches.cs" />
     <Compile Include="Code\Patches\SimulationStepImpl.cs" />
     <Compile Include="Code\Patches\ModifyMaterialBuffer.cs" />
     <Compile Include="Code\Patches\WorldInfoPanel.cs" />
@@ -177,6 +176,7 @@
     <Compile Include="Code\Settings\CalculationTabs\DefaultsTabs\EmpDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\PopulationPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
+    <Compile Include="Code\Utils\CitizenUnitUtils.cs" />
     <Compile Include="Code\Utils\GoodsUtils.cs" />
     <Compile Include="Code\Utils\TextureUtils.cs" />
     <Compile Include="Code\Utils\TooltipUtils.cs" />

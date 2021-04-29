@@ -176,10 +176,12 @@ namespace RealPop2
                 // Apply any changed settings.
                 ApplyToNew(control, mouseEvent);
 
-                // Update existing households.
+                // Update existing CitizenUnits.
                 ItemClass.SubService subService = subServices[subServiceIndex];
-                Logging.Message("new residential defaults applied; updating populations of all existing residential buildings with subservice ", subService.ToString());
-                PopData.instance.UpdateHouseholds(null, subService);
+                Logging.Message("new defaults applied; updating populations of all existing buildings with subservice ", subService.ToString());
+
+                // Update CitizenUnits for existing building instances of this subservice.
+                CitizenUnitUtils.UpdateCitizenUnits(null, subService);
             }
         }
     }

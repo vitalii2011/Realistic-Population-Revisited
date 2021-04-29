@@ -246,13 +246,8 @@ namespace RealPop2
                         // Set overide.
                         PopData.instance.SetOverride(currentSelection, homesJobs);
 
-                        // Is this a residential building?
-                        if (currentSelection.GetService() == ItemClass.Service.Residential)
-                        {
-                            // Update household counts for existing instances of this building - only needed for residential buildings.
-                            // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                            PopData.instance.UpdateHouseholds(currentSelection.name, currentSelection.GetSubService());
-                        }
+                        // Update CitizenUnits for existing building instances.
+                        CitizenUnitUtils.UpdateCitizenUnits(currentSelection.name, currentSelection.GetSubService());
 
                         // Repopulate field with parsed value.
                         homeJobLabel.text = homesJobs.ToString();
@@ -345,9 +340,8 @@ namespace RealPop2
                 // Residential building - remove any legacy settings to avoid conflicts.
                 OverrideUtils.RemoveResidential(currentSelection);
 
-                // Update household counts for existing instances of this building - only needed for residential buildings.
-                // Workplace counts will update automatically with next call to CalculateWorkplaceCount; households require more work (tied to CitizenUnits).
-                PopData.instance.UpdateHouseholds(currentSelection.name, currentSelection.GetSubService());
+                // Update CitizenUnits for existing instances of this building.
+                CitizenUnitUtils.UpdateCitizenUnits(currentSelection.name, currentSelection.GetSubService());
             }
             else
             {
