@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HarmonyLib;
 
 
@@ -70,7 +71,7 @@ namespace RealPop2
         /// <param name="__result">Original method result</param>
         /// <param name="__instance">Original AI instance reference</param>
         /// <param name="level">Building level</param>
-        /// <returns>False (don't execute base game method after this) if new calculatons have been used, true if old calculations are being used</returns>
+        /// <returns>Always false (don't execute base game method after this)</returns>
         public static bool Prefix(ref int __result, CommercialBuildingAI __instance, ItemClass.Level level)
         {
             // Get builidng info.
@@ -81,65 +82,16 @@ namespace RealPop2
             int arrayIndex = GetIndex(subService);
 
             // New or old calculations?
-            if (comVisitModes[arrayIndex] == (int)RealisticVisitplaceCount.ComVisitModes.popCalcs)
+            if (comVisitModes[arrayIndex] == (int)ComVisitModes.popCalcs)
             {
                 // Get cached workplace count and calculate total workplaces.
                 int[] workplaces = PopData.instance.WorkplaceCache(info, (int)level);
-                float totalWorkers = workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3];
-                float multiplier;
-
-                // New settings, based on population.
-                switch (subService)
-                {
-                    case ItemClass.SubService.CommercialLow:
-                        switch (info.GetClassLevel())
-                        {
-                            case ItemClass.Level.Level1:
-                                multiplier = 1.8f;
-                                break;
-                            case ItemClass.Level.Level2:
-                                multiplier = 1.333333333f;
-                                break;
-                            default:
-                                multiplier = 1.1f;
-                                break;
-                        }
-                        break;
-
-                    case ItemClass.SubService.CommercialHigh:
-                        switch (info.GetClassLevel())
-                        {
-                            case ItemClass.Level.Level1:
-                                multiplier = 2.666666667f;
-                                break;
-                            case ItemClass.Level.Level2:
-                                multiplier = 3f;
-                                break;
-                            default:
-                                multiplier = 3.2f;
-                                break;
-                        }
-                        break;
-
-                    case ItemClass.SubService.CommercialLeisure:
-                    case ItemClass.SubService.CommercialTourist:
-                        multiplier = 2.5f;
-                        break;
-
-                    default:
-                        // Commercial eco.
-                        multiplier = 1f;
-                        break;
-                }
-
-                // Multiply total workers by multipler and overall multiplier (from settings) to get result.
-                __result = (int)((totalWorkers * comVisitMults[arrayIndex] * multiplier) / 100f);
+                __result = NewVisitCount(subService, level, workplaces[0] + workplaces[1] + workplaces[2] + workplaces[3]);
             }
             else
             {
                 // Old settings, based on lot size.
-                // Just go to default game method.
-                return true;
+                __result = LegacyVisitCount(info, level);
             }
 
             // Always set at least one.
@@ -152,6 +104,137 @@ namespace RealPop2
             // Don't execute base method after this.
             return false;
         }
+
+
+        /// <summary>
+        /// Returns the calculated visitplace count according to current settings for the given prefab and workforce total (e.g. for previewing effects of changes to workforces).
+        /// </summary>
+        /// <param name="prefab">Prefab to check</param>
+        /// <param name="workplaces">Number of workplaces to apply</param>
+        /// <returns>Calculated visitplaces</returns>
+        internal static int PreviewVisitCount(BuildingInfo prefab, int workplaces)
+        {
+            // Get builidng info.
+            ItemClass.SubService subService = prefab.GetSubService();
+
+            // Array index.
+            int arrayIndex = GetIndex(subService);
+
+            // New or old calculations?
+            if (comVisitModes[arrayIndex] == (int)ComVisitModes.popCalcs)
+            {
+                // New calcs.
+                return NewVisitCount(subService, prefab.GetClassLevel(), workplaces);
+            }
+            else
+            {
+                // Old calcs.
+                return LegacyVisitCount(prefab, prefab.GetClassLevel());
+            }
+        }
+
+
+        /// <summary>
+        /// Calculates the visitplace count for the given subservice, level and workforce, using on new volumetric calculations.
+        /// </summary>
+        /// <param name="subService">Building subservice</param>
+        /// <param name="level">Building level </param>
+        /// <param name="workplaces">Total workplaces</param>
+        /// <returns>Calculated visitplace count</returns>
+        internal static int NewVisitCount(ItemClass.SubService subService, ItemClass.Level level, int workplaces)
+        {
+            float multiplier;
+
+            // New settings, based on population.
+            switch (subService)
+            {
+                case ItemClass.SubService.CommercialLow:
+                    switch (level)
+                    {
+                        case ItemClass.Level.Level1:
+                            multiplier = 1.8f;
+                            break;
+                        case ItemClass.Level.Level2:
+                            multiplier = 1.333333333f;
+                            break;
+                        default:
+                            multiplier = 1.1f;
+                            break;
+                    }
+                    break;
+
+                case ItemClass.SubService.CommercialHigh:
+                    switch (level)
+                    {
+                        case ItemClass.Level.Level1:
+                            multiplier = 2.666666667f;
+                            break;
+                        case ItemClass.Level.Level2:
+                            multiplier = 3f;
+                            break;
+                        default:
+                            multiplier = 3.2f;
+                            break;
+                    }
+                    break;
+
+                case ItemClass.SubService.CommercialLeisure:
+                case ItemClass.SubService.CommercialTourist:
+                    multiplier = 2.5f;
+                    break;
+
+                default:
+                    // Commercial eco.
+                    multiplier = 1f;
+                    break;
+            }
+
+            // Multiply total workers by multipler and overall multiplier (from settings) to get result.
+            int result = (int)((workplaces * comVisitMults[GetIndex(subService)] * multiplier) / 100f);
+
+            // Scale result - 100% of 0-200, 75% of 201-400, 50% of 401-600, 25% after that.
+            int twoHundredPlus = result - 200;
+            if (twoHundredPlus > 0)
+            {
+                // Base numbers for scaling
+                const int TwoHundredBase = 200;
+                const int FourHundredBase = TwoHundredBase + (int)(200 * 0.75f);
+                const int SixHundredBase = FourHundredBase + (int)(200 * 0.5f);
+
+                // Result is greater than 200.
+                int fourHundredPlus = result - 400;
+                if (fourHundredPlus > 0)
+                {
+                    int sixHundredPlus = result - 600;
+                    if (sixHundredPlus > 0)
+                    {
+                        // Result is greater than 600.
+                        return SixHundredBase + (int)(sixHundredPlus * 0.25f);
+                    }
+                    else
+                    {
+                        // Result is greater than 400, but less than 600.
+                        return FourHundredBase + (int)(fourHundredPlus * 0.5f);
+                    }
+                }
+                else
+                {
+                    // Result is greater than 200, but less than 400.
+                    return TwoHundredBase + (int)(twoHundredPlus * 0.75f);
+                }
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Legacy visitplace count calculations.
+        /// </summary>
+        /// <param name="prefab">Building prefab</param>
+        /// <param name="level">Building level </param>
+        /// <returns>Calculated visitplace count</returns>
+        internal static int LegacyVisitCount(BuildingInfo prefab, ItemClass.Level level) => UnityEngine.Mathf.Max(200, prefab.GetWidth() * prefab.GetWidth() * AI_Utils.GetCommercialArray(prefab, (int)level)[DataStore.VISIT]) / 100;
 
 
         /// <summary>

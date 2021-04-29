@@ -317,13 +317,11 @@ namespace RealPop2
                     break;
             }
 
-
-
             // Display commercial visit count, or hide the label if not commercial.
-            if (building.GetAI() is CommercialBuildingAI commercialAI)
+            if (building.GetAI() is CommercialBuildingAI)
             {
                 visitCountLabel.Show();
-                visitCountLabel.text = commercialAI.CalculateVisitplaceCount(building.GetClassLevel(), new ColossalFramework.Math.Randomizer(), building.GetWidth(), building.GetLength()).ToString();
+                visitCountLabel.text = RealisticVisitplaceCount.PreviewVisitCount(building, totalUnits).ToString();
             }
             else
             {
