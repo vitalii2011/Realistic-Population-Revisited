@@ -201,6 +201,9 @@ namespace RealPop2
 
                 // Record inventory cap.
                 GoodsUtils.SetInventoryCap(subServices[i], (int)inventorySliders[i].value);
+
+                // Recalculate citizen units.
+                CitizenUnitUtils.UpdateCitizenUnits(null, subServices[i]);
             }
 
             base.Apply(control, mouseEvent);

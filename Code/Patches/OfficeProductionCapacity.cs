@@ -45,15 +45,6 @@ namespace RealPop2
                 // Legacy settings.
                 int[] array = LegacyAIUtils.GetOfficeArray(info, (int)level);
 
-                Logging.Message("using Legacy office production settings, with level ", level.ToString(), " and production parameter ", array[DataStore.PRODUCTION].ToString());
-                string message = "Details";
-                foreach(int item in array)
-                {
-                    message += ": " + item.ToString();
-                }
-                Logging.Message(message);
-
-
                 // Original method return value.
                 __result = totalWorkers / array[DataStore.PRODUCTION];
             }
