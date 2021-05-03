@@ -16,6 +16,18 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 18",
+                betaVersion = 18,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Change default commercial visitor multiplier to 0.5 (doesn't affect existing settings).",
+                    "Replace legacy CitizenUnit allocation code and ensure refresh of CitizenUnit allocations on employment and visitor count changes.",
+                    "Add VisitPlace scaling effects to limit the impact of buildings with large VisitPlace calculation results."
+                }
+            },new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 17",
                 betaVersion = 17,
                 messageKeys = false,
