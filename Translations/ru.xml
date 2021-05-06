@@ -4,7 +4,8 @@
     <Translation ID="RPR_NAME" String="Realistic Population 2" />
     <Translation ID="RPR_DESC" String="Более реалистичное количество жильцов (в зависимости от размера здания) и коммунальных потребностей." />"
     <Translation ID="RPR_REALPOP" String="Реалистичное население" />
-    <Translation ID="RPR_PCK_DEF" String=" (default)" />
+    <Translation ID="RPR_INF_VIS" String="посетители" />
+    <Translation ID="RPR_PCK_DEF" String=" (по умолчанию)" />
     <Translation ID="RPR_PCK_NAM" String="Расчёты" />
     <Translation ID="RPR_PCK_LEG_NAM" String="Предыдущие расчёты от WG" />
     <Translation ID="RPR_PCK_LEG_DES" String="Старые расчёты, использованные в версиях 1.x этого мода и оригинальном моде Realistic Population and Consumption mod от Whitefang Greytail." />
