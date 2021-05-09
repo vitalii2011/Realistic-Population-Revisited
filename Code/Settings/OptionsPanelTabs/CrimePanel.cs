@@ -36,8 +36,15 @@ namespace RealPop2
             // Set initial text.
             PercentSliderText(newSlider, newSlider.value);
 
-            // Event handler to update value label.
-            newSlider.eventValueChanged += PercentSliderText;
+            // Slider change event.
+            newSlider.eventValueChanged += (control, value) =>
+            {
+                // Update value label.
+                PercentSliderText(control, value);
+
+                // Update setting.
+                ModSettings.crimeMultiplier = value;
+            };
         }
 
 
