@@ -926,7 +926,7 @@ namespace RealPop2
         internal void SetOverride(BuildingInfo prefab, int popOverride)
         {
             // Override needs to be at least 1.
-            if (popOverride > 1)
+            if (popOverride > 0)
             {
                 // Apply changes.
                 SetOverride(prefab.name, popOverride);
