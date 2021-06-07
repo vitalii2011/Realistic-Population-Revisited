@@ -247,7 +247,7 @@ namespace RealPop2
                         PopData.instance.SetOverride(currentSelection, homesJobs);
 
                         // Update CitizenUnits for existing building instances.
-                        CitizenUnitUtils.UpdateCitizenUnits(currentSelection.name, currentSelection.GetSubService());
+                        CitizenUnitUtils.UpdateCitizenUnits(currentSelection.name, ItemClass.Service.None, currentSelection.GetSubService(), false);
 
                         // Repopulate field with parsed value.
                         homeJobLabel.text = homesJobs.ToString();
@@ -341,7 +341,7 @@ namespace RealPop2
                 OverrideUtils.RemoveResidential(currentSelection);
 
                 // Update CitizenUnits for existing instances of this building.
-                CitizenUnitUtils.UpdateCitizenUnits(currentSelection.name, currentSelection.GetSubService());
+                CitizenUnitUtils.UpdateCitizenUnits(currentSelection.name, currentSelection.GetService(), currentSelection.GetSubService(), false);
             }
             else
             {

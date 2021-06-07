@@ -51,6 +51,14 @@ namespace RealPop2
 
                     // Update flag.
                     thisSaveLegacyRes = value;
+
+                    // If set to true, need to clear out surplus unoccupied households.
+                    // This is to resolve a race condition on load, where the save file mod data (including thisSaveLegacyRes) is loaded *after* building init (which means init has occured with volumetric values).
+                    // Leaving occupied households alone prevents any potential damage.
+                    if (value)
+                    {
+                        CitizenUnitUtils.UpdateCitizenUnits(null, ItemClass.Service.Residential, ItemClass.SubService.None, true);
+                    }
                 }
             }
         }
@@ -72,8 +80,16 @@ namespace RealPop2
                 {
                     // Yes - clear caches.
                     ClearWorkplaceCaches();
+
                     // Update flag.
                     thisSaveLegacyCom = value;
+
+                    // If set to true, we need to clear out surplus unoccupied citizen units.
+                    // This is to resolve a race condition on load, where the save file mod data (including thisSaveLegacyRes) is loaded *after* building init (which means init has occured with volumetric values).
+                    if (value)
+                    {
+                        CitizenUnitUtils.UpdateCitizenUnits(null, ItemClass.Service.Commercial, ItemClass.SubService.None, false);
+                    }
                 }
             }
         }
@@ -95,8 +111,16 @@ namespace RealPop2
                 {
                     // Yes - clear caches.
                     ClearWorkplaceCaches();
+
                     // Update flag.
                     thisSaveLegacyInd = value;
+
+                    // If set to true, we need to clear out surplus unoccupied citizen units.
+                    // This is to resolve a race condition on load, where the save file mod data (including thisSaveLegacyRes) is loaded *after* building init (which means init has occured with volumetric values).
+                    if (value)
+                    {
+                        CitizenUnitUtils.UpdateCitizenUnits(null, ItemClass.Service.Industrial, ItemClass.SubService.None, false);
+                    }
                 }
             }
         }
@@ -118,8 +142,16 @@ namespace RealPop2
                 {
                     // Yes - clear caches.
                     ClearWorkplaceCaches();
+
                     // Update flag.
                     thisSaveLegacyOff = value;
+
+                    // If set to true, we need to clear out surplus unoccupied citizen units.
+                    // This is to resolve a race condition on load, where the save file mod data (including thisSaveLegacyRes) is loaded *after* building init (which means init has occured with volumetric values).
+                    if (value)
+                    {
+                        CitizenUnitUtils.UpdateCitizenUnits(null, ItemClass.Service.Office, ItemClass.SubService.None, false);
+                    }
                 }
             }
         }

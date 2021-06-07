@@ -409,7 +409,7 @@ namespace RealPop2
             }
 
             // Update CitizenUnits for existing instances of this building.
-            CitizenUnitUtils.UpdateCitizenUnits(prefab.name, prefab.GetSubService());
+            CitizenUnitUtils.UpdateCitizenUnits(prefab.name, ItemClass.Service.None, prefab.GetSubService(), false);
         }
     }
 }

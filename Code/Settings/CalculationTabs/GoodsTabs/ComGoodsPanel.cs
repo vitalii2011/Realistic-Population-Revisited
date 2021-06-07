@@ -203,7 +203,7 @@ namespace RealPop2
                 GoodsUtils.SetInventoryCap(subServices[i], (int)inventorySliders[i].value);
 
                 // Recalculate citizen units.
-                CitizenUnitUtils.UpdateCitizenUnits(null, subServices[i]);
+                CitizenUnitUtils.UpdateCitizenUnits(null, ItemClass.Service.None, subServices[i], false);
             }
 
             base.Apply(control, mouseEvent);

@@ -60,12 +60,14 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Updates the CitizenUnits of already existing (placed/grown) building instances of the specified prefab, or all buildings of the specified subservices if prefab name is null.
+        /// Updates the CitizenUnits of already existing (placed/grown) building instances of the specified prefab, or all buildings of the specified service or subservice if prefab name is null.
         /// Called after updating a prefab's household/worker/visitor count, or when applying new default calculations, in order to apply changes to existing buildings.
         /// </summary>
         /// <param name="prefabName">The (raw BuildingInfo) name of the prefab (null to ignore name match)</param>
-        /// <param name="subService">The subservice to apply to (null for *all* residential buildings)</param>
-        internal static void UpdateCitizenUnits(string prefabName, ItemClass.SubService subService)
+        /// <param name="service">The service to apply to (ignored if 'none')</param>
+        /// <param name="subService">The subservice to apply to (ignored if 'none')</param>
+        /// <param name="preserveOccupied">Set to true to preserve occupied residential households from removal, false otherwise</param>
+        internal static void UpdateCitizenUnits(string prefabName, ItemClass.Service service, ItemClass.SubService subService, bool preserveOccupied)
         {
             // Local references.
             CitizenManager citizenManager = Singleton<CitizenManager>.instance;
@@ -87,7 +89,7 @@ namespace RealPop2
                 if (thisBuilding.Info?.GetAI() is PrivateBuildingAI privateAI)
                 {
                     // Residential building; check that either the supplier prefab name is null or it matches this building's prefab.
-                    if ((prefabName == null || thisBuilding.Info.name.Equals(prefabName)) && thisBuilding.Info.GetSubService() == subService)
+                    if ((prefabName == null || thisBuilding.Info.name.Equals(prefabName)) && ((service != ItemClass.Service.None && thisBuilding.Info.GetService() == service) || (subService != ItemClass.SubService.None && thisBuilding.Info.GetSubService() == subService)))
                     {
                         // Got one!  Recalculate home and visit counts.
                         privateAI.CalculateWorkplaceCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length, out int level0, out int level1, out int level2, out int level3);
@@ -99,7 +101,7 @@ namespace RealPop2
                         EnsureCitizenUnits(privateAI, i, ref thisBuilding, homeCount, workCount, visitCount, 0);
 
                         // Remove any extra CitizenUunts.
-                        RemoveCitizenUnits(ref buildingBuffer[i], homeCount, workCount, visitCount);
+                        RemoveCitizenUnits(ref buildingBuffer[i], homeCount, workCount, visitCount, preserveOccupied);
 
                         // Log changes.
                         Logging.Message("Reset CitizenUnits for building ", i.ToString(), " (", thisBuilding.Info.name, "); CitizenUnit count is now ", citizenManager.m_unitCount.ToString());
@@ -118,7 +120,8 @@ namespace RealPop2
         /// <param name="homeCount">Number of households to apply</param>
         /// <param name="workCount">Number of workplaces to apply</param>
         /// <param name="visitCount">Number of visitplaces to apply</param>
-        internal static void RemoveCitizenUnits(ref Building building, int homeCount, int workCount, int visitCount)
+        /// <param name="preserveOccupied">Preserve occupied residential households</param>
+        internal static void RemoveCitizenUnits(ref Building building, int homeCount, int workCount, int visitCount, bool preserveOccupied)
         {
 
             // Local references.
@@ -143,10 +146,10 @@ namespace RealPop2
                 // Is this a residential unit?
                 if ((ushort)(unitFlags & CitizenUnit.Flags.Home) != 0)
                 {
-                    // Residential unit; are we still allocating to homes?
-                    if (homeCount <= 0)
+                    // Residential unit; are we still allocating homes, and if we're preserving occupied units, is it empty?
+                    if (homeCount <= 0 && (!preserveOccupied || (citizenUnits[currentUnit].m_citizen0 + citizenUnits[currentUnit].m_citizen1 + citizenUnits[currentUnit].m_citizen2 + citizenUnits[currentUnit].m_citizen3 + citizenUnits[currentUnit].m_citizen4 == 0)))
                     {
-                        // Not allocating any more, therefore this home is surplus to requirements - remove it.
+                        // Already have the maximum number of households, and iw.
                         removingFlag = (int)RemovingType.Household;
                     }
                     else

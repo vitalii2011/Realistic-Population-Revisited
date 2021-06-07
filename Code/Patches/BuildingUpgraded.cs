@@ -29,7 +29,7 @@ namespace RealPop2
 				Logging.Message("residential building ", buildingID.ToString(), " (", data.Info.name, ") upgraded to level ", (data.m_level + 1).ToString(), "; calculated homecount is ", homeCount.ToString());
 
 				// Remove any extra households.
-				CitizenUnitUtils.RemoveCitizenUnits(ref data, homeCount, 0, 0);
+				CitizenUnitUtils.RemoveCitizenUnits(ref data, homeCount, 0, 0, false);
 			}
 		}
 	}
