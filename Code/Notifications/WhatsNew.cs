@@ -16,6 +16,16 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 19",
+                betaVersion = 19,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Fix legacy save household counts sometimes reverting to volumetric calculations when 'use legacy by default' isn't set for all saves."
+                }
+            },new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 18",
                 betaVersion = 18,
                 messageKeys = false,
