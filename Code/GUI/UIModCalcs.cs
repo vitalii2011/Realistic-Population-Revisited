@@ -391,18 +391,22 @@ namespace RealPop2
                     volumetricPanel.Show();
                 }
 
-                // Is there an override in place?
+                // Update panel with new calculations.
+                LevelData thisLevel = CurrentLevelData;
+                volumetricPanel.UpdatePopText(thisLevel);
+                volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorOverride ?? currentFloorPack, currentSchoolPack, currentMult);
+
+                // Set visibility.
                 if (currentFloorOverride == null)
                 {
-                    // No override - update panel with new calculations.
-                    LevelData thisLevel = CurrentLevelData;
-                    volumetricPanel.UpdatePopText(thisLevel);
-                    volumetricPanel.CalculateVolumetric(currentBuilding, thisLevel, currentFloorPack, currentSchoolPack, currentMult);
-
-                    // Set visibility.
                     floorOverrideLabel.Hide();
-                    floorPanel.Show();
                 }
+                else
+                {
+                    floorOverrideLabel.Show();
+                }
+
+                floorPanel.Show();
             }
             else
             {
