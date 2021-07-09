@@ -110,11 +110,15 @@ namespace RealPop2
         /// <param name="pack">New data pack to apply</param>
         internal override void UpdateBuildingPack(BuildingInfo prefab, DataPack pack)
         {
-            // Call base to update dictionary.
-            base.UpdateBuildingPack(prefab, pack);
+            // Don't do anything if not a valid school pack.
+            if (pack is SchoolDataPack schoolPack)
+            {
+                // Call base to update dictionary.
+                base.UpdateBuildingPack(prefab, pack);
 
-            // Apply settings to prefab.
-            ApplyPack(prefab, pack as SchoolDataPack);
+                // Apply settings to prefab.
+                ApplyPack(prefab, schoolPack);
+            }
         }
 
 
