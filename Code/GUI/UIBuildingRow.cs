@@ -110,7 +110,7 @@ namespace RealPop2
 
 
             // Update 'has non-default calculation pack' check to correct state.
-            if (PopData.instance.HasPackOverride(thisBuildingName) != null || FloorData.instance.HasPackOverride(thisBuildingName) != null || SchoolData.instance.HasPackOverride(thisBuildingName) != null || Multipliers.instance.HasOverride(thisBuildingName))
+            if ((PopData.instance.HasPackOverride(thisBuildingName) != null) || (FloorData.instance.HasPackOverride(thisBuildingName) != null && FloorData.instance.HasOverride(thisBuildingName) == null) || SchoolData.instance.HasPackOverride(thisBuildingName) != null)// || Multipliers.instance.HasOverride(thisBuildingName))
             {
                 // Non-default calculation found.
                 hasNonDefault.spriteName = "AchievementCheckedTrue";
