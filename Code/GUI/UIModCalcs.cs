@@ -400,10 +400,12 @@ namespace RealPop2
                 if (currentFloorOverride == null)
                 {
                     floorOverrideLabel.Hide();
+                    floorMenu.Show();
                 }
                 else
                 {
                     floorOverrideLabel.Show();
+                    floorMenu.Hide();
                 }
 
                 floorPanel.Show();
