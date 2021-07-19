@@ -16,6 +16,16 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 20",
+                betaVersion = 20,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Various UI fixes."
+                }
+            },new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 19",
                 betaVersion = 19,
                 messageKeys = false,
