@@ -66,7 +66,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Harmony Prefix patch to ResidentialBuildingAI.CalculateHomeCount to implement mod population calculations.
+        /// Harmony Prefix patch to CommercialBuildingAI.CalculateVisitplaceCount to implement mod population calculations.
         /// </summary>
         /// <param name="__result">Original method result</param>
         /// <param name="__instance">Original AI instance reference</param>
@@ -94,11 +94,11 @@ namespace RealPop2
                 __result = LegacyVisitCount(info, level);
             }
 
-            // Always set at least one.
-            if (__result < 1)
+            // Always set at least five.
+            if (__result < 5)
             {
-                Logging.Error("invalid visitcount result ", __result.ToString(), " for ", __instance.m_info.name, "; setting to 1");
-                __result = 1;
+                //Logging.Error("invalid visitcount result ", __result.ToString(), " for ", __instance.m_info.name, "; setting to 5");
+                __result = 5;
             }
 
             // Don't execute base method after this.
