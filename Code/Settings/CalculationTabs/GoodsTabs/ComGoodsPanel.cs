@@ -166,6 +166,7 @@ namespace RealPop2
 
             // Visitor multiplication slider.
             visitMultSliders[index] = AddSlider(panel, RightColumn, currentY, ControlWidth, "RPR_DEF_VMU_TIP");
+            visitMultSliders[index].maxValue = 200f;
             visitMultSliders[index].objectUserData = index;
             visitMultSliders[index].value = RealisticVisitplaceCount.GetVisitMult(subServices[index]);
             PercentSliderText(visitMultSliders[index], visitMultSliders[index].value);
