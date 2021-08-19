@@ -16,6 +16,17 @@ namespace RealPop2
             new WhatsNewMessage
             {
                 version = new Version("2.0.0.0"),
+                versionHeader = " BETA 21",
+                betaVersion = 21,
+                messageKeys = false,
+                messages = new string[]
+                {
+                    "Commerical visitor counts now have a minimum of 5.",
+                    "Commercial visitor count multiplier maximum extended to 2.0."
+                }
+            },new WhatsNewMessage
+            {
+                version = new Version("2.0.0.0"),
                 versionHeader = " BETA 20",
                 betaVersion = 20,
                 messageKeys = false,
