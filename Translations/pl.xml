@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language UniqueName="pl" ReadableName="Polski">
+  <Translations>
+    <Translation ID="RPR_NAME" String="Realistic Population Revisited" />
+    <Translation ID="RPR_DESC" String="Bardziej realistyczna populacja budynków (bazująca na wielkości budynków) i potrzebach użytkowych." />
+    <Translation ID="RPR_REALPOP" String="Realistyczna Populacja" />
+    <Translation ID="RPR_CAT_ALL" String="Wszystkie kategorie" />
+    <Translation ID="RPR_CAT_RES" String="Rejon mieszkalny" />
+    <Translation ID="RPR_CAT_RLO" String="Rejon mieszkalny o małym zagęszczeniu" />
+    <Translation ID="RPR_CAT_RHI" String="Rejon mieszkalny o dużym zagęszczeniu" />
+    <Translation ID="RPR_CAT_COM" String="Rejon handlowy" />
+    <Translation ID="RPR_CAT_CLO" String="Rejon handlowy o małym zagęszczeniu" />
+    <Translation ID="RPR_CAT_CHI" String="Rejon handlowy o dużym zagęszczeniu" />
+    <Translation ID="RPR_CAT_OFF" String="Rejon biurowy" />
+    <Translation ID="RPR_CAT_GEN" String="Przemysł ogólny" />
+    <Translation ID="RPR_CAT_ITC" String="Klaster IT" />
+    <Translation ID="RPR_CAT_IND" String="Rejon przemysłowy" />
+    <Translation ID="RPR_CAT_FAR" String="Przemysł rolniczy" />
+    <Translation ID="RPR_CAT_FOR" String="Przemysł leśny" />
+    <Translation ID="RPR_CAT_OIL" String="Przemysł naftowy" />
+    <Translation ID="RPR_CAT_ORE" String="Przemysł górniczy" />
+    <Translation ID="RPR_CAT_EXT" String="Przemysł wydobywczy" />
+    <Translation ID="RPR_CAT_PRO" String="Przetwórstwo przemysłowe" />
+    <Translation ID="RPR_CAT_TOU" String="Specjalizacja turystyczna" />
+    <Translation ID="RPR_CAT_LEI" String="Specjalizacja wypoczynkowa" />
+    <Translation ID="RPR_CAT_ORG" String="Produkcja organiczna i lokalna" />
+    <Translation ID="RPR_CAT_ECO" String="Sklepy ekologiczne" />
+    <Translation ID="RPR_CAT_SSH" String="Budynki samowystarczalne" />
+    <Translation ID="RPR_CAT_ERL" String="Ekologiczny rejon mieszkalny o małym zagęszczeniu" />
+    <Translation ID="RPR_CAT_ERH" String="Ekologiczny rejon mieszkalny o dużym zagęszczeniu" />
+    <Translation ID="RPR_FIL_NAME" String="Nazwa:" />
+    <Translation ID="RPR_CUS_HAS" String="Ma niestandardowe ustawienia" />
+    <Translation ID="RPR_CUS_TITLE" String="Niestandardowe ustawienia" />
+    <Translation ID="RPR_CUS_ADD" String="Dodaj niestandardowe ustawienia" />
+    <Translation ID="RPR_CUS_ADD_TIP" String="Dodawanie (lub aktualizacja) ustawień niestandardowych dla wybranych budynków" />
+    <Translation ID="RPR_CUS_DEL" String="Usuń niestandardowe ustawienia" />
+    <Translation ID="RPR_CUS_DEL_TIP" String="Usuń niestandardowe ustawienie dla wybranego budynku" />
+    <Translation ID="RPR_CUS_UPD" String="Zaktualizuj niestandardowe ustawienia" />
+    <Translation ID="RPR_ERR_ZERO" String="BŁĄD: wartość musi być większa niż zero" />
+    <Translation ID="RPR_ERR_INV" String="BŁĄD: nieprawidłowa wartość" />
+    <Translation ID="RPR_LBL_HOM" String="Ilość mieszkańców:" />
+    <Translation ID="RPR_LBL_JOB" String="Miejsca pracy:" />
+    <Translation ID="RPR_CAL_HOM_CALC" String="Obliczone domy:" />
+    <Translation ID="RPR_CAL_HOM_CUST" String="Niestandardowe domy:" />
+    <Translation ID="RPR_CAL_HOM_APPL" String="Zastosowane domy:" />
+    <Translation ID="RPR_CAL_JOB_CALC" String="Obliczone miejsca pracy:" />
+    <Translation ID="RPR_CAL_JOB_CUST" String="Dostosowane miejsca pracy: " />
+    <Translation ID="RPR_CAL_JOB_APPL" String="Zastosowane miejsca pracy:" />
+    <Translation ID="RPR_CAL_BLD_X" String="Szerokość budynku (m):" />
+    <Translation ID="RPR_CAL_BLD_Z" String="Długość budynku (m):" />
+    <Translation ID="RPR_CAL_BLD_Y" String="Wysokość rusztowania (m):" />
+    <Translation ID="RPR_CAL_BLD_M2" String="m2 na osobę:" />
+    <Translation ID="RPR_CAL_FLR_Y" String="Wysokość piętra (m):" />
+    <Translation ID="RPR_CAL_FLR_M" String="Modyfikacja piętra" />
+    <Translation ID="RPR_CAL_FLR" String="Obliczona ilość pięter:" />
+    <Translation ID="RPR_CAL_M2" String="Obliczona powierzchnia:" />
+    <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited kontroluje kształty tego budynku." />
+    <Translation ID="RPR_OPT_MOD" String="Ustawienia modyfikacji" />
+    <Translation ID="RPR_OPT_KEY" String="Skrót klawiszowy do ekranu opcji budynku" />
+    <Translation ID="RPR_OPT_PRS" String="Naciśnij dowolny klawisz" />
+    <Translation ID="RPR_OPT_LVL" String="Poziom" />
+    <Translation ID="RPR_OPT_PERW" String="Ilość na pracownika" />
+    <Translation ID="RPR_OPT_PERH" String="Ilość na gospodarstwo domowe" />
+    <Translation ID="RPR_OPT_APH" String="Powierzchnia na gospodarstwo domowe (m2)" />
+    <Translation ID="RPR_OPT_APW" String="Powierzchnia na pracownika (m2)" />
+    <Translation ID="RPR_OPT_FLR" String="Wysokość piętra (m)" />
+    <Translation ID="RPR_OPT_POW" String="Energia" />
+    <Translation ID="RPR_OPT_WAT" String="Woda" />
+    <Translation ID="RPR_OPT_SEW" String="Ścieki" />
+    <Translation ID="RPR_OPT_GAR" String="Odpady" />
+    <Translation ID="RPR_OPT_WEA" String="Bogactwo" />
+    <Translation ID="RPR_OPT_RTD" String="Zresetuj do domyślnych" />
+    <Translation ID="RPR_OPT_RTS" String="Przywróć zapisane" />
+    <Translation ID="RPR_OPT_SAA" String="Zapisz i zastosuj" />
+    <Translation ID="TRN_CHOICE" String="Ustaw język" />
+    <Translation ID="TRN_SYS" String="Użyj języka systemowego" />
+  </Translations>
+</Language>

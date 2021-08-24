@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language UniqueName="pt-br" ReadableName="Português Brasileiro">
+  <Translations>
+    <Translation ID="RPR_NAME" String="Realistic Population Revisited" />
+    <Translation ID="RPR_DESC" String="Maior realismo para populações (baseado no tamanho das edificações) e necessidades utilitárias." />
+    <Translation ID="RPR_REALPOP" String="População Realista" />
+    <Translation ID="RPR_CAT_ALL" String="Todas as categorias" />
+    <Translation ID="RPR_CAT_RES" String="Residencial" />
+    <Translation ID="RPR_CAT_RLO" String="Residencial de baixa densidade" />
+    <Translation ID="RPR_CAT_RHI" String="Residencial de alta densidade" />
+    <Translation ID="RPR_CAT_COM" String="Comercial" />
+    <Translation ID="RPR_CAT_CLO" String="Comercial de baixa densidade" />
+    <Translation ID="RPR_CAT_CHI" String="Comercial de alta densidade" />
+    <Translation ID="RPR_CAT_OFF" String="Escritório" />
+    <Translation ID="RPR_CAT_GEN" String="Genérico" />
+    <Translation ID="RPR_CAT_ITC" String="Cluster de TI" />
+    <Translation ID="RPR_CAT_IND" String="Industrial" />
+    <Translation ID="RPR_CAT_FAR" String="Agricultura" />
+    <Translation ID="RPR_CAT_FOR" String="Silvicultura" />
+    <Translation ID="RPR_CAT_OIL" String="Petróleo" />
+    <Translation ID="RPR_CAT_ORE" String="Minério" />
+    <Translation ID="RPR_CAT_EXT" String="Extrator" />
+    <Translation ID="RPR_CAT_PRO" String="Processador" />
+    <Translation ID="RPR_CAT_TOU" String="Turismo" />
+    <Translation ID="RPR_CAT_LEI" String="Lazer" />
+    <Translation ID="RPR_CAT_ORG" String="Produtos orgânicos e locais" />
+    <Translation ID="RPR_CAT_ECO" String="Lojas ecológicas" />
+    <Translation ID="RPR_CAT_SSH" String="Residências auto-suficientes" />
+    <Translation ID="RPR_CAT_ERL" String="Residencial ecológico de baixa densidade" />
+    <Translation ID="RPR_CAT_ERH" String="Residencial ecológico de alta densidade" />
+    <Translation ID="RPR_FIL_NAME" String="Nome:" />
+    <Translation ID="RPR_CUS_HAS" String="Possui configurações personalizadas" />
+    <Translation ID="RPR_CUS_TITLE" String="Configurações personalizadas" />
+    <Translation ID="RPR_CUS_ADD" String="Adicionar configurações personalizadas" />
+    <Translation ID="RPR_CUS_ADD_TIP" String="Adiciona (ou atualiza) uma configuração personalizada para o edifício selecionado" />
+    <Translation ID="RPR_CUS_DEL" String="Apagar configurações personalizadas" />
+    <Translation ID="RPR_CUS_DEL_TIP" String="Remove a configuração personalizada do edifício selecionado" />
+    <Translation ID="RPR_CUS_UPD" String="Atualizar configurações personalizadas" />
+    <Translation ID="RPR_ERR_ZERO" String="ERRO: Valor precisa ser maior que zero" />
+    <Translation ID="RPR_ERR_INV" String="ERRO: Valor inválido" />
+    <Translation ID="RPR_LBL_HOM" String="Casas:" />
+    <Translation ID="RPR_LBL_JOB" String="Trabalhos:" />
+    <Translation ID="RPR_CAL_HOM_CALC" String="Casas calculadas:" />
+    <Translation ID="RPR_CAL_HOM_CUST" String="Casas personalizadas:" />
+    <Translation ID="RPR_CAL_HOM_APPL" String="Casas aplicadas:" />
+    <Translation ID="RPR_CAL_JOB_CALC" String="Trabalhos calculados:" />
+    <Translation ID="RPR_CAL_JOB_CUST" String="Trabalhos personalizados:" />
+    <Translation ID="RPR_CAL_JOB_APPL" String="Trabalhos aplicados:" />
+    <Translation ID="RPR_CAL_BLD_X" String="Largura do edifício (m):" />
+    <Translation ID="RPR_CAL_BLD_Z" String="Comprimento do edifício (m):" />
+    <Translation ID="RPR_CAL_BLD_Y" String="Altura do andaime (m):" />
+    <Translation ID="RPR_CAL_BLD_M2" String="m2 por pessoa:" />
+    <Translation ID="RPR_CAL_FLR_Y" String="Altura do piso (m):" />
+    <Translation ID="RPR_CAL_FLR_M" String="Piso mod" />
+    <Translation ID="RPR_CAL_FLR" String="Pisos calculados:" />
+    <Translation ID="RPR_CAL_M2" String="Área calculada:" />
+    <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited está controlando os números deste edifício." />
+    <Translation ID="RPR_OPT_MOD" String="Configurações do Mod" />
+    <Translation ID="RPR_OPT_KEY" String="Tecla de atalho para tela de opções de edificação" />
+    <Translation ID="RPR_OPT_PRS" String="Aperte qualquer tecla" />
+    <Translation ID="RPR_OPT_LVL" String="Nível" />
+    <Translation ID="RPR_OPT_PERW" String="Valores por trabalhador" />
+    <Translation ID="RPR_OPT_PERH" String="Valores por domicílio" />
+    <Translation ID="RPR_OPT_APH" String="Área por domicílio (m2)" />
+    <Translation ID="RPR_OPT_APW" String="Área por trabalhador (m2)" />
+    <Translation ID="RPR_OPT_FLR" String="Altura do piso (m)" />
+    <Translation ID="RPR_OPT_POW" String="Energia" />
+    <Translation ID="RPR_OPT_WAT" String="Água" />
+    <Translation ID="RPR_OPT_SEW" String="Esgoto" />
+    <Translation ID="RPR_OPT_GAR" String="Lixo" />
+    <Translation ID="RPR_OPT_WEA" String="Riqueza" />
+    <Translation ID="RPR_OPT_RTD" String="Redefinir para os padrões predeterminados" />
+    <Translation ID="RPR_OPT_RTS" String="Reverter para salvo" />
+    <Translation ID="RPR_OPT_SAA" String="Salvar e aplicar" />
+    <Translation ID="TRN_CHOICE" String="Definir idioma" />
+    <Translation ID="TRN_SYS" String="Usar idioma do sistema" />
+  </Translations>
+</Language>

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language UniqueName="ru" ReadableName="Русский">
+  <Translations>
+    <Translation ID="RPR_NAME" String="Более реалистичное население" />
+    <Translation ID="RPR_DESC" String="Более реалистичное население зданий (в зависимости от размера здания) и коммунальные потребности" />
+    <Translation ID="RPR_REALPOP" String="Реалистичное население" />
+    <Translation ID="RPR_CAT_ALL" String="Все категории" />
+    <Translation ID="RPR_CAT_RES" String="Жилой" />
+    <Translation ID="RPR_CAT_RLO" String="Жилой низкой плотности" />
+    <Translation ID="RPR_CAT_RHI" String="Жилой высокой плотности" />
+    <Translation ID="RPR_CAT_COM" String="Коммерческий" />
+    <Translation ID="RPR_CAT_CLO" String="Коммерческий низкой плотности" />
+    <Translation ID="RPR_CAT_CHI" String="Коммерческий высокой плотности" />
+    <Translation ID="RPR_CAT_OFF" String="Офис" />
+    <Translation ID="RPR_CAT_GEN" String="Общий" />
+    <Translation ID="RPR_CAT_ITC" String="IT Кластер" />
+    <Translation ID="RPR_CAT_IND" String="Промышленный" />
+    <Translation ID="RPR_CAT_FAR" String="Фермерский" />
+    <Translation ID="RPR_CAT_FOR" String="Лесничество" />
+    <Translation ID="RPR_CAT_OIL" String="Нефть" />
+    <Translation ID="RPR_CAT_ORE" String="Руда" />
+    <Translation ID="RPR_CAT_EXT" String="Экстрактор" />
+    <Translation ID="RPR_CAT_PRO" String="Переработчик" />
+    <Translation ID="RPR_CAT_TOU" String="Туризм" />
+    <Translation ID="RPR_CAT_LEI" String="Досуг" />
+    <Translation ID="RPR_CAT_ORG" String="Органическое и местное производство" />
+    <Translation ID="RPR_CAT_ECO" String="Эко-лавка" />
+    <Translation ID="RPR_CAT_SSH" String="Самодостаточные дома" />
+    <Translation ID="RPR_CAT_ERL" String="Эко-жилье низкой плотности" />
+    <Translation ID="RPR_CAT_ERH" String="Эко-жилье высокой плотности" />
+    <Translation ID="RPR_FIL_NAME" String="Название:" />
+    <Translation ID="RPR_CUS_HAS" String="Имеет пользовательские настройки" />
+    <Translation ID="RPR_CUS_TITLE" String="Пользовательские настройки" />
+    <Translation ID="RPR_CUS_ADD" String="Добавить пользовательские настройки" />
+    <Translation ID="RPR_CUS_ADD_TIP" String="Добавляет (или обновляет) пользовательские настройки для выбранного здания" />
+    <Translation ID="RPR_CUS_DEL" String="Удалить пользовательские настройки" />
+    <Translation ID="RPR_CUS_DEL_TIP" String="Удаляет пользовательские настройки для выбранного здания" />
+    <Translation ID="RPR_CUS_UPD" String="Обновить пользовательские настройки" />
+    <Translation ID="RPR_ERR_ZERO" String="ОШИБКА: значение должно быть больше 0" />
+    <Translation ID="RPR_ERR_INV" String="ОШИБКА: неверное значение" />
+    <Translation ID="RPR_LBL_JOB" String="Рабочих мест:" />
+    <Translation ID="RPR_CAL_JOB_CALC" String="Расчетные рабочие места:" />
+    <Translation ID="RPR_CAL_JOB_CUST" String="Пользовательские рабочие места:" />
+    <Translation ID="RPR_CAL_JOB_APPL" String="Примененные рабочие места:" />
+    <Translation ID="RPR_CAL_BLD_X" String="Ширина здания (м):" />
+    <Translation ID="RPR_CAL_BLD_Z" String="Длина здания (м):" />
+    <Translation ID="RPR_CAL_BLD_Y" String="Высота строительных лесов (м):" />
+    <Translation ID="RPR_CAL_BLD_M2" String="м2 на человека" />
+    <Translation ID="RPR_CAL_FLR_Y" String="Высота этажа (м):" />
+    <Translation ID="RPR_CAL_FLR_M" String="Floor mod" />
+    <Translation ID="RPR_CAL_FLR" String="Этажей (расчетно):" />
+    <Translation ID="RPR_CAL_M2" String="Площадь (расчетно):" />
+    <Translation ID="RPR_CAL_RICO" String="Мод автоматически рассчитывает все параметры этого здания" />
+    <Translation ID="RPR_OPT_MOD" String="Настройки мода" />
+    <Translation ID="RPR_OPT_KEY" String="Клавиша для настройки здания" />
+    <Translation ID="RPR_OPT_PRS" String="Нажмите любую клавишу" />
+    <Translation ID="RPR_OPT_LVL" String="Уровень" />
+    <Translation ID="RPR_OPT_PERW" String="Потребление работником" />
+    <Translation ID="RPR_OPT_PERH" String="Потребление семьей" />
+    <Translation ID="RPR_OPT_APH" String="Площадь на семью (м2):" />
+    <Translation ID="RPR_OPT_APW" String="Площадь на работника (м2):" />
+    <Translation ID="RPR_OPT_FLR" String="Высота этажа (м):" />
+    <Translation ID="RPR_OPT_POW" String="Электричество" />
+    <Translation ID="RPR_OPT_WAT" String="Вода" />
+    <Translation ID="RPR_OPT_SEW" String="Канализация" />
+    <Translation ID="RPR_OPT_GAR" String="Мусор" />
+    <Translation ID="RPR_OPT_WEA" String="Состоятельность" />
+    <Translation ID="RPR_OPT_RTD" String="Сбросить настройки" />
+    <Translation ID="RPR_OPT_RTS" String="Сбросить к сохраненным" />
+    <Translation ID="RPR_OPT_SAA" String="Сохранить" />
+    <Translation ID="TRN_CHOICE" String="Изменить язык" />
+    <Translation ID="TRN_SYS" String="Использовать системный язык" />
+  </Translations>
+</Language>

@@ -2,7 +2,7 @@
 <Language UniqueName="zh" ReadableName="简体中文">
   <Translations>
     <Translation ID="RPR_NAME" String="真实人口重制版" />
-    <Translation ID="RPR_DESC" String="更现实的建筑人口(基于建筑大小)和公用设施需求。" />"
+    <Translation ID="RPR_DESC" String="更现实的建筑人口(基于建筑大小)和公用设施需求。" />
     <Translation ID="RPR_REALPOP" String="真实人口" />
     <Translation ID="RPR_CAT_ALL" String="所有类别" />
     <Translation ID="RPR_CAT_RES" String="住宅" />
@@ -51,11 +51,11 @@
     <Translation ID="RPR_CAL_BLD_Y" String="建筑高度(米)：" />
     <Translation ID="RPR_CAL_BLD_M2" String="每人面积" />
     <Translation ID="RPR_CAL_FLR_Y" String="楼层高度(米)：" />
-    <Translation ID="RPR_CAL_FLR_M" String="楼层mod" />
+    <Translation ID="RPR_CAL_FLR_M" String="楼层Mod" />
     <Translation ID="RPR_CAL_FLR" String="计算楼层：" />
     <Translation ID="RPR_CAL_M2" String="计算面积：" />
     <Translation ID="RPR_CAL_RICO" String="“Ploppable RICO Revisited”控制着此建筑的数据。" />
-    <Translation ID="RPR_OPT_MOD" String="Mod设置s" />
+    <Translation ID="RPR_OPT_MOD" String="Mod设置" />
     <Translation ID="RPR_OPT_KEY" String="屏幕选项快捷键" />
     <Translation ID="RPR_OPT_PRS" String="按任意键" />
     <Translation ID="RPR_OPT_LVL" String="等级" />
@@ -70,7 +70,7 @@
     <Translation ID="RPR_OPT_GAR" String="垃圾" />
     <Translation ID="RPR_OPT_WEA" String="财富" />
     <Translation ID="RPR_OPT_RTD" String="重置为默认值" />
-    <Translation ID="RPR_OPT_RTS" String="恢复为以保存" />
+    <Translation ID="RPR_OPT_RTS" String="恢复为已保存" />
     <Translation ID="RPR_OPT_SAA" String="保存并应用" />
     <Translation ID="TRN_CHOICE" String="设置语言" />
     <Translation ID="TRN_SYS" String="使用系统语言" />

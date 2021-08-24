@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language UniqueName="tr" ReadableName="Türkçe">
+  <Translations>
+    <Translation ID="RPR_NAME" String="Gerçekçi Nüfus: Revize Edilmiş" />
+    <Translation ID="RPR_DESC" String="Çok daha gerçekçi bir nüfus sistemleri. (Bina boyutlarına göre)" />
+    <Translation ID="RPR_REALPOP" String="Gerçekçi Nüfus" />
+    <Translation ID="RPR_CAT_ALL" String="Tüm kategoriler" />
+    <Translation ID="RPR_CAT_RES" String="Konut" />
+    <Translation ID="RPR_CAT_RLO" String="Düşük yoğunluklu konut" />
+    <Translation ID="RPR_CAT_RHI" String="Yüksek yoğunluklu konut" />
+    <Translation ID="RPR_CAT_COM" String="Ticari" />
+    <Translation ID="RPR_CAT_CLO" String="Düşük yoğunluklu ticari" />
+    <Translation ID="RPR_CAT_CHI" String="Yüksek yoğunluklu ticari" />
+    <Translation ID="RPR_CAT_OFF" String="Ofis" />
+    <Translation ID="RPR_CAT_GEN" String="Genel" />
+    <Translation ID="RPR_CAT_ITC" String="BT Kümesi" />
+    <Translation ID="RPR_CAT_IND" String="Sanayi" />
+    <Translation ID="RPR_CAT_FAR" String="Tarım" />
+    <Translation ID="RPR_CAT_FOR" String="Ormancılık" />
+    <Translation ID="RPR_CAT_OIL" String="Petrol" />
+    <Translation ID="RPR_CAT_ORE" String="Maden" />
+    <Translation ID="RPR_CAT_EXT" String="Çıkarıcı" />
+    <Translation ID="RPR_CAT_PRO" String="Tamamlayıcı" />
+    <Translation ID="RPR_CAT_TOU" String="Turizm" />
+    <Translation ID="RPR_CAT_LEI" String="Boş" />
+    <Translation ID="RPR_CAT_ORG" String="Organik ve yerel ürünler" />
+    <Translation ID="RPR_CAT_ECO" String="Eko dükkanlar" />
+    <Translation ID="RPR_CAT_SSH" String="Kendi kendine yeten evler" />
+    <Translation ID="RPR_CAT_ERL" String="Eko düşük yoğunluklu konut" />
+    <Translation ID="RPR_CAT_ERH" String="Eko yüksek yoğunluklu konuyt" />
+    <Translation ID="RPR_FIL_NAME" String="İsim:" />
+    <Translation ID="RPR_CUS_HAS" String="Sahip olunan özel ayarlar" />
+    <Translation ID="RPR_CUS_TITLE" String="Özel ayarlar" />
+    <Translation ID="RPR_CUS_ADD" String="Özel ayar ekle" />
+    <Translation ID="RPR_CUS_ADD_TIP" String="Seçilen bina için özel bir ayar ekler. (Veya günceller)" />
+    <Translation ID="RPR_CUS_DEL" String="Özel ayarları sil" />
+    <Translation ID="RPR_CUS_DEL_TIP" String="Özel ayarı seçilen binadan kaldır" />
+    <Translation ID="RPR_CUS_UPD" String="Özel ayarları güncelle" />
+    <Translation ID="RPR_ERR_ZERO" String="HATA: Değerin sıfırdan büyük olması gerekiyor" />
+    <Translation ID="RPR_ERR_INV" String="HATA: Geçersiz değer" />
+    <Translation ID="RPR_LBL_HOM" String="Evler:" />
+    <Translation ID="RPR_LBL_JOB" String="Meslekler:" />
+    <Translation ID="RPR_CAL_HOM_CALC" String="Hesaplanan evler:" />
+    <Translation ID="RPR_CAL_HOM_CUST" String="Özelleştirilen evler:" />
+    <Translation ID="RPR_CAL_HOM_APPL" String="Uygulamalı evler:" />
+    <Translation ID="RPR_CAL_JOB_CALC" String="Hesaplanan işler:" />
+    <Translation ID="RPR_CAL_JOB_CUST" String="Özelleştirilen işler:" />
+    <Translation ID="RPR_CAL_JOB_APPL" String="Uygulamalı işler:" />
+    <Translation ID="RPR_CAL_BLD_X" String="Bina genişliği (m):" />
+    <Translation ID="RPR_CAL_BLD_Z" String="Bina uzunluğu (m):" />
+    <Translation ID="RPR_CAL_BLD_Y" String="İskele yüksekliği (m):" />
+    <Translation ID="RPR_CAL_BLD_M2" String="Kişi başı m2:" />
+    <Translation ID="RPR_CAL_FLR_Y" String="Zemin yüksekliği (m):" />
+    <Translation ID="RPR_CAL_FLR_M" String="Zemin modu" />
+    <Translation ID="RPR_CAL_FLR" String="Hesaplanan katlar:" />
+    <Translation ID="RPR_CAL_M2" String="Hesaplanan alan:" />
+    <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited, bu binanın rakamlarını kontrol ediyor." />
+    <Translation ID="RPR_OPT_MOD" String="Mod ayarları" />
+    <Translation ID="RPR_OPT_KEY" String="Bina seçenekleri ekranı için kısayol tuşu" />
+    <Translation ID="RPR_OPT_PRS" String="Herhangi bir tuşa basın" />
+    <Translation ID="RPR_OPT_LVL" String="Seviye" />
+    <Translation ID="RPR_OPT_PERW" String="Çalışan başına miktar" />
+    <Translation ID="RPR_OPT_PERH" String="Hane başına miktar" />
+    <Translation ID="RPR_OPT_APH" String="Hane başına alan (m2)" />
+    <Translation ID="RPR_OPT_APW" String="Çalışan başına alan (m2)" />
+    <Translation ID="RPR_OPT_FLR" String="Zemin yüksekliği (m):" />
+    <Translation ID="RPR_OPT_POW" String="Elektrik" />
+    <Translation ID="RPR_OPT_WAT" String="Su" />
+    <Translation ID="RPR_OPT_SEW" String="Kanalizasyon" />
+    <Translation ID="RPR_OPT_GAR" String="Garbage" />
+    <Translation ID="RPR_OPT_WEA" String="Zenginlik" />
+    <Translation ID="RPR_OPT_RTD" String="Varsayılan ayarlara dön" />
+    <Translation ID="RPR_OPT_RTS" String="Kaydedilene dön" />
+    <Translation ID="RPR_OPT_SAA" String="Kaydet ve uygula" />
+    <Translation ID="TRN_CHOICE" String="Dili ayarla" />
+    <Translation ID="TRN_SYS" String="Sistem dilini kullan" />
+  </Translations>
+</Language>

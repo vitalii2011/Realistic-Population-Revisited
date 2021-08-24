@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language UniqueName="nl" ReadableName="Nederlands">
+  <Translations>
+    <Translation ID="RPR_NAME" String="Realistische Bevolking Herzien" />
+    <Translation ID="RPR_DESC" String="Meer realistische gebouwbevolking (gebaseerd op gebouwgrote) en voorzieningen benodigdheden." />
+    <Translation ID="RPR_REALPOP" String="Realistische Bevolking" />
+    <Translation ID="RPR_CAT_ALL" String="Alle categorieën" />
+    <Translation ID="RPR_CAT_RES" String="Residentieel" />
+    <Translation ID="RPR_CAT_RLO" String="Residentieel laag" />
+    <Translation ID="RPR_CAT_RHI" String="Residentieel hoog" />
+    <Translation ID="RPR_CAT_COM" String="Commercieel" />
+    <Translation ID="RPR_CAT_CLO" String="Commercieel laag" />
+    <Translation ID="RPR_CAT_CHI" String="Commercieel hoog" />
+    <Translation ID="RPR_CAT_OFF" String="Kantoor" />
+    <Translation ID="RPR_CAT_GEN" String="Generiek" />
+    <Translation ID="RPR_CAT_ITC" String="IT Cluster" />
+    <Translation ID="RPR_CAT_IND" String="Industrieel" />
+    <Translation ID="RPR_CAT_FAR" String="Landbouw" />
+    <Translation ID="RPR_CAT_FOR" String="Bosbouw" />
+    <Translation ID="RPR_CAT_OIL" String="Olie" />
+    <Translation ID="RPR_CAT_ORE" String="Erts" />
+    <Translation ID="RPR_CAT_EXT" String="Winner" />
+    <Translation ID="RPR_CAT_PRO" String="Verwerker" />
+    <Translation ID="RPR_CAT_TOU" String="Tourisme" />
+    <Translation ID="RPR_CAT_LEI" String="Ontspanning" />
+    <Translation ID="RPR_CAT_ORG" String="Organische en lokale producten" />
+    <Translation ID="RPR_CAT_ECO" String="Eco winkels" />
+    <Translation ID="RPR_CAT_SSH" String="Zelfvoorzienende woningen" />
+    <Translation ID="RPR_CAT_ERL" String="Eco residentieel laag" />
+    <Translation ID="RPR_CAT_ERH" String="Eco residentieel hoog" />
+    <Translation ID="RPR_FIL_NAME" String="Naam:" />
+    <Translation ID="RPR_CUS_HAS" String="Heeft aangepaste instellingen" />
+    <Translation ID="RPR_CUS_TITLE" String="Aangepaste instellingen" />
+    <Translation ID="RPR_CUS_ADD" String="Toevoegen aangepaste instellingen" />
+    <Translation ID="RPR_CUS_ADD_TIP" String="Toevoegen (of bijwerken) aangepaste instellingen van het geselecteerde gebouw" />
+    <Translation ID="RPR_CUS_DEL" String="Verwijder aangepaste instellingen" />
+    <Translation ID="RPR_CUS_DEL_TIP" String="Verwijderd de aangepaste instellingen voor het geselecteerde gebouw" />
+    <Translation ID="RPR_CUS_UPD" String="Aangepaste instellingen bijwerken" />
+    <Translation ID="RPR_ERR_ZERO" String="ERROR: waarde moet groter zijn dan nul" />
+    <Translation ID="RPR_ERR_INV" String="ERROR: ongeldige waarde" />
+    <Translation ID="RPR_LBL_HOM" String="Woningen:" />
+    <Translation ID="RPR_LBL_JOB" String="Banen:" />
+    <Translation ID="RPR_CAL_HOM_CALC" String="Berekende woningen:" />
+    <Translation ID="RPR_CAL_HOM_CUST" String="Aangepaste woningen:" />
+    <Translation ID="RPR_CAL_HOM_APPL" String="Toegepaste woningen:" />
+    <Translation ID="RPR_CAL_JOB_CALC" String="Berekende banen:" />
+    <Translation ID="RPR_CAL_JOB_CUST" String="Aangepaste banen:" />
+    <Translation ID="RPR_CAL_JOB_APPL" String="Toegepaste banen:" />
+    <Translation ID="RPR_CAL_BLD_X" String="Gebouw breedte (m):" />
+    <Translation ID="RPR_CAL_BLD_Z" String="Gebouw lengte (m):" />
+    <Translation ID="RPR_CAL_BLD_Y" String="Steiger hoogte (m):" />
+    <Translation ID="RPR_CAL_BLD_M2" String="m2 per persoon:" />
+    <Translation ID="RPR_CAL_FLR_Y" String="Verdieping hoogte (m):" />
+    <Translation ID="RPR_CAL_FLR_M" String="Verdieping mod" />
+    <Translation ID="RPR_CAL_FLR" String="Berekende verdiepingen:" />
+    <Translation ID="RPR_CAL_M2" String="Berekende oppervlakte:" />
+    <Translation ID="RPR_CAL_RICO" String="Ploppable RICO Revisited beheert de aantallen voor dit gebouw." />
+    <Translation ID="RPR_OPT_MOD" String="Mod instellingen" />
+    <Translation ID="RPR_OPT_KEY" String="Sneltoets voor gebouw opties scherm" />
+    <Translation ID="RPR_OPT_PRS" String="Druk op een willekeurige toets" />
+    <Translation ID="RPR_OPT_LVL" String="Niveau" />
+    <Translation ID="RPR_OPT_PERW" String="Aantallen per werknemer" />
+    <Translation ID="RPR_OPT_PERH" String="Aantallen per huishouden" />
+    <Translation ID="RPR_OPT_APH" String="Oppervlakte per huishouden (m2)" />
+    <Translation ID="RPR_OPT_APW" String="Oppervlakte per werknemer (m2)" />
+    <Translation ID="RPR_OPT_FLR" String="Verdieping hoogte (m)" />
+    <Translation ID="RPR_OPT_POW" String="Energie" />
+    <Translation ID="RPR_OPT_WAT" String="Water" />
+    <Translation ID="RPR_OPT_SEW" String="Rioolwater" />
+    <Translation ID="RPR_OPT_GAR" String="Afval" />
+    <Translation ID="RPR_OPT_WEA" String="Gezondheid" />
+    <Translation ID="RPR_OPT_RTD" String="Terugzetten naar standaard" />
+    <Translation ID="RPR_OPT_RTS" String="Terug naar opgeslagen" />
+    <Translation ID="RPR_OPT_SAA" String="Opslaan en toepassen" />
+    <Translation ID="TRN_CHOICE" String="Taal instellen" />
+    <Translation ID="TRN_SYS" String="Gebruik systeemtaal" />
+  </Translations>
+</Language>

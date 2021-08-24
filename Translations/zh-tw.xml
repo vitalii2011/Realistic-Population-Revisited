@@ -2,7 +2,7 @@
 <Language UniqueName="zh-tw" ReadableName="繁體中文">
   <Translations>
     <Translation ID="RPR_NAME" String="真實人口重製版(Realistic Population Revisited)" />
-    <Translation ID="RPR_DESC" String="更真實的建築人口(依據建築尺吋)和效用需求。" />"
+    <Translation ID="RPR_DESC" String="更真實的建築人口(依據建築尺吋)和效用需求。" />
     <Translation ID="RPR_REALPOP" String="真實人口" />
     <Translation ID="RPR_CAT_ALL" String="所有分類" />
     <Translation ID="RPR_CAT_RES" String="住宅建築" />
@@ -28,7 +28,7 @@
     <Translation ID="RPR_CAT_SSH" String="專業化自給住宅行政專區建築" />
     <Translation ID="RPR_CAT_ERL" String="低密度-專業化自給住宅行政專區建築" />
     <Translation ID="RPR_CAT_ERH" String="高密度-專業化自給住宅行政專區建築" />
-    <Translation ID="RPR_FIL_NAME" String="名稱:" />
+    <Translation ID="RPR_FIL_NAME" String="名稱：" />
     <Translation ID="RPR_CUS_HAS" String="具有自訂設置" />
     <Translation ID="RPR_CUS_TITLE" String="自訂設置" />
     <Translation ID="RPR_CUS_ADD" String="添加自訂設置" />
@@ -54,7 +54,7 @@
     <Translation ID="RPR_CAL_FLR_M" String="樓層模組" />
     <Translation ID="RPR_CAL_FLR" String="已計算的樓層：" />
     <Translation ID="RPR_CAL_M2" String="已計算的面積：" />
-    <Translation ID="RPR_CAL_RICO" String="”Ploppable RICO Revisited“模組(Mod) 正在控制該建築的數值。" />
+    <Translation ID="RPR_CAL_RICO" String="”Ploppable RICO Revisited“模組(Mod)正在控制該建築的數值。" />
     <Translation ID="RPR_OPT_MOD" String="模組(Mod)設置" />
     <Translation ID="RPR_OPT_KEY" String="建築選項螢幕快鍵" />
     <Translation ID="RPR_OPT_PRS" String="按下任意鍵" />
