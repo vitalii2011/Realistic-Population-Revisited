@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Language UniqueName="en" ReadableName="English">
+<Language UniqueName="de" ReadableName="Deutsch">
   <Translations>
     <Translation ID="RPR_NAME" String="Realistic Population 2" />
     <Translation ID="RPR_DESC" String="Mehr realistische Gebäudebevölkerung (basierend auf der Gebäudegröße) und Versorgungsbedürfnisse." />
