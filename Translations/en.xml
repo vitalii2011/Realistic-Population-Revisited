@@ -253,6 +253,7 @@
     <Translation ID="RPR_OPT_NEW" String="Add new" />
     <Translation ID="RPR_OPT_DEL" String="Delete pack" />
     <Translation ID="RPR_OPT_NPK" String="New pack" />
+    <Translation ID="RPR_OPT_LDT" String="Enable detailed debugging logging" />
     <Translation ID="RPR_DEF_LGR" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for residential buildings:" />
     <Translation ID="RPR_DEF_LGC" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for commercial buildings:" />
     <Translation ID="RPR_DEF_LGI" String="Use legacy calculations (WG original and Realistic Population Revisited version 1) by default for industrial buildings:" />

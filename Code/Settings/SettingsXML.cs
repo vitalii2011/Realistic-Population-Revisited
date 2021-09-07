@@ -135,6 +135,10 @@ namespace RealPop2
         // Crime rate multiplier.
         [XmlElement("CrimeRateMultiplier")]
         public float CrimeRateMultiplier { get => ModSettings.crimeMultiplier; set => ModSettings.crimeMultiplier = value; }
+
+        // Logging detail.
+        [XmlElement("DetailedLogging")]
+        public bool DetailLogging { get => Logging.detailLogging; set => Logging.detailLogging = value; }
     }
 
 

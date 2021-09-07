@@ -253,6 +253,7 @@
     <Translation ID="RPR_OPT_NEW" String="Добавить новый" />
     <Translation ID="RPR_OPT_DEL" String="Удалить пакет" />
     <Translation ID="RPR_OPT_NPK" String="Новый пакет" />
+    <Translation ID="RPR_OPT_LDT" String="Включить детальный отладочный лог" />
     <Translation ID="RPR_DEF_LGR" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для жилых зданий:" />
     <Translation ID="RPR_DEF_LGC" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для коммерческих зданий:" />
     <Translation ID="RPR_DEF_LGI" String="Использовать устаревшие расчёты (исходная версия WG и Realistic Population Revisited версии 1) по умолчанию для промышленных зданий:" />

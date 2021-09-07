@@ -30,6 +30,20 @@ namespace RealPop2
 
             // Hotkey control.
             panel.gameObject.AddComponent<OptionsKeymapping>();
+
+            // Detail logging option.
+            UICheckBox logCheckBox = UIControls.AddPlainCheckBox(panel, Translations.Translate("RPR_OPT_LDT"));
+            logCheckBox.isChecked = Logging.detailLogging;
+            logCheckBox.eventCheckChanged += (control, isChecked) =>
+            {
+                // Update mod settings.
+                Logging.detailLogging = isChecked;
+
+                // Update configuration file.
+                SettingsUtils.SaveSettings();
+
+                Logging.KeyMessage("detailed logging ", Logging.detailLogging ? "enabled" : "disabled");
+            };
         }
     }
 }

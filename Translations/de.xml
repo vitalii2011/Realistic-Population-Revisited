@@ -253,6 +253,7 @@
     <Translation ID="RPR_OPT_NEW" String="Neu hinzufügen" />
     <Translation ID="RPR_OPT_DEL" String="Paket löschen" />
     <Translation ID="RPR_OPT_NPK" String="Neues Paket" />
+    <Translation ID="RPR_OPT_LDT" String="Aktiviert detailierte Debugging-Protokollierung" />
     <Translation ID="RPR_DEF_LGR" String="Verwendet alte Berechnungen (WG-Original und Realistic Population Revisited) Version 1) standardmäßig für Wohngebäude:" />
     <Translation ID="RPR_DEF_LGC" String="Verwendet alte Berechnungen (WG-Original und Realistic Population Revisited) Version 1) standardmäßig für Gewerbegebäude:" />
     <Translation ID="RPR_DEF_LGI" String="Verwendet alte Berechnungen (WG-Original und Realistic Population Revisited) Version 1) standardmäßig für Industriegebäude:" />
