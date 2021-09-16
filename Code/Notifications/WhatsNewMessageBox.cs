@@ -28,7 +28,7 @@ namespace RealPop2.MessageBox
                 AddSpacer();
 
                 // Hide version messages that have already been notified (always showing versions with headers).
-                if ((message.version < lastNotifiedVersion) || (message.version == lastNotifiedVersion && message.betaVersion <= ModSettings.whatsNewBetaVersion))
+                if (message.version < lastNotifiedVersion || message.version == lastNotifiedVersion)
                 {
                     versionMessage.IsCollapsed = true;
                 }
