@@ -69,6 +69,9 @@ namespace RealPop2
             bool conflictDetected = false;
             conflictingModNames = new List<string>();
 
+            // Duplicate real pop mod detection.
+            bool realPopModFound = false;
+
             // Iterate through the full list of plugins.
             foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
             {
@@ -76,6 +79,17 @@ namespace RealPop2
                 {
                     switch (assembly.GetName().Name)
                     {
+                        case "RealPopRevisited":
+                            // Have we already found an instance?
+                            if (realPopModFound)
+                            {
+                                // Yes - flag as duplicate.
+                                conflictDetected = true;
+                                conflictingModNames.Add("Realistic Population Revisited");
+                            }
+                            // Flag instance as found.
+                            realPopModFound = true;
+                            break;
                         case "WG_BalancedPopMod":
                             // Original WG mod.
                             conflictDetected = true;
