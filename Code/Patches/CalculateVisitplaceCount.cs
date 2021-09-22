@@ -97,7 +97,6 @@ namespace RealPop2
             // Always set at least five.
             if (__result < 5)
             {
-                //Logging.Error("invalid visitcount result ", __result.ToString(), " for ", __instance.m_info.name, "; setting to 5");
                 __result = 5;
             }
 
