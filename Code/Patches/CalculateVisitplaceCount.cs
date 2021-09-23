@@ -40,7 +40,7 @@ namespace RealPop2
         };
 
         // Default multiplier.
-        internal const int DefaultVisitMultLow = 50;
+        internal const int DefaultVisitMultLow = 70;
         internal const int DefaultVisitMultHigh = 50;
 
         // Maximum multiplier.
@@ -297,6 +297,22 @@ namespace RealPop2
         /// <param name="subService">Sub-service to set</param>
         /// <param name="value">Value to set</param>
         internal static void SetVisitMult(ItemClass.SubService subService, int value) => comVisitMults[GetIndex(subService)] = value;
+
+
+        /// <summary>
+        /// Gets the default commerical visit multipier for the specified sub-service.
+        /// </summary>
+        /// <param name="subService">Sub-service</param>
+        /// <returns>Default visit multiplier</returns>
+        internal static int DefaultVisitMult(ItemClass.SubService subService)
+        {
+            if (subService == ItemClass.SubService.CommercialHigh)
+            {
+                return DefaultVisitMultHigh;
+            }
+
+            return DefaultVisitMultLow;
+        }
 
 
         /// <summary>

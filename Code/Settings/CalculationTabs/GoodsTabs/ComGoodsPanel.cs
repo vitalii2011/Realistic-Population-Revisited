@@ -221,14 +221,14 @@ namespace RealPop2
             // Reset sliders and menus.
             for (int i = 0; i < visitMultSliders.Length; ++i)
             {
-                // Reset visit multiplier slider value.
-                visitMultSliders[i].value = RealisticVisitplaceCount.DefaultVisitMult;
+                // Reset visit multiplier slider value.s
+                goodsMultSliders[i].value = GoodsUtils.DefaultSalesMult;
 
                 // Reset visit mode menu selection.
                 visitDefaultMenus[i].selectedIndex = ThisLegacyCategory ? (int)RealisticVisitplaceCount.ComVisitModes.legacy : (int)RealisticVisitplaceCount.ComVisitModes.popCalcs;
 
                 // Reset goods multiplier slider value.
-                visitMultSliders[i].value = GoodsUtils.DefaultSalesMult;
+                visitMultSliders[i].value = RealisticVisitplaceCount.DefaultVisitMult(subServices[i]);
 
                 // Reset inventory cap slider value.
                 inventorySliders[i].value = GoodsUtils.DefaultInventory;
