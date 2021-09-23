@@ -831,7 +831,7 @@ namespace RealPop2
                         switch (subService)
                         {
                             case ItemClass.SubService.CommercialHigh:
-                                defaultName = "comUK";
+                                defaultName = "comUS";
                                 break;
                             case ItemClass.SubService.CommercialTourist:
                                 defaultName = "hotel";
