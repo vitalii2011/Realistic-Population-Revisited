@@ -15,6 +15,7 @@ namespace RealPop2
         protected const float Margin = 5f;
         protected float RowHeight = 25f;
         protected const float LeftColumn = 200f;
+        protected const float ButtonWidth = 250f;
 
 
         // Instance references.
@@ -59,11 +60,11 @@ namespace RealPop2
         protected virtual void FooterButtons(float yPos)
         {
             // Reset button.
-            UIButton resetButton = UIControls.AddButton(panel, Margin, yPos, Translations.Translate("RPR_OPT_RTD"), 150f);
+            UIButton resetButton = UIControls.AddButton(panel, Margin, yPos, Translations.Translate("RPR_OPT_RTD"), ButtonWidth);
             resetButton.eventClicked += ResetDefaults;
 
             // Revert button.
-            UIButton revertToSaveButton = UIControls.AddButton(panel, (Margin * 2) + 150f, yPos, Translations.Translate("RPR_OPT_RTS"), 150f);
+            UIButton revertToSaveButton = UIControls.AddButton(panel, (Margin * 2) + ButtonWidth, yPos, Translations.Translate("RPR_OPT_RTS"), ButtonWidth);
             revertToSaveButton.eventClicked += ResetSaved;
         }
 

@@ -15,7 +15,7 @@ namespace RealPop2
         // Layout constants.
         private const float Margin = 5f;
         private const float ColumnWidth = 300f;
-        private const float LabelOffset = 180f;
+        private const float LabelOffset = 240f;
         private const float LeftColumn = LabelOffset;
         private const float RightColumn = ColumnWidth + LabelOffset;
         private const float RowTopMargin = Margin;

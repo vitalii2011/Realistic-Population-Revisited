@@ -53,14 +53,21 @@ namespace RealPop2
             clipChildren = true;
 
             // Panel title.
-            UILabel title = this.AddUIComponent<UILabel>();
-            title.relativePosition = new Vector3(0, TitleY);
-            title.textAlignment = UIHorizontalAlignment.Center;
-            title.text = Translations.Translate("RPR_CUS_TITLE");
-            title.textScale = 1.2f;
-            title.autoSize = false;
-            title.width = this.width;
-            title.height = 30;
+            UILabel titleLabel = this.AddUIComponent<UILabel>();
+            titleLabel.textAlignment = UIHorizontalAlignment.Center;
+            titleLabel.text = Translations.Translate("RPR_CUS_TITLE");
+            titleLabel.textScale = 1.2f;
+            titleLabel.autoSize = true;
+            titleLabel.height = 30;
+            
+            // Autoscale tile label text, with minimum size 0.35.
+            while (titleLabel.width > (this.width - (MarginPadding * 2f)) && titleLabel.textScale > 0.35f)
+            {
+                titleLabel.textScale -= 0.05f;
+            }
+
+            // Center title label.
+            titleLabel.relativePosition = new Vector2((this.width - titleLabel.width) /2f, TitleY);
 
             // Checkboxes.
             popCheck = UIControls.LabelledCheckBox(this, 20f, PopCheckY, Translations.Translate("RPR_EDT_POP"), textScale: 1.0f);
@@ -73,12 +80,12 @@ namespace RealPop2
             homeJobLabel = homeJobsCount.label;
 
             // Save button.
-            saveButton = UIControls.AddButton(this, MarginPadding, SaveY, Translations.Translate("RPR_CUS_ADD"));
+            saveButton = UIControls.AddButton(this, MarginPadding, SaveY, Translations.Translate("RPR_CUS_ADD"), this.width - (MarginPadding * 2));
             saveButton.tooltip = Translations.Translate("RPR_CUS_ADD_TIP");
             saveButton.Disable();
 
             // Delete button.
-            deleteButton = UIControls.AddButton(this, MarginPadding, DeleteY, Translations.Translate("RPR_CUS_DEL"));
+            deleteButton = UIControls.AddButton(this, MarginPadding, DeleteY, Translations.Translate("RPR_CUS_DEL"), this.width - (MarginPadding * 2));
             deleteButton.tooltip = Translations.Translate("RPR_CUS_DEL_TIP");
             deleteButton.Disable();
 

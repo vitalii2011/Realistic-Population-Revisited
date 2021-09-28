@@ -87,9 +87,18 @@ namespace RealPop2
             float currentY = yPos + RowHeight;
 
             // Pack name textfield.
-            PackNameField = UIControls.BigTextField(panel, 140f, currentY);
+            PackNameField = UIControls.BigTextField(panel, 200f, currentY);
             PackNameField.isEnabled = false;
             UILabel packNameLabel = UIControls.AddLabel(PackNameField, -100f, (PackNameField.height - 18f) / 2, Translations.Translate("RPR_OPT_EDT_NAM"));
+
+            // Adjsut pack name textfield position to accomodate longer translation strings.
+            float excessWidth = packNameLabel.width - 95f;
+            if (excessWidth > 0f)
+            {
+                Vector3 adjustment = new Vector3(excessWidth, 0f);
+                packNameLabel.relativePosition -= adjustment;
+                PackNameField.relativePosition += adjustment;
+            }
 
             // Space for buttons.
             currentY += 50f;

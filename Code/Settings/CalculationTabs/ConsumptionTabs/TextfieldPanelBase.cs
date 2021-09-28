@@ -15,6 +15,7 @@ namespace RealPop2
         protected const float RowHeight = 23f;
         protected const float LeftItem = 75f;
         protected const float Column1 = 180f;
+        protected const float ButtonWidth = 200f;
 
 
         // Textfield arrays.

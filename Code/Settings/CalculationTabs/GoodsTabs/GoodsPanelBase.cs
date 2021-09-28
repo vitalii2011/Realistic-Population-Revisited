@@ -72,7 +72,7 @@ namespace RealPop2
             base.FooterButtons(yPos);
 
             // Save button.
-            UIButton saveButton = UIControls.AddButton(panel, (Margin * 3) + 300f, yPos, Translations.Translate("RPR_OPT_SAA"), 150f);
+            UIButton saveButton = UIControls.AddButton(panel, (Margin * 3f) + (ButtonWidth * 2f), yPos, Translations.Translate("RPR_OPT_SAA"), ButtonWidth);
             saveButton.eventClicked += Apply;
         }
 
