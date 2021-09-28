@@ -2,7 +2,7 @@
 <Language UniqueName="zh" ReadableName="简体中文">
   <Translations>
     <Translation ID="RPR_NAME" String="真实人口2" />
-    <Translation ID="RPR_DESC" String="更真实的建筑人口(根据建筑规模)和公用设施需求" />"
+    <Translation ID="RPR_DESC" String="更真实的建筑人口(根据建筑规模)和公用设施需求" />
     <Translation ID="RPR_REALPOP" String="真实人口" />
     <Translation ID="RPR_INF_VIS" String="游客" />
     <Translation ID="RPR_PCK_DEF" String=" (默认)" />
