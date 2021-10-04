@@ -46,6 +46,9 @@ namespace RealPop2
         // Maximum multiplier.
         internal const int MaxVisitMult = 100;
 
+        // Minimum value.
+        private const int MinVisitCount = 5;
+
 
         // Arrays for calculation mode and multipliers.
         private static readonly int[] comVisitModes =
@@ -95,10 +98,10 @@ namespace RealPop2
                 __result = LegacyVisitCount(info, level);
             }
 
-            // Always set at least five.
-            if (__result < 5)
+            // Always set at least our minimum.
+            if (__result < MinVisitCount)
             {
-                __result = 5;
+                __result = MinVisitCount;
             }
 
             // Don't execute base method after this.
@@ -222,6 +225,12 @@ namespace RealPop2
                     // Result is greater than 200, but less than 400.
                     return TwoHundredBase + (int)(twoHundredPlus * 0.75f);
                 }
+            }
+
+            // Bounds check for minimum value.
+            if (result < MinVisitCount)
+            {
+                result = MinVisitCount;
             }
 
             return result;
