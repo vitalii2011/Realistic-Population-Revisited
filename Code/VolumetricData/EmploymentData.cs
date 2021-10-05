@@ -28,12 +28,43 @@ namespace RealPop2
             int[] distribution = WorkplaceDistribution(prefab.GetService(), prefab.GetSubService(), (ItemClass.Level)level);
 
             // Allocate jobs according to distribution (percentages).  Division after multiplication to reduce intermediate rounding errors.
-            workplaces[1]= (totalJobs * distribution[1]) / 100;
+            workplaces[1] = (totalJobs * distribution[1]) / 100;
             workplaces[2] = (totalJobs * distribution[2]) / 100;
             workplaces[3] = (totalJobs * distribution[3]) / 100;
 
             // Level 0 is the remainder.
             workplaces[0] = totalJobs - workplaces[1] - workplaces[2] - workplaces[3];
+            
+            // Now, check distributions - start at bottom level and work up.  At least one in each level before any jobs are assigned to any higher levels.
+            for (int i = 0; i < 4; ++i)
+            {
+                // Do we have any jobs left to allocate?
+                if (totalJobs > 0)
+                {
+                    // Yes - if this level has no jobs, assign at least one.
+                    if (workplaces[i] == 0)
+                    {
+                        workplaces[i] = 1;
+                    }
+
+                    // Don't assign any more jobs than we have left.
+                    if (workplaces[i] > totalJobs)
+                    {
+                        workplaces[i] = totalJobs;
+                    }
+
+                    // Take whatever we've assigned from total remaining workplaces.
+                    totalJobs -= workplaces[i];
+                }
+                else
+                {
+                    // No jobs left to allocate; set this level to zero.
+                    workplaces[i] = 0;
+                }
+            }
+
+            // Allocate any remainder at this point to top-level jobs.
+            workplaces[3] += totalJobs;
 
             return workplaces;
         }
