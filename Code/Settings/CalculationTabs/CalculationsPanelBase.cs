@@ -15,7 +15,7 @@ namespace RealPop2
         protected const float Margin = 5f;
         protected float RowHeight = 25f;
         protected const float LeftColumn = 200f;
-        protected const float ButtonWidth = 250f;
+        protected const float ButtonWidth = 240f;
 
 
         // Instance references.
