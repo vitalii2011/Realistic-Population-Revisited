@@ -118,6 +118,19 @@ namespace RealPop2
                     button.textScale = 0.8f;
                     button.width = 100f;
                 }*/
+
+
+                // Event handler for tab index change; setup the selected tab.
+                tabStrip.eventSelectedIndexChanged += (control, index) =>
+                {
+                    if (tabStrip.tabs[index].objectUserData is OptionsPanelTab tab)
+                    {
+                        tab.Setup();
+                    }
+                };
+
+                // Ensure initial selected tab.
+                tabStrip.selectedIndex = 0;
             }
             catch (Exception e)
             {

@@ -96,8 +96,6 @@ namespace RealPop2
             // Tooltip.
             tabButton.tooltip = tabName;
 
-            tabStrip.selectedIndex = tabIndex;
-
             // Force width.
             tabButton.width = width;
 

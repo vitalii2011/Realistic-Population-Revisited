@@ -178,6 +178,7 @@
     <Compile Include="Code\Settings\OptionsPanelTabs\CrimePanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\DefaultsTabs\EmpDefaultsPanel.cs" />
     <Compile Include="Code\Settings\CalculationTabs\PopulationPanel.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\OptionsPanelTab.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\SchoolsPanel.cs" />
     <Compile Include="Code\Utils\CitizenUnitUtils.cs" />
     <Compile Include="Code\Utils\GoodsUtils.cs" />
