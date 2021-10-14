@@ -7,7 +7,7 @@ namespace RealPop2
     /// <summary>
     /// Base class for options panel textfield-based (sub-)tabs.
     /// </summary>
-    internal class TextfieldPanelBase
+    internal abstract class TextfieldPanelBase
     {
         // Layout constants.
         protected const float Margin = 5f;
@@ -31,6 +31,12 @@ namespace RealPop2
         protected string sewageLabel;
         protected string garbageLabel;
         protected string wealthLabel;
+
+        // Panel reference.
+        protected UIPanel panel;
+
+        // Status flag.
+        protected bool isSetup = false;
 
         // Reference variables.
         protected float currentY = TitleHeight;

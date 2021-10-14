@@ -17,55 +17,72 @@ namespace RealPop2
         private const int NumLevels = 5;
 
 
+        // Tab title.
+        protected override string TabNameKey => "RPR_CAT_RES";
+
+
         /// <summary>
         /// Adds residential options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public LegacyResidentialPanel(UITabstrip tabStrip, int tabIndex)
+        public LegacyResidentialPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add tab.
-            UIPanel panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate("RPR_CAT_RES"), tabIndex, out UIButton _);
+        }
 
-            // Set residential flag.
-            notResidential = false;
 
-            // Initialise textfield array.
-            SetupArrays(NumSubServices);
-
-            for (int i = 0; i < NumSubServices; ++i)
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
             {
-                areaFields[i] = new UITextField[NumLevels];
-                floorFields[i] = new UITextField[NumLevels];
-                powerFields[i] = new UITextField[NumLevels];
-                waterFields[i] = new UITextField[NumLevels];
-                sewageFields[i] = new UITextField[NumLevels];
-                garbageFields[i] = new UITextField[NumLevels];
-                incomeFields[i] = new UITextField[NumLevels];
-                productionFields[i] = new UITextField[NumLevels];
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
+
+                // Set residential flag.
+                notResidential = false;
+
+                // Initialise textfield array.
+                SetupArrays(NumSubServices);
+
+                for (int i = 0; i < NumSubServices; ++i)
+                {
+                    areaFields[i] = new UITextField[NumLevels];
+                    floorFields[i] = new UITextField[NumLevels];
+                    powerFields[i] = new UITextField[NumLevels];
+                    waterFields[i] = new UITextField[NumLevels];
+                    sewageFields[i] = new UITextField[NumLevels];
+                    garbageFields[i] = new UITextField[NumLevels];
+                    incomeFields[i] = new UITextField[NumLevels];
+                    productionFields[i] = new UITextField[NumLevels];
+                }
+
+                // Headings.
+                AddHeadings(panel);
+
+                // Move currentY up, so we can fit everything.
+                currentY -= 30f;
+
+                // Create residential per-person area textfields and labels.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RLO"), "ZoningResidentialLow", "Thumbnails");
+                AddSubService(panel, LowRes);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RHI"), "ZoningResidentialHigh", "Thumbnails");
+                AddSubService(panel, HighRes);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERL"), "IconPolicySelfsufficient", "Ingame");
+                AddSubService(panel, LowEcoRes);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERH"), "IconPolicySelfsufficient", "Ingame");
+                AddSubService(panel, HighEcoRes);
+
+                // Populate initial values.
+                PopulateFields();
+
+                // Add command buttons.
+                AddButtons(panel);
             }
-
-            // Headings.
-            AddHeadings(panel);
-
-            // Move currentY up, so we can fit everything.
-            currentY -= 30f;
-
-            // Create residential per-person area textfields and labels.
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RLO"), "ZoningResidentialLow", "Thumbnails");
-            AddSubService(panel, LowRes);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RHI"), "ZoningResidentialHigh", "Thumbnails");
-            AddSubService(panel, HighRes);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERL"), "IconPolicySelfsufficient", "Ingame");
-            AddSubService(panel, LowEcoRes);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERH"), "IconPolicySelfsufficient", "Ingame");
-            AddSubService(panel, HighEcoRes);
-
-            // Populate initial values.
-            PopulateFields();
-
-            // Add command buttons.
-            AddButtons(panel);
         }
 
 

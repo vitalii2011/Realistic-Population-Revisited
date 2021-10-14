@@ -34,7 +34,7 @@ namespace RealPop2
             childTabStrip.tabPages = tabContainer;
 
             // Add child tabs.
-            new LegacyResidentialPanel(childTabStrip, 0);
+            LegacyResidentialPanel resPanel = new LegacyResidentialPanel(childTabStrip, 0);
             new LegacyIndustrialPanel(childTabStrip, 1);
             new LegacyCommercialPanel(childTabStrip, 2);
             new LegacyOfficePanel(childTabStrip, 3);
@@ -45,6 +45,9 @@ namespace RealPop2
                 button.textScale = 0.8f;
                 button.width = 100f;
             }
+
+            // Setup residental panel (initial selection).
+            resPanel.Setup();
         }
     }
 }

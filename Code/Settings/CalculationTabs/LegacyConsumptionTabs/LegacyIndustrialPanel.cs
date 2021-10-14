@@ -28,54 +28,71 @@ namespace RealPop2
             "RPR_CAT_ORE"
         };
 
+
+        // Tab title.
+        protected override string TabNameKey => "RPR_CAT_IND";
+
         /// <summary>
         /// Adds industrial options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public LegacyIndustrialPanel(UITabstrip tabStrip, int tabIndex)
+        public LegacyIndustrialPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add tab.
-            UIPanel panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate("RPR_CAT_IND"), tabIndex, out UIButton _);
+        }
 
-            // Initialise textfield array.
-            SetupArrays(NumSubServices);
 
-            for (int i = 0; i < NumSubServices; i++)
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
             {
-                int levels = i == 0 ? NumLevels : 2;
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
 
-                areaFields[i] = new UITextField[levels];
-                floorFields[i] = new UITextField[levels];
-                extraFloorFields[i] = new UITextField[levels];
-                powerFields[i] = new UITextField[levels];
-                waterFields[i] = new UITextField[levels];
-                sewageFields[i] = new UITextField[levels];
-                garbageFields[i] = new UITextField[levels];
-                incomeFields[i] = new UITextField[levels];
-                productionFields[i] = new UITextField[NumLevels];
+                // Initialise textfield array.
+                SetupArrays(NumSubServices);
+
+                for (int i = 0; i < NumSubServices; i++)
+                {
+                    int levels = i == 0 ? NumLevels : 2;
+
+                    areaFields[i] = new UITextField[levels];
+                    floorFields[i] = new UITextField[levels];
+                    extraFloorFields[i] = new UITextField[levels];
+                    powerFields[i] = new UITextField[levels];
+                    waterFields[i] = new UITextField[levels];
+                    sewageFields[i] = new UITextField[levels];
+                    garbageFields[i] = new UITextField[levels];
+                    incomeFields[i] = new UITextField[levels];
+                    productionFields[i] = new UITextField[NumLevels];
+                }
+
+                // Headings.
+                AddHeadings(panel);
+
+                // Create residential per-person area textfields and labels.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
+                AddSubService(panel, Generic);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
+                AddSubService(panel, Farming, true);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
+                AddSubService(panel, Forestry, true);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
+                AddSubService(panel, Oil, true);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
+                AddSubService(panel, Ore, true);
+
+                // Populate initial values.
+                PopulateFields();
+
+                // Add command buttons.
+                AddButtons(panel);
             }
-
-            // Headings.
-            AddHeadings(panel);
-
-            // Create residential per-person area textfields and labels.
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
-            AddSubService(panel, Generic);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
-            AddSubService(panel, Farming, true);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
-            AddSubService(panel, Forestry, true);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
-            AddSubService(panel, Oil, true);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
-            AddSubService(panel, Ore, true);
-
-            // Populate initial values.
-            PopulateFields();
-
-            // Add command buttons.
-            AddButtons(panel);
         }
 
 

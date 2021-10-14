@@ -7,7 +7,7 @@ namespace RealPop2
     /// <summary>
     /// Base class for options panel consumption settings (sub-)tabs (legacy configuration).
     /// </summary>
-    internal class LegacyPanelBase : TextfieldPanelBase
+    internal abstract class LegacyPanelBase : TextfieldPanelBase
     {
         // UI layout constants.
         protected const float LeftTitle = 50f;
@@ -32,6 +32,34 @@ namespace RealPop2
         protected string floorLabel;
         protected string extraFloorLabel;
         protected string productionLabel;
+
+        // Tab button.
+        internal readonly UIButton tabButton;
+
+
+        // Tab title.
+        protected abstract string TabNameKey { get; }
+
+
+        /// <summary>
+        /// Constructor - adds tab to tabstrip.
+        /// </summary>
+        /// <param name="tabStrip">Tab strip to add to</param>
+        /// <param name="tabIndex">Index number of tab</param>
+        internal LegacyPanelBase(UITabstrip tabStrip, int tabIndex)
+        {
+            // Add tab.
+            panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate(TabNameKey), tabIndex, out tabButton);
+
+            // Event handler to set up panel when tab is first clicked.
+            tabButton.eventClicked += (contol, clickEvent) => Setup();
+        }
+
+
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal abstract void Setup();
 
 
         /// <summary>

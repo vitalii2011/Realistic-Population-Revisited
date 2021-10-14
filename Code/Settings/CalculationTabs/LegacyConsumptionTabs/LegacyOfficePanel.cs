@@ -22,48 +22,66 @@ namespace RealPop2
             "RPR_CAT_ITC"
         };
 
+
+        // Tab title.
+        protected override string TabNameKey => "RPR_CAT_OFF";
+
+
         /// <summary>
         /// Adds commercial options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public LegacyOfficePanel(UITabstrip tabStrip, int tabIndex)
+        public LegacyOfficePanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add tab.
-            UIPanel panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate("RPR_CAT_OFF"), tabIndex, out UIButton _);
+        }
 
-            // Initialise textfield array.
-            SetupArrays(NumSubServices);
 
-            for (int i = 0; i < NumSubServices; i++)
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
             {
-                int levels = i == 0 ? NumLevels : 1;
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
 
-                areaFields[i] = new UITextField[levels];
-                floorFields[i] = new UITextField[levels];
-                extraFloorFields[i] = new UITextField[levels];
-                powerFields[i] = new UITextField[levels];
-                waterFields[i] = new UITextField[levels];
-                sewageFields[i] = new UITextField[levels];
-                garbageFields[i] = new UITextField[levels];
-                incomeFields[i] = new UITextField[levels];
-                productionFields[i] = new UITextField[NumLevels];
+                // Initialise textfield array.
+                SetupArrays(NumSubServices);
+
+                for (int i = 0; i < NumSubServices; i++)
+                {
+                    int levels = i == 0 ? NumLevels : 1;
+
+                    areaFields[i] = new UITextField[levels];
+                    floorFields[i] = new UITextField[levels];
+                    extraFloorFields[i] = new UITextField[levels];
+                    powerFields[i] = new UITextField[levels];
+                    waterFields[i] = new UITextField[levels];
+                    sewageFields[i] = new UITextField[levels];
+                    garbageFields[i] = new UITextField[levels];
+                    incomeFields[i] = new UITextField[levels];
+                    productionFields[i] = new UITextField[NumLevels];
+                }
+
+                // Headings.
+                AddHeadings(panel);
+
+                // Create residential per-person area textfields and labels.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Office]), "ZoningOffice", "Thumbnails");
+                AddSubService(panel, Office);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[HighTech]), "IconPolicyHightech", "Ingame");
+                AddSubService(panel, HighTech, label: Translations.Translate(subServiceLables[HighTech]));
+
+                // Populate initial values.
+                PopulateFields();
+
+                // Add command buttons.
+                AddButtons(panel);
             }
-
-            // Headings.
-            AddHeadings(panel);
-
-            // Create residential per-person area textfields and labels.
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Office]), "ZoningOffice", "Thumbnails");
-            AddSubService(panel, Office);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[HighTech]), "IconPolicyHightech", "Ingame");
-            AddSubService(panel, HighTech, label: Translations.Translate(subServiceLables[HighTech]));
-
-            // Populate initial values.
-            PopulateFields();
-
-            // Add command buttons.
-            AddButtons(panel);
         }
 
 
