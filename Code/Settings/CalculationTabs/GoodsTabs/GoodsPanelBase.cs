@@ -44,6 +44,16 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal GoodsPanelBase(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
+            // Event handler to set up panel when tab is first clicked.
+            tabButton.eventClicked += (contol, clickEvent) => Setup();
+        }
+
+
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal virtual void Setup()
+        {
             // Add title.
             float currentY = PanelUtils.TitleLabel(panel, TitleKey);
 

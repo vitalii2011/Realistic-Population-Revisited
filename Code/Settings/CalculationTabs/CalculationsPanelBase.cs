@@ -22,6 +22,9 @@ namespace RealPop2
         internal static CalculationsPanelBase instance;
         protected UIPanel panel;
 
+        // Tab button.
+        protected UIButton tabButton;
+
 
         // Service/subservice arrays.
         protected abstract string[] SubServiceNames { get; }
@@ -46,7 +49,7 @@ namespace RealPop2
         internal CalculationsPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab and helper.
-            panel = PanelUtils.AddIconTab(tabStrip, TabName, tabIndex, TabIconNames, TabAtlasNames, out UIButton _, TabWidth);
+            panel = PanelUtils.AddIconTab(tabStrip, TabName, tabIndex, TabIconNames, TabAtlasNames, out tabButton, TabWidth);
 
             // Set instance.
             instance = this;
