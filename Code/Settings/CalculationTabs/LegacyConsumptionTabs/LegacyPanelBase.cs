@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 
 
 namespace RealPop2
@@ -46,10 +45,10 @@ namespace RealPop2
         internal LegacyPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate(TabNameKey), tabIndex, out tabButton);
+            panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate(TabNameKey), tabIndex, out UIButton _);
 
-            // Event handler to set up panel when tab is first clicked.
-            tabButton.eventClicked += (control, clickEvent) => Setup();
+            // Set tab object reference.
+            tabStrip.tabs[tabIndex].objectUserData = this;
         }
 
 

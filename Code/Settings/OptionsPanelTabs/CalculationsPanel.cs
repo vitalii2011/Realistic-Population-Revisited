@@ -90,6 +90,15 @@ namespace RealPop2
                 // Perform setup of residential tab (default selection).
                 resTab.Setup();
                 childTabStrip.selectedIndex = 0;
+
+                // Event handler for tab index change; setup the selected tab.
+                childTabStrip.eventSelectedIndexChanged += (control, index) =>
+                {
+                    if (childTabStrip.tabs[index].objectUserData is OptionsPanelTab childTab)
+                    {
+                        childTab.Setup();
+                    }
+                };
             }
         }
     }

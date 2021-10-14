@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 
 
 namespace RealPop2
@@ -60,10 +59,10 @@ namespace RealPop2
         internal ConsumptionPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames, out tabButton);
+            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
 
-            // Event handler to set up panel when tab is first clicked.
-            tabButton.eventClicked += (control, clickEvent) => Setup();
+            // Set tab object reference.
+            tabStrip.tabs[tabIndex].objectUserData = this;
         }
 
 

@@ -16,7 +16,7 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Performs initial setup; called when panel first becomes visible.
+        /// Performs initial setup; called via event when tab is first selected.
         /// </summary>
         internal abstract void Setup();
     }

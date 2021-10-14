@@ -7,7 +7,7 @@ namespace RealPop2
     /// <summary>
     /// Base class for options panel textfield-based (sub-)tabs.
     /// </summary>
-    internal abstract class TextfieldPanelBase
+    internal abstract class TextfieldPanelBase : OptionsPanelTab
     {
         // Layout constants.
         protected const float Margin = 5f;
@@ -32,15 +32,6 @@ namespace RealPop2
         protected string garbageLabel;
         protected string wealthLabel;
 
-        // Panel reference.
-        protected UIPanel panel;
-
-        // Tab button.
-        protected UIButton tabButton;
-
-        // Status flag.
-        protected bool isSetup = false;
-
         // Reference variables.
         protected float currentY = TitleHeight;
         protected bool notResidential = true;
@@ -50,12 +41,6 @@ namespace RealPop2
         protected virtual void PopulateFields() { }
         protected virtual void ApplyFields() { }
         protected virtual void ResetToDefaults() { }
-
-
-        /// <summary>
-        /// Performs initial setup; called when panel first becomes visible.
-        /// </summary>
-        internal abstract void Setup();
 
 
         /// <summary>

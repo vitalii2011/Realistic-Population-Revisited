@@ -24,10 +24,6 @@ namespace RealPop2
         };
 
 
-        // Status flag.
-        protected bool isSetup = false;
-
-
         // Tab settings.
         protected override string TabName => Translations.Translate(TitleKey);
         protected override string[] TabIconNames => tabIconNames;
@@ -48,15 +44,13 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal GoodsPanelBase(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Event handler to set up panel when tab is first clicked.
-            tabButton.eventClicked += (control, clickEvent) => Setup();
         }
 
 
         /// <summary>
-        /// Performs initial setup; called when panel first becomes visible.
+        /// Performs initial setup; called via event when tab is first selected.
         /// </summary>
-        internal virtual void Setup()
+        internal override void Setup()
         {
             // Don't do anything if already set up.
             if (!isSetup)

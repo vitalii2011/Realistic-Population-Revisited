@@ -52,26 +52,6 @@ namespace RealPop2
         /// <param name="tabIndex">Index number of tab</param>
         internal DefaultsPanelBase(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Initialise arrays.
-            AvailablePopPacks = new PopDataPack[SubServiceNames.Length][];
-            AvailableFloorPacks = FloorData.instance.Packs;
-            PopMenus = new UIDropDown[SubServiceNames.Length];
-            FloorMenus = new UIDropDown[SubServiceNames.Length];
-
-            // Add title.
-            float currentY = PanelUtils.TitleLabel(panel, TitleKey);
-
-            // Add header controls.
-            currentY = PanelHeader(currentY);
-
-            // Add menus.
-            currentY = SetUpMenus(currentY);
-
-            // Add buttons- add extra space.
-            FooterButtons(currentY + Margin);
-
-            // Set control values.
-            UpdateControls();
         }
 
 
@@ -139,6 +119,41 @@ namespace RealPop2
                         FloorMenus[i].selectedIndex = j;
                     }
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Performs initial setup; called via event when tab is first selected.
+        /// </summary>
+        internal override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
+            {
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
+                // Initialise arrays.
+                AvailablePopPacks = new PopDataPack[SubServiceNames.Length][];
+                AvailableFloorPacks = FloorData.instance.Packs;
+                PopMenus = new UIDropDown[SubServiceNames.Length];
+                FloorMenus = new UIDropDown[SubServiceNames.Length];
+
+                // Add title.
+                float currentY = PanelUtils.TitleLabel(panel, TitleKey);
+
+                // Add header controls.
+                currentY = PanelHeader(currentY);
+
+                // Add menus.
+                currentY = SetUpMenus(currentY);
+
+                // Add buttons- add extra space.
+                FooterButtons(currentY + Margin);
+
+                // Set control values.
+                UpdateControls();
             }
         }
 

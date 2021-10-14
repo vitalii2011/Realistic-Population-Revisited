@@ -9,7 +9,7 @@ namespace RealPop2
     /// <summary>
     /// Options panel for setting default employment calculation packs.
     /// </summary>
-    internal abstract class CalculationsPanelBase
+    internal abstract class CalculationsPanelBase : OptionsPanelTab
     {
         // Layout constants.
         protected const float Margin = 5f;
@@ -20,7 +20,6 @@ namespace RealPop2
 
         // Instance references.
         internal static CalculationsPanelBase instance;
-        protected UIPanel panel;
 
         // Tab button.
         protected UIButton tabButton;
@@ -49,10 +48,13 @@ namespace RealPop2
         internal CalculationsPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab and helper.
-            panel = PanelUtils.AddIconTab(tabStrip, TabName, tabIndex, TabIconNames, TabAtlasNames, out tabButton, TabWidth);
+            panel = PanelUtils.AddIconTab(tabStrip, TabName, tabIndex, TabIconNames, TabAtlasNames, TabWidth);
 
             // Set instance.
             instance = this;
+
+            // Set tab object reference.
+            tabStrip.tabs[tabIndex].objectUserData = this;
         }
 
 
