@@ -53,6 +53,21 @@ namespace RealPop2
 
 
         /// <summary>
+        /// Constructor - adds tab to tabstrip.
+        /// </summary>
+        /// <param name="tabStrip">Tab strip to add to</param>
+        /// <param name="tabIndex">Index number of tab</param>
+        internal ConsumptionPanelBase(UITabstrip tabStrip, int tabIndex)
+        {
+            // Add tab.
+            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames, out tabButton);
+
+            // Event handler to set up panel when tab is first clicked.
+            tabButton.eventClicked += (contol, clickEvent) => Setup();
+        }
+
+
+        /// <summary>
         /// Initialises array structure (first dimension - sub-services).
         /// </summary>
         /// <param name="numSubServices">Number of sub-services to initialise for</param>

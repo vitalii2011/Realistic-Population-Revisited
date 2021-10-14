@@ -33,11 +33,8 @@ namespace RealPop2
         protected string extraFloorLabel;
         protected string productionLabel;
 
-        // Tab button.
-        internal readonly UIButton tabButton;
 
-
-        // Tab title.
+        // Tab title translation key.
         protected abstract string TabNameKey { get; }
 
 
@@ -54,12 +51,6 @@ namespace RealPop2
             // Event handler to set up panel when tab is first clicked.
             tabButton.eventClicked += (contol, clickEvent) => Setup();
         }
-
-
-        /// <summary>
-        /// Performs initial setup; called when panel first becomes visible.
-        /// </summary>
-        internal abstract void Setup();
 
 
         /// <summary>

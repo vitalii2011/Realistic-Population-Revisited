@@ -73,7 +73,7 @@ namespace RealPop2
             const float TabWidth = 50f;
 
             // Add tab and helper.
-            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate(TabTooltipKey), tabIndex, new string[] { TabSprite }, new string[] { "ingame" }, TabWidth);
+            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate(TabTooltipKey), tabIndex, new string[] { TabSprite }, new string[] { "ingame" }, out UIButton _, TabWidth);
         }
 
 

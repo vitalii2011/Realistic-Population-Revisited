@@ -22,44 +22,57 @@ namespace RealPop2
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public ResConsumptionPanel(UITabstrip tabStrip, int tabIndex)
+        public ResConsumptionPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add tab.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
+        }
 
-            // Set residential flag.
-            notResidential = false;
 
-            // Initialise textfield arrays (first dimension, sub-services).
-            SubServiceArrays(NumSubServices);
-
-            // Initialise textfield arrays (second dimension, levels - five each).
-            for (int i = 0; i < NumSubServices; ++i)
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
             {
-                LevelArrays(i, NumLevels);
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
+
+                // Set residential flag.
+                notResidential = false;
+
+                // Initialise textfield arrays (first dimension, sub-services).
+                SubServiceArrays(NumSubServices);
+
+                // Initialise textfield arrays (second dimension, levels - five each).
+                for (int i = 0; i < NumSubServices; ++i)
+                {
+                    LevelArrays(i, NumLevels);
+                }
+
+                // Headings.
+                AddHeadings(panel);
+
+                // Move currentY up, so we can fit everything.
+                currentY -= 30f;
+
+                // Create residential per-person area textfields and labels.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RLO"), "ZoningResidentialLow", "Thumbnails");
+                AddSubService(panel, true, LowRes);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RHI"), "ZoningResidentialHigh", "Thumbnails");
+                AddSubService(panel, true, HighRes);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERL"), "IconPolicySelfsufficient", "Ingame");
+                AddSubService(panel, true, LowEcoRes);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERH"), "IconPolicySelfsufficient", "Ingame");
+                AddSubService(panel, true, HighEcoRes);
+
+                // Populate initial values.
+                PopulateFields();
+
+                // Add command buttons.
+                AddButtons(panel);
             }
-
-            // Headings.
-            AddHeadings(panel);
-
-            // Move currentY up, so we can fit everything.
-            currentY -= 30f;
-
-            // Create residential per-person area textfields and labels.
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RLO"), "ZoningResidentialLow", "Thumbnails");
-            AddSubService(panel, true, LowRes);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_RHI"), "ZoningResidentialHigh", "Thumbnails");
-            AddSubService(panel, true, HighRes);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERL"), "IconPolicySelfsufficient", "Ingame");
-            AddSubService(panel, true, LowEcoRes);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate("RPR_CAT_ERH"), "IconPolicySelfsufficient", "Ingame");
-            AddSubService(panel, true, HighEcoRes);
-
-            // Populate initial values.
-            PopulateFields();
-
-            // Add command buttons.
-            AddButtons(panel);
         }
 
 

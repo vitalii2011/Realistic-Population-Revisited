@@ -28,48 +28,62 @@ namespace RealPop2
             "RPR_CAT_TOU"
         };
 
+
         /// <summary>
         /// Adds commercial options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public ComConsumptionPanel(UITabstrip tabStrip, int tabIndex)
+        public ComConsumptionPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add tab.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
+        }
 
-            // Initialise textfield arrays (first dimension, sub-services).
-            SubServiceArrays(NumSubServices);
 
-            // Initialise textfield arrays (second dimension, levels).
-            for (int i = 0; i < NumSubServices; i++)
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
             {
-                // Number of levels is either 3 (for the first two categories, low and high com), or 1 for the remainder.
-                int levels = i < 2 ? NumLevels : 1;
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
 
-                LevelArrays(i, levels);
+                // Initialise textfield arrays (first dimension, sub-services).
+                SubServiceArrays(NumSubServices);
+
+                // Initialise textfield arrays (second dimension, levels).
+                for (int i = 0; i < NumSubServices; i++)
+                {
+                    // Number of levels is either 3 (for the first two categories, low and high com), or 1 for the remainder.
+                    int levels = i < 2 ? NumLevels : 1;
+
+                    LevelArrays(i, levels);
+                }
+
+                // Headings.
+                AddHeadings(panel);
+
+                // Create residential per-person area textfields and labels.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[LowCom]), "ZoningCommercialLow", "Thumbnails");
+                AddSubService(panel, true, LowCom);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[HighCom]), "ZoningCommercialHigh", "Thumbnails");
+                AddSubService(panel, true, HighCom);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[EcoCom]), "IconPolicyOrganic", "Ingame");
+                AddSubService(panel, false, EcoCom, label: Translations.Translate("RPR_CAT_ECO"));
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Leisure]), "IconPolicyLeisure", "Ingame");
+                AddSubService(panel, false, Leisure, label: Translations.Translate(subServiceLables[Leisure]));
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Tourist]), "IconPolicyTourist", "Ingame");
+                AddSubService(panel, false, Tourist, label: Translations.Translate(subServiceLables[Tourist]));
+
+                // Populate initial values.
+                PopulateFields();
+
+                // Add command buttons.
+                AddButtons(panel);
             }
-
-            // Headings.
-            AddHeadings(panel);
-
-            // Create residential per-person area textfields and labels.
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[LowCom]), "ZoningCommercialLow", "Thumbnails");
-            AddSubService(panel, true, LowCom);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[HighCom]), "ZoningCommercialHigh", "Thumbnails");
-            AddSubService(panel, true, HighCom);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[EcoCom]), "IconPolicyOrganic", "Ingame");
-            AddSubService(panel, false, EcoCom, label: Translations.Translate("RPR_CAT_ECO"));
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Leisure]), "IconPolicyLeisure", "Ingame");
-            AddSubService(panel, false, Leisure, label: Translations.Translate(subServiceLables[Leisure]));
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Tourist]), "IconPolicyTourist", "Ingame");
-            AddSubService(panel, false, Tourist, label: Translations.Translate(subServiceLables[Tourist]));
-
-            // Populate initial values.
-            PopulateFields();
-
-            // Add command buttons.
-            AddButtons(panel);
         }
 
 

@@ -46,7 +46,7 @@ namespace RealPop2
         internal CalculationsPanelBase(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab and helper.
-            panel = PanelUtils.AddIconTab(tabStrip, TabName, tabIndex, TabIconNames, TabAtlasNames, TabWidth);
+            panel = PanelUtils.AddIconTab(tabStrip, TabName, tabIndex, TabIconNames, TabAtlasNames, out UIButton _, TabWidth);
 
             // Set instance.
             instance = this;

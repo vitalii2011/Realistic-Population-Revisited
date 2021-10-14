@@ -35,6 +35,9 @@ namespace RealPop2
         // Panel reference.
         protected UIPanel panel;
 
+        // Tab button.
+        protected UIButton tabButton;
+
         // Status flag.
         protected bool isSetup = false;
 
@@ -47,6 +50,12 @@ namespace RealPop2
         protected virtual void PopulateFields() { }
         protected virtual void ApplyFields() { }
         protected virtual void ResetToDefaults() { }
+
+
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal abstract void Setup();
 
 
         /// <summary>

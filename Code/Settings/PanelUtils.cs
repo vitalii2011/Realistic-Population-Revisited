@@ -127,14 +127,14 @@ namespace RealPop2
         /// <param name="width">Tab width</param>
         /// <param name="autoLayout">Default autoLayout setting</param>
         /// <returns>UIHelper instance for the new tab panel</returns>
-        internal static UIPanel AddIconTab(UITabstrip tabStrip, string tabName, int tabIndex, string[] iconNames, string[] atlasNames, float width = 120f, bool autoLayout = false)
+        internal static UIPanel AddIconTab(UITabstrip tabStrip, string tabName, int tabIndex, string[] iconNames, string[] atlasNames, out UIButton button, float width = 120f, bool autoLayout = false)
         {
             // Layout constants.
             const float TabIconSize = 23f;
 
 
             // Create tab.
-            UIPanel rootPanel = AddTextTab(tabStrip, tabName, tabIndex, out UIButton button, width, autoLayout);
+            UIPanel rootPanel = AddTextTab(tabStrip, tabName, tabIndex, out button, width, autoLayout);
 
             // Clear button text.
             button.text = "";

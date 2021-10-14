@@ -28,48 +28,62 @@ namespace RealPop2
             "RPR_CAT_ORE"
         };
 
+
         /// <summary>
         /// Adds industrial options tab to tabstrip.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public IndConsumptionPanel(UITabstrip tabStrip, int tabIndex)
+        internal IndConsumptionPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add tab.
-            UIPanel panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames);
+        }
 
-            // Initialise textfield arrays (first dimension, sub-services).
-            SubServiceArrays(NumSubServices);
 
-            // Initialise textfield arrays (second dimension, levels).
-            for (int i = 0; i < NumSubServices; i++)
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        internal override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
             {
-                // Number of levels is either 3 (for the first category, generic industry), or 2 for the remainder.
-                int levels = i == 0 ? NumLevels : 2;
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
 
-                LevelArrays(i, levels);
+                // Initialise textfield arrays (first dimension, sub-services).
+                SubServiceArrays(NumSubServices);
+
+                // Initialise textfield arrays (second dimension, levels).
+                for (int i = 0; i < NumSubServices; i++)
+                {
+                    // Number of levels is either 3 (for the first category, generic industry), or 2 for the remainder.
+                    int levels = i == 0 ? NumLevels : 2;
+
+                    LevelArrays(i, levels);
+                }
+
+                // Headings.
+                AddHeadings(panel);
+
+                // Create residential per-person area textfields and labels.
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
+                AddSubService(panel, true, Generic);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
+                AddSubService(panel, false, Farming, true);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
+                AddSubService(panel, false, Forestry, true);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
+                AddSubService(panel, false, Oil, true);
+                PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
+                AddSubService(panel, false, Ore, true);
+
+                // Populate initial values.
+                PopulateFields();
+
+                // Add command buttons.
+                AddButtons(panel);
             }
-
-            // Headings.
-            AddHeadings(panel);
-
-            // Create residential per-person area textfields and labels.
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Generic]), "ZoningIndustrial", "Thumbnails");
-            AddSubService(panel, true, Generic);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Farming]), "IconPolicyFarming", "Ingame");
-            AddSubService(panel, false, Farming, true);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Forestry]), "IconPolicyForest", "Ingame");
-            AddSubService(panel, false, Forestry, true);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Oil]), "IconPolicyOil", "Ingame");
-            AddSubService(panel, false, Oil, true);
-            PanelUtils.RowHeaderIcon(panel, ref currentY, Translations.Translate(subServiceLables[Ore]), "IconPolicyOre", "Ingame");
-            AddSubService(panel, false, Ore, true);
-
-            // Populate initial values.
-            PopulateFields();
-
-            // Add command buttons.
-            AddButtons(panel);
         }
 
 
