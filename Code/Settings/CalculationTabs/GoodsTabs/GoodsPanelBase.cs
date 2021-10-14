@@ -24,6 +24,10 @@ namespace RealPop2
         };
 
 
+        // Status flag.
+        protected bool isSetup = false;
+
+
         // Tab settings.
         protected override string TabName => Translations.Translate(TitleKey);
         protected override string[] TabIconNames => tabIconNames;
@@ -45,7 +49,7 @@ namespace RealPop2
         internal GoodsPanelBase(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
             // Event handler to set up panel when tab is first clicked.
-            tabButton.eventClicked += (contol, clickEvent) => Setup();
+            tabButton.eventClicked += (control, clickEvent) => Setup();
         }
 
 
@@ -54,14 +58,22 @@ namespace RealPop2
         /// </summary>
         internal virtual void Setup()
         {
-            // Add title.
-            float currentY = PanelUtils.TitleLabel(panel, TitleKey);
+            // Don't do anything if already set up.
+            if (!isSetup)
+            {
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
 
-            // Add menus.
-            currentY = SetUpMenus(panel, currentY);
+                // Add title.
+                float currentY = PanelUtils.TitleLabel(panel, TitleKey);
 
-            // Add buttons- add extra space.
-            FooterButtons(currentY + Margin);
+                // Add menus.
+                currentY = SetUpMenus(panel, currentY);
+
+                // Add buttons- add extra space.
+                FooterButtons(currentY + Margin);
+            }
         }
 
 

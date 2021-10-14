@@ -49,7 +49,7 @@ namespace RealPop2
             panel = PanelUtils.AddTextTab(tabStrip, Translations.Translate(TabNameKey), tabIndex, out tabButton);
 
             // Event handler to set up panel when tab is first clicked.
-            tabButton.eventClicked += (contol, clickEvent) => Setup();
+            tabButton.eventClicked += (control, clickEvent) => Setup();
         }
 
 

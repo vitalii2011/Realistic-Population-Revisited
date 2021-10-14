@@ -63,7 +63,7 @@ namespace RealPop2
             panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate("RPR_OPT_CON"), tabIndex, tabIconNames, tabAtlasNames, out tabButton);
 
             // Event handler to set up panel when tab is first clicked.
-            tabButton.eventClicked += (contol, clickEvent) => Setup();
+            tabButton.eventClicked += (control, clickEvent) => Setup();
         }
 
 
