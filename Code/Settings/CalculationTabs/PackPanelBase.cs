@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using ColossalFramework.UI;
 
@@ -19,16 +18,19 @@ namespace RealPop2
         protected const float FirstItem = 110f;
         protected const float RowHeight = 27f;
 
+
+        // Status flag.
+        protected bool isSetup = false;
+
+        // Panel reference.
+        protected readonly UIPanel panel;
+
         // Panel components.
         protected UIDropDown packDropDown;
         private UIButton saveButton, deleteButton;
 
-
         // List of packs.
         protected List<DataPack> packList;
-
-        // Panel reference.
-        protected readonly UIPanel panel;
 
         // Tab sprite name and tooltip key.
         protected abstract string TabSprite { get; }
@@ -37,6 +39,11 @@ namespace RealPop2
         // Pack name field.
         protected UITextField PackNameField { get; private set; }
 
+
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        protected abstract void Setup();
 
 
         /// <summary>
@@ -73,7 +80,10 @@ namespace RealPop2
             const float TabWidth = 50f;
 
             // Add tab and helper.
-            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate(TabTooltipKey), tabIndex, new string[] { TabSprite }, new string[] { "ingame" }, out UIButton _, TabWidth);
+            panel = PanelUtils.AddIconTab(tabStrip, Translations.Translate(TabTooltipKey), tabIndex, new string[] { TabSprite }, new string[] { "ingame" }, out UIButton tabButton, TabWidth);
+
+            // Event handler to set up child tabs when tab is first clicked.
+            tabButton.eventClicked += (control, clickEvent) => Setup();
         }
 
 

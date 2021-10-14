@@ -25,114 +25,128 @@ namespace RealPop2
         private readonly int[] maxLevels = { 5, 3, 3, 3, 2 };
 
         // Textfield arrays.
-        private readonly UITextField[] emptyAreaFields, emptyPercentFields, fixedPopFields, areaPerFields;
-        private readonly UICheckBox[] fixedPopChecks, multiFloorChecks;
-        private readonly UILabel[] rowLabels;
+        private UITextField[] emptyAreaFields, emptyPercentFields, fixedPopFields, areaPerFields;
+        private UICheckBox[] fixedPopChecks, multiFloorChecks;
+        private UILabel[] rowLabels;
 
         // Panel components.
-        private readonly UIDropDown serviceDropDown;
+        private UIDropDown serviceDropDown;
 
 
         // Tab sprite name and tooltip key.
         protected override string TabSprite => "SubBarMonumentModderPackFocused";
         protected override string TabTooltipKey => "RPR_OPT_POP";
-
-
         /// <summary>
-        /// Adds editing options tab to tabstrip.
+        /// Constructor.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
         internal PopulationPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add title.
-            float currentY = PanelUtils.TitleLabel(panel, TabTooltipKey);
+        }
 
-            // Initialise arrays
-            emptyAreaFields = new UITextField[5];
-            emptyPercentFields = new UITextField[5];
-            fixedPopChecks = new UICheckBox[5];
-            fixedPopFields = new UITextField[5];
-            areaPerFields = new UITextField[5];
-            multiFloorChecks = new UICheckBox[5];
-            rowLabels = new UILabel[5];
 
-            // Service selection dropdown.
-            serviceDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_SVC"), serviceNames, -1);
-            serviceDropDown.parent.relativePosition = new Vector3(20f, currentY);
-            serviceDropDown.eventSelectedIndexChanged += ServiceChanged;
-
-            // Pack selection dropdown.
-            packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
-            currentY += 70f;
-            packDropDown.parent.relativePosition = new Vector3(20f, currentY);
-            packDropDown.eventSelectedIndexChanged += PackChanged;
-
-            // Label strings - cached to avoid calling Translations.Translate each time (for the tooltips, anwyay, including the others makes code more readable).
-            string emptyArea = Translations.Translate("RPR_CAL_VOL_EMP");
-            string emptyAreaTip = Translations.Translate("RPR_CAL_VOL_EMP_TIP");
-            string emptyPercent = Translations.Translate("RPR_CAL_VOL_EPC");
-            string emptyPercentTip = Translations.Translate("RPR_CAL_VOL_EPC_TIP");
-            string useFixedPop = Translations.Translate("RPR_CAL_VOL_FXP");
-            string useFixedPopTip = Translations.Translate("RPR_CAL_VOL_FXP_TIP");
-            string fixedPop = Translations.Translate("RPR_CAL_VOL_UNI");
-            string fixedPopTip = Translations.Translate("RPR_CAL_VOL_UNI_TIP");
-            string areaPer = Translations.Translate("RPR_CAL_VOL_APU");
-            string areaPerTip = Translations.Translate("RPR_CAL_VOL_APU_TIP");
-            string multiFloor = Translations.Translate("RPR_CAL_VOL_MFU");
-            string multiFloorTip = Translations.Translate("RPR_CAL_VOL_MFU_TIP");
-
-            // Headings.
-            currentY += 140f;
-            PanelUtils.ColumnLabel(panel, EmptyAreaX, currentY, ColumnWidth, emptyArea, emptyAreaTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, EmptyPercentX, currentY, ColumnWidth, emptyPercent, emptyPercentTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, PopCheckX, currentY, ColumnWidth, useFixedPop, useFixedPopTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, FixedPopX, currentY, ColumnWidth, fixedPop, fixedPopTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, AreaPerX, currentY, ColumnWidth, areaPer, areaPerTip, 1.0f);
-            PanelUtils.ColumnLabel(panel, MultiFloorX, currentY, ColumnWidth, multiFloor, multiFloorTip, 1.0f);
-
-            // Add level textfields.
-            for (int i = 0; i < 5; ++i)
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        protected override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
             {
-                // Row label.
-                rowLabels[i] = RowLabel(panel, currentY, Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString());
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
 
-                emptyPercentFields[i] = UIControls.AddTextField(panel, EmptyPercentX + Margin, currentY, width: TextFieldWidth, tooltip: emptyPercentTip);
-                emptyPercentFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
-                emptyPercentFields[i].tooltipBox = TooltipUtils.TooltipBox;
+                // Add title.
+                float currentY = PanelUtils.TitleLabel(panel, TabTooltipKey);
 
-                emptyAreaFields[i] = UIControls.AddTextField(panel, EmptyAreaX + Margin, currentY, width: TextFieldWidth, tooltip: emptyAreaTip);
-                emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-                emptyAreaFields[i].tooltipBox = TooltipUtils.TooltipBox;
+                // Initialise arrays
+                emptyAreaFields = new UITextField[5];
+                emptyPercentFields = new UITextField[5];
+                fixedPopChecks = new UICheckBox[5];
+                fixedPopFields = new UITextField[5];
+                areaPerFields = new UITextField[5];
+                multiFloorChecks = new UICheckBox[5];
+                rowLabels = new UILabel[5];
 
-                // Fixed pop checkboxes - ensure i is saved as objectUserData for use by event handler.  Starts unchecked by default.
-                fixedPopChecks[i] = UIControls.AddCheckBox(panel, PopCheckX + (ColumnWidth / 2), currentY, tooltip: useFixedPopTip);
-                fixedPopChecks[i].objectUserData = i;
-                fixedPopChecks[i].eventCheckChanged += FixedPopCheckChanged;
-                fixedPopChecks[i].tooltipBox = TooltipUtils.TooltipBox;
+                // Service selection dropdown.
+                serviceDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_SVC"), serviceNames, -1);
+                serviceDropDown.parent.relativePosition = new Vector3(20f, currentY);
+                serviceDropDown.eventSelectedIndexChanged += ServiceChanged;
 
-                // Fixed population fields start hidden by default.
-                fixedPopFields[i] = UIControls.AddTextField(panel, FixedPopX + Margin, currentY, width: TextFieldWidth, tooltip: fixedPopTip);
-                fixedPopFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
-                fixedPopFields[i].tooltipBox = TooltipUtils.TooltipBox;
-                fixedPopFields[i].Hide();
+                // Pack selection dropdown.
+                packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
+                currentY += 70f;
+                packDropDown.parent.relativePosition = new Vector3(20f, currentY);
+                packDropDown.eventSelectedIndexChanged += PackChanged;
 
-                areaPerFields[i] = UIControls.AddTextField(panel, AreaPerX + Margin, currentY, width: TextFieldWidth, tooltip: areaPerTip);
-                areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-                areaPerFields[i].tooltipBox = TooltipUtils.TooltipBox;
+                // Label strings - cached to avoid calling Translations.Translate each time (for the tooltips, anwyay, including the others makes code more readable).
+                string emptyArea = Translations.Translate("RPR_CAL_VOL_EMP");
+                string emptyAreaTip = Translations.Translate("RPR_CAL_VOL_EMP_TIP");
+                string emptyPercent = Translations.Translate("RPR_CAL_VOL_EPC");
+                string emptyPercentTip = Translations.Translate("RPR_CAL_VOL_EPC_TIP");
+                string useFixedPop = Translations.Translate("RPR_CAL_VOL_FXP");
+                string useFixedPopTip = Translations.Translate("RPR_CAL_VOL_FXP_TIP");
+                string fixedPop = Translations.Translate("RPR_CAL_VOL_UNI");
+                string fixedPopTip = Translations.Translate("RPR_CAL_VOL_UNI_TIP");
+                string areaPer = Translations.Translate("RPR_CAL_VOL_APU");
+                string areaPerTip = Translations.Translate("RPR_CAL_VOL_APU_TIP");
+                string multiFloor = Translations.Translate("RPR_CAL_VOL_MFU");
+                string multiFloorTip = Translations.Translate("RPR_CAL_VOL_MFU_TIP");
 
-                multiFloorChecks[i] = UIControls.AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY, tooltip: multiFloorTip);
-                multiFloorChecks[i].tooltipBox = TooltipUtils.TooltipBox;
+                // Headings.
+                currentY += 140f;
+                PanelUtils.ColumnLabel(panel, EmptyAreaX, currentY, ColumnWidth, emptyArea, emptyAreaTip, 1.0f);
+                PanelUtils.ColumnLabel(panel, EmptyPercentX, currentY, ColumnWidth, emptyPercent, emptyPercentTip, 1.0f);
+                PanelUtils.ColumnLabel(panel, PopCheckX, currentY, ColumnWidth, useFixedPop, useFixedPopTip, 1.0f);
+                PanelUtils.ColumnLabel(panel, FixedPopX, currentY, ColumnWidth, fixedPop, fixedPopTip, 1.0f);
+                PanelUtils.ColumnLabel(panel, AreaPerX, currentY, ColumnWidth, areaPer, areaPerTip, 1.0f);
+                PanelUtils.ColumnLabel(panel, MultiFloorX, currentY, ColumnWidth, multiFloor, multiFloorTip, 1.0f);
 
-                // Move to next row.
-                currentY += RowHeight;
+                // Add level textfields.
+                for (int i = 0; i < 5; ++i)
+                {
+                    // Row label.
+                    rowLabels[i] = RowLabel(panel, currentY, Translations.Translate("RPR_OPT_LVL") + " " + (i + 1).ToString());
+
+                    emptyPercentFields[i] = UIControls.AddTextField(panel, EmptyPercentX + Margin, currentY, width: TextFieldWidth, tooltip: emptyPercentTip);
+                    emptyPercentFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
+                    emptyPercentFields[i].tooltipBox = TooltipUtils.TooltipBox;
+
+                    emptyAreaFields[i] = UIControls.AddTextField(panel, EmptyAreaX + Margin, currentY, width: TextFieldWidth, tooltip: emptyAreaTip);
+                    emptyAreaFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+                    emptyAreaFields[i].tooltipBox = TooltipUtils.TooltipBox;
+
+                    // Fixed pop checkboxes - ensure i is saved as objectUserData for use by event handler.  Starts unchecked by default.
+                    fixedPopChecks[i] = UIControls.AddCheckBox(panel, PopCheckX + (ColumnWidth / 2), currentY, tooltip: useFixedPopTip);
+                    fixedPopChecks[i].objectUserData = i;
+                    fixedPopChecks[i].eventCheckChanged += FixedPopCheckChanged;
+                    fixedPopChecks[i].tooltipBox = TooltipUtils.TooltipBox;
+
+                    // Fixed population fields start hidden by default.
+                    fixedPopFields[i] = UIControls.AddTextField(panel, FixedPopX + Margin, currentY, width: TextFieldWidth, tooltip: fixedPopTip);
+                    fixedPopFields[i].eventTextChanged += (control, value) => PanelUtils.IntTextFilter((UITextField)control, value);
+                    fixedPopFields[i].tooltipBox = TooltipUtils.TooltipBox;
+                    fixedPopFields[i].Hide();
+
+                    areaPerFields[i] = UIControls.AddTextField(panel, AreaPerX + Margin, currentY, width: TextFieldWidth, tooltip: areaPerTip);
+                    areaPerFields[i].eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+                    areaPerFields[i].tooltipBox = TooltipUtils.TooltipBox;
+
+                    multiFloorChecks[i] = UIControls.AddCheckBox(panel, MultiFloorX + (ColumnWidth / 2), currentY, tooltip: multiFloorTip);
+                    multiFloorChecks[i].tooltipBox = TooltipUtils.TooltipBox;
+
+                    // Move to next row.
+                    currentY += RowHeight;
+                }
+
+                // Add footer controls.
+                PanelFooter(currentY);
+
+                // Set service menu to initial state (residential), which will also update textfield visibility via event handler.
+                serviceDropDown.selectedIndex = 0;
             }
-
-            // Add footer controls.
-            PanelFooter(currentY);
-
-            // Set service menu to initial state (residential), which will also update textfield visibility via event handler.
-            serviceDropDown.selectedIndex = 0;
         }
 
 

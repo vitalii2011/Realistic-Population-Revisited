@@ -29,59 +29,75 @@ namespace RealPop2
 
 
         /// <summary>
-        /// Adds editing options tab to tabstrip.
+        /// Constructor.
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
         internal FloorPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
-            // Add title.
-            float currentY = PanelUtils.TitleLabel(panel, TabTooltipKey);
+        }
 
-            // Initialise arrays
-            floorHeightField = new UITextField();
-            firstMinField = new UITextField();
-            firstExtraField = new UITextField();
-            firstEmptyCheck = new UICheckBox();
 
-            // Pack selection dropdown.
-            packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
-            packDropDown.parent.relativePosition = new Vector3(20f, currentY);
-            packDropDown.eventSelectedIndexChanged += PackChanged;
+        /// <summary>
+        /// Performs initial setup; called when panel first becomes visible.
+        /// </summary>
+        protected override void Setup()
+        {
+            // Don't do anything if already set up.
+            if (!isSetup)
+            {
+                // Perform initial setup.
+                isSetup = true;
+                Logging.Message("setting up ", this.GetType().ToString());
 
-            // Headings.
-            currentY += 140f;
-            PanelUtils.ColumnLabel(panel, FloorHeightX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), Translations.Translate("RPR_CAL_VOL_FLH_TIP"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMinX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), Translations.Translate("RPR_CAL_VOL_FMN_TIP"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstMaxX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), Translations.Translate("RPR_CAL_VOL_FMX_TIP"), 1.0f);
-            PanelUtils.ColumnLabel(panel, FirstEmptyX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), Translations.Translate("RPR_CAL_VOL_IGF_TIP"), 1.0f);
+                // Add title.
+                float currentY = PanelUtils.TitleLabel(panel, TabTooltipKey);
 
-            // Add level textfields.
-            currentY += RowHeight;
-            floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FLH_TIP"));
-            floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-            floorHeightField.tooltipBox = TooltipUtils.TooltipBox;
+                // Initialise arrays
+                floorHeightField = new UITextField();
+                firstMinField = new UITextField();
+                firstExtraField = new UITextField();
+                firstEmptyCheck = new UICheckBox();
 
-            firstMinField = UIControls.AddTextField(panel, FirstMinX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FMN_TIP"));
-            firstMinField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-            firstMinField.tooltipBox = TooltipUtils.TooltipBox;
+                // Pack selection dropdown.
+                packDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("RPR_OPT_CPK"), new string[0], -1);
+                packDropDown.parent.relativePosition = new Vector3(20f, currentY);
+                packDropDown.eventSelectedIndexChanged += PackChanged;
 
-            firstExtraField = UIControls.AddTextField(panel, FirstMaxX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FMX_TIP"));
-            firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
-            firstExtraField.tooltipBox = TooltipUtils.TooltipBox;
+                // Headings.
+                currentY += 140f;
+                PanelUtils.ColumnLabel(panel, FloorHeightX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FLH"), Translations.Translate("RPR_CAL_VOL_FLH_TIP"), 1.0f);
+                PanelUtils.ColumnLabel(panel, FirstMinX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMN"), Translations.Translate("RPR_CAL_VOL_FMN_TIP"), 1.0f);
+                PanelUtils.ColumnLabel(panel, FirstMaxX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_FMX"), Translations.Translate("RPR_CAL_VOL_FMX_TIP"), 1.0f);
+                PanelUtils.ColumnLabel(panel, FirstEmptyX, currentY, ColumnWidth, Translations.Translate("RPR_CAL_VOL_IGF"), Translations.Translate("RPR_CAL_VOL_IGF_TIP"), 1.0f);
 
-            firstEmptyCheck = UIControls.AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY, tooltip: Translations.Translate("RPR_CAL_VOL_IGF_TIP"));
-            firstEmptyCheck.tooltipBox = TooltipUtils.TooltipBox;
+                // Add level textfields.
+                currentY += RowHeight;
+                floorHeightField = UIControls.AddTextField(panel, FloorHeightX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FLH_TIP"));
+                floorHeightField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+                floorHeightField.tooltipBox = TooltipUtils.TooltipBox;
 
-            // Move to next row.
-            currentY += RowHeight;
+                firstMinField = UIControls.AddTextField(panel, FirstMinX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FMN_TIP"));
+                firstMinField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+                firstMinField.tooltipBox = TooltipUtils.TooltipBox;
 
-            // Add footer controls.
-            PanelFooter(currentY);
+                firstExtraField = UIControls.AddTextField(panel, FirstMaxX + Margin, currentY, width: TextFieldWidth, tooltip: Translations.Translate("RPR_CAL_VOL_FMX_TIP"));
+                firstExtraField.eventTextChanged += (control, value) => PanelUtils.FloatTextFilter((UITextField)control, value);
+                firstExtraField.tooltipBox = TooltipUtils.TooltipBox;
 
-            // Populate pack menu and set onitial pack selection.
-            packDropDown.items = PackList();
-            packDropDown.selectedIndex = 0;
+                firstEmptyCheck = UIControls.AddCheckBox(panel, FirstEmptyX + (ColumnWidth / 2), currentY, tooltip: Translations.Translate("RPR_CAL_VOL_IGF_TIP"));
+                firstEmptyCheck.tooltipBox = TooltipUtils.TooltipBox;
+
+                // Move to next row.
+                currentY += RowHeight;
+
+                // Add footer controls.
+                PanelFooter(currentY);
+
+                // Populate pack menu and set onitial pack selection.
+                packDropDown.items = PackList();
+                packDropDown.selectedIndex = 0;
+            }
         }
 
 
