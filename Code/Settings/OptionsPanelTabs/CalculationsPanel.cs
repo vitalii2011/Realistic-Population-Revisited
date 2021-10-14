@@ -56,6 +56,10 @@ namespace RealPop2
             new PopulationPanel(childTabStrip, tab++);
             new FloorPanel(childTabStrip, tab++);
             new LegacyPanel(childTabStrip, tab);
+
+            // Perform setup of residential tab (default selection).
+            resTab.Setup();
+            childTabStrip.selectedIndex = 0;
         }
 
 
