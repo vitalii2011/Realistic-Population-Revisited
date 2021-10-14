@@ -37,7 +37,7 @@ namespace RealPop2
         /// </summary>
         /// <param name="tabStrip">Tab strip to add to</param>
         /// <param name="tabIndex">Index number of tab</param>
-        public LegacyIndustrialPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
+        internal LegacyIndustrialPanel(UITabstrip tabStrip, int tabIndex) : base(tabStrip, tabIndex)
         {
         }
 
