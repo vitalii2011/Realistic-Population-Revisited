@@ -269,7 +269,7 @@
     <Translation ID="RPR_DEF_CGM" String="Sales multiplier" />
     <Translation ID="RPR_DEF_CGM_TIP" String="The amount of goods sold by this building per customer will be multiplied by this amount; reduced rates will mean fewer goods are required, but tax revenue will also be reduced" />
     <Translation ID="RPR_DEF_IDC" String="Inventory demand cap" />
-    <Translation ID="RPR_DEF_IDC_TIP" String="Building inventory order trigger amounts will be capped to this maximum (does not affect buildings with calculated inventory order trigger amounts that are already lower than this cap)." />
+    <Translation ID="RPR_DEF_IDC_TIP" String="Sets the maximum building inventory level that will trigger the ordering of more goods (does not affect buildings with calculated inventory order trigger levels that are already lower than this cap)." />
     <Translation ID="RPR_DEF_PMD" String="Calculation mode" />
     <Translation ID="RPR_DEF_PMD_TIP" String="The basis for calculating the production rate of this building.  The old method was to use the size of the building's lot, and the new method is to use the number of workplaces in the building." />
     <Translation ID="RPR_DEF_PRD" String="Production multiplier" />
