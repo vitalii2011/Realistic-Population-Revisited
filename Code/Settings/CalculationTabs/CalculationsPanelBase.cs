@@ -21,9 +21,6 @@ namespace RealPop2
         // Instance references.
         internal static CalculationsPanelBase instance;
 
-        // Tab button.
-        protected UIButton tabButton;
-
 
         // Service/subservice arrays.
         protected abstract string[] SubServiceNames { get; }
