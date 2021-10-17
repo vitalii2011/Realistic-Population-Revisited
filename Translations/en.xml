@@ -44,7 +44,7 @@
     <Translation ID="RPR_PCK_OCP_NAM" String="Corporate offices" />
     <Translation ID="RPR_PCK_OCP_DES" String="Corporate, professional services, and public sector offices." />
     <Translation ID="RPR_PCK_OFN_NAM" String="Finance offices" />
-    <Translation ID="RPR_PCK_OFN_DES" String="Financial offices; higher density than typical corporte offices" />
+    <Translation ID="RPR_PCK_OFN_DES" String="Financial offices; higher density than typical corporate offices" />
     <Translation ID="RPR_PCK_OCS_NAM" String="Call centers" />
     <Translation ID="RPR_PCK_OCS_DES" String="Call centers and other tightly-packed offices" />
     <Translation ID="RPR_PCK_ODT_NAM" String="Datacenters" />
@@ -153,7 +153,7 @@
     <Translation ID="RPR_CAL_VOL_FMX" String="First floor extra height" />
     <Translation ID="RPR_CAL_VOL_FMX_TIP" String="The first floor height will be extended upwards by this many meters (on top of the typical floor height above) before additional floors are added above." />
     <Translation ID="RPR_CAL_VOL_IGF" String="Ignore first floor" />
-    <Translation ID="RPR_CAL_VOL_IGF_TIP" String="If this is set, the first floor of the building is treated as empty space (e.g. a lobby or foyer area) with no households or wokers." />
+    <Translation ID="RPR_CAL_VOL_IGF_TIP" String="If this is set, the first floor of the building is treated as empty space (e.g. a lobby or foyer area) with no households or workers." />
     <Translation ID="RPR_CAL_VOL_EPC" String="Empty area (%)" />
     <Translation ID="RPR_CAL_VOL_EPC_TIP" String="This percentage of each floor area will be treated as empty area and will not be included when calculating households or worker counts." />
     <Translation ID="RPR_CAL_VOL_EMP" String="Empty area (fixed)" />
@@ -297,7 +297,7 @@
     <Translation ID="RPR_ERR_CON1" String="These mods must be removed before Realistic Population 2 can operate." />
     <Translation ID="RPR_200_0" String="Renaming from 'Realistic Population Revisited' to 'Realistic Population 2' to reflect the extent of the changes" />
     <Translation ID="RPR_200_1" String="MAJOR NEW FEATURE: new building population calculations based on actual building shapes and sizes with realistically calculated floorspace, with the option to choose between the new or old ('legacy') calculations" />
-    <Translation ID="RPR_200_2" String="MAJOR NEW FEATURE: separate calculation presets for building floorspace and populaton, along with optional manual overrides for either or both" />
+    <Translation ID="RPR_200_2" String="MAJOR NEW FEATURE: separate calculation presets for building floorspace and population, along with optional manual overrides for either or both" />
     <Translation ID="RPR_200_3" String="MAJOR NEW FEATURE: selectable configuration presets for each building service type" />
     <Translation ID="RPR_200_4" String="MAJOR NEW FEATURE: optional realistic student capacity calculations for elementary and high schools, with configurable multiplier for when realistically-sized school buildings aren't available" />
     <Translation ID="RPR_200_5" String="MAJOR NEW FEATURE: adjustable crime rate" />
