@@ -10,7 +10,7 @@ namespace RealPop2
     public static class GoodsUtils
     {
         // Defaults.
-        internal const int DefaultSalesMult = 100;
+        internal const int DefaultSalesMult = 60;
         internal const int DefaultInventory = 48000;
         internal const int MinInventory = 8000;
         internal const int MaxInventory = 57000;

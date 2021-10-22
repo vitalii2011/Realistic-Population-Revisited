@@ -40,8 +40,8 @@ namespace RealPop2
         };
 
         // Default multiplier.
-        internal const int DefaultVisitMultLow = 70;
-        internal const int DefaultVisitMultHigh = 50;
+        internal const int DefaultVisitMultLow = 100;
+        internal const int DefaultVisitMultHigh = 100;
 
         // Maximum multiplier.
         internal const int MaxVisitMult = 100;
