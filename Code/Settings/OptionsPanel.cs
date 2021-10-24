@@ -119,7 +119,6 @@ namespace RealPop2
                     button.width = 100f;
                 }*/
 
-
                 // Event handler for tab index change; setup the selected tab.
                 tabStrip.eventSelectedIndexChanged += (control, index) =>
                 {
@@ -128,8 +127,8 @@ namespace RealPop2
                         tab.Setup();
                     }
                 };
-
-                // Ensure initial selected tab.
+                // Ensure initial selected tab (doing a 'quickstep' via the second tab to ensure proper events are triggered).
+                tabStrip.selectedIndex = 1;
                 tabStrip.selectedIndex = 0;
             }
             catch (Exception e)

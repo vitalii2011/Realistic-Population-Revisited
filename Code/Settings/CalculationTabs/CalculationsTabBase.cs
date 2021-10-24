@@ -73,8 +73,9 @@ namespace RealPop2
                 tabContainer.size = new Vector3(744f, 720);
                 childTabStrip.tabPages = tabContainer;
 
-                // Set up child tabs and make sure first one is selected.
+                // Set up child tabs and make sure first one is selected (doing a 'quickstep' via the second tab to ensure proper events are triggered).
                 AddTabs(childTabStrip);
+                childTabStrip.selectedIndex = 1;
                 childTabStrip.selectedIndex = 0;
                 (childTabStrip.tabs[0].objectUserData as OptionsPanelTab)?.Setup();
 
