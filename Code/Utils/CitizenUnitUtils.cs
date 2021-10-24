@@ -97,11 +97,16 @@ namespace RealPop2
                         int homeCount = privateAI.CalculateHomeCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
                         int visitCount = privateAI.CalculateVisitplaceCount((ItemClass.Level)thisBuilding.m_level, new Randomizer(i), thisBuilding.Width, thisBuilding.Length);
 
-                        // Apply changes via call to EnsureCitizenUnits reverse patch.
-                        EnsureCitizenUnits(privateAI, i, ref thisBuilding, homeCount, workCount, visitCount, 0);
+                        // Local references for passing to SimulationManager.
+                        PrivateBuildingAI thisAI = privateAI;
+                        ushort buildingID = i;
+                        bool localPreserve = preserveOccupied;
 
-                        // Remove any extra CitizenUunts.
-                        RemoveCitizenUnits(ref buildingBuffer[i], homeCount, workCount, visitCount, preserveOccupied);
+                        // Apply changes via call to EnsureCitizenUnits reverse patch in SimulationManager.
+                        Singleton<SimulationManager>.instance.AddAction(delegate { EnsureCitizenUnits(thisAI, buildingID, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[buildingID], homeCount, workCount, visitCount, 0); });
+
+                        // Remove any extra CitizenUnits in SimulationManager.
+                        Singleton<SimulationManager>.instance.AddAction(delegate { RemoveCitizenUnits(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[buildingID], homeCount, workCount, visitCount, localPreserve); });
 
                         // Log changes.
                         Logging.Message("Reset CitizenUnits for building ", i.ToString(), " (", thisBuilding.Info.name, "); CitizenUnit count is now ", citizenManager.m_unitCount.ToString());
