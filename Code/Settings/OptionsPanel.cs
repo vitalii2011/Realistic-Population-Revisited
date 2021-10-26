@@ -127,6 +127,7 @@ namespace RealPop2
                         tab.Setup();
                     }
                 };
+
                 // Ensure initial selected tab (doing a 'quickstep' via the second tab to ensure proper events are triggered).
                 tabStrip.selectedIndex = 1;
                 tabStrip.selectedIndex = 0;
