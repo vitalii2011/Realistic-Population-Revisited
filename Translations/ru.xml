@@ -230,7 +230,7 @@
     <Translation ID="RPR_OPT_SAA" String="Сохранить и применить" />
     <Translation ID="RPR_OPT_SCH" String="Школы" />
     <Translation ID="RPR_OPT_SEN" String="Включить реалистичное количество школьников" />
-    <Translation ID="RPR_OPT_SEJ" String="Включить реалистичные свойства школы (рабочие места, затраты) - требуется перезапуск" />
+    <Translation ID="RPR_OPT_SEJ" String="Вкл. реалистичные св-ва школы (раб. места, затраты) - треб. перезапуск" />
     <Translation ID="RPR_OPT_SDM" String="Множитель пропускной способности школы по умолчанию" />
     <Translation ID="RPR_OPT_JB0" String="Неквалифицир. работа" />
     <Translation ID="RPR_OPT_JB1" String="Работа треб. нач. образ." />
